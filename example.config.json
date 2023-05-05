@@ -1,28 +1,3 @@
-# DCS Battleground
-
-DCS Battleground is a tool for visualizing the battlefield of DCS servers and sharing reconnaissance elements and flight plans between pilots.
-It was designed from [sneaker](https://github.com/Special-K-s-Flightsim-Bots/sneaker) and uses the Tacview protocol to communicate with DCS.
-It has Discord's authentication and is interfaced with the [Special K's Server bot] (https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot).
-
-A live example of DCS Battlegound can be viewed [here](http://map.liaison16.eu/).
-
-![UI preview](https://i.imgur.com/KR1zEoX.png)
-
-## Installation
-
-1. Download the latest released version [from here](https://github.com/Frigondin/DCSBattleground/releases).
-2. Create a configuration file based off the [example](/example.config.json), replacing the required information (and optionally adding multiple servers to the array)
-3. Run the executable with the configuration path: `sneaker-server.exe --config config.json`
-
-### Configuration
-
-DCS Battleground features a built-in Discord authentication 
-
-1. Create a new [Discord Application](https://discord.com/developers/applications) 
-2. Configure the redirect url (used later) and copy the client id and client secret
-![UI preview](https://i.imgur.com/APMF8zE.png)
-4. Add the following to your `config.json`:
-```json
 {
   "servers": [
     {
@@ -49,10 +24,3 @@ DCS Battleground features a built-in Discord authentication
   "discord_client_secret": "azrfdsflkdsfokdsklfjdskfj",								//Client secret of the discord application
   "redirect_url": "http://my-url.kaboom/redirect/"									//The url used to access DCS Battleground (/redirect/ needed)
 }
-```
-
-## Web UI
-
-DCS Battleground UI presents an emulated radar scope over top a [Open Street Map](https://openstreetmap.org) rendered via [maptalks](https://maptalks.org). The web UI is updated at a configurable simulated refresh rate (by default 5 seconds).
-It use Flappie's work to display the Caucasus Layer ! (thanks for is work)
-
