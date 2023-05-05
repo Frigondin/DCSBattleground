@@ -1,4 +1,4 @@
-# DCS Battleground
+# DCS Battleground 
 
 DCS Battleground is a tool for visualizing the battlefield of DCS servers and sharing reconnaissance elements and flight plans between pilots.
 It was designed from [sneaker](https://github.com/Special-K-s-Flightsim-Bots/sneaker) and uses the Tacview protocol to communicate with DCS.
