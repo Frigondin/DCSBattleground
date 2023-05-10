@@ -6,6 +6,7 @@ It has Discord's authentication and is interfaced with the [Special K's Server b
 
 A live example of DCS Battlegound can be viewed [here](http://map.liaison16.eu/).
 
+
 ![UI preview](https://i.imgur.com/KR1zEoX.png)
 
 ## Installation
