@@ -14,7 +14,7 @@ A live example of DCS Battlegound can be viewed [here](http://map.liaison16.eu/)
 
 1. Download the latest released version [from here](https://github.com/Frigondin/DCSBattleground/releases).
 2. Create a configuration file based off the [example](/example.config.json), replacing the required information (and optionally adding multiple servers to the array)
-3. Run the executable with the configuration path: `sneaker-server.exe --config config.json`
+3. Run the executable with the configuration path: `DCSBattleground.exe --config config.json --bind 0.0.0.0:yourport`
 
 ## Configuration
 
