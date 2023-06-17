@@ -2,7 +2,7 @@
 
 Originally created for the french community Liaison-16, DCS Battleground is an open source tool for visualizing the battlefield of DCS servers and sharing scouting elements and flight plans between pilots.
 It was designed from [sneaker](https://github.com/Special-K-s-Flightsim-Bots/sneaker) and uses the Tacview protocol to communicate with DCS.
-It has Discord's authentication and is interfaced with the [Special K's Server bot] (https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot).
+It has Discord's authentication and is interfaced with the [Special K's Server bot](https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot).
 
 A live example of DCS Battlegound can be viewed [here](http://map.liaison16.eu/).
 

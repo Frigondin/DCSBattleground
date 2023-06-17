@@ -177,9 +177,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//renderer: "canvas",
         urlTemplate:
           "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-		  //"http://dcsmaps.com/caucasus/{z}/{x}/{y}.png",
-		  //"http://map.liaison16.eu:8087/caucasus/{z}/{x}/{y}.png",
         subdomains: ["a", "b", "c"],
+		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
         maxCacheSize: 2048,
         hitDetect: false,
 		visible : true
@@ -196,7 +195,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         //subdomains: ["a", "b", "c"],
         //maxCacheSize: 2048,
         //hitDetect: false,
-		attribution:"Flappie",
+		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
 		visible : true
       }),
@@ -214,7 +213,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		layers:"Isolines,Rivers,Water,Railroad,Powerlines,Roads,LBridges,Tunnels,Bridges,Borders,Landmarks,Derricks,Obstacle,MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns,Airbases,DB,DME,NDB,TACAN,VOR",
 		format:"image/png",
 		transparent:!0,
-		attribution:"Flappie",
+		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		//minZoom:8,
 		maxZoom:20,
 		//maxNativeZoom:12,
