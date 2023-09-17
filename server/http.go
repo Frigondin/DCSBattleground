@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 	//"net/http/httputil"
-	//"fmt"
+	"fmt"
 	"github.com/lib/pq"
 	//"strings"
 	//"io"
@@ -458,18 +458,21 @@ func Run(config *Config) error {
 		
 		query := r.URL.Query()
 		if (query["code"] == nil) {
+			fmt.Println("Redirect - Bad query")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		} 
 		
 		
 		codeFromURLParamaters := query["code"][0]
-
+		fmt.Println("Code : " + codeFromURLParamaters)	
 
 		// Get the access token using the above codeFromURLParamaters
 		var accessToken, err1 = dc.GetOnlyAccessToken(codeFromURLParamaters)
 
 		if (err1 != nil) {
+			fmt.Println("Redirect - No Token")
+			
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
@@ -496,13 +499,15 @@ func Run(config *Config) error {
 		user, err3 :=userData["username"].(string)
 		avatar, err4 :=userData["avatar"].(string)
 		if (err2 == false || err3 == false) {
+			fmt.Println("Redirect - Bad user")
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 		if (err4 == false) {
 			avatar = "nop"
 		}
 		SessionsDiscord[sessionToken]=sessionDiscord{id:id, username:user, avatar:avatar}
-
+		
+		fmt.Println("Redirect - Session created")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		
 		// Print the user data map
@@ -512,10 +517,12 @@ func Run(config *Config) error {
 	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("session_token")
 		if err != nil {
+			fmt.Println("Redirect - No session")
 			http.Redirect(w, r, "/discord/", http.StatusSeeOther)
 		} else {
 			_, exists := SessionsDiscord[cookie.Value]
 			if !exists {
+				fmt.Println("Redirect - Bad session")
 				http.Redirect(w, r, "/discord/", http.StatusSeeOther)
 			} else {
 				server.serveEmbeddedFile("index.html", w, r)
