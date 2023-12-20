@@ -26,6 +26,7 @@ export type Server = {
   player_is_connected: boolean;
   player_name: string;
   toggle_connection: boolean;
+  zones_size: any[][];
 };
 
 // const worker = new Worker(new URL("../worker.ts", import.meta.url));

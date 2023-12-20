@@ -79,18 +79,19 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 
 	//log.Printf("test5 : " + strconv.FormatBool(server.Enabled))
 	result := serverMetadata{
-		Name:            server.Name,
-		GroundUnitModes: getGroundUnitModes(server),
-		EnemyGURatio:	 server.EnemyGroundUnitsRatio,
-		EnemyGUMaxQty:	 server.EnemyGroundUnitsMaxQuantity,
-		FlightUnitModes: getFlightUnitModes(server),
-		Coalition:		 getCoalition(server, session_token),
-		DiscordName:	 SessionsDiscord[session_token].username,
-		DiscordId:	 	 SessionsDiscord[session_token].id,
+		Name:            			server.Name,
+		GroundUnitModes: 			getGroundUnitModes(server),
+		EnemyGURatio:	 			server.EnemyGroundUnitsRatio,
+		EnemyGUMaxQty:	 			server.EnemyGroundUnitsMaxQuantity,
+		FlightUnitModes: 			getFlightUnitModes(server),
+		Coalition:		 			getCoalition(server, session_token),
+		DiscordName:	 			SessionsDiscord[session_token].username,
+		DiscordId:	 	 			SessionsDiscord[session_token].id,
 		ViewAircraftWhenInFlight:	server.ViewAircraftWhenInFlight,
-		Avatar:			 getAvatar(session_token),
-		GCIs:            []gciMetadata{},
-		Enabled:		 h.sessions[server.Name].server.Enabled,
+		ZonesSize:		 			server.ZonesSize,
+		Avatar:			 			getAvatar(session_token),
+		GCIs:            			[]gciMetadata{},
+		Enabled:		 			h.sessions[server.Name].server.Enabled,
 	}
 
 
@@ -135,6 +136,7 @@ type serverMetadata struct {
 	Avatar			string			 `json:"avatar"`
 	ViewAircraftWhenInFlight bool	 `json:"view_aircraft_when_in_flight"`
 	Enabled			bool			 `json:"enabled"`
+	ZonesSize		[][]interface{}	 `json:"zones_size"`
 }
 
 func getGroundUnitModes(config *TacViewServerConfig) []string {

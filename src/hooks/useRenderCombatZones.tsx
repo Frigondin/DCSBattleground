@@ -28,7 +28,7 @@ export const groundUnitData = Immutable.Map(
   GroundUnitData.map((it) => [it.dcs_codes[0], it] as [string, UnitData])
 );
 
-function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity) {
+function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity, zoneSize: number) {
   const collection = layer.getGeometryById(
     unit.id
   ) as maptalks.GeometryCollection;
@@ -56,7 +56,8 @@ function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity) {
     }).toDataURL();
   }
 
-  const icon = new maptalks.Circle([(unit.longitude+(Math.random() * 0.04)-0.02), (unit.latitude+(Math.random() * 0.04)-0.02)], 10000, {
+  //const icon = new maptalks.Circle([(unit.longitude+(Math.random() * 0.04)-0.02), (unit.latitude+(Math.random() * 0.04)-0.02)], 10000, {
+  const icon = new maptalks.Circle([(unit.longitude+((Math.random() * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((Math.random() * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
     draggable: false,
     visible: true,
     editable: false,
@@ -143,7 +144,19 @@ function renderCombatZones(
 	  } else {
 		layer = map.getLayer("combat-zones") as maptalks.VectorLayer;
 	  }
-      renderCombatZone(layer, entity);
+	  
+	  var zoneSize = 10;
+	  if (server?.zones_size && server?.zones_size.length > 0) {
+		  for(var i = 0;i < server?.zones_size.length;i += 1) {
+			if (entity.types.includes(server?.zones_size[i][0])) {
+				zoneSize = server?.zones_size[i][1];
+				break;
+			} else if ( server?.zones_size[i][0] === "default") {
+				zoneSize = server?.zones_size[i][1];
+			}
+		  }
+	  }
+      renderCombatZone(layer, entity, zoneSize);
     }
   }
 
