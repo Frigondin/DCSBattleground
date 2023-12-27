@@ -91,34 +91,19 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
   });
   
 	var displayUnit;
-	//console.log(guMaxQty);
-	//console.log(guRatio);
-	var MaxCount = guMaxQty * guRatio;
-	//console.log(MaxCount);
 	if (coalition === "GM" || guMaxQty === -1) {
 		displayUnit = true;
 	} else if (coalition === "blue" && unit.coalition === "Enemies") {
 		displayUnit = true;
 	} else if (coalition === "blue" && unit.coalition === "Allies") {
-		counter = counter + 1;
-		if (counter % guRatio === 0 && counter <= MaxCount) {
-			displayUnit = true;
-		} else {
-			displayUnit = false;
-		}
+		displayUnit = unit.visible;
 	} else if (coalition === "red" && unit.coalition === "Allies") {
 		displayUnit = true;
 	} else if (coalition === "red" && unit.coalition === "Enemies") {
-		counter = counter + 1;
-		if (counter % guRatio === 0 && counter <= MaxCount) {
-			displayUnit = true;
-		} else {
-			displayUnit = false;
-		}
+		displayUnit = unit.visible;
 	} else {
-		displayUnit = false;
+		displayUnit = unit.visible;
 	}
-	
 	
 	if (displayUnit) {
 		const col = new maptalks.GeometryCollection([icon], {

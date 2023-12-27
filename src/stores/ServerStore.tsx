@@ -104,6 +104,7 @@ function runDCSBattlegroundClient(server: Server | null) {
 			var data = event.d as any
 			addGlobalGeometry(data.Add, server.coalition);
 			addGlobalGeometry(data.Recon, server.coalition);
+			addGlobalGeometry(data.Quest, server.coalition);
 			deleteGlobalGeometry(data.Delete, server.coalition);
 		} else if (event.e === "SESSION_PLAYERS_IN_SLOT") {
 			var player_is_connected = false

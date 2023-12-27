@@ -57,7 +57,8 @@ function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity, zoneSize: n
   }
 
   //const icon = new maptalks.Circle([(unit.longitude+(Math.random() * 0.04)-0.02), (unit.latitude+(Math.random() * 0.04)-0.02)], 10000, {
-  const icon = new maptalks.Circle([(unit.longitude+((Math.random() * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((Math.random() * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
+  //const icon = new maptalks.Circle([(unit.longitude+((Math.random() * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((Math.random() * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
+  const icon = new maptalks.Circle([(unit.longitude+((unit.ratioLong * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((unit.ratioLat * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
     draggable: false,
     visible: true,
     editable: false,

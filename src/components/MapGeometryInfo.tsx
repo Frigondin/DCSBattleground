@@ -41,6 +41,17 @@ function DetailedWaypoints({
 	})}</div>
 }
 
+function DetailedDescription({
+	description,
+}: {
+	description: Array<string>;
+}) {
+	//return <div style={{ maxHeight: "600px", overflowY:"scroll" }}>{description.map(text => {
+	return <div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>{description.map((text) => {
+		return (<div>{text}</div>)
+	})}</div>
+}
+
 function submitGeometry(geo:Geometry, typeSubmit:string) {
     
 	// var formData = new FormData();
@@ -189,23 +200,57 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 			}
 		</>
 	  )}
-	  				{geo.type === "recon" && isOpen && (
-					<Lightbox
-						mainSrc={geo.screenshot[imgIndex]}
-						nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-						prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-					  //imageTitle={images[imgIndex].title}
-					  //imageCaption={images[imgIndex].caption}
-					  //mainSrc={images[imgIndex].url}
-					  //nextSrc={images[(imgIndex + 1) % images.length].url}
-					  //prevSrc={images[(imgIndex + images.length - 1) % images.length].url}
-					  onCloseRequest={() => setIsOpen(false)}
-					  onMovePrevRequest={() =>
-						setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
-					  }
-					  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
-					/>
-				)}
+		{geo.type === "recon" && isOpen && (
+			<Lightbox
+				mainSrc={geo.screenshot[imgIndex]}
+				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
+				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+			  //imageTitle={images[imgIndex].title}
+			  //imageCaption={images[imgIndex].caption}
+			  //mainSrc={images[imgIndex].url}
+			  //nextSrc={images[(imgIndex + 1) % images.length].url}
+			  //prevSrc={images[(imgIndex + images.length - 1) % images.length].url}
+			  onCloseRequest={() => setIsOpen(false)}
+			  onMovePrevRequest={() =>
+				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+			  }
+			  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+			/>
+		)}
+		
+
+	  {geo.type === "quest" && <DetailedCoords coords={geo.position} />}
+	  {geo.type === "quest" && (
+		<>
+			{}
+			{
+			<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
+				<img src={geo.screenshot[0]}/>
+			</div>
+			}
+		</>
+	  )}
+		{geo.type === "quest" && isOpen && (
+			<Lightbox
+				mainSrc={geo.screenshot[imgIndex]}
+				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
+				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+			  //imageTitle={images[imgIndex].title}
+			  //imageCaption={images[imgIndex].caption}
+			  //mainSrc={images[imgIndex].url}
+			  //nextSrc={images[(imgIndex + 1) % images.length].url}
+			  //prevSrc={images[(imgIndex + images.length - 1) % images.length].url}
+			  onCloseRequest={() => setIsOpen(false)}
+			  onMovePrevRequest={() =>
+				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+			  }
+			  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+			/>
+		)}
+		{geo.type === "quest" && <DetailedDescription description={geo.description}/>}
+		{geo.type === "markpoint" && <DetailedCoords coords={geo.position} />}
+
+		
     </>
   );
 }

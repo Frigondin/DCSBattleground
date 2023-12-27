@@ -243,6 +243,11 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
+        new maptalks.VectorLayer("quest", [], {
+          forceRenderOnZooming: true,
+          forceRenderOnMoving: true,
+          forceRenderOnRotating: true,
+        }),
         new maptalks.VectorLayer("ground-units", [], {
           hitDetect: false,
         }),

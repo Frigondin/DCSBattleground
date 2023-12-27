@@ -14,7 +14,8 @@ import {
   Waypoints,
   Circle,
   Line,
-  Recon
+  Recon,
+  Quest
 } from "../stores/GeometryStore";
 
 
@@ -669,11 +670,108 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 }
 
 
+
+function renderQuest(layer: maptalks.VectorLayer, quest: Quest) {
+  const collection = layer.getGeometryById(
+    quest.id
+  ) as maptalks.GeometryCollection;
+  if (collection) {
+    // This is maybe not the safest :)
+    const [icon, text] = collection.getGeometries() as [
+      maptalks.Marker,
+      maptalks.Label
+    ];
+
+	icon.setCoordinates([quest.position[1], quest.position[0]]);
+	text.setCoordinates([quest.position[1], quest.position[0]]);
+	(text.setContent as any)(quest.name || `Mission #${quest.id}`);
+    return;
+  }
+
+  var color = '#FBBF24'
+  if (quest.coalition == "blue") {
+	color = '#0068FF'
+  } else if (quest.coalition == "red") {
+	color = '#FF0032'
+  }
+/*   const icon = new maptalks.Marker(
+	[quest.position[1], quest.position[0]],
+	{
+	  draggable: false,
+	  visible: true,
+	  editable: false,
+	  symbol: {
+		markerFile: new ms.Symbol(reconSIDC, {
+					  size: 20,
+					  frame: false,
+					  fill: true,
+					  strokeWidth: 11,
+					  monoColor: color,
+					}).toDataURL(),
+		markerDy: 10,
+	  },
+	}
+  ); */
+  var icon = new maptalks.Marker(
+        [quest.position[1], quest.position[0]],
+      );
+
+  const text = new maptalks.Label(
+	quest.name || `Quest #${quest.id}`,
+	[quest.position[1], quest.position[0]],
+	{
+	  draggable: false,
+	  visible: true,
+	  editable: false,
+	  boxStyle: {
+		padding: [2, 2],
+		horizontalAlignment: "left",
+		verticalAlignment: "middle",
+		symbol: {
+		  markerType: "square",
+		  markerFill: "#4B5563",
+		  markerFillOpacity: 0.5,
+		  markerLineOpacity: 0,
+		  textHorizontalAlignment: "right",
+		  textVerticalAlignment: "middle",
+		  textDx: 20,
+		},
+	  },
+	  textSymbol: {
+		textFaceName: '"microsoft yahei"',
+		textFill: "#FBBF24",
+		textSize: 12,
+	  },
+	}
+  );
+
+  const col = new maptalks.GeometryCollection([icon, text], {
+	id: quest.id,
+	draggable: false,
+  });
+  col.on("dblclick", (e) => {
+	setSelectedGeometry(quest.id);
+  });
+  col.on("dragend", (e) => {
+	const pos = col.getFirstCoordinate();
+	updateGeometrySafe(quest.id, {
+	  position: [pos.y, pos.x],
+	});
+  });
+
+  layer.addGeometry(col);
+
+}
+
+
+
+
 function renderGeometry(
   map: maptalks.Map,
   geometry: Immutable.Map<number, Geometry>
 ) {
   const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+  const layerQuest = map.getLayer("quest") as maptalks.VectorLayer;
   for (const geo of layer.getGeometries()) {
     if (!geometry.has((geo as any)._id as number)) {
       geo.remove();
@@ -693,6 +791,8 @@ function renderGeometry(
 	  renderLine(layer, geo);
 	} else if (geo.type === "recon") {
 	  renderRecon(layer, geo);
+	} else if (geo.type === "quest") {
+	  renderQuest(layerQuest, geo);
 	}
   }
 }

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"math/rand"
 
 	"github.com/b1naryth1ef/jambon/tacview"
 )
@@ -22,18 +23,27 @@ type StateObject struct {
 	CreatedAt  int64             `json:"created_at"`
 
 	Deleted bool `json:"-"`
+	
+	Visible		bool			`json:"visible"`
+	RatioLong	float64			`json:"ratio_long"`
+	RatioLat	float64			`json:"ratio_lat"`
 }
 
-func NewStateObject(ts int64, sourceObj *tacview.Object, coordBase [2]float64) (*StateObject, error) {
+func NewStateObject(ts int64, sourceObj *tacview.Object, coordBase [2]float64, visible bool) (*StateObject, error) {
 	obj := &StateObject{
 		Id:         sourceObj.Id,
 		Types:      []string{},
 		Properties: make(map[string]string),
 		Deleted:    false,
 		CreatedAt:  ts,
+		Visible:	visible,
+		RatioLong: rand.Float64(),
+		RatioLat: rand.Float64(),
 	}
-
-	err := obj.update(ts, sourceObj, coordBase)
+	//obj.RatioLong = rand.Float64()
+	//obj.RatioLat = rand.Float64()
+		
+	err := obj.update(ts, sourceObj, coordBase, visible)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +90,7 @@ func (obj *StateObject) updateLocation(data string, coordBase [2]float64) error 
 	return nil
 }
 
-func (obj *StateObject) update(ts int64, sourceObj *tacview.Object, coordBase [2]float64) error {
+func (obj *StateObject) update(ts int64, sourceObj *tacview.Object, coordBase [2]float64, visible bool) error {
 	if sourceObj.Deleted {
 		obj.Deleted = true
 	} else {
@@ -97,6 +107,7 @@ func (obj *StateObject) update(ts int64, sourceObj *tacview.Object, coordBase [2
 			}
 		}
 	}
+	obj.Visible = visible
 	obj.UpdatedAt = ts
 	return nil
 }
@@ -113,6 +124,10 @@ type sessionState struct {
 	// Tracked objects
 	objects map[uint64]*StateObject
 
+	serverConfig *TacViewServerConfig
+	idVisibleBlueList map[uint64]bool
+	idVisibleRedList map[uint64]bool
+
 	offset int64
 	active bool
 }
@@ -126,7 +141,7 @@ func (s *sessionState) reset() {
 }
 
 // Called when the tacview stream starts
-func (s *sessionState) initialize(header *tacview.Header) error {
+func (s *sessionState) initialize(header *tacview.Header, serverConfig *TacViewServerConfig) error {
 	s.reset()
 
 	s.Lock()
@@ -160,17 +175,55 @@ func (s *sessionState) initialize(header *tacview.Header) error {
 	}
 
 	s.active = true
+	s.serverConfig = serverConfig
+	s.idVisibleBlueList = make(map[uint64]bool)
+	s.idVisibleRedList = make(map[uint64]bool)
+	
 	s.update(&header.InitialTimeFrame)
 	return nil
 }
 
 func (s *sessionState) update(tf *tacview.TimeFrame) {
 	s.offset = int64(tf.Offset)
-	for _, object := range tf.Objects {
-		if _, exists := s.objects[object.Id]; exists {
-			s.objects[object.Id].update(int64(tf.Offset), object, s.coordBase)
+	EnableEnemyGroundUnits := s.serverConfig.EnableEnemyGroundUnits
+	EnemyGroundUnitsRatio := s.serverConfig.EnemyGroundUnitsRatio
+	EnemyGroundUnitsMaxQuantity := s.serverConfig.EnemyGroundUnitsMaxQuantity
+	
+	for i, object := range tf.Objects {
+		Coalition := ""
+		for _, prop := range object.Properties {
+			if prop.Key == "Coalition" {
+				Coalition = prop.Value
+			}
+		}
+		
+		Visible := false
+		if !EnableEnemyGroundUnits {
+			Visible = false
+		} else if EnemyGroundUnitsMaxQuantity == -1 {
+			Visible = true
+		} else if object.Deleted {
+			Visible = false
+			delete(s.idVisibleRedList,object.Id)
+			delete(s.idVisibleBlueList,object.Id)
+		} else if s.idVisibleRedList[object.Id] || s.idVisibleBlueList[object.Id] {
+			Visible = true
+		} else if i%EnemyGroundUnitsRatio != 0 {
+			Visible = false
+		} else if (Coalition == "Allies" && len(s.idVisibleRedList) < EnemyGroundUnitsMaxQuantity) {
+			Visible = true
+			s.idVisibleRedList[object.Id] = true
+		} else if (Coalition == "Enemies" && len(s.idVisibleBlueList) < EnemyGroundUnitsMaxQuantity) {
+			Visible = true
+			s.idVisibleBlueList[object.Id] = true
 		} else {
-			stateObj, err := NewStateObject(int64(tf.Offset), object, s.coordBase)
+			Visible = false
+		}
+
+		if _, exists := s.objects[object.Id]; exists {
+			s.objects[object.Id].update(int64(tf.Offset), object, s.coordBase, Visible)
+		} else {
+			stateObj, err := NewStateObject(int64(tf.Offset), object, s.coordBase, Visible)
 			if err != nil {
 				log.Printf("Error processing object: %v", err)
 				continue

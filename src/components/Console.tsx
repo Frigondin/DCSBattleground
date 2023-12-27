@@ -2,7 +2,7 @@ import classNames from "classnames";
 import * as maptalks from "maptalks";
 import React, { useMemo, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit } from "react-icons/bi";
+import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap } from "react-icons/bi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
 import { serverStore, setSelectedEntityId } from "../stores/ServerStore";
 import {
@@ -12,6 +12,7 @@ import {
 } from "../stores/TrackStore";
 import { Entity } from "../types/entity";
 import DrawConsoleTab from "./DrawConsoleTab";
+import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
@@ -298,7 +299,7 @@ export function Console({
   map: maptalks.Map;
 }) {
   const [selectedTab, setSelectedTab] = useState<
-    null | "search" | "watch" | "draw"
+    null | "search" | "watch" | "draw" | "quest"
   >(null);
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
@@ -334,6 +335,17 @@ export function Console({
         </div>
         <div>
           <button
+            onClick={() => setSelectedTab("quest")}
+            className={classNames(
+              "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
+              { "bg-blue-200": selectedTab === "quest" }
+            )}
+          >
+            <BiSolidMap className="inline-block w-4 h-4" />
+          </button>
+        </div>
+        <div>
+          <button
             onClick={() => setSelectedTab("watch")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
@@ -364,6 +376,7 @@ export function Console({
       </div>
       {selectedTab === "search" && <SearchTab map={map} />}
       {selectedTab === "watch" && <WatchTab map={map} />}
+	  {selectedTab === "quest" && <QuestConsoleTab map={map} />}
       {selectedTab === "draw" && <DrawConsoleTab map={map} />}
     </div>
   );

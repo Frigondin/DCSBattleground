@@ -225,49 +225,51 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
       </div>
       <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
         {geometry.valueSeq().map((it) => {
-          return (
-            <button
-              key={it.id}
-              className={classNames(
-                "bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1",
-                { "bg-indigo-200 border-indigo-300": it.id === selectedId }
-              )}
-              onClick={() => {
-                setSelectedGeometry(it.id);
+		  if (it.type !== "quest") {
+			  return (
+				<button
+				  key={it.id}
+				  className={classNames(
+					"bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1",
+					{ "bg-indigo-200 border-indigo-300": it.id === selectedId }
+				  )}
+				  onClick={() => {
+					setSelectedGeometry(it.id);
 
-                let position;
-                if (it.type === "markpoint") {
-					position = [it.position[1], it.position[0]];
-                } else if (it.type === "recon") {
-					position = [it.position[1], it.position[0]];
-				} else if (it.type === "zone") {
-					position = [it.points[0][1], it.points[0][0]];
-				} else if (it.type === "waypoints") {
-					position = [it.points[0][1], it.points[0][0]];
-				} else if (it.type === "circle") {
-					position = [it.center[1], it.center[0]];
-				} else if (it.type === "line") {
-					position = [it.points[0][1], it.points[0][0]];
-				}
+					let position;
+					if (it.type === "markpoint") {
+						position = [it.position[1], it.position[0]];
+					} else if (it.type === "recon") {
+						position = [it.position[1], it.position[0]];
+					} else if (it.type === "zone") {
+						position = [it.points[0][1], it.points[0][0]];
+					} else if (it.type === "waypoints") {
+						position = [it.points[0][1], it.points[0][0]];
+					} else if (it.type === "circle") {
+						position = [it.center[1], it.center[0]];
+					} else if (it.type === "line") {
+						position = [it.points[0][1], it.points[0][0]];
+					}
 
-                if (position) {
-                  map.animateTo(
-                    {
-                      center: position,
-                      zoom: 10,
-                    },
-                    {
-                      duration: 250,
-                      easing: "out",
-                    }
-                  );
-                }
-              }}
-            >
-              {it.name || `${it.type} #${it.id}`}
-            </button>
-          );
-        })}
+					if (position) {
+					  map.animateTo(
+						{
+						  center: position,
+						  zoom: 10,
+						},
+						{
+						  duration: 250,
+						  easing: "out",
+						}
+					  );
+					}
+				  }}
+				>
+				  {it.name || `${it.type} #${it.id}`}
+				</button>
+			  );
+		  }
+		})}
       </div>
     </div>
   );

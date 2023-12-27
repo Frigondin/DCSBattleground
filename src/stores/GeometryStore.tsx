@@ -36,19 +36,25 @@ export type Circle = {
   radius: number;
 } & GeometryBase;
 
+export type Line = {
+  type: "line";
+  points: Array<[number, number]>;
+} & GeometryBase;
+
 export type Recon = {
   type: "recon";
   position: [number, number];
   screenshot: string;
 } & GeometryBase;
 
-
-export type Line = {
-  type: "line";
-  points: Array<[number, number]>;
+export type Quest = {
+  type: "quest";
+  position: [number, number];
+  screenshot: Array<string>;
+  description: Array<string>;
 } & GeometryBase;
 
-export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Recon;
+export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Recon | Quest;
 
 type GeometryStoreData = {
   geometry: Immutable.Map<number, Geometry>;
@@ -287,6 +293,25 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						type: "recon",
 						position: [coord[1], coord[0]],
 						screenshot: geo.screenshot
+					  }),
+					};
+				  });
+			} else if (geo.type === "quest") {
+				//console.log(geo.type)
+				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
+				  geometryStore.setState((state) => {
+					return {
+					  ...state,
+					  geometry: state.geometry.set(geo.id, {
+						id: geo.id,
+						name: geo.name,
+						coalition: geo.side,
+						discordName: geo.discordName,
+						avatar: geo.avatar,
+						type: "quest",
+						position: [coord[1], coord[0]],
+						screenshot: geo.screenshot,
+						description: geo.description
 					  }),
 					};
 				  });

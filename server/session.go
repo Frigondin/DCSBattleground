@@ -39,6 +39,7 @@ type sharedGeometry struct {
 	Add		[]geometry
 	Delete	[]int
 	Recon	[]geometry
+	Quest	[]geometry
 }
 
 type player struct {
@@ -58,6 +59,25 @@ type PlayerMetadata struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
+
+type DataJson struct {
+	Title		string		`json:"title"`
+	Author		Author		`json:"author"`
+	Field		Field		`json:field`
+}
+
+type Author struct {
+	Name		string		`json:"name"`
+	Icon_url	string		`json:"icon_url"`
+}
+
+type Field struct {
+	Posmgrs		string		`json:"posmgrs"`
+	Screenshot	[]string	`json:"screenshot"`
+	Description	[]string	`json:"description"`
+	Side		string		`json:"side"`
+}
+
 
 func (s *serverSession) GetPlayerList() []PlayerMetadata {
 	players := []PlayerMetadata{}
@@ -234,6 +254,7 @@ func (s *serverSession) runConnectedPlayer() error {
 func (s *serverSession) runSharedGeometry() error {
 	var DcsName = s.server.DcsName
 	var reconGeometry = []geometry{}
+	var questList = []geometry{}
 	var geoList = []geometry{}
 	
 	err := db.Ping()
@@ -245,11 +266,14 @@ func (s *serverSession) runSharedGeometry() error {
 		var Avatar string
 		var PosMGRS string
 		var Screenshot []string
+		//var Description []string
 		var Side string
 		var Server string
 		var Position []float32
 		var Center []float32
 		var Radius float32
+		var Data []byte
+		var Time string
 		
 		rows, err := db.Query(`SELECT id, type, name, discordname, avatar, posmgrs, screenshot, side, server FROM bg_geometry WHERE server='` + DcsName + `' AND type='recon'`)
 		CheckError(err)
@@ -269,6 +293,53 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Side = Side
 			geo.Server = Server
 			reconGeometry = append(reconGeometry, geo)
+		}
+
+
+
+		//rows, err = db.Query(`SELECT id, name, discordname, avatar, posmgrs, screenshot, side, server, description FROM bg_quest WHERE server='` + DcsName + `'`)
+		//CheckError(err)
+		//defer rows.Close()
+		//for rows.Next() {
+		//	err = rows.Scan(&Id, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server, pq.Array(&Description))
+		//	CheckError(err)
+		
+		//	var geo geometry
+		//	geo.Id = Id
+		//	geo.Type = "quest"
+		//	geo.Name = Name
+		//	geo.DiscordName = DiscordName
+		//	geo.Avatar = Avatar
+		//	geo.PosMGRS = PosMGRS
+		//	geo.Screenshot = Screenshot
+		//	geo.Description = Description
+		//	geo.Side = Side
+		//	geo.Server = Server
+		//	questList = append(questList, geo)
+		//}
+		rows, err = db.Query(`SELECT id, data, time FROM bg_missions WHERE node='` + DcsName + `'`)
+		CheckError(err)
+		defer rows.Close()
+		for rows.Next() {
+			err = rows.Scan(&Id, &Data, &Time)
+			CheckError(err)
+			
+			var	DataJson DataJson
+			err = json.Unmarshal(Data, &DataJson)
+			CheckError(err)
+			
+			var geo geometry
+			geo.Id = Id+30000
+			geo.Type = "quest"
+			geo.Name = DataJson.Title
+			geo.DiscordName = DataJson.Author.Name
+			geo.Avatar = DataJson.Author.Icon_url
+			geo.PosMGRS = DataJson.Field.Posmgrs
+			geo.Screenshot = DataJson.Field.Screenshot
+			geo.Description = DataJson.Field.Description
+			geo.Side = DataJson.Field.Side
+			geo.Server = DcsName
+			questList = append(questList, geo)
 		}
 		
 		
@@ -309,7 +380,7 @@ func (s *serverSession) runSharedGeometry() error {
 	}
 
 
-	sharedGeometry := sharedGeometry{Add:geoList, Delete:geoListDel, Recon:reconGeometry}
+	sharedGeometry := sharedGeometry{Add:geoList, Delete:geoListDel, Recon:reconGeometry, Quest:questList}
 	s.publish("SESSION_SHARED_GEOMETRY", sharedGeometry)
 	return nil
 }
@@ -325,7 +396,7 @@ func (s *serverSession) runTacViewClient() error {
 		return err
 	}
 
-	err = s.state.initialize(header)
+	err = s.state.initialize(header, s.server)
 	if err != nil {
 		s.server.Enabled = false
 		return err

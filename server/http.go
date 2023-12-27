@@ -49,6 +49,7 @@ type geometry struct {
 	TypeSubmit 	string  	`json:"typeSubmit"`
 	PosMGRS		string 		`json:"posMGRS"`
 	Screenshot 	[]string  	`json:"screenshot"`
+	Description []string	`json:"description"`
 	Side		string		`json:"side"`
 	Server		string		`json:"server"`
 }

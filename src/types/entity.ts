@@ -10,6 +10,9 @@ export type RawEntityData = {
   heading: number;
   updated_at: number;
   created_at: number;
+  visible: boolean;
+  ratio_long: number;
+  ratio_lat: number;
 };
 
 export class Entity {
@@ -22,6 +25,9 @@ export class Entity {
   heading: number;
   updatedAt: number;
   createdAt: number;
+  visible: boolean;
+  ratioLong: number;
+  ratioLat: number;
 
   constructor(data: RawEntityData) {
     this.id = data.id;
@@ -33,6 +39,9 @@ export class Entity {
     this.heading = data.heading;
     this.updatedAt = data.updated_at;
     this.createdAt = data.created_at;
+	this.visible = data.visible;
+	this.ratioLong = data.ratio_long;
+	this.ratioLat = data.ratio_lat;
   }
 
   get coalition(): string {
