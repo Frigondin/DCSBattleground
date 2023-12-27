@@ -52,6 +52,7 @@ export type Quest = {
   position: [number, number];
   screenshot: Array<string>;
   description: Array<string>;
+  task:	Array<JSON>;
 } & GeometryBase;
 
 export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Recon | Quest;
@@ -311,7 +312,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						type: "quest",
 						position: [coord[1], coord[0]],
 						screenshot: geo.screenshot,
-						description: geo.description
+						description: geo.description,
+						task: geo.task
 					  }),
 					};
 				  });

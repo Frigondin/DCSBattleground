@@ -46,49 +46,56 @@ function DetailedDescription({
 }: {
 	description: Array<string>;
 }) {
-	//return <div style={{ maxHeight: "600px", overflowY:"scroll" }}>{description.map(text => {
-	return <div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>{description.map((text) => {
-		return (<div>{text}</div>)
-	})}</div>
+	return (<div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>
+				<div style={{textDecoration: "underline"}}>Mission description :</div>
+				<div>
+					{description.map((text) => {
+						return (<div>{text}</div>)
+					})}
+				</div>
+			</div>)
+}
+
+function DetailedTask({
+	task,
+}: {
+	task: any;
+}) {
+	return (<div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>
+				<div style={{textDecoration: "underline"}}>Tasks :</div>
+				<div className="flex flex-col">
+					{task.map((singleTask:any) => {
+						return (<div>
+									<div className="flex flex-row w-full">
+										<span className="pr-2 flex-grow">Task {singleTask.data.title}</span>
+										<span className="">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+									</div>
+									<div className="flex flex-col">
+										<div className="flex flex-row w-full pl-8">
+											<span className="pr-2 flex-grow">Desc. :</span>
+											<span className="">
+												{singleTask.data.field.description.map((text:any) => {
+													return (<div>{text}</div>)
+												})}
+											</span>
+										</div>
+										<div className="flex flex-row w-full pl-8">
+											<span className="pr-2 flex-grow">Players :</span>
+											<span className="">
+												{singleTask.players.map((player:any) => {
+													return (<div>{player.name}</div>)
+												})}
+											</span>
+										</div>
+									</div>
+								</div>)
+					})}
+				</div>
+			</div>)
 }
 
 function submitGeometry(geo:Geometry, typeSubmit:string) {
-    
-	// var formData = new FormData();
-	// formData.append('add', JSON.stringify({"typeGeo":"markpoint","id":10001,"name":"testouille","position":[0,0],"points":[[0,0]]}));
-	
-    // const requestOptions = {
-        // method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
-        // body: formData
-    // };
-	// console.log(requestOptions)
-    //fetch(window.location.href.concat('/share'), requestOptions);
-	//fetch('http://localhost:8008/share', requestOptions);
-	//fetch('/api/share', requestOptions);
-        //.then(response => response.json())
-        //.then(data => this.setState({ postId: data.id }));
-		
-/*         var formData = new FormData();
-        formData.append('add', JSON.stringify({"typeGeo":"markpoint","id":10001,"name":"testouille","position":[0,0],"points":[[0,0]]}));
-
-        //fetch('http://localhost:8008/share', {
-		fetch(window.location.href.concat('/share'), {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-            },
-            body: formData
-        }) */
 	var body
-	// if (typeSubmit === "delete") {
-		// body = JSON.stringify({"Delete":{"Id":geo.id}})
-	// } else if (geo.type === "markpoint" && geo.id <= 10000) {
-		// body = JSON.stringify({"Add":{"Type":"markpoint","Id":geo.id,"Name":geo.name,"Position":geo.position}})
-	// } else if (geo.type === "markpoint" && geo.id > 10000) {
-		// body = JSON.stringify({"Update":{"Type":"markpoint","Id":geo.id,"Name":geo.name,"Position":geo.position}})
-	// }
 	if (geo.type === "markpoint") {
 		body = JSON.stringify({"Type":"markpoint","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Position":geo.position, "TypeSubmit":typeSubmit})
 	} else if (geo.type === "zone") {
@@ -205,11 +212,6 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 				mainSrc={geo.screenshot[imgIndex]}
 				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
 				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-			  //imageTitle={images[imgIndex].title}
-			  //imageCaption={images[imgIndex].caption}
-			  //mainSrc={images[imgIndex].url}
-			  //nextSrc={images[(imgIndex + 1) % images.length].url}
-			  //prevSrc={images[(imgIndex + images.length - 1) % images.length].url}
 			  onCloseRequest={() => setIsOpen(false)}
 			  onMovePrevRequest={() =>
 				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
@@ -235,11 +237,6 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 				mainSrc={geo.screenshot[imgIndex]}
 				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
 				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-			  //imageTitle={images[imgIndex].title}
-			  //imageCaption={images[imgIndex].caption}
-			  //mainSrc={images[imgIndex].url}
-			  //nextSrc={images[(imgIndex + 1) % images.length].url}
-			  //prevSrc={images[(imgIndex + images.length - 1) % images.length].url}
 			  onCloseRequest={() => setIsOpen(false)}
 			  onMovePrevRequest={() =>
 				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
@@ -248,9 +245,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 			/>
 		)}
 		{geo.type === "quest" && <DetailedDescription description={geo.description}/>}
-		{geo.type === "markpoint" && <DetailedCoords coords={geo.position} />}
-
-		
+		{geo.type === "quest" && <DetailedTask task={geo.task}/>}		
     </>
   );
 }
@@ -412,15 +407,17 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
       <div className="p-2 flex flex-row">
         <div className="flex flex-col pr-2 w-full">
           <GeometryDetails geo={selectedGeometry} edit={editing} />
-          <button
-            className="p-1 text-xs bg-red-200 border border-red-500 mt-2"
-            onClick={() => {
-			  submitGeometry(selectedGeometry, "delete");
-              deleteGeometry(selectedGeometry.id);
-            }}
-          >
-            <BiTrash className="inline-block w-4 h-4" />
-          </button>
+		  {(selectedGeometry.type !== "quest") && (
+				<button
+					className="p-1 text-xs bg-red-200 border border-red-500 mt-2"
+					onClick={() => {
+					  submitGeometry(selectedGeometry, "delete");
+					  deleteGeometry(selectedGeometry.id);
+					}}
+				>
+					<BiTrash className="inline-block w-4 h-4" />
+				</button>
+		  )}
         </div>
       </div>
     </div>

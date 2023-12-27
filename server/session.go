@@ -72,7 +72,7 @@ type Author struct {
 }
 
 type Field struct {
-	Posmgrs		string		`json:"posmgrs"`
+	Position	string		`json:"position"`
 	Screenshot	[]string	`json:"screenshot"`
 	Description	[]string	`json:"description"`
 	Side		string		`json:"side"`
@@ -273,6 +273,7 @@ func (s *serverSession) runSharedGeometry() error {
 		var Center []float32
 		var Radius float32
 		var Data []byte
+		var Task []byte
 		var Time string
 		
 		rows, err := db.Query(`SELECT id, type, name, discordname, avatar, posmgrs, screenshot, side, server FROM bg_geometry WHERE server='` + DcsName + `' AND type='recon'`)
@@ -317,15 +318,29 @@ func (s *serverSession) runSharedGeometry() error {
 		//	geo.Server = Server
 		//	questList = append(questList, geo)
 		//}
-		rows, err = db.Query(`SELECT id, data, time FROM bg_missions WHERE node='` + DcsName + `'`)
+		rows, err = db.Query(`SELECT id, data, time,
+									COALESCE((
+									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
+											COALESCE((
+											   SELECT json_agg(json_build_object('id', rltn.discord_id, 'name', players.name))
+											   FROM bg_task_user_rltn rltn, players where rltn.id_task=bg_task.id and rltn.discord_id = players.discord_id
+											), '[]'::json))) 
+									   FROM bg_task where bg_task.id_mission=bg_missions.id
+									), '[]'::json) task  
+								FROM bg_missions 
+								WHERE node='` + DcsName + `'`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
-			err = rows.Scan(&Id, &Data, &Time)
+			err = rows.Scan(&Id, &Data, &Time, &Task)
 			CheckError(err)
 			
 			var	DataJson DataJson
 			err = json.Unmarshal(Data, &DataJson)
+			CheckError(err)
+			
+			var TaskJson interface{}
+			err := json.Unmarshal(Task, &TaskJson)
 			CheckError(err)
 			
 			var geo geometry
@@ -334,11 +349,12 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
 			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Field.Posmgrs
+			geo.PosMGRS = DataJson.Field.Position
 			geo.Screenshot = DataJson.Field.Screenshot
 			geo.Description = DataJson.Field.Description
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
+			geo.Task = TaskJson
 			questList = append(questList, geo)
 		}
 		

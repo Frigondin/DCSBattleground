@@ -52,6 +52,7 @@ type geometry struct {
 	Description []string	`json:"description"`
 	Side		string		`json:"side"`
 	Server		string		`json:"server"`
+	Task		interface{}	`json:"task"`
 }
 
 type geometryList struct {
