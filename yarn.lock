@@ -1293,6 +1293,13 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
+"@types/react-collapse@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-collapse/-/react-collapse-5.0.4.tgz#1b3e52557c8f85b3d4c4a7d073d4c2437fa2e2a0"
+  integrity sha512-tM5cVB6skGLneNYnRK2E3R56VOHguSeJQHslGPTIMC58ytL3oelT8L/l1onkwHGn5vSEs2BEq2Olzrur+YdliA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^17.0.9":
   version "17.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.11.tgz#e1eadc3c5e86bdb5f7684e00274ae228e7bcc466"
@@ -5489,6 +5496,11 @@ raw-body@2.4.2:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-collapse@^5.0.4:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-5.1.1.tgz#a2fa08ef13f372141b02e6a7d49ef72427bcbc2b"
+  integrity sha512-k6cd7csF1o9LBhQ4AGBIdxB60SUEUMQDAnL2z1YvYNr9KoKr+nDkhN6FK7uGaBd/rYrYfrMpzpmJEIeHRYogBw==
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -6233,7 +6245,7 @@ table@^6.0.9:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
-tailwindcss@^2.2.4:
+tailwindcss@^2.2.19:
   version "2.2.19"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-2.2.19.tgz#540e464832cd462bb9649c1484b0a38315c2653c"
   integrity sha512-6Ui7JSVtXadtTUo2NtkBBacobzWiQYVjYW0ZnKaP9S1ZCKQ0w7KVNz+YSDI/j7O7KCMHbOkz94ZMQhbT9pOqjw==

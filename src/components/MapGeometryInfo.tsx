@@ -2,11 +2,13 @@ import classNames from "classnames";
 import Coord from "coordinate-parser";
 import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactRoundedImage from "react-rounded-image"
 import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin } from "react-icons/bi";
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import {Collapse, UnmountClosed} from 'react-collapse';
+
 import {
   deleteGeometry,
   Geometry,
@@ -47,7 +49,6 @@ function DetailedDescription({
 	description: Array<string>;
 }) {
 	return (<div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>
-				<div style={{textDecoration: "underline"}}>Mission description :</div>
 				<div>
 					{description.map((text) => {
 						return (<div>{text}</div>)
@@ -61,17 +62,35 @@ function DetailedTask({
 }: {
 	task: any;
 }) {
-	return (<div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>
-				<div style={{textDecoration: "underline"}}>Tasks :</div>
+	const [isOpen, setIsOpen] = useState(Array(task.length).fill(false));
+	const [isOpenTop, setIsOpenTop] = useState(false);
+	
+	return (
 				<div className="flex flex-col">
-					{task.map((singleTask:any) => {
+					{task.map((singleTask:any, i:any) => {
 						return (<div>
-									<div className="flex flex-row w-full">
-										<span className="pr-2 flex-grow">Task {singleTask.data.title}</span>
-										<span className="">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+									<div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
+										<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpen[i] === true })}
+												onClick={() => {
+																	if (isOpen[i] === true) {
+																		isOpen[i] = false;
+																		setIsOpen(isOpen)
+																	} else {
+																		isOpen.fill(false);
+																		isOpen[i] = true;
+																		setIsOpen(isOpen)
+																	};
+																	isOpenTop ? setIsOpenTop(false) : setIsOpenTop(true);
+																}}
+										>
+											<span className="pr-2 flex-grow">
+												Task {singleTask.data.title} :
+											</span>
+											<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+										</button>
 									</div>
-									<div className="flex flex-col">
-										<div className="flex flex-row w-full pl-8">
+									<UnmountClosed className="flex flex-col" isOpened={isOpen[i]}>
+										<div className="flex flex-row w-full pl-1">
 											<span className="pr-2 flex-grow">Desc. :</span>
 											<span className="">
 												{singleTask.data.field.description.map((text:any) => {
@@ -79,7 +98,7 @@ function DetailedTask({
 												})}
 											</span>
 										</div>
-										<div className="flex flex-row w-full pl-8">
+										<div className="flex flex-row w-full pl-1">
 											<span className="pr-2 flex-grow">Players :</span>
 											<span className="">
 												{singleTask.players.map((player:any) => {
@@ -87,11 +106,10 @@ function DetailedTask({
 												})}
 											</span>
 										</div>
-									</div>
+									</UnmountClosed>
 								</div>)
 					})}
-				</div>
-			</div>)
+				</div>)
 }
 
 function submitGeometry(geo:Geometry, typeSubmit:string) {
@@ -129,6 +147,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
   const [newCoord, setNewCoord] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
+  const [isOpenDesc, setIsOpenDesc] = useState(false);
   
   useEffect(() => {
     if (edit) setNewCoord("");
@@ -222,29 +241,38 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 		
 
 	  {geo.type === "quest" && <DetailedCoords coords={geo.position} />}
-	  {geo.type === "quest" && (
-		<>
-			{}
-			{
-			<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
-				<img src={geo.screenshot[0]}/>
-			</div>
-			}
-		</>
-	  )}
-		{geo.type === "quest" && isOpen && (
-			<Lightbox
-				mainSrc={geo.screenshot[imgIndex]}
-				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-			  onCloseRequest={() => setIsOpen(false)}
-			  onMovePrevRequest={() =>
-				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
-			  }
-			  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
-			/>
-		)}
-		{geo.type === "quest" && <DetailedDescription description={geo.description}/>}
+		<div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
+			<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpenDesc === true })}
+					onClick={() => {isOpenDesc ? setIsOpenDesc(false) : setIsOpenDesc(true);}}
+			>
+					Mission description
+			</button>
+		</div>
+		<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
+			{geo.type === "quest" && (
+				<>
+					{}
+					{
+					<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
+						<img src={geo.screenshot[0]}/>
+					</div>
+					}
+				</>
+			)}
+			{geo.type === "quest" && isOpen && (
+				<Lightbox
+					mainSrc={geo.screenshot[imgIndex]}
+					nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
+					prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+				  onCloseRequest={() => setIsOpen(false)}
+				  onMovePrevRequest={() =>
+					setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+				  }
+				  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+				/>
+			)}
+			{geo.type === "quest" && <DetailedDescription description={geo.description}/>}
+		</UnmountClosed>
 		{geo.type === "quest" && <DetailedTask task={geo.task}/>}		
     </>
   );
