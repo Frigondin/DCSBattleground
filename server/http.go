@@ -410,6 +410,54 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	gores.JSON(w, 200, geo)
 }
 
+type Taskenrolment struct {
+	taskId         int       `json:"task_id"`
+}
+
+func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
+   	cookie, err := r.Cookie("session_token")
+	CheckError(err)
+	session_token := cookie.Value
+	DiscordId := SessionsDiscord[session_token].id
+	//serverName := chi.URLParam(r, "serverName")
+	
+	
+	var taskenrolment Taskenrolment
+	
+    err = json.NewDecoder(r.Body).Decode(&taskenrolment)
+    if err != nil {
+		log.Printf(err.Error())
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+	err = db.Ping()
+	if err == nil {
+		taskId := 0
+		rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskenrolment.taskId) + ` AND discord_id = ` + DiscordId)
+		CheckError(err2)
+		defer rows.Close()
+		for rows.Next() {
+			err = rows.Scan(&taskId)
+			CheckError(err)
+		}
+		
+		sqlStatement := `DELETE FROM bg_task_user_rltn WHERE  discord_id = ` + DiscordId
+		_, err = db.Exec(sqlStatement)
+		CheckError(err)
+		
+		if (taskId != taskenrolment.taskId) {
+			sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
+							VALUES (` + strconv.Itoa(taskenrolment.taskId) + `,` + DiscordId + `)`
+			_, err = db.Exec(sqlStatement)
+
+			//fmt.Println(sqlStatement)
+			CheckError(err)
+		}
+	}
+	gores.JSON(w, 200, taskenrolment)
+}
+
 func CheckError(err error) {
     if err != nil {
         panic(err)
@@ -538,6 +586,7 @@ func Run(config *Config) error {
 	r.Get("/api/servers/{serverName}", server.getServer)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)
 	r.Post("/servers/{serverName}/share", server.share)
+	r.Post("/servers/{serverName}/taskenrolment", server.taskenrolment)
 	//r.Post("/api/share", server.share)
 
 

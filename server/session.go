@@ -8,6 +8,7 @@ import (
 	"time"
 	//"fmt"
 	"github.com/lib/pq"
+	"bytes"
 	//"strconv"
 )
 
@@ -340,7 +341,9 @@ func (s *serverSession) runSharedGeometry() error {
 			CheckError(err)
 			
 			var TaskJson interface{}
-			err := json.Unmarshal(Task, &TaskJson)
+		    d := json.NewDecoder(bytes.NewReader(Task))
+			d.UseNumber()
+			err := d.Decode(&TaskJson)
 			CheckError(err)
 			
 			var geo geometry
@@ -355,6 +358,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
 			geo.Task = TaskJson
+			//fmt.Println(TaskJson)
 			questList = append(questList, geo)
 		}
 		

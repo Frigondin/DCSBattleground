@@ -4,10 +4,11 @@ import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import React, { useEffect, useState, useRef } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin } from "react-icons/bi";
+import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox  } from "react-icons/bi";
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import {Collapse, UnmountClosed} from 'react-collapse';
+import { serverStore } from "../stores/ServerStore";
 
 import {
   deleteGeometry,
@@ -64,31 +65,58 @@ function DetailedTask({
 }) {
 	const [isOpen, setIsOpen] = useState(Array(task.length).fill(false));
 	const [isOpenTop, setIsOpenTop] = useState(false);
+	const [isChecked, setIsChecked] = useState(false);
 	
+	const discord_id = serverStore((state) => state?.server?.discord_id);
 	return (
 				<div className="flex flex-col">
 					{task.map((singleTask:any, i:any) => {
+						var is_intask = false;
+						singleTask.players.map((player:any) => {
+													player.id === Number(discord_id) ? is_intask = true : is_intask = false;
+												});
+						
 						return (<div>
-									<div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
-										<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpen[i] === true })}
-												onClick={() => {
-																	if (isOpen[i] === true) {
-																		isOpen[i] = false;
-																		setIsOpen(isOpen)
-																	} else {
-																		isOpen.fill(false);
-																		isOpen[i] = true;
-																		setIsOpen(isOpen)
-																	};
-																	isOpenTop ? setIsOpenTop(false) : setIsOpenTop(true);
-																}}
+									<div className="my-2 flex gap-1 max-h-72 overflow-auto">
+										<div className="flex flex-col flex-grow">
+											<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpen[i] === true })}
+													onClick={() => {
+																		if (isOpen[i] === true) {
+																			isOpen[i] = false;
+																			setIsOpen(isOpen)
+																		} else {
+																			isOpen.fill(false);
+																			isOpen[i] = true;
+																			setIsOpen(isOpen)
+																		};
+																		isOpenTop ? setIsOpenTop(false) : setIsOpenTop(true);
+																	}}
+											>
+												<span className="pr-2">
+													Task {singleTask.data.title} :
+												</span>
+												<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+											</button>
+										</div>
+										<button onClick={() => {
+																	const task_id = singleTask.id-3000
+																	fetch(window.location.href.concat('/taskenrolment'), {
+																		headers: {
+																		  'Accept': 'application/json',
+																		  'Content-Type': 'application/json'
+																		},
+																		method: "POST",
+																		body: JSON.stringify({"task_id":task_id})
+																	})
+																	.then(function(res){ console.log(res) })
+																	.catch(function(res){ console.log(res) });
+																	isChecked ? setIsChecked(false) : setIsChecked(true);
+														}}
 										>
-											<span className="pr-2 flex-grow">
-												Task {singleTask.data.title} :
-											</span>
-											<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+											{is_intask && (<div className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckSquare className="inline-block w-4 h-4"/></div>)}
+											{!is_intask && (<div className="border bg-blue-300 border-blue-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckbox className="inline-block w-4 h-4"/></div>)}
 										</button>
-									</div>
+									</div>							
 									<UnmountClosed className="flex flex-col" isOpened={isOpen[i]}>
 										<div className="flex flex-row w-full pl-1">
 											<span className="pr-2 flex-grow">Desc. :</span>
@@ -147,7 +175,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
   const [newCoord, setNewCoord] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
-  const [isOpenDesc, setIsOpenDesc] = useState(false);
+  const [isOpenDesc, setIsOpenDesc] = useState(true);
   
   useEffect(() => {
     if (edit) setNewCoord("");
@@ -241,39 +269,38 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 		
 
 	  {geo.type === "quest" && <DetailedCoords coords={geo.position} />}
-		<div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
-			<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpenDesc === true })}
-					onClick={() => {isOpenDesc ? setIsOpenDesc(false) : setIsOpenDesc(true);}}
-			>
-					Mission description
-			</button>
+	  {geo.type === "quest" &&
+		<div>
+			<div className="my-2 flex gap-1 max-h-72 overflow-auto">
+				<div className="flex flex-col flex-grow">
+					<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpenDesc === true })}
+							onClick={() => {isOpenDesc ? setIsOpenDesc(false) : setIsOpenDesc(true);}}
+					>
+							Mission description
+					</button>
+				</div>
+			</div>
+			<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
+				<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
+					<img src={geo.screenshot[0]}/>
+				</div>
+				{isOpen && (
+					<Lightbox
+						mainSrc={geo.screenshot[imgIndex]}
+						nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
+						prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+					  onCloseRequest={() => setIsOpen(false)}
+					  onMovePrevRequest={() =>
+						setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+					  }
+					  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+					/>
+				)}
+				<DetailedDescription description={geo.description}/>
+			</UnmountClosed>
+			<DetailedTask task={geo.task}/>
 		</div>
-		<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
-			{geo.type === "quest" && (
-				<>
-					{}
-					{
-					<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
-						<img src={geo.screenshot[0]}/>
-					</div>
-					}
-				</>
-			)}
-			{geo.type === "quest" && isOpen && (
-				<Lightbox
-					mainSrc={geo.screenshot[imgIndex]}
-					nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-					prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-				  onCloseRequest={() => setIsOpen(false)}
-				  onMovePrevRequest={() =>
-					setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
-				  }
-				  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
-				/>
-			)}
-			{geo.type === "quest" && <DetailedDescription description={geo.description}/>}
-		</UnmountClosed>
-		{geo.type === "quest" && <DetailedTask task={geo.task}/>}		
+	  }
     </>
   );
 }
