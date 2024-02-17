@@ -329,7 +329,7 @@ func (s *serverSession) runSharedGeometry() error {
 									   FROM bg_task where bg_task.id_mission=bg_missions.id
 									), '[]'::json) task  
 								FROM bg_missions 
-								WHERE node='` + DcsName + `'`)
+								WHERE node='` + DcsName + `' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {

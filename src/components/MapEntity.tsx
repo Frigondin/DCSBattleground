@@ -85,7 +85,7 @@ export function EntityInfo({
   return (
     <div className="flex flex-col bg-gray-300 border border-gray-500 shadow select-none rounded-sm">
       <div className="p-2 bg-gray-400 text-sm flex flex-row gap-2">
-        <b>{entity.group}</b>
+        <b>{entity.name}</b>
 		<button
 		  className="p-1 text-xs bg-blue-300 border border-blue-400 ml-auto"
 		  onClick={() => {
@@ -114,8 +114,7 @@ export function EntityInfo({
       </div>
       <div className="p-2 flex flex-row">
         <div className="flex flex-col pr-2">
-          <div>{entity.name}</div>
-          {track && (
+          {track && entity.types.includes("Air") && (
             <>
               <div>{entity.pilot}</div>
               <div>

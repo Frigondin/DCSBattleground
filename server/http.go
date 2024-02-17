@@ -9,6 +9,7 @@ import (
 	"time"
 	//"net/http/httputil"
 	"fmt"
+	//"io/ioutil"
 	"github.com/lib/pq"
 	//"strings"
 	//"io"
@@ -410,8 +411,8 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	gores.JSON(w, 200, geo)
 }
 
-type Taskenrolment struct {
-	taskId         int       `json:"task_id"`
+type TaskEnrolment struct {
+	TaskId		int		`json:"taskId"`
 }
 
 func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
@@ -422,23 +423,29 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 	//serverName := chi.URLParam(r, "serverName")
 	
 	
-	var taskenrolment Taskenrolment
+	var taskEnrolment TaskEnrolment
 	
-    err = json.NewDecoder(r.Body).Decode(&taskenrolment)
+	//respBytes, err := ioutil.ReadAll(r.Body)
+	//respString := string(respBytes)
+	//fmt.Println(respString)
+	
+	
+    err = json.NewDecoder(r.Body).Decode(&taskEnrolment)
     if err != nil {
 		log.Printf(err.Error())
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
+	//fmt.Println(strconv.Itoa(taskEnrolment.TaskId))
 
 	err = db.Ping()
 	if err == nil {
-		taskId := 0
-		rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskenrolment.taskId) + ` AND discord_id = ` + DiscordId)
+		TaskId := 0
+		rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskEnrolment.TaskId) + ` AND discord_id = ` + DiscordId)
 		CheckError(err2)
 		defer rows.Close()
 		for rows.Next() {
-			err = rows.Scan(&taskId)
+			err = rows.Scan(&TaskId)
 			CheckError(err)
 		}
 		
@@ -446,16 +453,18 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 		_, err = db.Exec(sqlStatement)
 		CheckError(err)
 		
-		if (taskId != taskenrolment.taskId) {
+		//fmt.Println(strconv.Itoa(TaskId))
+		
+		if (TaskId != taskEnrolment.TaskId) {
 			sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
-							VALUES (` + strconv.Itoa(taskenrolment.taskId) + `,` + DiscordId + `)`
+							VALUES (` + strconv.Itoa(taskEnrolment.TaskId) + `,` + DiscordId + `)`
 			_, err = db.Exec(sqlStatement)
 
 			//fmt.Println(sqlStatement)
 			CheckError(err)
 		}
 	}
-	gores.JSON(w, 200, taskenrolment)
+	gores.JSON(w, 200, taskEnrolment)
 }
 
 func CheckError(err error) {

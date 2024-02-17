@@ -8,6 +8,7 @@ import {
   serverStore,
   setSelectedEntityId,
 } from "../stores/ServerStore";
+import { setSelectedGeometry } from "../stores/GeometryStore";
 import { GroundUnitMode, FlightUnitMode, settingsStore } from "../stores/SettingsStore";
 import {
   Entity,
@@ -54,9 +55,10 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
     groundIconCache[sidc] = new ms.Symbol(sidc, {
       size: 16,
       frame: true,
-      fill: false,
+      fill: true,
+	  fillOpacity: 1,
       strokeWidth: 8,
-	  colorMode: "Dark",
+	  colorMode: "Light",
       //monoColor: getCoalitionColor(unit.coalition),
 	  //outlineColor: getCoalitionColor(unit.coalition),
 	  //frameColor: colorMode
@@ -69,7 +71,14 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
     editable: false,
     symbol: {
       markerFile: sidc && groundIconCache[sidc],
-      markerDy: 10,
+      markerDy: {
+        stops: [
+          [8, 6],
+          [10, 12],
+          [12, 18],
+          [14, 24],
+        ],
+      },
       markerOpacity: 1,
       markerWidth: {
         stops: [
@@ -112,6 +121,7 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
 		});
 		col.on("click", (e) => {
 			setSelectedEntityId(unit.id);
+			setSelectedGeometry(null);
 		});
 		layer.addGeometry(col);
 	}  

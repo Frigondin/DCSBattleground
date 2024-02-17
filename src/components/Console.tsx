@@ -16,13 +16,38 @@ import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off"
+    null | "FancyMap-On" | "FancyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
   return (
     <div className="p-2">
 		<table>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{map.getLayer("fancy").isVisible() === true && (
+								<button 
+									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+									onClick={() => {map.getLayer("fancy").hide(); map.getLayer("base").show(); setSelectedButton("FancyMap-Off")}}
+								>
+									<BiShow className="inline-block w-4 h-4" />
+								</button>
+						)}
+						{!map.getLayer("fancy").isVisible() && (
+							<button 
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {map.getLayer("fancy").show(); map.getLayer("base").hide(); map.getLayer("CaucasusMap").hide(); map.getLayer("CaucasusBorder").hide(); setSelectedButton("FancyMap-On")}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Fancy Map
+				</td>
+			</tr>
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
@@ -45,7 +70,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					Caucasus Map
+					DCS Caucasus Map
 				</td>
 			</tr>
 			<tr>
@@ -70,7 +95,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					Caucasus Borders
+					DCS Caucasus Borders
 				</td>
 			</tr>
 			<tr>

@@ -1,4 +1,5 @@
 import * as maptalks from "maptalks";
+import * as animatemarker from "maptalks.animatemarker";
 import ms from "milsymbol";
 import React, {
   MutableRefObject,
@@ -163,7 +164,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
-      seamlessZoom: true,
+      seamlessZoom: false,
       fpsOnInteracting: 60,
 	  zoomControl: false,
       attribution: null,
@@ -184,6 +185,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		visible : true
       }),
       layers: [
+      new maptalks.TileLayer("fancy", {
+		//offset:[0,100],
+		//tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
+		//renderer: "canvas",
+        urlTemplate:
+          "https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+		  //"https://https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
+        subdomains: ["a", "b", "c"],
+		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
+		opacity: 0.8,
+        maxCacheSize: 2048,
+        hitDetect: false,
+		visible : false
+      }),
 	  new maptalks.TileLayer("CaucasusMap", {
 		//offset:[0,100],
 		tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
@@ -243,17 +258,21 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
-        new maptalks.VectorLayer("quest", [], {
+        //new maptalks.VectorLayer("quest", [], {
+		new animatemarker.AnimateMarkerLayer("quest", [], {
           forceRenderOnZooming: true,
           forceRenderOnMoving: true,
           forceRenderOnRotating: true,
+		  animationDuration: 3000,
+		  defaultIconSize: 10000
         }),
         new maptalks.VectorLayer("ground-units", [], {
           hitDetect: false,
         }),
         new maptalks.VectorLayer("ground-units-blue", [], {
-          hitDetect: false,
-        }),
+		  hitDetect: false,
+		  collision: true,
+		}),
         new maptalks.VectorLayer("ground-units-red", [], {
           hitDetect: false,
         }),
@@ -297,10 +316,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
           "braa",
           [braaLine, braaText, selectedCircle.current],
           {
-            hitDetect: false,
-            forceRenderOnZooming: true,
-            forceRenderOnMoving: true,
-            forceRenderOnRotating: true,
+            hitDetect: false
           }
         ),
       ],
@@ -461,13 +477,22 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         //setSelectedEntityId(null);
       }
 
-      selectedCircle.current.show();
-      selectedCircle.current.setRadius(map.current.getScale(zoom) * 3);
-      selectedCircle.current.setCoordinates([
-        selectedEntity.longitude,
-        selectedEntity.latitude,
-      ]);
+      
+      selectedCircle.current.setRadius(map.current.getScale(zoom) * 0.5);
+	  //selectedCircle.current.setRadius(50);
+	  //console.log(selectedEntity.longitude);
+	  //console.log(selectedEntity.latitude);
+	  //console.log(selectedCircle.current.getCoordinates().x);
+	  if (selectedEntity.longitude != selectedCircle.current.getCoordinates().x) {
+		//console.log("plop");
+		selectedCircle.current.show();
+		  selectedCircle.current.setCoordinates([
+			selectedEntity.longitude,
+			selectedEntity.latitude,
+		  ]);
+	  }
     } else {
+		//selectedCircle.current.show();
       selectedCircle.current.hide();
     }
   }, [
@@ -510,7 +535,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         ]);
 
         const scale = map.current!.getScale(map.current!.getZoom());
-        text.setCoordinates([end[1], end[0]]).translate(scale / 9000, 0);
+        text.setCoordinates([end[1], end[0]]).translate(scale / 27000, 0);
 
         (text.setContent as any)(
           `${bearing.toString().padStart(3, "0")}${getCardinal(

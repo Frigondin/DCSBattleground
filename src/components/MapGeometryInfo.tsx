@@ -73,7 +73,7 @@ function DetailedTask({
 					{task.map((singleTask:any, i:any) => {
 						var is_intask = false;
 						singleTask.players.map((player:any) => {
-													player.id === Number(discord_id) ? is_intask = true : is_intask = false;
+													if (player.id === Number(discord_id)){is_intask = true};
 												});
 						
 						return (<div>
@@ -99,14 +99,15 @@ function DetailedTask({
 											</button>
 										</div>
 										<button onClick={() => {
-																	const task_id = singleTask.id-3000
+																	const task_id = singleTask.id;
+																	console.log(task_id);
 																	fetch(window.location.href.concat('/taskenrolment'), {
 																		headers: {
 																		  'Accept': 'application/json',
 																		  'Content-Type': 'application/json'
 																		},
 																		method: "POST",
-																		body: JSON.stringify({"task_id":task_id})
+																		body: JSON.stringify({"TaskId":task_id})
 																	})
 																	.then(function(res){ console.log(res) })
 																	.catch(function(res){ console.log(res) });
@@ -119,7 +120,7 @@ function DetailedTask({
 									</div>							
 									<UnmountClosed className="flex flex-col" isOpened={isOpen[i]}>
 										<div className="flex flex-row w-full pl-1">
-											<span className="pr-2 flex-grow">Desc. :</span>
+											<span className="pr-2 flex-grow">Desc.:</span>
 											<span className="">
 												{singleTask.data.field.description.map((text:any) => {
 													return (<div>{text}</div>)
@@ -354,7 +355,7 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
   if (!selectedGeometry) return <></>;
 
   return (
-    <div className="flex flex-col bg-gray-300 border border-gray-500 shadow select-none rounded-sm">
+    <div className="w-80 flex flex-col bg-gray-300 border border-gray-500 shadow select-none rounded-sm">
       <div className="p-2 bg-gray-400 text-sm flex flex-row">
         <b className="flex flex-grow">
           {selectedGeometry.name ||

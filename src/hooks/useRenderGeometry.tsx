@@ -1,5 +1,7 @@
 import Immutable from "immutable";
 import * as maptalks from "maptalks";
+import * as animatemarker from "maptalks.animatemarker";
+//import * from animatemarker
 import ms from "milsymbol";
 import { useEffect } from "react";
 import { iconCache } from "../components/MapEntity";
@@ -14,9 +16,11 @@ import {
   Waypoints,
   Circle,
   Line,
+  Border,
   Recon,
   Quest
 } from "../stores/GeometryStore";
+import { setSelectedEntityId } from "../stores/ServerStore";
 
 
 const markPointSIDC = "GHG-GPRN--";
@@ -188,8 +192,9 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
     id: waypoints.id,
     draggable: false,
   });
-  col.on("dblclick", (e) => {
+  col.on("click", (e) => {
     setSelectedGeometry(waypoints.id);
+	setSelectedEntityId(null);
   });
   col.on("editend", (e) => {
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
@@ -203,7 +208,7 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 
 
 
-function renderLine(layer: maptalks.VectorLayer, line: Line) {
+function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 	const collection = layer.getGeometryById(
 		line.id
 	) as maptalks.GeometryCollection;
@@ -241,6 +246,9 @@ function renderLine(layer: maptalks.VectorLayer, line: Line) {
 	color = '#0068FF'
   } else if (line.coalition == "red") {
 	color = '#FF0032'
+  }
+  if (line.type === "border"){
+	color = '#FBBF24'
   }
   const lineString = new maptalks.LineString(
     line.points.map((it) => [it[1], it[0]]),
@@ -296,8 +304,11 @@ function renderLine(layer: maptalks.VectorLayer, line: Line) {
     id: line.id,
     draggable: false,
   });
-  col.on("dblclick", (e) => {
-    setSelectedGeometry(line.id);
+  col.on("click", (e) => {
+	if (line.type !== "border"){
+		setSelectedGeometry(line.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("editend", (e) => {
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
@@ -383,8 +394,9 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     id: zone.id,
     draggable: false,
   });
-  col.on("dblclick", (e) => {
+  col.on("click", (e) => {
     setSelectedGeometry(zone.id);
+	setSelectedEntityId(null);
   });
   col.on("editend", (e) => {
     const coords = polygon.getCoordinates()[0];
@@ -428,7 +440,7 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     [circle.center[1], circle.center[0]],
 	circle.radius,
     {
-      draggable: true,
+      draggable: false,
       visible: true,
       editable: true,
       symbol: {
@@ -473,9 +485,13 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     id: circle.id,
     draggable: false,
   });
-  col.on("dblclick", (e) => {
+  col.on("click", (e) => {
+	//console.log(e);
     setSelectedGeometry(circle.id);
+	setSelectedEntityId(null);
   });
+  
+
   col.on("editend", (e) => {
     const pos = circleMap.getCoordinates();
     updateGeometrySafe(circle.id, {
@@ -529,7 +545,7 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
 						  monoColor: color,
 						}).toDataURL(),
 		monocolor: color,
-        markerDy: 10,
+        markerDy: 7
       },
     }
   );
@@ -567,8 +583,9 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
     id: markPoint.id,
     draggable: false,
   });
-  col.on("dblclick", (e) => {
+  col.on("click", (e) => {
     setSelectedGeometry(markPoint.id);
+	setSelectedEntityId(null);
   });
   col.on("dragend", (e) => {
     const pos = col.getFirstCoordinate();
@@ -617,7 +634,7 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 					  strokeWidth: 11,
 					  monoColor: color,
 					}).toDataURL(),
-		markerDy: 10,
+        markerDy: 10
 	  },
 	}
   );
@@ -655,8 +672,9 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 	id: recon.id,
 	draggable: false,
   });
-  col.on("dblclick", (e) => {
+  col.on("click", (e) => {
 	setSelectedGeometry(recon.id);
+	setSelectedEntityId(null);
   });
   col.on("dragend", (e) => {
 	const pos = col.getFirstCoordinate();
@@ -669,31 +687,38 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 
 }
 
+function getGradient(colors:any) {
+    return {
+        type: 'radial',
+        colorStops: [[0.70, 'rgba(' + colors.join() + ', 0.5)'], [0.30, 'rgba(' + colors.join() + ', 1)'], [0.20, 'rgba(' + colors.join() + ', 1)'], [0.00, 'rgba(' + colors.join() + ', 0)']]
+    };
+}
 
-
-function renderQuest(layer: maptalks.VectorLayer, quest: Quest) {
-  const collection = layer.getGeometryById(
+function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLayer, quest: Quest) {
+//function renderQuest(layer: animatemarker.AnimateMarkerLayer, quest: Quest) {
+  const collection = layerQuest.getGeometryById(
     quest.id
+  //) as maptalks.Marker;
   ) as maptalks.GeometryCollection;
   if (collection) {
     // This is maybe not the safest :)
-    const [icon, text] = collection.getGeometries() as [
-      maptalks.Marker,
-      maptalks.Label
-    ];
+    //const [icon, text] = collection.getGeometries() as [
+    //  maptalks.Marker,
+    //  maptalks.Label
+    //];
 
-	icon.setCoordinates([quest.position[1], quest.position[0]]);
-	text.setCoordinates([quest.position[1], quest.position[0]]);
-	(text.setContent as any)(quest.name || `Mission #${quest.id}`);
+	//icon.setCoordinates([quest.position[1], quest.position[0]]);
+	//text.setCoordinates([quest.position[1], quest.position[0]]);
+	//(text.setContent as any)(quest.name || `Mission #${quest.id}`);
     return;
   }
 
-  var color = '#FBBF24'
-  if (quest.coalition == "blue") {
-	color = '#0068FF'
-  } else if (quest.coalition == "red") {
-	color = '#FF0032'
-  }
+  //var color = '#FBBF24'
+  //if (quest.coalition == "blue") {
+//	color = '#0068FF'
+//  } else if (quest.coalition == "red") {
+//	color = '#FF0032'
+//  }
 /*   const icon = new maptalks.Marker(
 	[quest.position[1], quest.position[0]],
 	{
@@ -712,8 +737,28 @@ function renderQuest(layer: maptalks.VectorLayer, quest: Quest) {
 	  },
 	}
   ); */
+	var color = getGradient([251, 191, 36]);
+	if (quest.name?.startsWith('POI :')) {
+		color = getGradient([251, 191, 36]);
+	}
+	else {
+		color = getGradient([255, 16, 59]);
+	};
   var icon = new maptalks.Marker(
         [quest.position[1], quest.position[0]],
+		//{symbol: {markerWidth: 50, markerHeight: 50} }
+		{
+			'id': quest.id,
+			symbol:{
+				'markerType': 'ellipse',
+				//'markerFill': getGradient([135, 196, 240]),
+				'markerFill': color,
+				'markerFillOpacity': 0.8,
+				'markerLineWidth': 0,
+				'markerWidth': 75,
+				'markerHeight': 75
+			}
+		}
       );
 
   const text = new maptalks.Label(
@@ -749,8 +794,10 @@ function renderQuest(layer: maptalks.VectorLayer, quest: Quest) {
 	id: quest.id,
 	draggable: false,
   });
-  col.on("dblclick", (e) => {
+  //col.on("dblclick", (e) => {
+  icon.on("click", (e) => {
 	setSelectedGeometry(quest.id);
+	setSelectedEntityId(null);
   });
   col.on("dragend", (e) => {
 	const pos = col.getFirstCoordinate();
@@ -759,7 +806,8 @@ function renderQuest(layer: maptalks.VectorLayer, quest: Quest) {
 	});
   });
 
-  layer.addGeometry(col);
+  //layer.addGeometry(col);
+  layerQuest.addGeometry(icon);
 
 }
 
@@ -789,10 +837,12 @@ function renderGeometry(
 	  renderCircle(layer, geo);
 	} else if (geo.type === "line") {
 	  renderLine(layer, geo);
+	} else if (geo.type === "border") {
+	  renderLine(layer, geo);
 	} else if (geo.type === "recon") {
 	  renderRecon(layer, geo);
 	} else if (geo.type === "quest") {
-	  renderQuest(layerQuest, geo);
+	  renderQuest(layer, layerQuest, geo);
 	}
   }
 }

@@ -12,6 +12,7 @@ import {
   setSelectedGeometry,
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
+import { setSelectedEntityId } from "../stores/ServerStore";
 
 export default function QuestConsoleTab({ map }: { map: maptalks.Map }) {
   const [geometry, selectedId] = geometryStore((state) => [
@@ -22,7 +23,7 @@ export default function QuestConsoleTab({ map }: { map: maptalks.Map }) {
   return (
     <div className="p-2">
       <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
-        {geometry.valueSeq().map((it) => {
+        {geometry.valueSeq().sort((a, b) => a.id > b.id ? 1 : -1).map((it) => {
 		  if (it.type === "quest") {
 			  return (
 				<button
@@ -33,6 +34,7 @@ export default function QuestConsoleTab({ map }: { map: maptalks.Map }) {
 				  )}
 				  onClick={() => {
 					setSelectedGeometry(it.id);
+					setSelectedEntityId(null);
 
 					let position;
 					position = [it.position[1], it.position[0]];

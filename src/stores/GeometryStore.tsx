@@ -41,6 +41,11 @@ export type Line = {
   points: Array<[number, number]>;
 } & GeometryBase;
 
+export type Border = {
+  type: "border";
+  points: Array<[number, number]>;
+} & GeometryBase;
+
 export type Recon = {
   type: "recon";
   position: [number, number];
@@ -55,7 +60,7 @@ export type Quest = {
   task:	Array<JSON>;
 } & GeometryBase;
 
-export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Recon | Quest;
+export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Border | Recon | Quest;
 
 type GeometryStoreData = {
   geometry: Immutable.Map<number, Geometry>;
@@ -279,6 +284,22 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					  }),
 					};
 				  });
+			} else if (geo.type === "border") {
+				//console.log(geo.id);
+				  geometryStore.setState((state) => {
+					return {
+					  ...state,
+					  geometry: state.geometry.set(geo.id, {
+						id: geo.id,
+						name: geo.name,
+						coalition: geo.side,
+						discordName: geo.discordName,
+						avatar: geo.avatar,
+						type: "border",
+						points: geo.points,
+					  }),
+					};
+				  });
 			} else if (geo.type === "recon") {
 				//console.log(geo.type)
 				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
@@ -298,7 +319,7 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "quest") {
-				//console.log(geo.type)
+				//console.log(geo.id)
 				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
 				  geometryStore.setState((state) => {
 					return {

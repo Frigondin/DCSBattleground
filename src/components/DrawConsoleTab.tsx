@@ -12,6 +12,7 @@ import {
   setSelectedGeometry,
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
+import { setSelectedEntityId } from "../stores/ServerStore";
 
 export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
   const [geometry, selectedId] = geometryStore((state) => [
@@ -225,7 +226,7 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
       </div>
       <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
         {geometry.valueSeq().map((it) => {
-		  if (it.type !== "quest") {
+		  if (it.type !== "quest" && it.type !== "border") {
 			  return (
 				<button
 				  key={it.id}
@@ -235,6 +236,7 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 				  )}
 				  onClick={() => {
 					setSelectedGeometry(it.id);
+					setSelectedEntityId(null);
 
 					let position;
 					if (it.type === "markpoint") {
