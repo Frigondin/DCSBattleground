@@ -44,10 +44,6 @@ export function EntityInfo({
   const inputRef = useRef(null);
   const isEnterPressed = useKeyPress("Enter");
 
-	//console.log("entity");
-	//console.log(entity);
-	//console.log("track");
-	//console.log(track);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -81,7 +77,7 @@ export function EntityInfo({
         .sort(([x, y, a], [e, f, b]) => a - b),
     [alerts, entities]
   );
-//console.log("testouille");
+
   return (
     <div className="flex flex-col bg-gray-300 border border-gray-500 shadow select-none rounded-sm">
       <div className="p-2 bg-gray-400 text-sm flex flex-row gap-2">

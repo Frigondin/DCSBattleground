@@ -56,9 +56,7 @@ function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity, zoneSize: n
     }).toDataURL();
   }
 
-  //const icon = new maptalks.Circle([(unit.longitude+(Math.random() * 0.04)-0.02), (unit.latitude+(Math.random() * 0.04)-0.02)], 10000, {
-  //const icon = new maptalks.Circle([(unit.longitude+((Math.random() * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((Math.random() * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
-  const icon = new maptalks.Circle([(unit.longitude+((unit.ratioLong * 0.04)-0.02)*zoneSize/5000), (unit.latitude+((unit.ratioLat * 0.04)-0.02)*zoneSize/5000)], zoneSize, {
+  const icon = new maptalks.Circle([(unit.longitude+((unit.ratioLong * 0.04)-0.02)*zoneSize/4000), (unit.latitude+((unit.ratioLat * 0.04)-0.02)*zoneSize/4000)], zoneSize, {
     draggable: false,
     visible: true,
     editable: false,
@@ -73,9 +71,6 @@ function renderCombatZone(layer: maptalks.VectorLayer, unit: Entity, zoneSize: n
     id: unit.id,
     draggable: false,
   });
-  // col.on("click", (e) => {
-    // setSelectedEntityId(unit.id);
-  // });
 
   layer.addGeometry(col);
 }
@@ -89,10 +84,8 @@ function renderCombatZones(
   ],
   [_x, lastOffset, _y]: [unknown, number, unknown]
 ) {
-  //const layer = map.getLayer("combat-zones") as maptalks.VectorLayer;
   const groundUnitMode = settingsStore.getState().map.groundUnitMode;
   const coalition = server?.coalition;
-  //console.log (coalition);
   const isVisible = (target: Entity) => {
 	if (coalition === "blue" && target.coalition === "Enemies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.FRIENDLY)

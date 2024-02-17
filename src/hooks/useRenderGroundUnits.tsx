@@ -59,9 +59,6 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
 	  fillOpacity: 1,
       strokeWidth: 8,
 	  colorMode: "Light",
-      //monoColor: getCoalitionColor(unit.coalition),
-	  //outlineColor: getCoalitionColor(unit.coalition),
-	  //frameColor: colorMode
     }).toDataURL();
   }
 
@@ -136,7 +133,6 @@ function renderGroundUnits(
   ],
   [_x, lastOffset, _y]: [unknown, number, unknown]
 ) {
-//  const layer = map.getLayer("ground-units") as maptalks.VectorLayer;
   const groundUnitMode = settingsStore.getState().map.groundUnitMode;
   const coalition = server?.coalition;
   const guRatio = server?.ground_unit_ratio;

@@ -63,9 +63,9 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 	state.server
   ]);
 
-  // TODO: server should set coalition
+
   const bullsEntity = entities.find(
-    (it) => {//it.types.includes("Bullseye") && it.coalition === "Enemies"
+    (it) => {
 				if (server?.coalition === "blue") {
 					return it.types.includes("Bullseye") && it.coalition === "Enemies"
 				} else if (server?.coalition === "red") {
@@ -164,20 +164,16 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
+	  maxZoom : 12,
       seamlessZoom: false,
       fpsOnInteracting: 60,
 	  zoomControl: false,
       attribution: null,
-	  //overviewControl: true,
         spatialReference:{
           projection:'EPSG:3857'
         },
       baseLayer: new maptalks.TileLayer("base", {
-		//offset:[0,100],
-		//tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
-		//renderer: "canvas",
-        urlTemplate:
-          "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+        urlTemplate:"https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
         subdomains: ["a", "b", "c"],
 		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
         maxCacheSize: 2048,
@@ -185,14 +181,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		visible : true
       }),
       layers: [
-      new maptalks.TileLayer("fancy", {
-		//offset:[0,100],
-		//tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
-		//renderer: "canvas",
-        urlTemplate:
-          "https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-		  //"https://https://a.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
-        subdomains: ["a", "b", "c"],
+      new maptalks.TileLayer("pretty", {
+        urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
 		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
 		opacity: 0.8,
         maxCacheSize: 2048,
@@ -200,41 +190,23 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		visible : false
       }),
 	  new maptalks.TileLayer("CaucasusMap", {
-		//offset:[0,100],
-		tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
+		tileSystem: [1, 1, -20037508.34, -20037508.34],
 		renderer: "canvas",
-        urlTemplate:
-          //"https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-		  "http://dcsmaps.com/caucasus/{z}/{x}/{y}.png",
-		  //"http://map.liaison16.eu:8087/caucasus/{z}/{x}/{y}.png",
-        //subdomains: ["a", "b", "c"],
-        //maxCacheSize: 2048,
-        //hitDetect: false,
+        urlTemplate:"http://dcsmaps.com/caucasus/{z}/{x}/{y}.png",
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
 		visible : true
       }),
 	new maptalks.WMSTileLayer("CaucasusBorder", {
-		//offset:[0,100],
-		tileSystem: [1, 1, -20037508.34, -20037508.34], //maptalks.TileSystem.'tms-global-mercator',//new maptalks.TileSystem([1, -1, 0, 0]), //tms-global-mercator
+		tileSystem: [1, 1, -20037508.34, -20037508.34], 
 		renderer: "canvas",
-        urlTemplate:
-          //"https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-		  "http://dcsmaps.com/cgi-bin/mapserv?map=CAUCASUS_MAPFILE",
-		  //"http://map.liaison16.eu:8087/caucasus/{z}/{x}/{y}.png",
-        //subdomains: ["a", "b", "c"],
-        //maxCacheSize: 2048,
-        //hitDetect: false,
+        urlTemplate:"http://dcsmaps.com/cgi-bin/mapserv?map=CAUCASUS_MAPFILE",
 		layers:"Isolines,Rivers,Water,Railroad,Powerlines,Roads,LBridges,Tunnels,Bridges,Borders,Landmarks,Derricks,Obstacle,MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns,Airbases,DB,DME,NDB,TACAN,VOR",
 		format:"image/png",
 		transparent:!0,
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
-		//minZoom:8,
-		maxZoom:20,
-		//maxNativeZoom:12,
 		service:"WMS",
 		version:"1.1.1",
-		//REQUEST:"GetMap",
 		styles:"",
 		crs:"EPSG:3857",
 		visible : false
@@ -258,7 +230,6 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
-        //new maptalks.VectorLayer("quest", [], {
 		new animatemarker.AnimateMarkerLayer("quest", [], {
           forceRenderOnZooming: true,
           forceRenderOnMoving: true,
@@ -322,7 +293,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       ],
     } as any);
 
-    /////////////////map.current.addControl(entityInfoPanel.current);
+
 	map.current.addControl(noZoomLevel.current);
     map.current.on("contextmenu", (e) => {});
 
@@ -389,7 +360,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
               markerFillOpacity: 0,
               markerLineWidth: 0,
               textHorizontalAlignment: "center",
-              textDy: -25,
+              textDy: -25
             },
           },
           textSymbol: {
@@ -407,6 +378,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         {
           symbol: {
             markerFile: icon,
+			markerDy: 7
           },
         }
       );
@@ -473,18 +445,10 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 
     if (selectedEntity && selectedTrack) {
       const speed = estimatedSpeed(selectedTrack);
-      if (speed < 25) {
-        //setSelectedEntityId(null);
-      }
 
       
       selectedCircle.current.setRadius(map.current.getScale(zoom) * 0.5);
-	  //selectedCircle.current.setRadius(50);
-	  //console.log(selectedEntity.longitude);
-	  //console.log(selectedEntity.latitude);
-	  //console.log(selectedCircle.current.getCoordinates().x);
 	  if (selectedEntity.longitude != selectedCircle.current.getCoordinates().x) {
-		//console.log("plop");
 		selectedCircle.current.show();
 		  selectedCircle.current.setCoordinates([
 			selectedEntity.longitude,
@@ -492,7 +456,6 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		  ]);
 	  }
     } else {
-		//selectedCircle.current.show();
       selectedCircle.current.hide();
     }
   }, [
@@ -681,6 +644,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
           } as any),
           symbol: {
             markerFile: icon,
+			markerDy: 10
           },
         });
         farpIconLayer.addGeometry(farpIconGeo);

@@ -1,7 +1,6 @@
 import Immutable from "immutable";
 import * as maptalks from "maptalks";
 import * as animatemarker from "maptalks.animatemarker";
-//import * from animatemarker
 import ms from "milsymbol";
 import { useEffect } from "react";
 import { iconCache } from "../components/MapEntity";
@@ -37,7 +36,6 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 		];
 		if (lineString.isEditing()) return;
 		const labelListTmp = collection.getGeometries()
-		//collection.setGeometries(labelListTmp);
 		var counter = -1;
 		
 		labelListTmp.forEach((geo) => {
@@ -56,7 +54,6 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 				geo2.remove()
 			};
 		});
- 		//let labelList1:Array<maptalks.LineString|maptalks.Label> = [];//[labelListTmp[0], labelListTmp[1]];
 		let labelList1 = [labelListTmp[0], labelListTmp[1]];
 		var counter = -1;
 		waypoints.points.forEach((point) => {
@@ -97,7 +94,6 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
     return;
   }
 
-  //console.log(waypoints.coalition)
   var color = '#FBBF24'
   if (waypoints.coalition == "blue") {
 	color = '#0068FF'
@@ -219,7 +215,6 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 		];
 		if (lineString.isEditing()) return;
 		const labelListTmp = collection.getGeometries()
-		//collection.setGeometries(labelListTmp);
 		var counter = -1;
 		
 		labelListTmp.forEach((geo) => {
@@ -235,7 +230,6 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 				geo2.remove()
 			};
 		});
- 		//let labelList1:Array<maptalks.LineString|maptalks.Label> = [];//[labelListTmp[0], labelListTmp[1]];
 		let labelList1 = [labelListTmp[0], labelListTmp[1]];
 		collection.setGeometries(labelList1);
     return;
@@ -253,8 +247,6 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
   const lineString = new maptalks.LineString(
     line.points.map((it) => [it[1], it[0]]),
     {
-        //arrowStyle : 'classic', // arrow-style : now we only have classic
-        //arrowPlacement : 'vertex-last', // arrow's placement: vertex-first, vertex-last, vertex-firstlast, point
         visible : true,
         editable : true,
         cursor : null,
@@ -422,7 +414,6 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
 	if (circleMap.isEditing()) return;
 
     circleMap.setCoordinates([circle.center[1], circle.center[0]]);
-	//circleMap.setCoordinates(circle.center[1]);
 	circleMap.setRadius(circle.radius);
     text.setCoordinates([circle.center[1], circle.center[0]]);
     (text.setContent as any)(circle.name || `Circle #${circle.id}`);
@@ -486,7 +477,6 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     draggable: false,
   });
   col.on("click", (e) => {
-	//console.log(e);
     setSelectedGeometry(circle.id);
 	setSelectedEntityId(null);
   });
@@ -511,7 +501,6 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
     markPoint.id
   ) as maptalks.GeometryCollection;
   if (collection) {
-    // This is maybe not the safest :)
     const [icon, text] = collection.getGeometries() as [
       maptalks.Marker,
       maptalks.Label
@@ -602,7 +591,6 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
     recon.id
   ) as maptalks.GeometryCollection;
   if (collection) {
-    // This is maybe not the safest :)
     const [icon, text] = collection.getGeometries() as [
       maptalks.Marker,
       maptalks.Label
@@ -695,48 +683,13 @@ function getGradient(colors:any) {
 }
 
 function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLayer, quest: Quest) {
-//function renderQuest(layer: animatemarker.AnimateMarkerLayer, quest: Quest) {
   const collection = layerQuest.getGeometryById(
     quest.id
-  //) as maptalks.Marker;
   ) as maptalks.GeometryCollection;
   if (collection) {
-    // This is maybe not the safest :)
-    //const [icon, text] = collection.getGeometries() as [
-    //  maptalks.Marker,
-    //  maptalks.Label
-    //];
-
-	//icon.setCoordinates([quest.position[1], quest.position[0]]);
-	//text.setCoordinates([quest.position[1], quest.position[0]]);
-	//(text.setContent as any)(quest.name || `Mission #${quest.id}`);
     return;
   }
 
-  //var color = '#FBBF24'
-  //if (quest.coalition == "blue") {
-//	color = '#0068FF'
-//  } else if (quest.coalition == "red") {
-//	color = '#FF0032'
-//  }
-/*   const icon = new maptalks.Marker(
-	[quest.position[1], quest.position[0]],
-	{
-	  draggable: false,
-	  visible: true,
-	  editable: false,
-	  symbol: {
-		markerFile: new ms.Symbol(reconSIDC, {
-					  size: 20,
-					  frame: false,
-					  fill: true,
-					  strokeWidth: 11,
-					  monoColor: color,
-					}).toDataURL(),
-		markerDy: 10,
-	  },
-	}
-  ); */
 	var color = getGradient([251, 191, 36]);
 	if (quest.name?.startsWith('POI :')) {
 		color = getGradient([251, 191, 36]);
@@ -746,12 +699,10 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	};
   var icon = new maptalks.Marker(
         [quest.position[1], quest.position[0]],
-		//{symbol: {markerWidth: 50, markerHeight: 50} }
 		{
 			'id': quest.id,
 			symbol:{
 				'markerType': 'ellipse',
-				//'markerFill': getGradient([135, 196, 240]),
 				'markerFill': color,
 				'markerFillOpacity': 0.8,
 				'markerLineWidth': 0,
@@ -794,7 +745,6 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	id: quest.id,
 	draggable: false,
   });
-  //col.on("dblclick", (e) => {
   icon.on("click", (e) => {
 	setSelectedGeometry(quest.id);
 	setSelectedEntityId(null);
@@ -806,7 +756,6 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	});
   });
 
-  //layer.addGeometry(col);
   layerQuest.addGeometry(icon);
 
 }

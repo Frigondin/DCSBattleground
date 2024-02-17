@@ -198,13 +198,9 @@ export function addLine(points: Array<[number, number]>) {
 
 
 export function addGlobalGeometry(geoList:any, coalition:string) {
-	//console.log(geoList)
 	geoList.forEach((geo:any) => {
 		if (coalition == "GM" || coalition == geo.side) {
-			//console.log(geo)
-			//console.log(coalition)
 			if (geo.type === "markpoint") {
-				//console.log(geo.type)
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -220,7 +216,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "zone") {
-				//console.log(geo.type)
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -236,7 +231,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "waypoints") {
-				//console.log(geo.type)
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -252,7 +246,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "circle") {
-				//console.log(geo.type)
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -269,7 +262,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "line") {
-				//console.log(geo.type)
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -285,7 +277,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "border") {
-				//console.log(geo.id);
 				  geometryStore.setState((state) => {
 					return {
 					  ...state,
@@ -301,7 +292,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "recon") {
-				//console.log(geo.type)
 				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
 				  geometryStore.setState((state) => {
 					return {
@@ -319,7 +309,6 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 					};
 				  });
 			} else if (geo.type === "quest") {
-				//console.log(geo.id)
 				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
 				  geometryStore.setState((state) => {
 					return {
@@ -341,13 +330,11 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 			}
 		}
 	});
-	//console.log(geoList)
 }
 
 
 export function deleteGlobalGeometry(idList:any, side:string) {
 	idList.forEach((id:any) => {
-		//console.log(geo)
 		deleteGeometry(id);
 	});
 }

@@ -49,7 +49,7 @@ function DetailedDescription({
 }: {
 	description: Array<string>;
 }) {
-	return (<div style={{ maxHeight: "600px", overflowY:"scroll", borderTop:"1px solid black" }}>
+	return (<div>
 				<div>
 					{description.map((text) => {
 						return (<div>{text}</div>)
@@ -76,8 +76,8 @@ function DetailedTask({
 													if (player.id === Number(discord_id)){is_intask = true};
 												});
 						
-						return (<div>
-									<div className="my-2 flex gap-1 max-h-72 overflow-auto">
+						return (<div className="my-2">
+									<div className="flex gap-1 max-h-72 overflow-auto">
 										<div className="flex flex-col flex-grow">
 											<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpen[i] === true })}
 													onClick={() => {
@@ -117,23 +117,25 @@ function DetailedTask({
 											{is_intask && (<div className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckSquare className="inline-block w-4 h-4"/></div>)}
 											{!is_intask && (<div className="border bg-blue-300 border-blue-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckbox className="inline-block w-4 h-4"/></div>)}
 										</button>
-									</div>							
+									</div>		 					
 									<UnmountClosed className="flex flex-col" isOpened={isOpen[i]}>
-										<div className="flex flex-row w-full pl-1">
-											<span className="pr-2 flex-grow">Desc.:</span>
-											<span className="">
-												{singleTask.data.field.description.map((text:any) => {
-													return (<div>{text}</div>)
-												})}
-											</span>
-										</div>
-										<div className="flex flex-row w-full pl-1">
-											<span className="pr-2 flex-grow">Players :</span>
-											<span className="">
-												{singleTask.players.map((player:any) => {
-													return (<div>{player.name}</div>)
-												})}
-											</span>
+										<div className="border rounded-sm border-indigo-300">
+											<div className="flex flex-row w-full pl-1">
+												<span className="pr-2 flex-grow">Desc.:</span>
+												<span className="">
+													{singleTask.data.field.description.map((text:any) => {
+														return (<div>{text}</div>)
+													})}
+												</span>
+											</div>
+											<div className="flex flex-row w-full pl-1">
+												<span className="pr-2 flex-grow">Players :</span>
+												<span className="">
+													{singleTask.players.map((player:any) => {
+														return (<div>{player.name}</div>)
+													})}
+												</span>
+											</div>
 										</div>
 									</UnmountClosed>
 								</div>)
@@ -162,9 +164,7 @@ function submitGeometry(geo:Geometry, typeSubmit:string) {
 		  'Content-Type': 'application/json'
 		},
 		method: "POST",
-		//body: JSON.stringify({"Add":{"Type":"markpoint","Id":10001,"Name":"testouille","Position":[0,0],"Points":[[0,0]]}})
-		body: body//JSON.stringify({"Add":{"Type":geo.type,"Id":geo.id,"Name":geo.name,"Position":geo.position,"Points":geo.points}})
-		//body: JSON.stringify({"Add":"plip"})
+		body: body
 	})
 	.then(function(res){ console.log(res) })
 	.catch(function(res){ console.log(res) })
@@ -207,7 +207,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
       {geo.type === "markpoint" && <DetailedCoords coords={geo.position} />}
       {geo.type === "markpoint" && edit && (
         <>
-          {/* TODO: sort out parsing coords from human input */}
+          {}
           {
             <div className="flex flex-row flex-grow w-full">
               <span className="pr-2 flex-grow">Coords</span>
@@ -272,33 +272,35 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 	  {geo.type === "quest" && <DetailedCoords coords={geo.position} />}
 	  {geo.type === "quest" &&
 		<div>
-			<div className="my-2 flex gap-1 max-h-72 overflow-auto">
+			<div className="my-2 flex gap-1 overflow-auto">
 				<div className="flex flex-col flex-grow">
 					<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpenDesc === true })}
 							onClick={() => {isOpenDesc ? setIsOpenDesc(false) : setIsOpenDesc(true);}}
 					>
 							Mission description
 					</button>
+					<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
+						<div className="border rounded-sm border-indigo-300">
+							<div className="w-72" onClick={() => setIsOpen(true)}>
+								<img src={geo.screenshot[0]}/>
+							</div>
+							{isOpen && (
+								<Lightbox
+									mainSrc={geo.screenshot[imgIndex]}
+									nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
+									prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+								  onCloseRequest={() => setIsOpen(false)}
+								  onMovePrevRequest={() =>
+									setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+								  }
+								  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+								/>
+							)}
+							<DetailedDescription description={geo.description}/>
+						</div>
+					</UnmountClosed>
 				</div>
 			</div>
-			<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
-				<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
-					<img src={geo.screenshot[0]}/>
-				</div>
-				{isOpen && (
-					<Lightbox
-						mainSrc={geo.screenshot[imgIndex]}
-						nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-						prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-					  onCloseRequest={() => setIsOpen(false)}
-					  onMovePrevRequest={() =>
-						setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
-					  }
-					  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
-					/>
-				)}
-				<DetailedDescription description={geo.description}/>
-			</UnmountClosed>
 			<DetailedTask task={geo.task}/>
 		</div>
 	  }
@@ -331,7 +333,6 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 		selectedGeometry.type === "line" ||
 		selectedGeometry.type === "circle" ) {
       if (editing) {
-		//console.log(geo)
         geo.startEdit();
       } else {
         geo.endEdit();
