@@ -156,8 +156,10 @@ func (s *serverSession) updateLoop() {
 		s.state.Unlock()
 
 		s.publish("SESSION_RADAR_SNAPSHOT", data)
-		
-		s.runSharedGeometry()
+
+		if db != nil {		
+			s.runSharedGeometry()
+		}
 		s.runConnectedPlayer()
 	}
 }
