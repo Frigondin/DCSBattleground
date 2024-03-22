@@ -175,21 +175,23 @@ func getAvatar(session_token string) string {
 func getCoalition(server *TacViewServerConfig, session_token string) string {
 	DiscordId := SessionsDiscord[session_token].id
 	var Coals = []string{}
-	
-	err := db.Ping()
-	if err == nil {
-		req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = '" + server.DcsName + "' AND coalitions.player_ucid = players.ucid AND discord_id = '" + DiscordId + "'"
-		rows, err := db.Query(req)
-		CheckError(err)
-		
-		defer rows.Close()
-		for rows.Next() {
-			var Coal string
-		 
-			err = rows.Scan(&Coal)
+
+	if db != nil {
+		err := db.Ping()
+		if err == nil {
+			req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = '" + server.DcsName + "' AND coalitions.player_ucid = players.ucid AND discord_id = '" + DiscordId + "'"
+			rows, err := db.Query(req)
 			CheckError(err)
 			
-			Coals = append(Coals, Coal)
+			defer rows.Close()
+			for rows.Next() {
+				var Coal string
+			 
+				err = rows.Scan(&Coal)
+				CheckError(err)
+				
+				Coals = append(Coals, Coal)
+			}
 		}
 	}
 	Coals = append(Coals, server.DefaultCoalition)	
@@ -369,7 +371,11 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-	err = db.Ping()
+	if db != nil {
+		err = db.Ping()
+	} else {
+		err = errors.New("no database")
+	}
 	if err == nil {
 		if (geo.TypeSubmit == "share" && geo.Id > 0 && geo.Id < 10000) {
 			sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
@@ -437,31 +443,33 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
         return
     }
 	//fmt.Println(strconv.Itoa(taskEnrolment.TaskId))
-
-	err = db.Ping()
-	if err == nil {
-		TaskId := 0
-		rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskEnrolment.TaskId) + ` AND discord_id = ` + DiscordId)
-		CheckError(err2)
-		defer rows.Close()
-		for rows.Next() {
-			err = rows.Scan(&TaskId)
-			CheckError(err)
-		}
-		
-		sqlStatement := `DELETE FROM bg_task_user_rltn WHERE  discord_id = ` + DiscordId
-		_, err = db.Exec(sqlStatement)
-		CheckError(err)
-		
-		//fmt.Println(strconv.Itoa(TaskId))
-		
-		if (TaskId != taskEnrolment.TaskId) {
-			sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
-							VALUES (` + strconv.Itoa(taskEnrolment.TaskId) + `,` + DiscordId + `)`
+	
+	if db != nil {
+		err = db.Ping()
+		if err == nil {
+			TaskId := 0
+			rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskEnrolment.TaskId) + ` AND discord_id = ` + DiscordId)
+			CheckError(err2)
+			defer rows.Close()
+			for rows.Next() {
+				err = rows.Scan(&TaskId)
+				CheckError(err)
+			}
+			
+			sqlStatement := `DELETE FROM bg_task_user_rltn WHERE  discord_id = ` + DiscordId
 			_, err = db.Exec(sqlStatement)
-
-			//fmt.Println(sqlStatement)
 			CheckError(err)
+			
+			//fmt.Println(strconv.Itoa(TaskId))
+			
+			if (TaskId != taskEnrolment.TaskId) {
+				sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
+								VALUES (` + strconv.Itoa(taskEnrolment.TaskId) + `,` + DiscordId + `)`
+				_, err = db.Exec(sqlStatement)
+	
+				//fmt.Println(sqlStatement)
+				CheckError(err)
+			}
 		}
 	}
 	gores.JSON(w, 200, taskEnrolment)
