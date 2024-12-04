@@ -146,17 +146,17 @@ function DetailedTask({
 function submitGeometry(geo:Geometry, typeSubmit:string) {
 	var body
 	if (geo.type === "markpoint") {
-		body = JSON.stringify({"Type":"markpoint","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Position":geo.position, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"markpoint","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":"", "Points":[], "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	} else if (geo.type === "zone") {
-		body = JSON.stringify({"Type":"zone","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Points":geo.points, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"zone","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar, "PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	} else if (geo.type === "waypoints") {
-		body = JSON.stringify({"Type":"waypoints","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Points":geo.points, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"waypoints","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	} else if (geo.type === "line") {
-		body = JSON.stringify({"Type":"line","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Points":geo.points, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"line","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	} else if (geo.type === "circle") {
-		body = JSON.stringify({"Type":"circle","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Center":geo.center, "Radius":geo.radius, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"circle","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":[], "Center":geo.center, "Radius":geo.radius, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	} else if (geo.type === "recon") {
-		body = JSON.stringify({"Type":"circle","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"Position":geo.position, "TypeSubmit":typeSubmit})
+		body = JSON.stringify({"Type":"recon","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":"", "Points":[], "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TypeSubmit":typeSubmit})
 	}
 	fetch(window.location.href.concat('/share'), {
 		headers: {
@@ -333,9 +333,9 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 		selectedGeometry.type === "line" ||
 		selectedGeometry.type === "circle" ) {
       if (editing) {
-        geo.startEdit();
+        item.startEdit();
       } else {
-        geo.endEdit();
+        item.endEdit();
       }
     } else {
       item.config("draggable", editing);
@@ -362,13 +362,17 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
           {selectedGeometry.name ||
             `${selectedGeometry.type} #${selectedGeometry.id}`}
         </b>
-        {!editing && selectedGeometry.id < 10000 && (
+        {!editing && selectedGeometry.status === "Active" && (
           <button
             className="p-1 text-xs bg-yellow-300 border border-yellow-400 ml-2"
             onClick={() => {
               setEditing(false);
 			  submitGeometry(selectedGeometry, "share");
-			  deleteGeometry(selectedGeometry.id);
+			  selectedGeometry.status = "Locked";
+			  updateGeometrySafe(selectedGeometry.id, { status: "Locked" });
+			  setTimeout(function() {deleteGeometry(selectedGeometry.id);}, 5000);
+			  setSelectedGeometry(null);
+			  //deleteGeometry(selectedGeometry.id);
             }}
           >
             <BiMailSend className="inline-block w-4 h-4" />
@@ -384,7 +388,7 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
             <BiCheck className="inline-block w-4 h-4" />
           </button>
         )}
-        {!editing && selectedGeometry.id < 10000 && (
+        {!editing && selectedGeometry.status === "Active" && (
           <button
             className="p-1 text-xs bg-green-200 border border-green-500 ml-2"
             onClick={() => {

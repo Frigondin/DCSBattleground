@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 	//"fmt"
-	"github.com/lib/pq"
+	//"github.com/lib/pq"
 	"bytes"
 	//"strconv"
 )
@@ -62,9 +62,11 @@ type PlayerMetadata struct {
 }
 
 type DataJson struct {
+	Command		string		`json:"command"`
+	Color		float32		`json:"color"`
 	Title		string		`json:"title"`
 	Author		Author		`json:"author"`
-	Field		Field		`json:field`
+	Field		Field		`json:"field"`
 }
 
 type Author struct {
@@ -74,9 +76,19 @@ type Author struct {
 
 type Field struct {
 	Position	string		`json:"position"`
+	PosMGRS		string		`json:"posMGRS"`
+	PosPoint	[]float32	`json:"posPoint"`
+	PosType		string		`json:"position_type"`
 	Screenshot	[]string	`json:"screenshot"`
 	Description	[]string	`json:"description"`
 	Side		string		`json:"side"`
+	Status		string		`json:"status"`
+	Color		string		`json:"color"`
+	SubType		string		`json:"subType"`
+	Type		string		`json:"type"`
+	Points		[][]float32	`json:"points"`
+	Center		[]float32	`json:"center"`
+	Radius		float32		`json:"radius"`
 }
 
 
@@ -261,42 +273,75 @@ func (s *serverSession) runSharedGeometry() error {
 	err := db.Ping()
 	if err == nil {
 		var Id int
-		var Type string
-		var Name string
-		var DiscordName string
-		var Avatar string
-		var PosMGRS string
-		var Screenshot []string
+		//var Type string
+		//var Name string
+		//var DiscordName string
+		//var Avatar string
+		//var PosMGRS string
+		//var Screenshot []string
 		//var Description []string
-		var Side string
-		var Server string
-		var Position []float32
-		var Center []float32
-		var Radius float32
+		//var Side string
+		//var Server string
+		//var Position []float32
+		//var Center []float32
+		//var Radius float32
 		var Data []byte
 		var Task []byte
 		var Time string
 		
-		rows, err := db.Query(`SELECT id, type, name, discordname, avatar, posmgrs, screenshot, side, server FROM bg_geometry WHERE server='` + DcsName + `' AND type='recon'`)
+		//rows, err := db.Query(`SELECT id, type, name, discordname, avatar, posmgrs, screenshot, side, server FROM bg_geometry WHERE server='` + DcsName + `' AND type='recon'`)
+		//CheckError(err)
+		//defer rows.Close()
+		//for rows.Next() {
+		//	err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
+		//	CheckError(err)
+		
+		//	var geo geometry
+		//	geo.Id = Id
+		//	geo.Type = Type
+		//	geo.Name = Name
+		//	geo.DiscordName = DiscordName
+		//	geo.Avatar = Avatar
+		//	geo.PosMGRS = PosMGRS
+		//	geo.Screenshot = Screenshot
+		//	geo.Side = Side
+		//	geo.Server = Server
+		//	reconGeometry = append(reconGeometry, geo)
+		//}
+		
+		rows, err := db.Query(`SELECT id, data, time 
+								FROM bg_geometry2 
+								WHERE node='` + DcsName + `' AND data->'field'->>'type' = 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
-			err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
+			//err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
+			err = rows.Scan(&Id, &Data, &Time)
 			CheckError(err)
-		
+				
+			var	DataJson DataJson
+			err = json.Unmarshal(Data, &DataJson)
+			//fmt.Println(Data)
+			CheckError(err)			
+			
 			var geo geometry
 			geo.Id = Id
-			geo.Type = Type
-			geo.Name = Name
-			geo.DiscordName = DiscordName
-			geo.Avatar = Avatar
-			geo.PosMGRS = PosMGRS
-			geo.Screenshot = Screenshot
-			geo.Side = Side
-			geo.Server = Server
+			geo.Type = DataJson.Field.Type
+			geo.Name = DataJson.Title
+			geo.DiscordName = DataJson.Author.Name
+			geo.Avatar = DataJson.Author.Icon_url
+			geo.PosMGRS = DataJson.Field.PosMGRS
+			geo.PosPoint = DataJson.Field.PosPoint
+			geo.Screenshot = DataJson.Field.Screenshot
+			geo.Side = DataJson.Field.Side
+			geo.Server = DcsName
+			geo.Status = DataJson.Field.Status
+			geo.Color = DataJson.Field.Color
+			geo.Points = DataJson.Field.Points
+			geo.Center = DataJson.Field.Center
+			geo.Radius = DataJson.Field.Radius
 			reconGeometry = append(reconGeometry, geo)
 		}
-
 
 
 		//rows, err = db.Query(`SELECT id, name, discordname, avatar, posmgrs, screenshot, side, server, description FROM bg_quest WHERE server='` + DcsName + `'`)
@@ -319,17 +364,19 @@ func (s *serverSession) runSharedGeometry() error {
 		//	geo.Server = Server
 		//	questList = append(questList, geo)
 		//}
-		rows, err = db.Query(`SELECT id, data, time,
+		rows, err = db.Query(`SELECT id, data, time, 
 									COALESCE((
 									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
 											COALESCE((
 											   SELECT json_agg(json_build_object('id', rltn.discord_id, 'name', players.name))
 											   FROM bg_task_user_rltn rltn, players where rltn.id_task=bg_task.id and rltn.discord_id = players.discord_id
 											), '[]'::json))) 
-									   FROM bg_task where bg_task.id_mission=bg_missions.id
+									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'field'->>'status' != 'Closed'
 									), '[]'::json) task  
 								FROM bg_missions 
-								WHERE node='` + DcsName + `' ORDER BY id`)
+								WHERE node='` + DcsName + `' 
+								  AND data->'field'->>'status' != 'Closed'
+								ORDER BY id`) // and data->'field'->>'status' != 'Closed'
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -353,9 +400,13 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.DiscordName = DataJson.Author.Name
 			geo.Avatar = DataJson.Author.Icon_url
 			geo.PosMGRS = DataJson.Field.Position
+			geo.PosPoint = DataJson.Field.PosPoint
 			geo.Screenshot = DataJson.Field.Screenshot
 			geo.Description = DataJson.Field.Description
 			geo.Side = DataJson.Field.Side
+			geo.Status = DataJson.Field.Status
+			geo.Color = DataJson.Field.Color
+			geo.SubType = DataJson.Field.SubType
 			geo.Server = DcsName
 			geo.Task = TaskJson
 			//fmt.Println(TaskJson)
@@ -365,30 +416,62 @@ func (s *serverSession) runSharedGeometry() error {
 		
 		
 		geoListGlob = []geometry{}
-		rows, err = db.Query(`SELECT id, type, name, discordname, avatar, side, server, Position, array_to_json(CASE WHEN points IS NULL THEN '{}'::numeric[] else points::numeric[] END), center, radius FROM bg_geometry WHERE server='` + DcsName + `' AND type!='recon'`)
+		//rows, err = db.Query(`SELECT id, type, name, discordname, avatar, side, server, Position, array_to_json(CASE WHEN points IS NULL THEN '{}'::numeric[] else points::numeric[] END), center, radius FROM bg_geometry WHERE server='` + DcsName + `' AND type!='recon'`)
+		//CheckError(err)
+		//defer rows.Close()
+		//for rows.Next() {
+		//	var pointsStr string
+		//	var Points [][]float32
+			
+		//	err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &Side, &Server, pq.Array(&Position), &pointsStr, pq.Array(&Center), &Radius)
+		//	CheckError(err)
+			
+			
+		//	json.Unmarshal([]byte(pointsStr), &Points)
+		//	var geo geometry
+		//	geo.Id = Id
+		//	geo.Type = Type
+		//	geo.Name = Name
+		//	geo.DiscordName = DiscordName
+		//	geo.Avatar = Avatar
+		//	geo.Side = Side
+		//	geo.Server = Server
+		//	geo.Position = Position
+		//	geo.Points = Points
+		//	geo.Center = Center
+		//	geo.Radius = Radius
+		//	geoList = append(geoList, geo)
+		//}
+		rows, err = db.Query(`SELECT id, data, time 
+								FROM bg_geometry2 
+								WHERE node='` + DcsName + `' AND data->'field'->>'type' != 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
-			var pointsStr string
-			var Points [][]float32
-			
-			err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &Side, &Server, pq.Array(&Position), &pointsStr, pq.Array(&Center), &Radius)
+			//err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
+			err = rows.Scan(&Id, &Data, &Time)
 			CheckError(err)
+				
+			var	DataJson DataJson
+			err = json.Unmarshal(Data, &DataJson)
+			CheckError(err)			
 			
-			
-			json.Unmarshal([]byte(pointsStr), &Points)
 			var geo geometry
 			geo.Id = Id
-			geo.Type = Type
-			geo.Name = Name
-			geo.DiscordName = DiscordName
-			geo.Avatar = Avatar
-			geo.Side = Side
-			geo.Server = Server
-			geo.Position = Position
-			geo.Points = Points
-			geo.Center = Center
-			geo.Radius = Radius
+			geo.Type = DataJson.Field.Type
+			geo.Name = DataJson.Title
+			geo.DiscordName = DataJson.Author.Name
+			geo.Avatar = DataJson.Author.Icon_url
+			geo.PosMGRS = DataJson.Field.PosMGRS
+			geo.PosPoint = DataJson.Field.PosPoint
+			geo.Screenshot = DataJson.Field.Screenshot
+			geo.Side = DataJson.Field.Side
+			geo.Server = DcsName
+			geo.Status = DataJson.Field.Status
+			geo.Color = DataJson.Field.Color
+			geo.Points = DataJson.Field.Points
+			geo.Center = DataJson.Field.Center
+			geo.Radius = DataJson.Field.Radius
 			geoList = append(geoList, geo)
 		}
 	} else {

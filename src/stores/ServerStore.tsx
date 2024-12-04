@@ -48,7 +48,7 @@ export const serverStore = create<ServerStoreData>(() => {
     entities: Immutable.Map<number, Entity>(),
     offset: 0,
     sessionId: null,
-    selectedEntityId: null,
+    selectedEntityId: null
   };
 });
 
@@ -59,6 +59,7 @@ let dcsBattlegroundClient: DCSBattlegroundClient | null = null;
 export function setSelectedEntityId(selectedEntityId: number | null) {
   serverStore.setState({ selectedEntityId });
 }
+
 
 function runDCSBattlegroundClient(server: Server | null) {
   dcsBattlegroundClient?.close();

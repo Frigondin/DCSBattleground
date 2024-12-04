@@ -68,3 +68,29 @@ func (h *httpServer) serveEmbeddedStaticAssets(w http.ResponseWriter, r *http.Re
 		http.ServeContent(w, r, fileName, time.Now(), bytes.NewReader(f))
 	}
 }
+
+
+// Serves static assets from the embedded filesystem
+func (h *httpServer) serveEmbeddedStaticAssetsExternal(w http.ResponseWriter, r *http.Request) {
+	param := chi.URLParam(r, "*")
+	log.Printf(*h.config.AssetsPathExternal)
+	log.Printf(param)
+	
+	if h.config.AssetsPathExternal != nil {
+		path := filepath.Join(*h.config.AssetsPathExternal, param)
+		_, err := filepath.Rel(*h.config.AssetsPathExternal, path)
+		if err != nil {
+			http.Error(w, "Not Found", http.StatusNotFound)
+			return
+		}
+
+		contents, err := ioutil.ReadFile(path)
+		if err != nil {
+			http.Error(w, "Error reading file", http.StatusInternalServerError)
+			return
+		}
+
+		fileName := filepath.Base(param)
+		http.ServeContent(w, r, fileName, time.Now(), bytes.NewReader(contents))
+	} 
+}

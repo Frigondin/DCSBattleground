@@ -11,6 +11,7 @@ import {
   MarkPoint,
   setSelectedGeometry,
   updateGeometrySafe,
+  deleteGeometry,
   Zone,
   Waypoints,
   Circle,
@@ -112,7 +113,7 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
         dragShadow : false, // display a shadow during dragging
         drawOnAxis : null,  // force dragging stick on a axis, can be: x, y
         symbol: {
-          'lineColor' : color,
+          'lineColor' : waypoints.color, //color,
           'lineWidth' : 3
         }
 	}
@@ -189,8 +190,10 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
     draggable: false,
   });
   col.on("click", (e) => {
-    setSelectedGeometry(waypoints.id);
-	setSelectedEntityId(null);
+	if (waypoints.status !== "Locked"){
+		setSelectedGeometry(waypoints.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("editend", (e) => {
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
@@ -254,7 +257,7 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
         dragShadow : false, // display a shadow during dragging
         drawOnAxis : null,  // force dragging stick on a axis, can be: x, y
         symbol: {
-          'lineColor' : color,
+          'lineColor' : line.color, //color,
           'lineWidth' : 2
         }
 	}
@@ -297,7 +300,7 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
     draggable: false,
   });
   col.on("click", (e) => {
-	if (line.type !== "border"){
+	if (line.type !== "border" && line.status !== "Locked"){
 		setSelectedGeometry(line.id);
 		setSelectedEntityId(null);
 	}
@@ -345,9 +348,9 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
       visible: true,
       editable: true,
       symbol: {
-        lineColor: color,
+        lineColor: zone.color, //color,
         lineWidth: 2,
-        polygonFill: color,
+        polygonFill: zone.color, //color,
         polygonOpacity: 0.1,
       },
     }
@@ -387,8 +390,10 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     draggable: false,
   });
   col.on("click", (e) => {
-    setSelectedGeometry(zone.id);
-	setSelectedEntityId(null);
+	if (zone.status !== "Locked"){
+		setSelectedGeometry(zone.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("editend", (e) => {
     const coords = polygon.getCoordinates()[0];
@@ -435,9 +440,9 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
       visible: true,
       editable: true,
       symbol: {
-		'lineColor': color,
+		'lineColor': circle.color, //color,
 		'lineWidth': 2,
-		'polygonFill': color,
+		'polygonFill': circle.color, //color,
 		'polygonOpacity': 0.1
       },
     }
@@ -477,8 +482,10 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     draggable: false,
   });
   col.on("click", (e) => {
-    setSelectedGeometry(circle.id);
-	setSelectedEntityId(null);
+	if (circle.status !== "Locked"){
+		setSelectedGeometry(circle.id);
+		setSelectedEntityId(null);
+	}
   });
   
 
@@ -489,7 +496,7 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
 	  radius: circleMap.getRadius()
     });
   });
-
+  
   layer.addGeometry(col);
 }
 
@@ -531,9 +538,9 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
 						  frame: false,
 						  fill: true,
 						  strokeWidth: 8,
-						  monoColor: color,
+						  monoColor: markPoint.color, //color,
 						}).toDataURL(),
-		monocolor: color,
+		monocolor: markPoint.color, //color,
         markerDy: 7
       },
     }
@@ -573,8 +580,10 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
     draggable: false,
   });
   col.on("click", (e) => {
-    setSelectedGeometry(markPoint.id);
-	setSelectedEntityId(null);
+	if (markPoint.status !== "Locked"){
+		setSelectedGeometry(markPoint.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("dragend", (e) => {
     const pos = col.getFirstCoordinate();
@@ -620,7 +629,7 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 					  frame: false,
 					  fill: true,
 					  strokeWidth: 11,
-					  monoColor: color,
+					  monoColor: recon.color, //color,
 					}).toDataURL(),
         markerDy: 10
 	  },
@@ -686,28 +695,47 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
   const collection = layerQuest.getGeometryById(
     quest.id
   ) as maptalks.GeometryCollection;
+  //console.log(quest.color);
+//  if (quest.status !== "Active") {
+//	deleteGeometry(quest.id);
+//	return;
+//  }
   if (collection) {
     return;
   }
 
-	var color = getGradient([251, 191, 36]);
-	if (quest.name?.startsWith('POI :')) {
-		color = getGradient([251, 191, 36]);
-	}
-	else {
-		color = getGradient([255, 16, 59]);
-	};
+//	var color = getGradient([251, 191, 36]);
+//	if (quest.name?.startsWith('POI :')) {
+//		color = getGradient([251, 191, 36]);
+//	}
+//	else {
+//		color = getGradient([255, 16, 59]);
+//	};
   var icon = new maptalks.Marker(
         [quest.position[1], quest.position[0]],
 		{
 			'id': quest.id,
 			symbol:{
 				'markerType': 'ellipse',
-				'markerFill': color,
+				'markerFill': quest.color, //'#FBBF24',//color,
 				'markerFillOpacity': 0.8,
 				'markerLineWidth': 0,
 				'markerWidth': 75,
 				'markerHeight': 75
+			}
+		}
+      );
+  var icon2 = new maptalks.Marker(
+        [quest.position[1], quest.position[0]],
+		{
+			'id': quest.id,
+			symbol:{
+				'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
+				'markerWidth'  : 28,
+				'markerHeight' : 28,
+				'markerDx'     : 0,
+				'markerDy'     : 0,
+				'markerOpacity': 1
 			}
 		}
       );
@@ -741,13 +769,15 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	}
   );
 
-  const col = new maptalks.GeometryCollection([icon, text], {
+  const col = new maptalks.GeometryCollection([icon2, text], {
 	id: quest.id,
 	draggable: false,
   });
-  icon.on("click", (e) => {
-	setSelectedGeometry(quest.id);
-	setSelectedEntityId(null);
+  col.on("click", (e) => {
+	if (quest.status !== "Locked"){
+		setSelectedGeometry(quest.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("dragend", (e) => {
 	const pos = col.getFirstCoordinate();
@@ -755,7 +785,7 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	  position: [pos.y, pos.x],
 	});
   });
-
+  layer.addGeometry(col);
   layerQuest.addGeometry(icon);
 
 }
@@ -769,29 +799,42 @@ function renderGeometry(
 ) {
   const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
   const layerQuest = map.getLayer("quest") as maptalks.VectorLayer;
-  for (const geo of layer.getGeometries()) {
-    if (!geometry.has((geo as any)._id as number)) {
+  const layerQuestPin = map.getLayer("quest-pin") as maptalks.VectorLayer;
+  for (const geo of layer.getGeometries() ) {
+    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
+      geo.remove();
+    }
+  }
+  for (const geo of layerQuest.getGeometries()) {
+    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
+      geo.remove();
+    } 
+  }
+  for (const geo of layerQuestPin.getGeometries()) {
+    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
       geo.remove();
     }
   }
 
   for (const geo of geometry.valueSeq()) {
-    if (geo.type === "markpoint") {
-      renderMarkPoint(layer, geo);
-    } else if (geo.type === "zone") {
-      renderZone(layer, geo);
-    } else if (geo.type === "waypoints") {
-	  renderWaypoints(layer, geo);
-	} else if (geo.type === "circle") {
-	  renderCircle(layer, geo);
-	} else if (geo.type === "line") {
-	  renderLine(layer, geo);
-	} else if (geo.type === "border") {
-	  renderLine(layer, geo);
-	} else if (geo.type === "recon") {
-	  renderRecon(layer, geo);
-	} else if (geo.type === "quest") {
-	  renderQuest(layer, layerQuest, geo);
+	if (geo.status !== "Deleted") {
+		if (geo.type === "markpoint") {
+		  renderMarkPoint(layer, geo);
+		} else if (geo.type === "zone") {
+		  renderZone(layer, geo);
+		} else if (geo.type === "waypoints") {
+		  renderWaypoints(layer, geo);
+		} else if (geo.type === "circle") {
+		  renderCircle(layer, geo);
+		} else if (geo.type === "line") {
+		  renderLine(layer, geo);
+		} else if (geo.type === "border") {
+		  renderLine(layer, geo);
+		} else if (geo.type === "recon") {
+		  renderRecon(layer, geo);
+		} else if (geo.type === "quest") {
+		  renderQuest(layerQuestPin, layerQuest, geo);
+		}
 	}
   }
 }

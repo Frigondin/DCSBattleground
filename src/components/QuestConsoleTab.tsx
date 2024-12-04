@@ -24,39 +24,39 @@ export default function QuestConsoleTab({ map }: { map: maptalks.Map }) {
     <div className="p-2">
       <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
         {geometry.valueSeq().sort((a, b) => a.id > b.id ? 1 : -1).map((it) => {
-		  if (it.type === "quest") {
-			  return (
-				<button
-				  key={it.id}
-				  className={classNames(
-					"bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1",
-					{ "bg-indigo-200 border-indigo-300": it.id === selectedId }
-				  )}
-				  onClick={() => {
-					setSelectedGeometry(it.id);
-					setSelectedEntityId(null);
+			  if (it.type === "quest") {
+				  return (
+					<button
+					  key={it.id}
+					  className={classNames(
+						"bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1",
+						{ "bg-indigo-200 border-indigo-300": it.id === selectedId }
+					  )}
+					  onClick={() => {
+						setSelectedGeometry(it.id);
+						setSelectedEntityId(null);
 
-					let position;
-					position = [it.position[1], it.position[0]];
+						let position;
+						position = [it.position[1], it.position[0]];
 
-					if (position) {
-					  map.animateTo(
-						{
-						  center: position,
-						  zoom: 10,
-						},
-						{
-						  duration: 250,
-						  easing: "out",
+						if (position) {
+						  map.animateTo(
+							{
+							  center: position,
+							  zoom: 10,
+							},
+							{
+							  duration: 250,
+							  easing: "out",
+							}
+						  );
 						}
-					  );
-					}
-				  }}
-				>
-				  {it.name || `${it.type} #${it.id}`}
-				</button>
-			  );
-		  }
+					  }}
+					>
+					  {it.name || `${it.type} #${it.id}`}
+					</button>
+				  );
+			  }
         })}
       </div>
     </div>

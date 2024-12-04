@@ -13,6 +13,8 @@ export type GeometryBase = {
   coalition: string;
   discordName: string;
   avatar: string;
+  status: string;
+  color: string;
 };
 
 export type MarkPoint = {
@@ -58,6 +60,9 @@ export type Quest = {
   screenshot: Array<string>;
   description: Array<string>;
   task:	Array<JSON>;
+  status: string;
+  color: string;
+  subType: string;
 } & GeometryBase;
 
 export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Border | Recon | Quest;
@@ -103,7 +108,7 @@ export function setSelectedGeometry(id: number | null) {
   geometryStore.setState({ selectedGeometry: id });
 }
 
-export function addZone(points: Array<[number, number]>) {
+export function addZone(points: Array<[number, number]>, color: string) {
 	const { entities, offset, server } = serverStore.getState();
 	geometryStore.setState((state) => {
 	return {
@@ -116,12 +121,14 @@ export function addZone(points: Array<[number, number]>) {
 			avatar: server?.avatar as string,
 			type: "zone",
 			points,
+			color: color,
+			status: 'Active'
 		  }),
 		};
 	});
 }
 
-export function addMarkPoint(position: [number, number]) {
+export function addMarkPoint(position: [number, number], color: string) {
 	const { entities, offset, server } = serverStore.getState();
 	geometryStore.setState((state) => {
 		return {
@@ -134,12 +141,15 @@ export function addMarkPoint(position: [number, number]) {
 			avatar: server?.avatar as string,
 			type: "markpoint",
 			position,
+			//color: '#0068FF',
+			color: color,
+			status: 'Active'
 		  }),
 		};
 	});
 }
 
-export function addCircle(center: [number, number], radius: number) {
+export function addCircle(center: [number, number], radius: number, color: string) {
 	const { entities, offset, server } = serverStore.getState();
 
 	geometryStore.setState((state) => {
@@ -153,13 +163,15 @@ export function addCircle(center: [number, number], radius: number) {
 			avatar: server?.avatar as string,
 			type: "circle",
 			center,
-			radius
+			radius,
+			color: color,
+			status: 'Active'
 		  }),
 		};
 	});
 }
 
-export function addWaypoints(points: Array<[number, number]>) {
+export function addWaypoints(points: Array<[number, number]>, color: string) {
 	const { entities, offset, server } = serverStore.getState();
 	geometryStore.setState((state) => {
 		return {
@@ -172,12 +184,14 @@ export function addWaypoints(points: Array<[number, number]>) {
 			avatar: server?.avatar as string,
 			type: "waypoints",
 			points,
+			color: color,
+			status: 'Active'
 		  }),
 		};
 	});
 }
 
-export function addLine(points: Array<[number, number]>) {
+export function addLine(points: Array<[number, number]>, color: string) {
 	const { entities, offset, server } = serverStore.getState();
 	geometryStore.setState((state) => {
 		return {
@@ -190,6 +204,8 @@ export function addLine(points: Array<[number, number]>) {
 			avatar: server?.avatar as string,
 			type: "line",
 			points,
+			color: color,
+			status: 'Active'
 		  }),
 		};
 	});
@@ -211,7 +227,9 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						discordName: geo.discordName,
 						avatar: geo.avatar,
 						type: "markpoint",
-						position: geo.position,
+						position: geo.posPoint,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -227,6 +245,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "zone",
 						points: geo.points,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -242,6 +262,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "waypoints",
 						points: geo.points,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -257,7 +279,9 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "circle",
 						center: geo.center,
-						radius: geo.radius
+						radius: geo.radius,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -273,6 +297,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "line",
 						points: geo.points,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -288,6 +314,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "border",
 						points: geo.points,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -304,7 +332,9 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						avatar: geo.avatar,
 						type: "recon",
 						position: [coord[1], coord[0]],
-						screenshot: geo.screenshot
+						screenshot: geo.screenshot,
+						status: geo.status,
+						color: geo.color
 					  }),
 					};
 				  });
@@ -323,7 +353,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 						position: [coord[1], coord[0]],
 						screenshot: geo.screenshot,
 						description: geo.description,
-						task: geo.task
+						task: geo.task,
+						status: geo.status,
+						color: geo.color,
+						subType: geo.subType
 					  }),
 					};
 				  });

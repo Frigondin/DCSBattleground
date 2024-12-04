@@ -10,7 +10,7 @@ import (
 	//"net/http/httputil"
 	"fmt"
 	//"io/ioutil"
-	"github.com/lib/pq"
+	//"github.com/lib/pq"
 	//"strings"
 	//"io"
 	"strconv"
@@ -49,11 +49,20 @@ type geometry struct {
 	Radius	 	float32  	`json:"radius"`
 	TypeSubmit 	string  	`json:"typeSubmit"`
 	PosMGRS		string 		`json:"posMGRS"`
+	PosPoint	[]float32	`json:"posPoint"`
 	Screenshot 	[]string  	`json:"screenshot"`
 	Description []string	`json:"description"`
 	Side		string		`json:"side"`
 	Server		string		`json:"server"`
 	Task		interface{}	`json:"task"`
+	Status		string		`json:"status"`
+	Color		string		`json:"color"`
+	SubType		string		`json:"subType"`
+}
+
+type bg_geometry struct {
+	node		string
+	data		DataJson
 }
 
 type geometryList struct {
@@ -360,7 +369,9 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	coalition := getCoalition(h.sessions[serverName].server, session_token)
 	dcsName := h.sessions[serverName].server.DcsName	
 
-    var geo geometry
+
+
+	var geo geometry
 	
     err2 := json.NewDecoder(r.Body).Decode(&geo)
     if err2 != nil {
@@ -371,12 +382,43 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 
 	err = db.Ping()
 	if err == nil {
-		if (geo.TypeSubmit == "share" && geo.Id > 0 && geo.Id < 10000) {
-			sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
-							VALUES (nextval('bg_geometry_id_seq'),'` + geo.Type + `','` + geo.Name + `','` + geo.DiscordName + `','` + geo.Avatar + `', '', null,'` + coalition + `','` + dcsName + `', $1, $2, $3, $4)`
-			_, err = db.Exec(sqlStatement, pq.Array(geo.Position), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
-
+		if (geo.TypeSubmit == "share") {
+			//sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
+			//				VALUES (nextval('bg_geometry_id_seq'),'` + geo.Type + `','` + geo.Name + `','` + geo.DiscordName + `','` + geo.Avatar + `', '', null,'` + coalition + `','` + dcsName + `', $1, $2, $3, $4)`
+			//_, err = db.Exec(sqlStatement, pq.Array(geo.Position), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+			
+			var	DataJson DataJson
+			DataJson.Command = "sendEmbed"
+			DataJson.Color = 113805 
+			DataJson.Title = geo.Name
+			DataJson.Author.Name = geo.DiscordName
+			DataJson.Author.Icon_url = geo.Avatar
+			DataJson.Field.PosMGRS = geo.PosMGRS
+			DataJson.Field.PosPoint = geo.PosPoint
+			DataJson.Field.PosType = "POINT"
+			DataJson.Field.Side = geo.Side
+			DataJson.Field.Color = geo.Color
+			DataJson.Field.Status = "Shared"
+			DataJson.Field.Type = geo.Type
+			DataJson.Field.Screenshot = geo.Screenshot
+			DataJson.Field.Description = geo.Description
+			DataJson.Field.Points = geo.Points
+			DataJson.Field.Center = geo.Center
+			DataJson.Field.Radius = geo.Radius
+			
+			data, err := json.Marshal(DataJson)
+			//fmt.Println(string(data))
+			//dataRaw := json.RawMessage(data)
+			CheckError(err)					
+			
+			sqlStatement := `INSERT INTO bg_geometry2 (node, data)
+							VALUES ('` + dcsName + `', '` + string(data) + `')`
+			_, err = db.Exec(sqlStatement)
+			//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+			
+							
 			//fmt.Println(sqlStatement)
+			//fmt.Println(string(data))
 			CheckError(err)
 		}
 		if (geo.TypeSubmit == "delete" && geo.Id > 10000) {
@@ -387,11 +429,11 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 			}
-			_, e := db.Exec(`DELETE FROM bg_geometry where id=` + strconv.Itoa(geo.Id))
+			_, e := db.Exec(`DELETE FROM bg_geometry2 where id=` + strconv.Itoa(geo.Id))
 			CheckError(e)
 		}
 	} else {
-		if (geo.TypeSubmit == "share" && geo.Id > 0 && geo.Id < 10000) {
+		if (geo.TypeSubmit == "share") {
 			counter = counter + 1
 			geo.Id = counter
 			geo.Side = coalition
@@ -591,6 +633,7 @@ func Run(config *Config) error {
 		}
 	})
 	r.Get("/static/*", server.serveEmbeddedStaticAssets)
+	r.Get("/images/*", server.serveEmbeddedStaticAssetsExternal)
 	r.Get("/api/servers", server.getServerList)
 	r.Get("/api/servers/{serverName}", server.getServer)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)
