@@ -1,27 +1,73 @@
 import classNames from "classnames";
 import * as maptalks from "maptalks";
-import React from "react";
-import { BiShapeCircle, BiShapeSquare, BiRadioCircle, BiPencil, BiShareAlt, BiRuler, BiMinus } from "react-icons/bi";
+import React, { useState } from "react";
+import { BiMapPin } from "react-icons/bi";
 import {
-  addMarkPoint,
-  addZone,
-  addWaypoints,
-  addCircle,
-  addLine,
+  addQuest,
   geometryStore,
-  setSelectedGeometry,
+  setSelectedGeometry
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
 import { setSelectedEntityId } from "../stores/ServerStore";
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/css";
 
 export default function QuestConsoleTab({ map }: { map: maptalks.Map }) {
   const [geometry, selectedId] = geometryStore((state) => [
     state.geometry,
     state.selectedGeometry,
   ]);
+const [color, setColor] = useColor("#0068FF");
+const [draw, setDraw] = useState("");
 
   return (
     <div className="p-2">
+      <div className="">
+		<ColorPicker color={color} hideInput={["rgb", "hsv"]} hideAlpha={true} height={100} onChange={setColor} />
+	  </div>
+      <div className="flex flex-row text-left items-center w-full gap-2 ml-auto">
+					<button
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Quest" }
+								  )}
+					  
+					  onClick={() => {
+						// const center = map.getCenter();
+						// addMarkPoint([center.y, center.x]);
+						setDraw("Quest");
+						var drawTool = new maptalks.DrawTool({
+							mode: 'Point',
+							once: true,
+							symbol:{
+								'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
+								'markerWidth'  : 28,
+								'markerHeight' : 28,
+								'markerDx'     : 0,
+								'markerDy'     : 0,
+								'markerOpacity': 1
+							}
+						}).addTo(map).disable();
+						//document.body.style.cursor = "crosshair";
+						
+						// drawTool.on('mousemove', function(param) {
+						
+						// });
+						drawTool.on('drawend', function(param) {
+							setDraw("")
+							//let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
+							const pos = param!.geometry!.getFirstCoordinate();
+							//let coords:[number, number][] = [];
+							addQuest([pos.y, pos.x], color.hex);
+							//document.body.style.cursor = "auto";
+						});
+						drawTool.setMode('Point').enable(); 
+						
+					  }}
+					>
+					  Mission
+					  <BiMapPin className="ml-2 inline-block" />
+					</button>
+	  </div>
       <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
         {geometry.valueSeq().sort((a, b) => a.id > b.id ? 1 : -1).map((it) => {
 			  if (it.type === "quest") {

@@ -10,10 +10,13 @@ import {
 export type GeometryBase = {
   id: number;
   name?: string;
+  timeStamp: string;
   coalition: string;
   discordName: string;
   avatar: string;
   status: string;
+  clickable: boolean;
+  store: string;
   color: string;
 };
 
@@ -99,7 +102,7 @@ export function updateGeometrySafe(id: number, value: Partial<Geometry>) {
     if (!existing) return;
     return {
       ...state,
-      geometry: state.geometry.set(id, { ...existing, ...value } as Geometry),
+      geometry: state.geometry.set(id, { ...existing, ...value, timeStamp: new Date().toISOString() } as Geometry),
     };
   });
 }
@@ -116,13 +119,16 @@ export function addZone(points: Array<[number, number]>, color: string) {
 		  id: state.id + 1,
 		  geometry: state.geometry.set(state.id, {
 			id: state.id,
+			timeStamp: new Date().toISOString(),
 			coalition: server?.coalition as string,
 			discordName: server?.discord_name as string,
 			avatar: server?.avatar as string,
 			type: "zone",
 			points,
 			color: color,
-			status: 'Active'
+			status: 'Active',
+			clickable: true,
+			store: "local"
 		  }),
 		};
 	});
@@ -136,6 +142,7 @@ export function addMarkPoint(position: [number, number], color: string) {
 		  id: state.id + 1,
 		  geometry: state.geometry.set(state.id, {
 			id: state.id,
+			timeStamp: new Date().toISOString(),
 			coalition: server?.coalition as string,
 			discordName: server?.discord_name as string,
 			avatar: server?.avatar as string,
@@ -143,7 +150,9 @@ export function addMarkPoint(position: [number, number], color: string) {
 			position,
 			//color: '#0068FF',
 			color: color,
-			status: 'Active'
+			status: 'Active',
+			clickable: true,
+			store: "local"
 		  }),
 		};
 	});
@@ -158,6 +167,7 @@ export function addCircle(center: [number, number], radius: number, color: strin
 		  id: state.id + 1,
 		  geometry: state.geometry.set(state.id, {
 			id: state.id,
+			timeStamp: new Date().toISOString(),
 			coalition: server?.coalition as string,
 			discordName: server?.discord_name as string,
 			avatar: server?.avatar as string,
@@ -165,7 +175,9 @@ export function addCircle(center: [number, number], radius: number, color: strin
 			center,
 			radius,
 			color: color,
-			status: 'Active'
+			status: 'Active',
+			clickable: true,
+			store: "local"
 		  }),
 		};
 	});
@@ -179,13 +191,16 @@ export function addWaypoints(points: Array<[number, number]>, color: string) {
 		  id: state.id + 1,
 		  geometry: state.geometry.set(state.id, {
 			id: state.id,
+			timeStamp: new Date().toISOString(),
 			coalition: server?.coalition as string,
 			discordName: server?.discord_name as string,
 			avatar: server?.avatar as string,
 			type: "waypoints",
 			points,
 			color: color,
-			status: 'Active'
+			status: 'Active',
+			clickable: true,
+			store: "local"
 		  }),
 		};
 	});
@@ -199,13 +214,43 @@ export function addLine(points: Array<[number, number]>, color: string) {
 		  id: state.id + 1,
 		  geometry: state.geometry.set(state.id, {
 			id: state.id,
+			timeStamp: new Date().toISOString(),
 			coalition: server?.coalition as string,
 			discordName: server?.discord_name as string,
 			avatar: server?.avatar as string,
 			type: "line",
 			points,
 			color: color,
-			status: 'Active'
+			status: 'Active',
+			clickable: true,
+			store: "local"
+		  }),
+		};
+	});
+}
+
+export function addQuest(position: [number, number], color: string) {
+	const { entities, offset, server } = serverStore.getState();
+	geometryStore.setState((state) => {
+		return {
+		  ...state,
+		  id: state.id + 1,
+		  geometry: state.geometry.set(state.id, {
+			id: state.id,
+			timeStamp: new Date().toISOString(),
+			coalition: server?.coalition as string,
+			discordName: server?.discord_name as string,
+			avatar: server?.avatar as string,
+			type: "quest",
+			position,
+			screenshot: [],
+			description: [],
+			task: [],
+			color: color,
+			status: 'Active',
+			clickable: true,
+			subType: "",
+			store: "local"
 		  }),
 		};
 	});
@@ -214,152 +259,192 @@ export function addLine(points: Array<[number, number]>, color: string) {
 
 
 export function addGlobalGeometry(geoList:any, coalition:string) {
+	  //const [geometryTmp, selectedId] = geometryStore((state) => [
+	//	state.geometry,
+	//	state.selectedGeometry,
+	//  ]);
+
+	const {geometry, id, selectedGeometry} = geometryStore.getState();
+	const { editor_mode_on } = serverStore.getState();
+	//const editor_mode_on = serverStore((state) => state?.editor_mode_on);
+	
 	geoList.forEach((geo:any) => {
-		if (coalition == "GM" || coalition == geo.side) {
-			if (geo.type === "markpoint") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "markpoint",
-						position: geo.posPoint,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "zone") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "zone",
-						points: geo.points,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "waypoints") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "waypoints",
-						points: geo.points,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "circle") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "circle",
-						center: geo.center,
-						radius: geo.radius,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "line") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "line",
-						points: geo.points,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "border") {
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "border",
-						points: geo.points,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "recon") {
-				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "recon",
-						position: [coord[1], coord[0]],
-						screenshot: geo.screenshot,
-						status: geo.status,
-						color: geo.color
-					  }),
-					};
-				  });
-			} else if (geo.type === "quest") {
-				const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
-				  geometryStore.setState((state) => {
-					return {
-					  ...state,
-					  geometry: state.geometry.set(geo.id, {
-						id: geo.id,
-						name: geo.name,
-						coalition: geo.side,
-						discordName: geo.discordName,
-						avatar: geo.avatar,
-						type: "quest",
-						position: [coord[1], coord[0]],
-						screenshot: geo.screenshot,
-						description: geo.description,
-						task: geo.task,
-						status: geo.status,
-						color: geo.color,
-						subType: geo.subType
-					  }),
-					};
-				  });
+		if (editor_mode_on || coalition == "GM" || coalition == geo.side) {
+			var geonew = geometry.get(geo.id);
+			if (geonew && geonew.timeStamp > geo.timeStamp) {
+				console.log(geonew.timeStamp);
+				console.log(geo.timeStamp);
+			}
+			else {
+				if (geo.type === "markpoint") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "markpoint",
+							position: geo.posPoint,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "zone") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "zone",
+							points: geo.points,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "waypoints") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "waypoints",
+							points: geo.points,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "circle") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "circle",
+							center: geo.center,
+							radius: geo.radius,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "line") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "line",
+							points: geo.points,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "border") {
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "border",
+							points: geo.points,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "recon") {
+					const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "recon",
+							position: [coord[1], coord[0]],
+							screenshot: geo.screenshot,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							store: "server"
+						  }),
+						};
+					  });
+				} else if (geo.type === "quest") {
+					const coord = mgrs.toPoint(geo.posMGRS.replace(" ", ""));
+					  geometryStore.setState((state) => {
+						return {
+						  ...state,
+						  geometry: state.geometry.set(geo.id, {
+							id: geo.id,
+							timeStamp: geo.timeStamp,
+							name: geo.name,
+							coalition: geo.side,
+							discordName: geo.discordName,
+							avatar: geo.avatar,
+							type: "quest",
+							position: [coord[1], coord[0]],
+							screenshot: geo.screenshot,
+							description: geo.description,
+							task: geo.task,
+							status: geo.status,
+							clickable: geo.clickable,
+							color: geo.color,
+							subType: geo.subType,
+							store: "server"
+						  }),
+						};
+					  });
+				}
 			}
 		}
 	});

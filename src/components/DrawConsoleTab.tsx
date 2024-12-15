@@ -12,7 +12,7 @@ import {
   setSelectedGeometry
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
-import { setSelectedEntityId,  } from "../stores/ServerStore";
+import { setSelectedEntityId,  serverStore} from "../stores/ServerStore";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 
@@ -26,8 +26,8 @@ const [draw, setDraw] = useState("");
 
   return (
     <div className="p-2">
-      <div className="flex flex-row text-left items-center w-full gap-2 ml-auto">
-		<ColorPicker color={color} hideInput={["rgb", "hsv"]} onChange={setColor} />
+      <div className="">
+		<ColorPicker color={color} hideInput={["rgb", "hsv"]} hideAlpha={true} height={100} onChange={setColor} />
 	  </div>
       <div className="flex flex-row text-left items-center w-full gap-2 ml-auto">
 		<table>
@@ -266,7 +266,8 @@ const [draw, setDraw] = useState("");
 	  </div>
       <div className="my-2 flex flex-col gap-1 max-h-56 overflow-auto">
         {geometry.valueSeq().map((it) => {
-		  if (it.type !== "quest" && it.type !== "border" && it.status !== "Locked") {
+		  const { editor_mode_on } = serverStore.getState();
+		  if (it.type !== "quest" && (it.clickable || editor_mode_on)) {
 			  return (
 				<button
 				  key={it.id}

@@ -86,8 +86,11 @@ function renderCombatZones(
 ) {
   const groundUnitMode = settingsStore.getState().map.groundUnitMode;
   const coalition = server?.coalition;
+  const { editor_mode_on } = serverStore.getState();
   const isVisible = (target: Entity) => {
-	if (coalition === "blue" && target.coalition === "Enemies") {
+	if (coalition === "GM" || editor_mode_on) {
+		return true
+	} else if (coalition === "blue" && target.coalition === "Enemies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.FRIENDLY)
 	} else if (coalition === "blue" && target.coalition === "Allies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.ENEMY)
@@ -95,8 +98,6 @@ function renderCombatZones(
 		return server?.ground_unit_modes.includes(GroundUnitMode.ENEMY)
 	} else if (coalition === "red" && target.coalition === "Allies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.FRIENDLY)
-	} else if (coalition === "GM") {
-		return true
 	}
     return false;
   };

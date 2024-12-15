@@ -137,8 +137,9 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
     }
 	var layerRed = map.getLayer("ground-units-red") as maptalks.VectorLayer;
 	var layerBlue = map.getLayer("ground-units-blue") as maptalks.VectorLayer;
+	const { editor_mode_on } = serverStore.getState();
 	const isVisible = (target: Entity) => {
-		if (coalition === "GM")  {
+		if (coalition === "GM" || editor_mode_on)  {
 			return true
 		} else if (coalition === "blue" && target.coalition === "Enemies" && target.types.includes("Air")) {
 			return server?.flight_unit_modes.includes(FlightUnitMode.FRIENDLY)

@@ -20,7 +20,7 @@ import {
   Recon,
   Quest
 } from "../stores/GeometryStore";
-import { setSelectedEntityId } from "../stores/ServerStore";
+import { setSelectedEntityId, serverStore } from "../stores/ServerStore";
 
 
 const markPointSIDC = "GHG-GPRN--";
@@ -190,7 +190,10 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
     draggable: false,
   });
   col.on("click", (e) => {
-	if (waypoints.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(waypoints.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(waypoints.id);
 		setSelectedEntityId(null);
 	}
@@ -300,7 +303,10 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
     draggable: false,
   });
   col.on("click", (e) => {
-	if (line.type !== "border" && line.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(line.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(line.id);
 		setSelectedEntityId(null);
 	}
@@ -385,12 +391,16 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     }
   );
 
+  
   const col = new maptalks.GeometryCollection([polygon, text], {
     id: zone.id,
     draggable: false,
   });
   col.on("click", (e) => {
-	if (zone.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(zone.id);
 		setSelectedEntityId(null);
 	}
@@ -477,12 +487,16 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     }
   );
 
+  
   const col = new maptalks.GeometryCollection([circleMap, text], {
     id: circle.id,
     draggable: false,
   });
   col.on("click", (e) => {
-	if (circle.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(circle.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(circle.id);
 		setSelectedEntityId(null);
 	}
@@ -580,7 +594,10 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
     draggable: false,
   });
   col.on("click", (e) => {
-	if (markPoint.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(markPoint.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(markPoint.id);
 		setSelectedEntityId(null);
 	}
@@ -670,8 +687,13 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 	draggable: false,
   });
   col.on("click", (e) => {
-	setSelectedGeometry(recon.id);
-	setSelectedEntityId(null);
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(recon.id)!.clickable
+	
+	if (clickable || editor_mode_on){
+		setSelectedGeometry(recon.id);
+		setSelectedEntityId(null);
+	}
   });
   col.on("dragend", (e) => {
 	const pos = col.getFirstCoordinate();
@@ -692,7 +714,7 @@ function getGradient(colors:any) {
 }
 
 function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLayer, quest: Quest) {
-  const collection = layerQuest.getGeometryById(
+  const collection = layer.getGeometryById(
     quest.id
   ) as maptalks.GeometryCollection;
   //console.log(quest.color);
@@ -701,6 +723,15 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 //	return;
 //  }
   if (collection) {
+    const [icon, text] = collection.getGeometries() as [
+      maptalks.Marker,
+      maptalks.Label
+    ];
+
+    icon.setCoordinates([quest.position[1], quest.position[0]]);
+    text.setCoordinates([quest.position[1], quest.position[0]]);
+    (text.setContent as any)(quest.name || `Quest #${quest.id}`);
+
     return;
   }
 
@@ -774,7 +805,10 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	draggable: false,
   });
   col.on("click", (e) => {
-	if (quest.status !== "Locked"){
+    const { editor_mode_on } = serverStore.getState();
+	const clickable = geometryStore!.getState()!.geometry!.get(quest.id)!.clickable
+	
+	if (clickable || editor_mode_on){
 		setSelectedGeometry(quest.id);
 		setSelectedEntityId(null);
 	}
@@ -782,7 +816,7 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
   col.on("dragend", (e) => {
 	const pos = col.getFirstCoordinate();
 	updateGeometrySafe(quest.id, {
-	  position: [pos.y, pos.x],
+		position: [pos.y, pos.x],
 	});
   });
   layer.addGeometry(col);
@@ -819,58 +853,58 @@ function renderGeometry(
   for (const geo of geometry.valueSeq()) {
 	if (geo.status !== "Deleted") {
 		if (geo.type === "markpoint") {
-		  renderMarkPoint(layer, geo);
+			renderMarkPoint(layer, geo);
 		} else if (geo.type === "zone") {
-		  renderZone(layer, geo);
+			renderZone(layer, geo);
 		} else if (geo.type === "waypoints") {
-		  renderWaypoints(layer, geo);
+			renderWaypoints(layer, geo);
 		} else if (geo.type === "circle") {
-		  renderCircle(layer, geo);
+			renderCircle(layer, geo);
 		} else if (geo.type === "line") {
-		  renderLine(layer, geo);
+			renderLine(layer, geo);
 		} else if (geo.type === "border") {
-		  renderLine(layer, geo);
+			renderLine(layer, geo);
 		} else if (geo.type === "recon") {
-		  renderRecon(layer, geo);
+			renderRecon(layer, geo);
 		} else if (geo.type === "quest") {
-		  renderQuest(layerQuestPin, layerQuest, geo);
+			renderQuest(layerQuestPin, layerQuest, geo);
 		}
 	}
   }
 }
 
 export default function useRenderGeometry(map: maptalks.Map | null) {
-  if (iconCache[markPointSIDC] === undefined) {
-    iconCache[markPointSIDC] = new ms.Symbol(markPointSIDC, {
-      size: 14,
-      frame: false,
-      fill: true,
-      strokeWidth: 8,
-      monoColor: "#FDE68A",
-    }).toDataURL();
-  }
-  if (iconCache[reconSIDC] === undefined) {
-    iconCache[reconSIDC] = new ms.Symbol(reconSIDC, {
-      size: 20,
-      frame: false,
-      fill: true,
-      strokeWidth: 11,
-      monoColor: "#FF2802",
-    }).toDataURL();
-  }
-  useEffect(() => {
-    return geometryStore.subscribe(
-      (geometry: Immutable.Map<number, Geometry>) => {
-        if (map === null) return;
-        renderGeometry(map, geometry);
-      },
-      (state) => state.geometry
-    );
-  }, [map]);
+	if (iconCache[markPointSIDC] === undefined) {
+		iconCache[markPointSIDC] = new ms.Symbol(markPointSIDC, {
+			size: 14,
+			frame: false,
+			fill: true,
+			strokeWidth: 8,
+			monoColor: "#FDE68A",
+		}).toDataURL();
+	}
+	if (iconCache[reconSIDC] === undefined) {
+		iconCache[reconSIDC] = new ms.Symbol(reconSIDC, {
+			size: 20,
+			frame: false,
+			fill: true,
+			strokeWidth: 11,
+			monoColor: "#FF2802",
+		}).toDataURL();
+	}
+	useEffect(() => {
+		return geometryStore.subscribe(
+			(geometry: Immutable.Map<number, Geometry>) => {
+				if (map === null) return;
+					renderGeometry(map, geometry);
+				},
+			(state) => state.geometry
+		);
+	}, [map]);
 
-  useEffect(() => {
-    if (map !== null) {
-      renderGeometry(map, geometryStore.getState().geometry);
-    }
-  }, [map]);
+	useEffect(() => {
+		if (map !== null) {
+			renderGeometry(map, geometryStore.getState().geometry);
+		}
+	}, [map]);
 }

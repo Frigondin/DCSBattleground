@@ -83,6 +83,7 @@ type Field struct {
 	Description	[]string	`json:"description"`
 	Side		string		`json:"side"`
 	Status		string		`json:"status"`
+	Clickable	bool		`json:"clickable"`
 	Color		string		`json:"color"`
 	SubType		string		`json:"subType"`
 	Type		string		`json:"type"`
@@ -326,6 +327,7 @@ func (s *serverSession) runSharedGeometry() error {
 			
 			var geo geometry
 			geo.Id = Id
+			geo.TimeStamp = Time
 			geo.Type = DataJson.Field.Type
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
@@ -336,6 +338,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
 			geo.Status = DataJson.Field.Status
+			geo.Clickable = DataJson.Field.Clickable
 			geo.Color = DataJson.Field.Color
 			geo.Points = DataJson.Field.Points
 			geo.Center = DataJson.Field.Center
@@ -394,7 +397,8 @@ func (s *serverSession) runSharedGeometry() error {
 			CheckError(err)
 			
 			var geo geometry
-			geo.Id = Id+30000
+			geo.Id = Id
+			geo.TimeStamp = Time
 			geo.Type = "quest"
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
@@ -405,6 +409,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Description = DataJson.Field.Description
 			geo.Side = DataJson.Field.Side
 			geo.Status = DataJson.Field.Status
+			geo.Clickable = DataJson.Field.Clickable
 			geo.Color = DataJson.Field.Color
 			geo.SubType = DataJson.Field.SubType
 			geo.Server = DcsName
@@ -458,6 +463,7 @@ func (s *serverSession) runSharedGeometry() error {
 			
 			var geo geometry
 			geo.Id = Id
+			geo.TimeStamp = Time
 			geo.Type = DataJson.Field.Type
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
@@ -468,6 +474,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
 			geo.Status = DataJson.Field.Status
+			geo.Clickable = DataJson.Field.Clickable
 			geo.Color = DataJson.Field.Color
 			geo.Points = DataJson.Field.Points
 			geo.Center = DataJson.Field.Center

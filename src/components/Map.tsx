@@ -564,7 +564,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 
   const farps = useMemo(
     () => {
-			if (server?.coalition === "GM") {
+			const { editor_mode_on } = serverStore.getState();
+			if (server?.coalition === "GM" || editor_mode_on) {
 				return entities.filter(
 					(it) => it.types.includes("Aerodrome")
 				)

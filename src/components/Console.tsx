@@ -2,9 +2,9 @@ import classNames from "classnames";
 import * as maptalks from "maptalks";
 import React, { useMemo, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap } from "react-icons/bi";
+import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
-import { serverStore, setSelectedEntityId } from "../stores/ServerStore";
+import { serverStore, setSelectedEntityId, updateServerStore } from "../stores/ServerStore";
 import {
   EntityTrackPing,
   estimatedSpeed,
@@ -329,10 +329,15 @@ export function Console({
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
+  const is_editor = serverStore((state) => state?.server?.is_editor);
+  const editor_mode_on = serverStore((state) => state?.editor_mode_on);
   const player_name = serverStore((state) => state?.server?.player_name);
   return (
     <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
+			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) :
+													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
+						</div>)}
 			<div>Connected as {discord_name}</div>
 			<div className="flex flex-row gap-2"><ReactRoundedImage image={avatar} imageWidth="30" imageHeight="30" roundedSize="3"/></div>
 	  </div>
@@ -341,6 +346,7 @@ export function Console({
 			<div style={{maxWidth: "15px"}} className="flex flex-row gap-2"><img src="/static/connected.png"/></div>
 	  </div>)
 	  }
+	  
 	  {!is_connected && (<div className="p-2 flex flex-row gap-2 align-middle ml-auto text-xs pr-4 pt-0">
 			<div>Not connected to DCS</div>
 			<div style={{maxWidth: "15px"}} className="flex flex-row gap-2"><img src="/static/notconnected.png"/></div>
@@ -349,7 +355,8 @@ export function Console({
       <div className="bg-gray-300 text-sm p-2 flex flex-row gap-2">
         <div>
           <button
-            onClick={() => setSelectedTab("draw")}
+            title="Draw"
+			onClick={() => setSelectedTab("draw")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
               { "bg-blue-200": selectedTab === "draw" }
@@ -360,6 +367,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Missions"
             onClick={() => setSelectedTab("quest")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
@@ -371,6 +379,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Show / hide layers"
             onClick={() => setSelectedTab("watch")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
@@ -383,6 +392,7 @@ export function Console({
         <div className="ml-auto flex flex-row gap-2">
           { selectedTab !== null && (
             <button
+              title="Close current tab"
               className="border bg-red-100 border-red-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
               onClick={() => setSelectedTab(null)}
             >
@@ -392,6 +402,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Scratch pad"
             className="border bg-yellow-100 border-yellow-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
             onClick={() => setScratchPadOpen(true)}
           >
