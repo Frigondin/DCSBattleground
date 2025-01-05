@@ -12,7 +12,8 @@ yarn-debug.log*
 yarn-error.log*
 /scratch.txt
 /config.json
-/sneaker.exe
+/DCSBattleground.exe
+/DCSBattleground
 /sneaker-server
 /state.json
 *.bak
