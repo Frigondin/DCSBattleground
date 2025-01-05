@@ -2,9 +2,9 @@ import classNames from "classnames";
 import * as maptalks from "maptalks";
 import React, { useMemo, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap } from "react-icons/bi";
+import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
-import { serverStore, setSelectedEntityId } from "../stores/ServerStore";
+import { serverStore, setSelectedEntityId, updateServerStore } from "../stores/ServerStore";
 import {
   EntityTrackPing,
   estimatedSpeed,
@@ -26,18 +26,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("pretty").isVisible() === true && (
+						{map.getLayer("pretty")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("pretty").hide(); map.getLayer("base").show(); setSelectedButton("PrettyMap-Off")}}
+									onClick={() => {map.getLayer("pretty")!.hide(); map.getLayer("base")!.show(); setSelectedButton("PrettyMap-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("pretty").isVisible() && (
+						{!map.getLayer("pretty")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("pretty").show(); map.getLayer("base").hide(); map.getLayer("CaucasusMap").hide(); map.getLayer("CaucasusBorder").hide(); setSelectedButton("PrettyMap-On")}}
+								onClick={() => {map.getLayer("pretty")!.show(); map.getLayer("base")!.hide(); map.getLayer("CaucasusMap")!.hide(); map.getLayer("CaucasusBorder")!.hide(); setSelectedButton("PrettyMap-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -51,18 +51,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("CaucasusMap").isVisible() === true && (
+						{map.getLayer("CaucasusMap")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("CaucasusMap").hide(); setSelectedButton("CaucasusMap-Off")}}
+									onClick={() => {map.getLayer("CaucasusMap")!.hide(); setSelectedButton("CaucasusMap-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("CaucasusMap").isVisible() && (
+						{!map.getLayer("CaucasusMap")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("CaucasusMap").show(); setSelectedButton("CaucasusMap-On");map.getLayer("pretty").hide(); map.getLayer("base").show();}}
+								onClick={() => {map.getLayer("CaucasusMap")!.show(); setSelectedButton("CaucasusMap-On");map.getLayer("pretty")!.hide(); map.getLayer("base")!.show();}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -76,18 +76,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("CaucasusBorder").isVisible() === true && (
+						{map.getLayer("CaucasusBorder")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("CaucasusBorder").hide(); setSelectedButton("CaucasusBorder-Off")}}
+									onClick={() => {map.getLayer("CaucasusBorder")!.hide(); setSelectedButton("CaucasusBorder-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("CaucasusBorder").isVisible() && (
+						{!map.getLayer("CaucasusBorder")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("CaucasusBorder").show(); setSelectedButton("CaucasusBorder-On")}}
+								onClick={() => {map.getLayer("CaucasusBorder")!.show(); setSelectedButton("CaucasusBorder-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -101,18 +101,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("airports").isVisible() === true && (
+						{map.getLayer("airports")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("airports").hide(); map.getLayer("farp-name").hide(); map.getLayer("farp-icon").hide(); setSelectedButton("Statics-Off")}}
+									onClick={() => {map.getLayer("airports")!.hide(); map.getLayer("farp-name")!.hide(); map.getLayer("farp-icon")!.hide(); setSelectedButton("Statics-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("airports").isVisible() && (
+						{!map.getLayer("airports")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("airports").show(); map.getLayer("farp-name").show(); map.getLayer("farp-icon").show(); setSelectedButton("Statics-On")}}
+								onClick={() => {map.getLayer("airports")!.show(); map.getLayer("farp-name")!.show(); map.getLayer("farp-icon")!.show(); setSelectedButton("Statics-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -126,18 +126,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("combat-zones").isVisible() === true && (
+						{map.getLayer("combat-zones")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("combat-zones").hide(); map.getLayer("combat-zones-blue").hide(); map.getLayer("combat-zones-red").hide(); setSelectedButton("Combatzones-Off")}}
+									onClick={() => {map.getLayer("combat-zones")!.hide(); map.getLayer("combat-zones-blue")!.hide(); map.getLayer("combat-zones-red")!.hide(); setSelectedButton("Combatzones-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("combat-zones").isVisible() && (
+						{!map.getLayer("combat-zones")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("combat-zones").show(); map.getLayer("combat-zones-blue").show(); map.getLayer("combat-zones-red").show(); setSelectedButton("Combatzones-On")}}
+								onClick={() => {map.getLayer("combat-zones")!.show(); map.getLayer("combat-zones-blue")!.show(); map.getLayer("combat-zones-red")!.show(); setSelectedButton("Combatzones-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -151,18 +151,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("ground-units").isVisible() === true && (
+						{map.getLayer("ground-units")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("ground-units").hide(); map.getLayer("ground-units-blue").hide(); map.getLayer("ground-units-red").hide(); setSelectedButton("Groundunits-Off")}}
+									onClick={() => {map.getLayer("ground-units")!.hide(); map.getLayer("ground-units-blue")!.hide(); map.getLayer("ground-units-red")!.hide(); setSelectedButton("Groundunits-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("ground-units").isVisible() && (
+						{!map.getLayer("ground-units")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("ground-units").show(); map.getLayer("ground-units-blue").show(); map.getLayer("ground-units-red").show(); setSelectedButton("Groundunits-On")}}
+								onClick={() => {map.getLayer("ground-units")!.show(); map.getLayer("ground-units-blue")!.show(); map.getLayer("ground-units-red")!.show(); setSelectedButton("Groundunits-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -176,18 +176,18 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("custom-geometry").isVisible() === true && (
+						{map.getLayer("custom-geometry")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("custom-geometry").hide(); setSelectedButton("Customgeo-Off")}}
+									onClick={() => {map.getLayer("custom-geometry")!.hide(); setSelectedButton("Customgeo-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("custom-geometry").isVisible() && (
+						{!map.getLayer("custom-geometry")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("custom-geometry").show(); setSelectedButton("Customgeo-On")}}
+								onClick={() => {map.getLayer("custom-geometry")!.show(); setSelectedButton("Customgeo-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -201,23 +201,23 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("track-icons").isVisible() === true && (
+						{map.getLayer("track-icons")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("track-icons").hide(); map.getLayer("track-trails").hide(); map.getLayer("track-vv").hide(); map.getLayer("track-name").hide(); map.getLayer("track-altitude").hide(); map.getLayer("track-speed").hide(); map.getLayer("track-verticalvelo").hide(); setSelectedButton("Aircrafts-Off")}}
+									onClick={() => {map.getLayer("track-icons")!.hide(); map.getLayer("track-trails")!.hide(); map.getLayer("track-vv")!.hide(); map.getLayer("track-name")!.hide(); map.getLayer("track-altitude")!.hide(); map.getLayer("track-speed")!.hide(); map.getLayer("track-verticalvelo")!.hide(); setSelectedButton("Aircrafts-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{(view_aircraft_when_in_flight || !is_connected) && !map.getLayer("track-icons").isVisible() && (
+						{(view_aircraft_when_in_flight || !is_connected) && !map.getLayer("track-icons")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("track-icons").show(); map.getLayer("track-trails").show(); map.getLayer("track-vv").show(); map.getLayer("track-name").show(); map.getLayer("track-altitude").show(); map.getLayer("track-speed").show(); map.getLayer("track-verticalvelo").show(); setSelectedButton("Aircrafts-On")}}
+								onClick={() => {map.getLayer("track-icons")!.show(); map.getLayer("track-trails")!.show(); map.getLayer("track-vv")!.show(); map.getLayer("track-name")!.show(); map.getLayer("track-altitude")!.show(); map.getLayer("track-speed")!.show(); map.getLayer("track-verticalvelo")!.show(); setSelectedButton("Aircrafts-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
 						)}
-						{!view_aircraft_when_in_flight && is_connected && !map.getLayer("track-icons").isVisible() && (
+						{!view_aircraft_when_in_flight && is_connected && !map.getLayer("track-icons")!.isVisible() && (
 							<button 
 								className="border bg-red-300 border-red-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
 							>
@@ -329,10 +329,15 @@ export function Console({
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
+  const is_editor = serverStore((state) => state?.server?.is_editor);
+  const editor_mode_on = serverStore((state) => state?.editor_mode_on);
   const player_name = serverStore((state) => state?.server?.player_name);
   return (
     <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
+			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) :
+													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
+						</div>)}
 			<div>Connected as {discord_name}</div>
 			<div className="flex flex-row gap-2"><ReactRoundedImage image={avatar} imageWidth="30" imageHeight="30" roundedSize="3"/></div>
 	  </div>
@@ -341,6 +346,7 @@ export function Console({
 			<div style={{maxWidth: "15px"}} className="flex flex-row gap-2"><img src="/static/connected.png"/></div>
 	  </div>)
 	  }
+	  
 	  {!is_connected && (<div className="p-2 flex flex-row gap-2 align-middle ml-auto text-xs pr-4 pt-0">
 			<div>Not connected to DCS</div>
 			<div style={{maxWidth: "15px"}} className="flex flex-row gap-2"><img src="/static/notconnected.png"/></div>
@@ -349,7 +355,8 @@ export function Console({
       <div className="bg-gray-300 text-sm p-2 flex flex-row gap-2">
         <div>
           <button
-            onClick={() => setSelectedTab("draw")}
+            title="Draw"
+			onClick={() => setSelectedTab("draw")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
               { "bg-blue-200": selectedTab === "draw" }
@@ -360,6 +367,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Missions"
             onClick={() => setSelectedTab("quest")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
@@ -371,6 +379,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Show / hide layers"
             onClick={() => setSelectedTab("watch")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
@@ -383,6 +392,7 @@ export function Console({
         <div className="ml-auto flex flex-row gap-2">
           { selectedTab !== null && (
             <button
+              title="Close current tab"
               className="border bg-red-100 border-red-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
               onClick={() => setSelectedTab(null)}
             >
@@ -392,6 +402,7 @@ export function Console({
         </div>
         <div>
           <button
+            title="Scratch pad"
             className="border bg-yellow-100 border-yellow-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
             onClick={() => setScratchPadOpen(true)}
           >

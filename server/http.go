@@ -10,13 +10,13 @@ import (
 	//"net/http/httputil"
 	"fmt"
 	//"io/ioutil"
-	"github.com/lib/pq"
+	//"github.com/lib/pq"
 	//"strings"
-	//"io"
+	"io"
 	"strconv"
 	//"uuid"
 	//"session"
-	//"os"
+	"os"
 	//"net/url"
 	
 	"github.com/alioygur/gores"
@@ -25,6 +25,8 @@ import (
 	"github.com/go-chi/cors"
 	//session "github.com/stripe/stripe-go/v71/checkout/session"
 	"github.com/google/uuid"
+	"path/filepath"
+	"slices"
 	
 	disgoauth "github.com/realTristan/disgoauth"
 )
@@ -43,17 +45,29 @@ type geometry struct {
 	Name     	string  	`json:"name"`
 	DiscordName string		`json:"discordName"`
 	Avatar		string		`json:"avatar"`
-	Position 	[]float32	`json:"position"`
+	//Position 	[]float32	`json:"position"`
 	Points   	[][]float32	`json:"points"`
 	Center	 	[]float32  	`json:"center"`
 	Radius	 	float32  	`json:"radius"`
 	TypeSubmit 	string  	`json:"typeSubmit"`
 	PosMGRS		string 		`json:"posMGRS"`
+	PosPoint	[]float32	`json:"posPoint"`
 	Screenshot 	[]string  	`json:"screenshot"`
 	Description []string	`json:"description"`
 	Side		string		`json:"side"`
 	Server		string		`json:"server"`
 	Task		interface{}	`json:"task"`
+	Status		string		`json:"status"`
+	Clickable	bool		`json:"clickable"`
+	Color		string		`json:"color"`
+	SubType		string		`json:"subType"`
+	TimeStamp	string  	`json:"timeStamp"`
+	Marker		string		`json:"marker"`
+}
+
+type bg_geometry struct {
+	node		string
+	data		DataJson
 }
 
 type geometryList struct {
@@ -68,6 +82,8 @@ type sessionDiscord struct {
 	avatar		string
 }
 
+
+
 func newHttpServer(config *Config) *httpServer {
 	return &httpServer{
 		config:   config,
@@ -79,7 +95,11 @@ var SessionsDiscord = map[string]sessionDiscord{}
 
 ///////////////////////////////////
 func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_token string) serverMetadata {
-
+	isEditor := false
+	if slices.Contains(server.EditorId, SessionsDiscord[session_token].id) {
+		isEditor = true
+	}
+	
 	//log.Printf("test5 : " + strconv.FormatBool(server.Enabled))
 	result := serverMetadata{
 		Name:            			server.Name,
@@ -88,8 +108,11 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 		EnemyGUMaxQty:	 			server.EnemyGroundUnitsMaxQuantity,
 		FlightUnitModes: 			getFlightUnitModes(server),
 		Coalition:		 			getCoalition(server, session_token),
+		Map:		 				getMap(server),
 		DiscordName:	 			SessionsDiscord[session_token].username,
 		DiscordId:	 	 			SessionsDiscord[session_token].id,
+		IsEditor:					isEditor,
+		EditorModeOn:				false,
 		ViewAircraftWhenInFlight:	server.ViewAircraftWhenInFlight,
 		ZonesSize:		 			server.ZonesSize,
 		Avatar:			 			getAvatar(session_token),
@@ -134,8 +157,11 @@ type serverMetadata struct {
 	Players         []PlayerMetadata `json:"players"`
 	GCIs            []gciMetadata    `json:"gcis"`
 	Coalition		string			 `json:"coalition"`
+	Map				string			 `json:"map"`
 	DiscordName		string			 `json:"discord_name"`
 	DiscordId		string			 `json:"discord_id"`
+	IsEditor		bool			 `json:"is_editor"`
+	EditorModeOn	bool			 `json:"editor_mode_on"`
 	Avatar			string			 `json:"avatar"`
 	ViewAircraftWhenInFlight bool	 `json:"view_aircraft_when_in_flight"`
 	Enabled			bool			 `json:"enabled"`
@@ -197,6 +223,26 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 	Coals = append(Coals, server.DefaultCoalition)	
 
 	return Coals[0]
+}
+
+func getMap(server *TacViewServerConfig) string {
+
+	var MapName string
+	err := db.Ping()
+	if err == nil {
+		req := "SELECT mission_theatre FROM public.missions WHERE server_name = '" + server.DcsName + "' ORDER BY id desc limit 1"
+		rows, err := db.Query(req)
+		CheckError(err)
+		
+		defer rows.Close()
+		for rows.Next() {
+		 
+			err = rows.Scan(&MapName)
+			CheckError(err)
+		}
+	}	
+
+	return MapName
 }
 
 func (h *httpServer) ensureServer(w http.ResponseWriter, r *http.Request) *TacViewServerConfig {
@@ -351,6 +397,10 @@ func (h *httpServer) streamServerEvents(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+type SqlResponse struct {
+	Id		int
+}
+
 var geoListGlob = []geometry{}
 var geoListDel = []int{}
 var counter = 10000;
@@ -362,7 +412,10 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	coalition := getCoalition(h.sessions[serverName].server, session_token)
 	dcsName := h.sessions[serverName].server.DcsName	
 
-    var geo geometry
+	
+
+	var geo geometry
+	var Id int
 	
     err2 := json.NewDecoder(r.Body).Decode(&geo)
     if err2 != nil {
@@ -376,14 +429,108 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	} else {
 		err = errors.New("no database")
 	}
+	sqlStatement := ""
 	if err == nil {
-		if (geo.TypeSubmit == "share" && geo.Id > 0 && geo.Id < 10000) {
-			sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
-							VALUES (nextval('bg_geometry_id_seq'),'` + geo.Type + `','` + geo.Name + `','` + geo.DiscordName + `','` + geo.Avatar + `', '', null,'` + coalition + `','` + dcsName + `', $1, $2, $3, $4)`
-			_, err = db.Exec(sqlStatement, pq.Array(geo.Position), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+		if (geo.TypeSubmit == "share" || geo.TypeSubmit == "update") {
+			if (geo.Type == "quest") {
+				var	DataJson DataJson
+				DataJson.Command = "sendEmbed"
+				DataJson.Color = 113805 
+				DataJson.Title = geo.Name
+				DataJson.Author.Name = geo.DiscordName
+				DataJson.Author.Icon_url = geo.Avatar
+				//DataJson.Fields.Position = geo.PosMGRS
+				DataJson.Fields.PosPoint = geo.PosPoint
+				DataJson.Fields.PosMGRS = geo.PosMGRS
+				DataJson.Fields.PosType = "MGRS"
+				DataJson.Fields.Side = geo.Side
+				DataJson.Fields.Color = geo.Color
+				DataJson.Fields.Status = geo.Status
+				DataJson.Fields.Clickable = geo.Clickable
+				DataJson.Fields.Type = geo.Type
+				DataJson.Fields.Screenshot = geo.Screenshot
+				DataJson.Fields.Description = geo.Description
+				DataJson.Fields.Points = geo.Points
+				DataJson.Fields.Center = geo.Center
+				DataJson.Fields.Radius = geo.Radius
+				
+				data, err := json.Marshal(DataJson)
+				//fmt.Println(string(data))
+				//dataRaw := json.RawMessage(data)
+				CheckError(err)					
+				
+				
+				if (geo.TypeSubmit == "share") {
+					sqlStatement = `INSERT INTO bg_missions (node, data)
+									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
+					err = db.QueryRow(sqlStatement).Scan(&Id)
+				} else {
+					sqlStatement = `UPDATE bg_missions
+									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
+									WHERE id = ` + strconv.Itoa(geo.Id)
+					_, err = db.Exec(sqlStatement)
+					Id = geo.Id
+				}
+				
+				fmt.Println(strconv.Itoa(Id))
+				//_, err = db.Exec(sqlStatement)
+				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+				
+								
+				//fmt.Println(sqlStatement)
+				//fmt.Println(string(data))
+				CheckError(err)
+			} else {
+				//sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
+				//				VALUES (nextval('bg_geometry_id_seq'),'` + geo.Type + `','` + geo.Name + `','` + geo.DiscordName + `','` + geo.Avatar + `', '', null,'` + coalition + `','` + dcsName + `', $1, $2, $3, $4)`
+				//_, err = db.Exec(sqlStatement, pq.Array(geo.Position), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+				
+				var	DataJson DataJson
+				DataJson.Command = "sendEmbed"
+				DataJson.Color = 113805 
+				DataJson.Title = geo.Name
+				DataJson.Author.Name = geo.DiscordName
+				DataJson.Author.Icon_url = geo.Avatar
+				DataJson.Fields.PosMGRS = geo.PosMGRS
+				DataJson.Fields.PosPoint = geo.PosPoint
+				DataJson.Fields.PosType = "POINT"
+				DataJson.Fields.Side = geo.Side
+				DataJson.Fields.Color = geo.Color
+				DataJson.Fields.Status = geo.Status
+				DataJson.Fields.Clickable = geo.Clickable
+				DataJson.Fields.Type = geo.Type
+				DataJson.Fields.Screenshot = geo.Screenshot
+				DataJson.Fields.Description = geo.Description
+				DataJson.Fields.Points = geo.Points
+				DataJson.Fields.Center = geo.Center
+				DataJson.Fields.Radius = geo.Radius
+				
+				data, err := json.Marshal(DataJson)
+				//fmt.Println(string(data))
+				//dataRaw := json.RawMessage(data)
+				CheckError(err)					
 
-			//fmt.Println(sqlStatement)
-			CheckError(err)
+				if (geo.TypeSubmit == "share") {
+					sqlStatement = `INSERT INTO bg_geometry2 (node, data)
+									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
+					err = db.QueryRow(sqlStatement).Scan(&Id)
+				} else {
+					sqlStatement = `UPDATE bg_geometry2
+									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
+									WHERE id = ` + strconv.Itoa(geo.Id)
+					_, err = db.Exec(sqlStatement)
+					Id = geo.Id
+				}
+				
+				fmt.Println(strconv.Itoa(Id))
+				//_, err = db.Exec(sqlStatement)
+				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
+				
+								
+				//fmt.Println(sqlStatement)
+				//fmt.Println(string(data))
+				CheckError(err)
+			}
 		}
 		if (geo.TypeSubmit == "delete" && geo.Id > 10000) {
 			geoListDel = append(geoListDel, geo.Id)
@@ -393,18 +540,22 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 			}
-			_, e := db.Exec(`DELETE FROM bg_geometry where id=` + strconv.Itoa(geo.Id))
+			_, e := db.Exec(`DELETE FROM bg_geometry2 where id=` + strconv.Itoa(geo.Id))
 			CheckError(e)
+			_, e2 := db.Exec(`DELETE FROM bg_missions where id=` + strconv.Itoa(geo.Id))
+			CheckError(e2)
 		}
 	} else {
-		if (geo.TypeSubmit == "share" && geo.Id > 0 && geo.Id < 10000) {
+		if (geo.TypeSubmit == "share") {
 			counter = counter + 1
 			geo.Id = counter
 			geo.Side = coalition
 			geo.Server = dcsName
 			geoListGlob = append(geoListGlob, geo)
+			Id = geo.Id
 		}
 		if (geo.TypeSubmit == "delete" && geo.Id > 10000) {
+			Id = geo.Id
 			geoListDel = append(geoListDel, geo.Id)
 			for i, v := range geoListGlob {
 				if v.Id == geo.Id {
@@ -414,7 +565,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	gores.JSON(w, 200, geo)
+	gores.JSON(w, 200, SqlResponse{Id:Id})
 }
 
 type TaskEnrolment struct {
@@ -474,6 +625,82 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 	}
 	gores.JSON(w, 200, taskEnrolment)
 }
+
+type User struct {
+	Name  string
+	Email string
+	Age   int
+}
+
+type UploadResponse struct {
+	Files		[]string
+}
+
+func (h *httpServer) uploadHandler__(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+    case "POST":
+        r.ParseMultipartForm(10 << 20) //10 MB
+        file, handler, err := r.FormFile("file")
+        if err != nil {
+            log.Println("error retrieving file", err)
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        defer file.Close()
+		
+		filename := uuid.NewString() + filepath.Ext(handler.Filename)
+		//dst, err := os.Create("files/" + filename + filepath.Ext(handler.Filename))
+		dst, err := os.Create(*h.config.AssetsPathExternal + filename)
+        if err != nil {
+            log.Println("error creating file", err)
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        defer dst.Close()
+        if _, err := io.Copy(dst, file); err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        //fmt.Fprintf(w, "uploaded file")
+		
+		resp := UploadResponse{Files:[]string{filename}}
+		gores.JSON(w, 200, resp) 
+		//user := User{Name: "Ali", Email: "ali@example.com", Age: 28}
+		//gores.JSON(w, 200, user)
+    }
+}
+func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+    case "POST":
+        r.ParseMultipartForm(32 << 20) //10 MB
+		filesnames := []string{}
+
+
+		for _, headers := range r.MultipartForm.File["attachments"] {
+			log.Println("test")
+			file, err := headers.Open()
+			defer file.Close()
+			
+			filename := uuid.NewString() + filepath.Ext(headers.Filename)
+			dst, err := os.Create(*h.config.AssetsPathExternal + filename)
+			if err != nil {
+				log.Println("error creating file", err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			defer dst.Close()
+			if _, err := io.Copy(dst, file); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			
+			filesnames = append(filesnames, filename)
+		}
+		resp := UploadResponse{Files:filesnames}
+		gores.JSON(w, 200, resp) 
+    }
+}
+
 
 func CheckError(err error) {
     if err != nil {
@@ -599,11 +826,13 @@ func Run(config *Config) error {
 		}
 	})
 	r.Get("/static/*", server.serveEmbeddedStaticAssets)
+	r.Get("/files/*", server.serveEmbeddedStaticAssetsExternal)
 	r.Get("/api/servers", server.getServerList)
 	r.Get("/api/servers/{serverName}", server.getServer)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)
 	r.Post("/servers/{serverName}/share", server.share)
 	r.Post("/servers/{serverName}/taskenrolment", server.taskenrolment)
+	r.Post("/upload", server.uploadHandler)
 	//r.Post("/api/share", server.share)
 
 

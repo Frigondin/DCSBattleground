@@ -22,6 +22,7 @@ import { Entity } from "../types/entity";
 import { getBearingMap, getCardinal, getFlyDistance } from "../util";
 import DetailedCoords from "./DetailedCoords";
 import { colorMode } from "./MapIcon";
+import { setSelectedGeometry } from "../stores/GeometryStore";
 
 export const iconCache: Record<string, string> = {};
 
@@ -231,7 +232,7 @@ export function MapSimpleEntity({
           markerDy: 10,
         },
       });
-      marker.on("click", () => setSelectedEntityId(entity.id));
+      marker.on("click", () => {setSelectedEntityId(entity.id);setSelectedGeometry(null);});
       iconLayer.addGeometry(marker);
     } else {
       marker.setCoordinates([entity.longitude, entity.latitude]);

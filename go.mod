@@ -1,6 +1,6 @@
 module github.com/b1naryth1ef/sneaker
 
-go 1.17
+go 1.23.4
 
 require (
 	github.com/alioygur/gores v1.2.2

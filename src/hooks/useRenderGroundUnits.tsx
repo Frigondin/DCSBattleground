@@ -97,7 +97,8 @@ function renderGroundUnit(layer: maptalks.VectorLayer, unit: Entity, coalition: 
   });
   
 	var displayUnit;
-	if (coalition === "GM" || guMaxQty === -1) {
+	const { editor_mode_on } = serverStore.getState();
+	if (coalition === "GM" || guMaxQty === -1 || editor_mode_on) {
 		displayUnit = true;
 	} else if (coalition === "blue" && unit.coalition === "Enemies") {
 		displayUnit = true;
@@ -137,17 +138,18 @@ function renderGroundUnits(
   const coalition = server?.coalition;
   const guRatio = server?.ground_unit_ratio;
   const guMaxQty = server?.ground_unit_max_qty;
+  const { editor_mode_on } = serverStore.getState();
   const isVisible = (target: Entity) => {
-	if (coalition === "blue" && target.coalition === "Enemies") {
+    if (coalition === "GM" || editor_mode_on) {
+		return true
+	} else if (coalition === "blue" && target.coalition === "Enemies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.FRIENDLY)
-	} else if (coalition === "blue" && target.coalition === "Allies") {
+	} else if (coalition === "blue" && target.coalition === "Allies" && target.visible) {
 		return server?.ground_unit_modes.includes(GroundUnitMode.ENEMY)
-	} else if (coalition === "red" && target.coalition === "Enemies") {
+	} else if (coalition === "red" && target.coalition === "Enemies" && target.visible) {
 		return server?.ground_unit_modes.includes(GroundUnitMode.ENEMY)
 	} else if (coalition === "red" && target.coalition === "Allies") {
 		return server?.ground_unit_modes.includes(GroundUnitMode.FRIENDLY)
-	} else if (coalition === "GM") {
-		return true
 	}
     return false;
   };
@@ -180,7 +182,7 @@ function renderGroundUnits(
   for (const entity of entities.valueSeq()) {
     if (
       isVisible(entity) &&
-      (lastOffset === 0 || entity.updatedAt > lastOffset)
+      (lastOffset === 0 || entity.updatedAt > lastOffset || editor_mode_on)
     ) {
 	  if (entity.coalition === "Allies") {
 		layer = map.getLayer("ground-units-red") as maptalks.VectorLayer;

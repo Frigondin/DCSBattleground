@@ -1,6 +1,7 @@
 import * as maptalks from "maptalks";
 import * as animatemarker from "maptalks.animatemarker";
 import ms from "milsymbol";
+import * as mgrs from "mgrs";
 import React, {
   MutableRefObject,
   useEffect,
@@ -39,6 +40,12 @@ import { colorMode } from "./MapIcon";
 import { MissionTimer } from "./MissionTimer";
 import ScratchPad from "./ScratchPad";
 
+
+function parseMgrs(coords:[number, number]){
+	var val:string = mgrs.forward([coords[1], coords[0]])
+	//console.log("test")
+	return val.slice(0, 3) + " " + val.slice(3, 5) + " " + val.slice(5, 10) + " " + val.slice(10)
+}
 
 export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const mapContainer: MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -151,7 +158,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       content: renderToString(<div></div>),
     });
 	noZoomLevel.current = new maptalks.control.Zoom({
-	  'position':  { 'bottom' : '50', 'right' : '20' },
+	  'position': 'bottom-right', //  { 'bottom' : '50', 'right' : '20' },
 	  'slider': false,
 	  'zoomLevel': true
 	});
@@ -164,7 +171,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
-	  maxZoom : 12,
+	  //maxZoom : 12,
       seamlessZoom: false,
       fpsOnInteracting: 60,
 	  zoomControl: false,
@@ -183,10 +190,27 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       layers: [
       new maptalks.TileLayer("pretty", {
         urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
-		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
+		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
+		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
 		opacity: 0.8,
+		maxAvailableZoom  : 12,
         maxCacheSize: 2048,
         hitDetect: false,
+		visible : false
+      }),
+      new maptalks.WMSTileLayer("pretty2", {
+        //urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+		urlTemplate:"https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}",
+		renderer: "canvas",
+		layers:"Isolines,Rivers,Water,Railroad,Powerlines,Roads,LBridges,Tunnels,Bridges,Borders,Landmarks,Derricks,Obstacle,MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns,Airbases,DB,DME,NDB,TACAN,VOR",
+		format:"image/png",
+		transparent:!0,
+		service:"WMS",
+		version:"1.1.1",
+		styles:"",
+		crs:"EPSG:3857",
 		visible : false
       }),
 	  new maptalks.TileLayer("CaucasusMap", {
@@ -195,6 +219,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         urlTemplate:"http://dcsmaps.com/caucasus/{z}/{x}/{y}.png",
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
+		maxAvailableZoom  : 12,
 		visible : true
       }),
 	new maptalks.WMSTileLayer("CaucasusBorder", {
@@ -211,12 +236,13 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		crs:"EPSG:3857",
 		visible : false
       }),  
-	  
+ 
         new maptalks.VectorLayer("airports", [], {
           hitDetect: false,
         }),
         new maptalks.VectorLayer("farp-name", [], {
           hitDetect: false,
+		  visible : false
         }),
         new maptalks.VectorLayer("farp-icon", [], {
           hitDetect: false,
@@ -230,13 +256,16 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
+        new maptalks.VectorLayer("custom-geometry", [], {
+          hitDetect: false,
+        }),	
 		new animatemarker.AnimateMarkerLayer("quest", [], {
           forceRenderOnZooming: true,
           forceRenderOnMoving: true,
           forceRenderOnRotating: true,
 		  animationDuration: 3000,
 		  defaultIconSize: 10000
-        }),
+        }),	
         new maptalks.VectorLayer("ground-units", [], {
           hitDetect: false,
         }),
@@ -247,7 +276,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("ground-units-red", [], {
           hitDetect: false,
         }),
-        new maptalks.VectorLayer("custom-geometry", [], {
+		new maptalks.VectorLayer("quest-pin", [], {
           hitDetect: false,
         }),
         new maptalks.VectorLayer("track-trails", [], {
@@ -530,12 +559,13 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       bearing
     )} / ${Math.round(
       getFlyDistance(cursorPos, [bullsEntity.latitude, bullsEntity.longitude])
-    )}`;
+    )} / ${parseMgrs(cursorPos)}`;
   }, [cursorPos, bullsEntity]);
 
   const farps = useMemo(
     () => {
-			if (server?.coalition === "GM") {
+			const { editor_mode_on } = serverStore.getState();
+			if (server?.coalition === "GM" || editor_mode_on) {
 				return entities.filter(
 					(it) => it.types.includes("Aerodrome")
 				)

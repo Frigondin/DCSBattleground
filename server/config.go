@@ -4,6 +4,7 @@ type Config struct {
 	Bind       string                    `json:"bind"`
 	Servers    []TacViewServerConfig     `json:"servers"`
 	AssetsPath *string                   `json:"assets_path"`
+	AssetsPathExternal *string           `json:"assets_path_external"`
 	Serverbot	bool					 `json:"serverbot"`
 	Database   string					 `json:"database"`
 	ClientID   string					 `json:"discord_client_id"`
@@ -29,6 +30,6 @@ type TacViewServerConfig struct {
 	ViewAircraftWhenInFlight	bool			`json:"view_aircraft_when_in_flight"`
 	DefaultCoalition		  	string 			`json:"default_coalition"`
 	ZonesSize					[][]interface{}	`json:"zones_size"`
-	
-	Enabled						bool	`json:"enabled"`
+	EditorId					[]string		`json:"editor_id"`
+	Enabled						bool			`json:"enabled"`
 }

@@ -19,9 +19,12 @@ export type Server = {
   ground_unit_max_qty: number;
   flight_unit_modes: Array<FlightUnitMode>;
   coalition: string;
+  map: string;
   discord_name: string;
   avatar: string;
   discord_id: string;
+  is_editor: string[];
+  editor_mode_on: boolean;
   view_aircraft_when_in_flight: string;
   player_is_connected: boolean;
   player_name: string;
@@ -35,6 +38,7 @@ export type Server = {
 // };
 
 export type ServerStoreData = {
+  editor_mode_on: boolean;
   server: Server | null;
   entities: Immutable.Map<number, Entity>;
   offset: number;
@@ -44,11 +48,12 @@ export type ServerStoreData = {
 
 export const serverStore = create<ServerStoreData>(() => {
   return {
+	editor_mode_on: false,
     server: null,
     entities: Immutable.Map<number, Entity>(),
     offset: 0,
     sessionId: null,
-    selectedEntityId: null,
+    selectedEntityId: null
   };
 });
 
@@ -59,6 +64,19 @@ let dcsBattlegroundClient: DCSBattlegroundClient | null = null;
 export function setSelectedEntityId(selectedEntityId: number | null) {
   serverStore.setState({ selectedEntityId });
 }
+
+export function updateServerStore(value: Partial<ServerStoreData>) {
+  serverStore.setState((state) => {
+    return {
+      ...state,
+	  ...value
+	  //server: state.server?.set({...existing, ...value})
+      //editor_mode_on,
+    };
+  });
+  //serverStore.setState({ selectedEntityId });
+}
+
 
 function runDCSBattlegroundClient(server: Server | null) {
   dcsBattlegroundClient?.close();

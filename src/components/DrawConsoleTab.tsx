@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import * as maptalks from "maptalks";
-import React from "react";
+import React, { useState } from "react";
 import { BiShapeCircle, BiShapeSquare, BiRadioCircle, BiPencil, BiShareAlt, BiRuler, BiMinus } from "react-icons/bi";
 import {
   addMarkPoint,
@@ -9,28 +9,39 @@ import {
   addCircle,
   addLine,
   geometryStore,
-  setSelectedGeometry,
+  setSelectedGeometry
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
-import { setSelectedEntityId } from "../stores/ServerStore";
+import { setSelectedEntityId,  serverStore} from "../stores/ServerStore";
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/css";
 
 export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
   const [geometry, selectedId] = geometryStore((state) => [
     state.geometry,
     state.selectedGeometry,
   ]);
+const [color, setColor] = useColor("#0068FF");
+const [draw, setDraw] = useState("");
 
   return (
     <div className="p-2">
+      <div className="">
+		<ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} />
+	  </div>
       <div className="flex flex-row text-left items-center w-full gap-2 ml-auto">
 		<table>
 			<tr>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Mark" }
+								  )}
+					  
 					  onClick={() => {
 						// const center = map.getCenter();
 						// addMarkPoint([center.y, center.x]);
+						setDraw("Mark");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -45,10 +56,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						
 						// });
 						drawTool.on('drawend', function(param) {
+							setDraw("")
 							//let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
-							const pos = param.geometry.getFirstCoordinate();
+							const pos = param!.geometry!.getFirstCoordinate();
 							//let coords:[number, number][] = [];
-							addMarkPoint([pos.y, pos.x]);
+							addMarkPoint([pos.y, pos.x], color.hex);
 							//document.body.style.cursor = "auto";
 						});
 						drawTool.setMode('Point').enable(); 
@@ -61,8 +73,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Zone" }
+								  )}
 					  onClick={() => {
+						setDraw("Zone");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -76,12 +91,13 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						//document.body.style.cursor = "crosshair";
 
 						drawTool.on('drawend', function(param) {
-							let coordsTmp = param.geometry.getCoordinates()[0] as Array<{x:number,y:number}>;
+							setDraw("")
+							let coordsTmp = param!.geometry!.getCoordinates()[0] as Array<{x:number,y:number}>;
 							let coords:[number, number][] = [];
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addZone(coords);
+							addZone(coords, color.hex);
 							//sdocument.body.style.cursor = "auto";
 						});
 						drawTool.setMode('Polygon').enable(); 
@@ -93,8 +109,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Wpts" }
+								  )}
 					  onClick={() => {
+						setDraw("Wpts");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -105,12 +124,13 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						}).addTo(map).disable();
 
 						drawTool.on('drawend', function(param) {
-							let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
+							setDraw("")
+							let coordsTmp = param!.geometry!.getCoordinates() as Array<{x:number,y:number}>;
 							let coords:[number, number][] = [];
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addWaypoints(coords) 
+							addWaypoints(coords, color.hex) 
 						});
 						drawTool.setMode('LineString').enable(); 
 						
@@ -124,8 +144,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Circle" }
+								  )}
 					  onClick={() => {
+						setDraw("Circle");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -138,9 +161,10 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						}).addTo(map).disable();
 
 						drawTool.on('drawend', function(param) {
-							const pos = param.geometry.getCoordinates();
-							const radius = param.geometry.getRadius();
-							addCircle([pos.y, pos.x], radius) 
+							setDraw("")
+							const pos = param!.geometry!.getCoordinates();
+							const radius = param!.geometry!.getRadius();
+							addCircle([pos.y, pos.x], radius, color.hex) 
 						});
 						drawTool.setMode('Circle').enable(); 
 					  }}
@@ -151,8 +175,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Line" }
+								  )}
 					  onClick={() => {
+						setDraw("Line");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -163,12 +190,13 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						}).addTo(map).disable();
 
 						drawTool.on('drawend', function(param) {
-							let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
+							setDraw("")
+							let coordsTmp = param!.geometry!.getCoordinates() as Array<{x:number,y:number}>;
 							let coords:[number, number][] = [];
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addLine(coords) 
+							addLine(coords, color.hex) 
 						});
 						drawTool.setMode('LineString').enable(); 
 						
@@ -180,8 +208,11 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Free" }
+								  )}
 					  onClick={() => {
+						setDraw("Free");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
@@ -194,12 +225,13 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 						}).addTo(map).disable();
 
 						drawTool.on('drawend', function(param) {
-							let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
+							setDraw("")
+							let coordsTmp = param!.geometry!.getCoordinates() as Array<{x:number,y:number}>;
 							let coords:[number, number][] = [];
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addLine(coords) 
+							addLine(coords, color.hex) 
 						});
 						drawTool.setMode('FreeHandLineString').enable(); 
 					  }}
@@ -212,9 +244,13 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<button
-					  className="bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full"
+					  className={classNames("bg-green-100 hover:bg-green-200 border-green-400 p-1 border rounded-sm text-sm text-green-700 flex-row items-center w-full",
+									{ "bg-green-300 border-green-600": draw === "Dist" }
+								  )}
 					  onClick={() => {
+						setDraw("Dist");
 						addMeasure({map});
+						//setDraw("")
 					  }}
 					>
 					  Dist.
@@ -224,9 +260,14 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
 			</tr>
 		</table>
       </div>
-      <div className="my-2 flex flex-col gap-1 max-h-72 overflow-auto">
+	  <div>
+			{(draw === "Mark"  || draw === "Circle"  || draw === "Free" || draw === "") && (<br/>)}
+			{(draw === "Zone"  || draw === "Wpts"  || draw === "Line" || draw === "Dist") && (<div>Double click to end drawing</div>)}
+	  </div>
+      <div className="my-2 flex flex-col gap-1 max-h-56 overflow-auto">
         {geometry.valueSeq().map((it) => {
-		  if (it.type !== "quest" && it.type !== "border") {
+		  const { editor_mode_on } = serverStore.getState();
+		  if (it.type !== "quest" && (it.clickable || editor_mode_on)) {
 			  return (
 				<button
 				  key={it.id}

@@ -15,6 +15,8 @@ module.exports = {
       "border-b": ["hover"],
     },
   },
-  plugins: [],
+  plugins: [
+	require('tailwind-scrollbar'),
+  ],
 };
 
