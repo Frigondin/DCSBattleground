@@ -108,6 +108,7 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 		EnemyGUMaxQty:	 			server.EnemyGroundUnitsMaxQuantity,
 		FlightUnitModes: 			getFlightUnitModes(server),
 		Coalition:		 			getCoalition(server, session_token),
+		Map:		 				getMap(server),
 		DiscordName:	 			SessionsDiscord[session_token].username,
 		DiscordId:	 	 			SessionsDiscord[session_token].id,
 		IsEditor:					isEditor,
@@ -156,6 +157,7 @@ type serverMetadata struct {
 	Players         []PlayerMetadata `json:"players"`
 	GCIs            []gciMetadata    `json:"gcis"`
 	Coalition		string			 `json:"coalition"`
+	Map				string			 `json:"map"`
 	DiscordName		string			 `json:"discord_name"`
 	DiscordId		string			 `json:"discord_id"`
 	IsEditor		bool			 `json:"is_editor"`
@@ -219,6 +221,26 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 	Coals = append(Coals, server.DefaultCoalition)	
 
 	return Coals[0]
+}
+
+func getMap(server *TacViewServerConfig) string {
+
+	var MapName string
+	err := db.Ping()
+	if err == nil {
+		req := "SELECT mission_theatre FROM public.missions WHERE server_name = '" + server.DcsName + "' ORDER BY id desc limit 1"
+		rows, err := db.Query(req)
+		CheckError(err)
+		
+		defer rows.Close()
+		for rows.Next() {
+		 
+			err = rows.Scan(&MapName)
+			CheckError(err)
+		}
+	}	
+
+	return MapName
 }
 
 func (h *httpServer) ensureServer(w http.ResponseWriter, r *http.Request) *TacViewServerConfig {

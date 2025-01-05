@@ -19,6 +19,7 @@ export type Server = {
   ground_unit_max_qty: number;
   flight_unit_modes: Array<FlightUnitMode>;
   coalition: string;
+  map: string;
   discord_name: string;
   avatar: string;
   discord_id: string;
