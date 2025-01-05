@@ -32,14 +32,12 @@ const [draw, setDraw] = useState("");
 								  )}
 					  
 					  onClick={() => {
-						// const center = map.getCenter();
-						// addMarkPoint([center.y, center.x]);
 						setDraw("Quest");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
 							once: true,
 							symbol:{
-								'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
+								'markerFile'   : '/static/Map-Marker-Ball-Chartreuse-icon.png',
 								'markerWidth'  : 28,
 								'markerHeight' : 28,
 								'markerDx'     : 0,
@@ -47,18 +45,10 @@ const [draw, setDraw] = useState("");
 								'markerOpacity': 1
 							}
 						}).addTo(map).disable();
-						//document.body.style.cursor = "crosshair";
-						
-						// drawTool.on('mousemove', function(param) {
-						
-						// });
 						drawTool.on('drawend', function(param) {
 							setDraw("")
-							//let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
 							const pos = param!.geometry!.getFirstCoordinate();
-							//let coords:[number, number][] = [];
 							addQuest([pos.y, pos.x], color.hex);
-							//document.body.style.cursor = "auto";
 						});
 						drawTool.setMode('Point').enable(); 
 						

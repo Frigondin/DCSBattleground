@@ -39,8 +39,6 @@ const [draw, setDraw] = useState("");
 								  )}
 					  
 					  onClick={() => {
-						// const center = map.getCenter();
-						// addMarkPoint([center.y, center.x]);
 						setDraw("Mark");
 						var drawTool = new maptalks.DrawTool({
 							mode: 'Point',
@@ -50,18 +48,10 @@ const [draw, setDraw] = useState("");
 								markerDy: 10,
 							}
 						}).addTo(map).disable();
-						//document.body.style.cursor = "crosshair";
-						
-						// drawTool.on('mousemove', function(param) {
-						
-						// });
 						drawTool.on('drawend', function(param) {
 							setDraw("")
-							//let coordsTmp = param.geometry.getCoordinates() as Array<{x:number,y:number}>;
 							const pos = param!.geometry!.getFirstCoordinate();
-							//let coords:[number, number][] = [];
 							addMarkPoint([pos.y, pos.x], color.hex);
-							//document.body.style.cursor = "auto";
 						});
 						drawTool.setMode('Point').enable(); 
 						
@@ -88,8 +78,6 @@ const [draw, setDraw] = useState("");
 								'polygonOpacity': 0.1
 							}
 						}).addTo(map).disable();
-						//document.body.style.cursor = "crosshair";
-
 						drawTool.on('drawend', function(param) {
 							setDraw("")
 							let coordsTmp = param!.geometry!.getCoordinates()[0] as Array<{x:number,y:number}>;
@@ -98,7 +86,6 @@ const [draw, setDraw] = useState("");
 								coords.push([ coord.y, coord.x]);
 							});
 							addZone(coords, color.hex);
-							//sdocument.body.style.cursor = "auto";
 						});
 						drawTool.setMode('Polygon').enable(); 
 					  }}
@@ -250,7 +237,6 @@ const [draw, setDraw] = useState("");
 					  onClick={() => {
 						setDraw("Dist");
 						addMeasure({map});
-						//setDraw("")
 					  }}
 					>
 					  Dist.

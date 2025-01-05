@@ -32,11 +32,6 @@ export type Server = {
   zones_size: any[][];
 };
 
-// const worker = new Worker(new URL("../worker.ts", import.meta.url));
-// worker.onmessage = (event) => {
-//   console.log(event);
-// };
-
 export type ServerStoreData = {
   editor_mode_on: boolean;
   server: Server | null;
@@ -70,11 +65,8 @@ export function updateServerStore(value: Partial<ServerStoreData>) {
     return {
       ...state,
 	  ...value
-	  //server: state.server?.set({...existing, ...value})
-      //editor_mode_on,
     };
   });
-  //serverStore.setState({ selectedEntityId });
 }
 
 
@@ -118,7 +110,6 @@ function runDCSBattlegroundClient(server: Server | null) {
           });
           updateTracks(event);
         } else if (event.e === "SESSION_SHARED_GEOMETRY") {
-			//console.log(event)
 			var data = event.d as any
 			addGlobalGeometry(data.Add, server.coalition);
 			addGlobalGeometry(data.Recon, server.coalition);

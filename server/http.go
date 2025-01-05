@@ -7,17 +7,10 @@ import (
 	"net/http"
 	"sync"
 	"time"
-	//"net/http/httputil"
 	"fmt"
-	//"io/ioutil"
-	//"github.com/lib/pq"
-	//"strings"
 	"io"
 	"strconv"
-	//"uuid"
-	//"session"
 	"os"
-	//"net/url"
 	
 	"github.com/alioygur/gores"
 	"github.com/go-chi/chi/v5"
@@ -100,7 +93,6 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 		isEditor = true
 	}
 	
-	//log.Printf("test5 : " + strconv.FormatBool(server.Enabled))
 	result := serverMetadata{
 		Name:            			server.Name,
 		GroundUnitModes: 			getGroundUnitModes(server),
@@ -434,12 +426,11 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 		if (geo.TypeSubmit == "share" || geo.TypeSubmit == "update") {
 			if (geo.Type == "quest") {
 				var	DataJson DataJson
-				DataJson.Command = "sendEmbed"
-				DataJson.Color = 113805 
+				//DataJson.Command = "sendEmbed"
+				//DataJson.Color = 113805 
 				DataJson.Title = geo.Name
 				DataJson.Author.Name = geo.DiscordName
 				DataJson.Author.Icon_url = geo.Avatar
-				//DataJson.Fields.Position = geo.PosMGRS
 				DataJson.Fields.PosPoint = geo.PosPoint
 				DataJson.Fields.PosMGRS = geo.PosMGRS
 				DataJson.Fields.PosType = "MGRS"
@@ -472,22 +463,12 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					Id = geo.Id
 				}
 				
-				fmt.Println(strconv.Itoa(Id))
-				//_, err = db.Exec(sqlStatement)
-				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
-				
-								
-				//fmt.Println(sqlStatement)
-				//fmt.Println(string(data))
+				//fmt.Println(strconv.Itoa(Id))
 				CheckError(err)
 			} else {
-				//sqlStatement := `INSERT INTO bg_geometry (id, type, name, discordname, avatar, posmgrs, screenshot, side, server, position, points, center, radius)
-				//				VALUES (nextval('bg_geometry_id_seq'),'` + geo.Type + `','` + geo.Name + `','` + geo.DiscordName + `','` + geo.Avatar + `', '', null,'` + coalition + `','` + dcsName + `', $1, $2, $3, $4)`
-				//_, err = db.Exec(sqlStatement, pq.Array(geo.Position), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
-				
 				var	DataJson DataJson
-				DataJson.Command = "sendEmbed"
-				DataJson.Color = 113805 
+				//DataJson.Command = "sendEmbed"
+				//DataJson.Color = 113805 
 				DataJson.Title = geo.Name
 				DataJson.Author.Name = geo.DiscordName
 				DataJson.Author.Icon_url = geo.Avatar
@@ -523,12 +504,6 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				}
 				
 				fmt.Println(strconv.Itoa(Id))
-				//_, err = db.Exec(sqlStatement)
-				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
-				
-								
-				//fmt.Println(sqlStatement)
-				//fmt.Println(string(data))
 				CheckError(err)
 			}
 		}
@@ -582,9 +557,6 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 	
 	var taskEnrolment TaskEnrolment
 	
-	//respBytes, err := ioutil.ReadAll(r.Body)
-	//respString := string(respBytes)
-	//fmt.Println(respString)
 	
 	
     err = json.NewDecoder(r.Body).Decode(&taskEnrolment)
@@ -593,7 +565,6 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-	//fmt.Println(strconv.Itoa(taskEnrolment.TaskId))
 	
 	if db != nil {
 		err = db.Ping()
@@ -611,14 +582,12 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 			_, err = db.Exec(sqlStatement)
 			CheckError(err)
 			
-			//fmt.Println(strconv.Itoa(TaskId))
 			
 			if (TaskId != taskEnrolment.TaskId) {
 				sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
 								VALUES (` + strconv.Itoa(taskEnrolment.TaskId) + `,` + DiscordId + `)`
 				_, err = db.Exec(sqlStatement)
 	
-				//fmt.Println(sqlStatement)
 				CheckError(err)
 			}
 		}
@@ -661,12 +630,9 @@ func (h *httpServer) uploadHandler__(w http.ResponseWriter, r *http.Request) {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
-        //fmt.Fprintf(w, "uploaded file")
 		
 		resp := UploadResponse{Files:[]string{filename}}
 		gores.JSON(w, 200, resp) 
-		//user := User{Name: "Ali", Email: "ali@example.com", Age: 28}
-		//gores.JSON(w, 200, user)
     }
 }
 func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
@@ -745,12 +711,6 @@ func Run(config *Config) error {
 	})
 
 	r.Get("/redirect/", func(w http.ResponseWriter, r *http.Request) {
-		// Define Variables
-		// Get the code from the redirect parameters (&code=...)
-		//_, err0 := url.Parse(r.URL)
-		//if (err0 != nil) {
-		//	http.Redirect(w, r, "/", http.StatusSeeOther)
-		//}	
 		
 		query := r.URL.Query()
 		if (query["code"] == nil) {
@@ -833,7 +793,6 @@ func Run(config *Config) error {
 	r.Post("/servers/{serverName}/share", server.share)
 	r.Post("/servers/{serverName}/taskenrolment", server.taskenrolment)
 	r.Post("/upload", server.uploadHandler)
-	//r.Post("/api/share", server.share)
 
 
 	log.Printf("Starting up %v Tacview clients", len(config.Servers))

@@ -48,7 +48,6 @@ function DetailedWaypoints({
 	points: [number, number][];
 }) {
 	var counter = -1
-	//return <div style={{ maxHeight: "600px", overflowY:"scroll" }}>{points.map(point => {
 	return <div className="overflow-y-scroll">{points.map(point => {
 		counter = counter + 1
 		return (<div style={{borderTop:"1px solid black"}}><div style={{textDecoration: "underline"}}>Wpt#{counter}<br/></div><DetailedCoords coords={point}/></div>)
@@ -115,7 +114,6 @@ function DetailedTask({
 																			onChange={(e) => {
 																				const newSingleTask = singleTask
 																				newSingleTask.data.title = e.target.value
-																				//const newTask = task.map(el => (el.id === singleTask.id ? {...el, fata
 																				task[i] = newSingleTask
 																				updateGeometrySafe(id, { task: task });
 																			}}
@@ -155,10 +153,8 @@ function DetailedTask({
 															className="flex-grow p-0.5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300"
 															value={singleTask.data.fields.description.join('\n')}
 															onChange={(e) => {
-																//updateGeometrySafe(geo.id, { description: e.target.value.split("\n") });
 																const newSingleTask = singleTask;
 																newSingleTask.data.fields.description = e.target.value.split("\n");
-																//const newTask = task.map(el => (el.id === singleTask.id ? {...el, fata
 																task[i] = newSingleTask;
 																updateGeometrySafe(id, { task: task });
 															}}
@@ -228,7 +224,6 @@ async function submitGeometry(geo:Geometry, typeSubmit:string) {
 				updateGeometry(geo);
 				deleteGeometry(OldId);
 			}
-			//console.log(res) 
 		} else {
 			console.log("Submit error");
 		}
@@ -252,7 +247,6 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 		});
 	
   };
-  //const [uploadedFile, setUploadedFile] = useState({});
 
   const setImageAction = async (event:any) => {
     event.preventDefault();
@@ -263,16 +257,13 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
     }
 
     const response  = await fetch(url.origin.concat('/upload'), {
-	//const response  = await fetch("https://webhook.site/75dbaa74-9bdb-4fad-9d5c-cbcce816e12a", {
 		method: "post",
 		body: formData,
     });
     const uploadedImage = await response.json();
-    if (uploadedImage) {
-	 	//console.log(uploadedImage);					
+    if (uploadedImage) {	
 		let files:string[] = [];
 		uploadedImage.Files.forEach((file:any) => {
-			//files.push(url.origin.concat('/files/').concat(file));
 			files.push("$CURRENT_SERV".concat('/files/').concat(file));
 		});
 		updateGeometrySafe(geo.id, { screenshot: files });
@@ -534,9 +525,6 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
             onClick={() => {
 				setEditing(false);
 				submitGeometry(selectedGeometry, "share");
-				//selectedGeometry.clickable = false;
-				//updateGeometrySafe(selectedGeometry.id, { clickable: false });
-				//setTimeout(function() {deleteGeometry(selectedGeometry.id);}, 5000);
 				setSelectedGeometry(null);
             }}
           >
@@ -655,9 +643,27 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 		  className="p-1 text-xs bg-red-300 border border-red-400 ml-2"
           onClick={() => {
             setEditing(false);
-			console.log("test");
-			setTimeout(function() {setSelectedGeometry(null)}, 5000);
-            //setSelectedGeometry(null);
+			const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+			const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
+			var item = layer.getGeometryById(
+				selectedGeometry.id
+			) as maptalks.GeometryCollection;
+			if (item === null) {
+				item = layerQuest.getGeometryById(
+					selectedGeometry.id
+				) as maptalks.GeometryCollection;
+			}
+			
+
+			if (selectedGeometry.type === "zone" ||
+				selectedGeometry.type === "waypoints" ||
+				selectedGeometry.type === "line" ||
+				selectedGeometry.type === "circle" ) {
+				item.endEdit();
+			} else if (selectedGeometry.type !== "quest"){
+			  item.config("draggable", editing);
+			}
+            setSelectedGeometry(null);
           }}
         >
           <BiExit className="inline-block w-4 h-4" />

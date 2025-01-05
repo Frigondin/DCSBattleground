@@ -248,7 +248,6 @@ func (s *serverSession) runConnectedPlayer() error {
 	err := db.Ping()
 	if err == nil {
 		rows, err2 := db.Query(`SELECT discord_id, players.name FROM statistics, players, missions WHERE players.ucid = statistics.player_ucid AND statistics.mission_id = missions.id AND hop_off is null AND server_name = '` + DcsName + `'`)
-		//fmt.Println(`SELECT discord_id, players.name FROM statistics, players, missions WHERE players.ucid = statistics.player_ucid AND statistics.mission_id = missions.id AND hop_off is null AND server_name = '` + DcsName + `'`)
 		CheckError(err2)
 		defer rows.Close()
 		for rows.Next() {
@@ -277,41 +276,10 @@ func (s *serverSession) runSharedGeometry() error {
 	err := db.Ping()
 	if err == nil {
 		var Id int
-		//var Type string
-		//var Name string
-		//var DiscordName string
-		//var Avatar string
-		//var PosMGRS string
-		//var Screenshot []string
-		//var Description []string
-		//var Side string
-		//var Server string
-		//var Position []float32
-		//var Center []float32
-		//var Radius float32
+
 		var Data []byte
 		var Task []byte
 		var Time string
-		
-		//rows, err := db.Query(`SELECT id, type, name, discordname, avatar, posmgrs, screenshot, side, server FROM bg_geometry WHERE server='` + DcsName + `' AND type='recon'`)
-		//CheckError(err)
-		//defer rows.Close()
-		//for rows.Next() {
-		//	err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
-		//	CheckError(err)
-		
-		//	var geo geometry
-		//	geo.Id = Id
-		//	geo.Type = Type
-		//	geo.Name = Name
-		//	geo.DiscordName = DiscordName
-		//	geo.Avatar = Avatar
-		//	geo.PosMGRS = PosMGRS
-		//	geo.Screenshot = Screenshot
-		//	geo.Side = Side
-		//	geo.Server = Server
-		//	reconGeometry = append(reconGeometry, geo)
-		//}
 		
 		rows, err := db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
@@ -319,13 +287,11 @@ func (s *serverSession) runSharedGeometry() error {
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
-			//err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
 			err = rows.Scan(&Id, &Data, &Time)
 			CheckError(err)
 				
 			var	DataJson DataJson
 			err = json.Unmarshal(Data, &DataJson)
-			//fmt.Println(Data)
 			CheckError(err)			
 			
 			var geo geometry
@@ -351,26 +317,6 @@ func (s *serverSession) runSharedGeometry() error {
 		}
 
 
-		//rows, err = db.Query(`SELECT id, name, discordname, avatar, posmgrs, screenshot, side, server, description FROM bg_quest WHERE server='` + DcsName + `'`)
-		//CheckError(err)
-		//defer rows.Close()
-		//for rows.Next() {
-		//	err = rows.Scan(&Id, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server, pq.Array(&Description))
-		//	CheckError(err)
-		
-		//	var geo geometry
-		//	geo.Id = Id
-		//	geo.Type = "quest"
-		//	geo.Name = Name
-		//	geo.DiscordName = DiscordName
-		//	geo.Avatar = Avatar
-		//	geo.PosMGRS = PosMGRS
-		//	geo.Screenshot = Screenshot
-		//	geo.Description = Description
-		//	geo.Side = Side
-		//	geo.Server = Server
-		//	questList = append(questList, geo)
-		//}
 		rows, err = db.Query(`SELECT id, data, time, 
 									COALESCE((
 									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
@@ -426,39 +372,12 @@ func (s *serverSession) runSharedGeometry() error {
 		
 		
 		geoListGlob = []geometry{}
-		//rows, err = db.Query(`SELECT id, type, name, discordname, avatar, side, server, Position, array_to_json(CASE WHEN points IS NULL THEN '{}'::numeric[] else points::numeric[] END), center, radius FROM bg_geometry WHERE server='` + DcsName + `' AND type!='recon'`)
-		//CheckError(err)
-		//defer rows.Close()
-		//for rows.Next() {
-		//	var pointsStr string
-		//	var Points [][]float32
-			
-		//	err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &Side, &Server, pq.Array(&Position), &pointsStr, pq.Array(&Center), &Radius)
-		//	CheckError(err)
-			
-			
-		//	json.Unmarshal([]byte(pointsStr), &Points)
-		//	var geo geometry
-		//	geo.Id = Id
-		//	geo.Type = Type
-		//	geo.Name = Name
-		//	geo.DiscordName = DiscordName
-		//	geo.Avatar = Avatar
-		//	geo.Side = Side
-		//	geo.Server = Server
-		//	geo.Position = Position
-		//	geo.Points = Points
-		//	geo.Center = Center
-		//	geo.Radius = Radius
-		//	geoList = append(geoList, geo)
-		//}
 		rows, err = db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
 								WHERE node='` + DcsName + `' AND data->'fields'->>'type' != 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
-			//err = rows.Scan(&Id, &Type, &Name, &DiscordName, &Avatar, &PosMGRS, pq.Array(&Screenshot), &Side, &Server)
 			err = rows.Scan(&Id, &Data, &Time)
 			CheckError(err)
 				
@@ -508,7 +427,6 @@ func (s *serverSession) runTacViewClient() error {
 	header, timeFrameStream, err := client.Start()
 	if err != nil {
 		s.server.Enabled = false
-		//log.Printf("test2 : " + strconv.FormatBool(s.server.Enabled))
 		return err
 	}
 

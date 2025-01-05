@@ -31,27 +31,9 @@ const reconSIDC = "GHGPGPPO----";
 
 
 function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
-	console.log("testouille1");
-	//const selectedGeometry = geometryStore((state) =>
-	//	state.selectedGeometry !== null
-	//		? state.geometry.get(state.selectedGeometry)
-	//		: undefined
-	//);
-	
-	//const selectedGeometryId = geometryStore!.getState()!.selectedGeometry
-	//console.log("testouille2");
-	//var selectedGeometry
-	//selectedGeometryId ? (selectedGeometry = geometryStore!.getState()!.geometry!.get(geo.id)) : selectedGeometry = null
-	
 	const selectedGeometry = getSelectedGeometry()
-	
-	console.log("testouille3");
-	console.log(selectedGeometry);
-	console.log(geo);
 	const map = layer.getMap();
     if (selectedGeometry && selectedGeometry.id !== geo.id) {
-		console.log("testouille4");
-		
 		const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
 		const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
 		var item = layer.getGeometryById(
@@ -68,11 +50,9 @@ function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
 			selectedGeometry.type === "waypoints" ||
 			selectedGeometry.type === "line" ||
 			selectedGeometry.type === "circle" ) {
-			console.log("testouille5");
 			item.endEdit();
 		} else if (selectedGeometry.type !== "quest"){
 			item.config("draggable", false);
-			console.log("testouille6");
 		}
 	}
 }
@@ -364,6 +344,7 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 	const clickable = geometryStore!.getState()!.geometry!.get(line.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, line)
 		setSelectedGeometry(line.id);
 		setSelectedEntityId(null);
 	}
@@ -458,6 +439,7 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
 	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, zone)
 		setSelectedGeometry(zone.id);
 		setSelectedEntityId(null);
 	}
@@ -554,6 +536,7 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
 	const clickable = geometryStore!.getState()!.geometry!.get(circle.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, circle)
 		setSelectedGeometry(circle.id);
 		setSelectedEntityId(null);
 	}
@@ -655,6 +638,7 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
 	const clickable = geometryStore!.getState()!.geometry!.get(markPoint.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, markPoint)
 		setSelectedGeometry(markPoint.id);
 		setSelectedEntityId(null);
 	}
@@ -748,6 +732,7 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
 	const clickable = geometryStore!.getState()!.geometry!.get(recon.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, recon)
 		setSelectedGeometry(recon.id);
 		setSelectedEntityId(null);
 	}
@@ -774,11 +759,6 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
   const collection = layer.getGeometryById(
     quest.id
   ) as maptalks.GeometryCollection;
-  //console.log(quest.color);
-//  if (quest.status !== "Active") {
-//	deleteGeometry(quest.id);
-//	return;
-//  }
   if (collection) {
     const [icon, text] = collection.getGeometries() as [
       maptalks.Marker,
@@ -792,13 +772,6 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
     return;
   }
 
-//	var color = getGradient([251, 191, 36]);
-//	if (quest.name?.startsWith('POI :')) {
-//		color = getGradient([251, 191, 36]);
-//	}
-//	else {
-//		color = getGradient([255, 16, 59]);
-//	};
   var icon = new maptalks.Marker(
         [quest.position[1], quest.position[0]],
 		{
@@ -818,8 +791,7 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 		{
 			'id': quest.id,
 			symbol:{
-				//'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
-				'markerFile'   : quest.marker, //'/static/Map-Marker-Ball-Chartreuse-icon.png',
+				'markerFile'   : quest.marker,
 				'markerWidth'  : 28,
 				'markerHeight' : 28,
 				'markerDx'     : 0,
@@ -867,6 +839,7 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 	const clickable = geometryStore!.getState()!.geometry!.get(quest.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, quest)
 		setSelectedGeometry(quest.id);
 		setSelectedEntityId(null);
 	}

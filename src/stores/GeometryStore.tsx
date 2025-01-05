@@ -56,17 +56,12 @@ export type Border = {
 export type Recon = {
   type: "recon";
   position: [number, number];
-  //screenshot: string;
 } & GeometryBase;
 
 export type Quest = {
   type: "quest";
   position: [number, number];
-  //screenshot: Array<string>;
-  //description: Array<string>;
   task:	Array<JSON>;
-  //status: string;
-  //color: string;
   subType: string;
   marker: string;
 } & GeometryBase;
@@ -115,18 +110,6 @@ export function updateGeometrySafe(id: number, value: Partial<Geometry>) {
 }
 
 export function getSelectedGeometry() {
-	/*return geometryStore((state) =>
-		{
-			console.log("plop1")
-			if (state.selectedGeometry === null) {
-				console.log("plop2")
-				return undefined
-			} else {
-				console.log("plop3")
-				return state.geometry.get(state.selectedGeometry)
-			}
-		}
-	);*/
 	const selectedGeometryId = geometryStore!.getState()!.selectedGeometry
 	if (selectedGeometryId) 
 		return geometryStore!.getState()!.geometry!.get(selectedGeometryId)
@@ -289,7 +272,7 @@ export function addQuest(position: [number, number], color: string) {
 			clickable: true,
 			subType: "",
 			store: "local",
-			marker: ""
+			marker: "/static/Map-Marker-Ball-Chartreuse-icon.png"
 		  }),
 		};
 	});
@@ -298,14 +281,8 @@ export function addQuest(position: [number, number], color: string) {
 
 
 export function addGlobalGeometry(geoList:any, coalition:string) {
-	  //const [geometryTmp, selectedId] = geometryStore((state) => [
-	//	state.geometry,
-	//	state.selectedGeometry,
-	//  ]);
-
 	const {geometry, id, selectedGeometry} = geometryStore.getState();
 	const { editor_mode_on } = serverStore.getState();
-	//const editor_mode_on = serverStore((state) => state?.editor_mode_on);
 	
 	geoList.forEach((geo:any) => {
 		if (editor_mode_on || coalition == "GM" || coalition == geo.side) {
@@ -493,7 +470,7 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							color: geo.color,
 							subType: geo.subType,
 							store: "server",
-							marker: ((geo.marker && geo.marker) !== "" ? (geo.marker) : "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png")
+							marker: ((geo.marker && geo.marker) !== "" ? (geo.marker) : "/static/Map-Marker-Ball-Chartreuse-icon.png")
 						  }),
 						};
 					  });

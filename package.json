@@ -1,6 +1,6 @@
 {
-  "name": "sneaker",
-  "version": "0.1.0",
+  "name": "DCSBattleground",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@types/lodash": "^4.14.178",
@@ -10,8 +10,8 @@
     "lodash": "^4.17.21",
     "maptalks": "^1.0.0",
     "maptalks.animatemarker": "^0.4.1",
-    "mgrs": "^1.0.0",
-    "milsymbol": "^2.0.0",
+    "mgrs": "^2.0.0",
+    "milsymbol": "^2.2.0",
     "react": "^17.0.2",
     "react-collapse": "^5.0.4",
     "react-color-palette": "^7.3.0",

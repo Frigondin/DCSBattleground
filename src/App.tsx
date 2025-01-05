@@ -133,28 +133,7 @@ function ServerContainer({ serverName }: { serverName: string }) {
     );
   }
 
-  let dcsMap: DCSMap | null = null;
-/*   if (refLat >= 38 && refLat <= 48 && refLng >= 26 && refLng <= 48) {
-    dcsMap = Caucasus;
-  } else if (refLat >= 25 && refLat < 34 && refLng >= 28 && refLng <= 37) {
-    dcsMap = Sinai;
-  } else if (refLat >= 28 && refLat < 38 && refLng >= 27 && refLng <= 42) {
-    dcsMap = Syria;
-  } else if (refLat >= 20 && refLat <= 33 && refLng >= 46 && refLng <= 64) {
-    dcsMap = PersianGulf;
-  } else if (refLat >= 7 && refLat <= 23 && refLng >= 136 && refLng <= 153) {
-    dcsMap = Marianas;
-  } else if (refLat >= -59 && refLat <= -45 && refLng >= -88 && refLng <= -38) {
-    dcsMap = Falklands;
-  } else if (refLat >= 45 && refLat <= 52 && refLng >= -5 && refLng <= 4) {
-    dcsMap = Normandy;
-  } else if (refLat >= 32 && refLat <= 40 && refLng >= -121 && refLng <= -112) {
-    dcsMap = Nevada; 
-  } else if (refLat >= 62 && refLat <= 73 && refLng >= -4 && refLng <= 40) {
-	dcsMap = Kola;
-  } else if (refLat >= 28 && refLat <= 39 && refLng >= 60 && refLng <= 74) {
-	dcsMap = Afghanistan;*/
-	
+  let dcsMap: DCSMap | null = null;	
   if (server && server.map === "Caucasus") {
     dcsMap = Caucasus;
   } else if (server && server.map === "Sinai") {
