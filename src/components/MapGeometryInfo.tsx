@@ -4,8 +4,14 @@ import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import React, { useEffect, useState, useRef } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt } from "react-icons/bi";
+import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt, BiUndo } from "react-icons/bi";
 import Lightbox from 'react-image-lightbox';
+//import Lightbox from 'yet-another-react-lightbox';
+//import { Counter, Download, Fullscreen, Thumbnails, Video } from "yet-another-react-lightbox/plugins";
+
+//plugin={[Counter, Download, Fullscreen, Thumbnails, Video]}
+
+
 import 'react-image-lightbox/style.css';
 import {Collapse, UnmountClosed} from 'react-collapse';
 import { serverStore } from "../stores/ServerStore";
@@ -17,6 +23,7 @@ import {
   geometryStore,
   setSelectedGeometry,
   updateGeometrySafe,
+  updateGeometry
 } from "../stores/GeometryStore";
 import DetailedCoords from "./DetailedCoords";
 
@@ -41,7 +48,8 @@ function DetailedWaypoints({
 	points: [number, number][];
 }) {
 	var counter = -1
-	return <div style={{ maxHeight: "600px", overflowY:"scroll" }}>{points.map(point => {
+	//return <div style={{ maxHeight: "600px", overflowY:"scroll" }}>{points.map(point => {
+	return <div className="overflow-y-scroll">{points.map(point => {
 		counter = counter + 1
 		return (<div style={{borderTop:"1px solid black"}}><div style={{textDecoration: "underline"}}>Wpt#{counter}<br/></div><DetailedCoords coords={point}/></div>)
 	})}</div>
@@ -144,7 +152,7 @@ function DetailedTask({
 												{edit ? (<span className="">
 														  <textarea 
 															rows={5}
-															className="flex-grow p-0.5"
+															className="flex-grow p-0.5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300"
 															value={singleTask.data.field.description.join('\n')}
 															onChange={(e) => {
 																//updateGeometrySafe(geo.id, { description: e.target.value.split("\n") });
@@ -179,33 +187,52 @@ function DetailedTask({
 
 
 
-function submitGeometry(geo:Geometry, typeSubmit:string) {
-	var body
-	if (geo.type === "markpoint") {
-		body = JSON.stringify({"Type":"markpoint","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "zone") {
-		body = JSON.stringify({"Type":"zone","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar, "PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "waypoints") {
-		body = JSON.stringify({"Type":"waypoints","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "line") {
-		body = JSON.stringify({"Type":"line","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "circle") {
-		body = JSON.stringify({"Type":"circle","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":[], "Center":geo.center, "Radius":geo.radius, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "recon") {
-		body = JSON.stringify({"Type":"recon","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":"", "Points":[], "Center":[], "Radius":0, "Screenshot":[], "Side": geo.coalition, "Color": geo.color, "Description":[], "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
-	} else if (geo.type === "quest") {
-		body = JSON.stringify({"Type":"quest","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+async function submitGeometry(geo:Geometry, typeSubmit:string) {
+	if (typeSubmit === "delete" && geo.store === "local") {
+		deleteGeometry(geo.id);
+	} else {
+		var body
+		if (geo.type === "markpoint") {
+			body = JSON.stringify({"Type":"markpoint","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "zone") {
+			body = JSON.stringify({"Type":"zone","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar, "PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "waypoints") {
+			body = JSON.stringify({"Type":"waypoints","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "line") {
+			body = JSON.stringify({"Type":"line","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":geo.points, "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "circle") {
+			body = JSON.stringify({"Type":"circle","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":[], "PosMGRS":"", "Points":[], "Center":geo.center, "Radius":geo.radius, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "recon") {
+			body = JSON.stringify({"Type":"recon","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":"", "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		} else if (geo.type === "quest") {
+			body = JSON.stringify({"Type":"quest","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+		}
+		const response  = await fetch(window.location.href.concat('/share'), {
+			headers: {
+			  'Accept': 'application/json',
+			  'Content-Type': 'application/json'
+			},
+			method: "POST",
+			body: body
+		})
+		const submitResponse = await response.json();
+		if (submitResponse) {
+			const NewId = submitResponse.Id;
+			const OldId = geo.id;
+			if (typeSubmit === "delete") {
+				updateGeometrySafe(OldId, { clickable: false });
+				setSelectedGeometry(null);
+			}
+			else if (OldId !== NewId) {
+				geo.id = NewId;
+				updateGeometry(geo);
+				deleteGeometry(OldId);
+			}
+			//console.log(res) 
+		} else {
+			console.log("Submit error");
+		}
 	}
-	fetch(window.location.href.concat('/share'), {
-		headers: {
-		  'Accept': 'application/json',
-		  'Content-Type': 'application/json'
-		},
-		method: "POST",
-		body: body
-	})
-	.then(function(res){ console.log(res) })
-	.catch(function(res){ console.log(res) })
 			
 	return;
 }
@@ -215,17 +242,13 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
   const [isOpenDesc, setIsOpenDesc] = useState(true);
-  //const [picture, setPicture] = useState({});
-  const [picture, setPicture] = useState({picturePreview:"", pictureAsFile:""});
+  const [picture, setPicture] = useState({picturePreview:"", pictureAsFiles:""});
+  const url = new URL(window.location.href)
   
   const uploadPicture = (e:any) => {
     setPicture({
-		  /* contains the preview, if you want to show the picture to the user
-			   you can access it with this.state.currentPicture
-		   */
 		  picturePreview: URL.createObjectURL(e.target.files[0]),
-		  /* this contains the file we want to send */
-		  pictureAsFile: e.target.files[0],
+		  pictureAsFiles: e.target.files,
 		});
 	
   };
@@ -235,42 +258,27 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("file", picture.pictureAsFile);
-
-    //console.log(picture.pictureAsFile);
-
-    for (var key of formData.entries()) {
-      console.log(key[0] + ", " + key[1]);
+	for(let i = 0; i < picture.pictureAsFiles.length; i++) {
+		formData.append('attachments', picture.pictureAsFiles[i]);
     }
 
-	const url = new URL(window.location.href)
     const response  = await fetch(url.origin.concat('/upload'), {
+	//const response  = await fetch("https://webhook.site/75dbaa74-9bdb-4fad-9d5c-cbcce816e12a", {
 		method: "post",
 		body: formData,
     });
-    const uploadedImage = await response .json();
+    const uploadedImage = await response.json();
     if (uploadedImage) {
-	 	console.log(uploadedImage);					
+	 	//console.log(uploadedImage);					
 		let files:string[] = [];
 		uploadedImage.Files.forEach((file:any) => {
-			files.push(url.origin.concat('/files/').concat(file));
+			//files.push(url.origin.concat('/files/').concat(file));
+			files.push("$CURRENT_SERV".concat('/files/').concat(file));
 		});
-		//setUploadedFile(files);
-		//geo.screenshot = files;
 		updateGeometrySafe(geo.id, { screenshot: files });
     } else {
 		console.log("Upload error");
     }
-	
-	// fetch(url.origin.concat('/upload'), {
-		// method: "post",
-		// body: formData,
-    // })  .then(function(response) {
-		// const resp = response.json().files;
-		// console.log(resp);
-	// }).then(function(data) {
-		// console.log(data);
-	// });
   };
   
   useEffect(() => {
@@ -286,7 +294,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
             className="flex-grow p-0.5 text-right"
             value={geo.name}
             onChange={(e) => {
-              updateGeometrySafe(geo.id, { name: e.target.value });
+				updateGeometrySafe(geo.id, { name: e.target.value });
             }}
           />
         ) : (
@@ -340,48 +348,44 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
         </>
       )}
 	  {geo.type === "recon" && <DetailedCoords coords={geo.position} />}
-	  {geo.type === "recon" && (
-		<>
-			{}
-			{
-			<div style={{maxWidth: "250px"}} onClick={() => setIsOpen(true)}>
+	  {geo.type === "recon" && geo.screenshot[10] && (
+			<div className="w-72" onClick={() => {if (!geo.screenshot[imgIndex]) setImgIndex(0); setIsOpen(true)}}>
 				<img src={geo.screenshot[0]}/>
 			</div>
-			}
-		</>
 	  )}
-		{geo.type === "recon" && isOpen && (
+		{geo.type === "recon" && geo.screenshot[0] && isOpen && (
 			<Lightbox
-				mainSrc={geo.screenshot[imgIndex]}
-				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
-			  onCloseRequest={() => setIsOpen(false)}
-			  onMovePrevRequest={() =>
-				setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
-			  }
-			  onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
+				//plugins={[Counter, Download, Fullscreen, Thumbnails, Video]}
+				mainSrc={geo.screenshot[imgIndex].replace("$CURRENT_SERV", url.origin)}
+				nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length].replace("$CURRENT_SERV", url.origin)}
+				prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length].replace("$CURRENT_SERV", url.origin)}
+				onCloseRequest={() => setIsOpen(false)}
+				onMovePrevRequest={() =>
+					setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
+				}
+				onMoveNextRequest={() => setImgIndex((imgIndex + 1) % geo.screenshot.length)}
 			/>
 		)}
 		
 
 		{geo.type === "quest" && <DetailedCoords coords={geo.position} />}
-	  	{geo.type === "quest" && edit &&
-			<div className="my-2 flex gap-1 overflow-auto">
+		{edit &&
+			<div className="my-2 flex gap-1">
 				<div className="flex flex-col flex-grow">
 					<button className="bg-indigo-100 border-indigo-200 border rounded-sm p-1">
 						Upload pictures
 					</button>
 					<div className="border rounded-sm border-indigo-300">
 						<form onSubmit={setImageAction}>
-							<input type="file" name="image" onChange={uploadPicture} />
+							<input type="file" name="image" onChange={uploadPicture} multiple={true}/>
 							<br />
-							{picture.pictureAsFile !== "" &&
+							{picture.pictureAsFiles !== "" &&
 								<button type="submit" name="upload" className="bg-blue-100 border-blue-200 border rounded-sm p-1 items-center w-full">
 									Upload
 									<BiUpload className="ml-2 inline-block"/> 
 								</button>
 							}
-							{picture.pictureAsFile === "" &&
+							{picture.pictureAsFiles === "" &&
 								<div>
 									<br />
 								</div>
@@ -391,26 +395,26 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 				</div>
 			</div>
 		}
-		{geo.type === "quest" &&
+		{geo.type && (edit || geo.screenshot[0] || geo.description[0]) &&
 			<div>
-				<div className="my-2 flex gap-1 overflow-auto">
+				<div className="my-2 flex gap-1">
 					<div className="flex flex-col flex-grow">
 						<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpenDesc === true })}
 								onClick={() => {isOpenDesc ? setIsOpenDesc(false) : setIsOpenDesc(true);}}
 						>
-								Mission description
+								Description
 						</button>
 
 						<UnmountClosed className="flex flex-col" isOpened={isOpenDesc}>
 							<div className="border rounded-sm border-indigo-300">
-								<div className="w-72" onClick={() => setIsOpen(true)}>
-									<img src={geo.screenshot[0]}/>
+								<div className="w-72" onClick={() => {if (!geo.screenshot[imgIndex]) setImgIndex(0); setIsOpen(true)}}>
+									{geo.screenshot[0] && (<img src={geo.screenshot[0].replace("$CURRENT_SERV", url.origin)}/>)}
 								</div>
 								{isOpen && (
 									<Lightbox
-										mainSrc={geo.screenshot[imgIndex]}
-										nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length]}
-										prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length]}
+										mainSrc={geo.screenshot[imgIndex].replace("$CURRENT_SERV", url.origin)}
+										nextSrc={geo.screenshot[(imgIndex + 1) % geo.screenshot.length].replace("$CURRENT_SERV", url.origin)}
+										prevSrc={geo.screenshot[(imgIndex + geo.screenshot.length - 1) % geo.screenshot.length].replace("$CURRENT_SERV", url.origin)}
 									  onCloseRequest={() => setIsOpen(false)}
 									  onMovePrevRequest={() =>
 										setImgIndex((imgIndex + geo.screenshot.length - 1) % geo.screenshot.length)
@@ -421,7 +425,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 								{edit ? (<div className="flex flex-row flex-grow w-full">
 										  <textarea 
 										    rows={5}
-											className="flex-grow p-0.5"
+											className="flex-grow p-0.5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300"
 											value={geo.description.join('\n')}
 											onChange={(e) => {
 											  updateGeometrySafe(geo.id, { description: e.target.value.split("\n") });
@@ -433,7 +437,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 						</UnmountClosed>
 					</div>
 				</div>
-				<DetailedTask task={geo.task} edit={edit} id={geo.id}/>
+				{geo.type === "quest" && <DetailedTask task={geo.task} edit={edit} id={geo.id}/>}
 			</div>
 		}
     </>
@@ -496,8 +500,8 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
   if (!selectedGeometry) return <></>;
 	
   return (
-    <div className="w-80 flex flex-col bg-gray-300 border border-gray-500 shadow select-none rounded-sm">
-      <div className="p-2 bg-gray-400 text-sm flex flex-row">
+    <div className="max-h-full w-80 flex flex-col shadow select-none rounded-sm">
+      <div className="p-2 bg-gray-400 text-sm flex flex-row border border-gray-500">
 		{editor_mode_on && (selectedGeometry.status === "Locked" ? 
 					(<button title="Unlock" onClick={() => {
 															setEditing(false);
@@ -530,22 +534,35 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
             onClick={() => {
 				setEditing(false);
 				submitGeometry(selectedGeometry, "share");
-				selectedGeometry.clickable = false;
-				updateGeometrySafe(selectedGeometry.id, { clickable: false });
-				setTimeout(function() {deleteGeometry(selectedGeometry.id);}, 5000);
+				//selectedGeometry.clickable = false;
+				//updateGeometrySafe(selectedGeometry.id, { clickable: false });
+				//setTimeout(function() {deleteGeometry(selectedGeometry.id);}, 5000);
 				setSelectedGeometry(null);
             }}
           >
             <BiMailSend className="inline-block w-4 h-4" />
           </button>
         )}
-        {!editing && selectedGeometry.store !== "local" && (selectedGeometry.status !== "Locked"|| editor_mode_on) && (
+		{!editing && selectedGeometry.store === "updated" && (selectedGeometry.status !== "Locked"|| editor_mode_on) && (
+          <button
+			title="Undo" 
+            className="p-1 text-xs bg-yellow-300 border border-yellow-400 ml-2"
+            onClick={() => {
+				setEditing(false);
+				updateGeometrySafe(selectedGeometry.id, {store:"undo", timeStamp: new Date("01 January 2001 00:01 UTC").toISOString() });
+            }}
+          >
+            <BiUndo className="inline-block w-4 h-4" />
+        </button>
+        )}
+        {!editing && selectedGeometry.store === "updated" && (selectedGeometry.status !== "Locked"|| editor_mode_on) && (
           <button
 			title="Update" 
             className="p-1 text-xs bg-yellow-300 border border-yellow-400 ml-2"
             onClick={() => {
 				setEditing(false);
 				submitGeometry(selectedGeometry, "update");
+				updateGeometrySafe(selectedGeometry.id, {store:"undo", timeStamp: new Date("01 January 2001 00:01 UTC").toISOString() });
             }}
           >
             <BiMailSend className="inline-block w-4 h-4" />
@@ -638,28 +655,38 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 		  className="p-1 text-xs bg-red-300 border border-red-400 ml-2"
           onClick={() => {
             setEditing(false);
-            setSelectedGeometry(null);
+			console.log("test");
+			setTimeout(function() {setSelectedGeometry(null)}, 5000);
+            //setSelectedGeometry(null);
           }}
         >
           <BiExit className="inline-block w-4 h-4" />
         </button>
       </div>
-      <div className="p-2 flex flex-row">
-        <div className="flex flex-col pr-2 w-full">
-          <GeometryDetails geo={selectedGeometry} edit={editing} />
-		  {(selectedGeometry.status !== "Locked" || editor_mode_on) && (
-				<button
-					title="Delete" 
-					className="p-1 text-xs bg-red-200 border border-red-500 mt-2"
-					onClick={() => {
-					  submitGeometry(selectedGeometry, "delete");
-					  deleteGeometry(selectedGeometry.id);
-					}}
-				>
-					<BiTrash className="inline-block w-4 h-4" />
-				</button>
-		  )}
-        </div>
+      <div className="max-h-screen flex">
+		<div className="flex flex-col w-80">
+			<div className="p-2 flex flex-row bg-gray-300 border border-gray-500 overflow-x-hidden overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300">
+				<div className="flex flex-col pr-2 w-full">
+				  <GeometryDetails geo={selectedGeometry} edit={editing} />
+				  <div className="flex">
+					  {(selectedGeometry.status !== "Locked" || editor_mode_on) && (
+							<button
+								title="Delete" 
+								className="w-full p-1 text-xs bg-red-200 border border-red-500 mt-2"
+								onClick={() => {
+									setEditing(false);
+
+									submitGeometry(selectedGeometry, "delete");
+								}}
+							>
+								<BiTrash className="inline-block w-4 h-4" />
+							</button>
+					  )}
+				  </div>
+				</div>
+			</div>
+			<div className="flex h-52"/>
+		</div>
       </div>
     </div>
   );

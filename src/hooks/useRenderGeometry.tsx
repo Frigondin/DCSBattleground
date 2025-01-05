@@ -9,6 +9,7 @@ import {
   Geometry,
   geometryStore,
   MarkPoint,
+  getSelectedGeometry,
   setSelectedGeometry,
   updateGeometrySafe,
   deleteGeometry,
@@ -25,6 +26,60 @@ import { setSelectedEntityId, serverStore } from "../stores/ServerStore";
 
 const markPointSIDC = "GHG-GPRN--";
 const reconSIDC = "GHGPGPPO----";
+
+
+
+
+function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
+	console.log("testouille1");
+	//const selectedGeometry = geometryStore((state) =>
+	//	state.selectedGeometry !== null
+	//		? state.geometry.get(state.selectedGeometry)
+	//		: undefined
+	//);
+	
+	//const selectedGeometryId = geometryStore!.getState()!.selectedGeometry
+	//console.log("testouille2");
+	//var selectedGeometry
+	//selectedGeometryId ? (selectedGeometry = geometryStore!.getState()!.geometry!.get(geo.id)) : selectedGeometry = null
+	
+	const selectedGeometry = getSelectedGeometry()
+	
+	console.log("testouille3");
+	console.log(selectedGeometry);
+	console.log(geo);
+	const map = layer.getMap();
+    if (selectedGeometry && selectedGeometry.id !== geo.id) {
+		console.log("testouille4");
+		
+		const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+		const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
+		var item = layer.getGeometryById(
+			selectedGeometry.id
+		) as maptalks.GeometryCollection;
+		if (item === null) {
+			item = layerQuest.getGeometryById(
+				selectedGeometry.id
+			) as maptalks.GeometryCollection;
+		}
+		
+
+		if (selectedGeometry.type === "zone" ||
+			selectedGeometry.type === "waypoints" ||
+			selectedGeometry.type === "line" ||
+			selectedGeometry.type === "circle" ) {
+			console.log("testouille5");
+			item.endEdit();
+		} else if (selectedGeometry.type !== "quest"){
+			item.config("draggable", false);
+			console.log("testouille6");
+		}
+	}
+}
+
+
+
+
 
 function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 	const collection = layer.getGeometryById(
@@ -194,11 +249,13 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 	const clickable = geometryStore!.getState()!.geometry!.get(waypoints.id)!.clickable
 	
 	if (clickable || editor_mode_on){
+		endEditSelectedGeometry(layer, waypoints)
 		setSelectedGeometry(waypoints.id);
 		setSelectedEntityId(null);
 	}
   });
   col.on("editend", (e) => {
+	console.log("test editend");
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
 	updateGeometrySafe(waypoints.id, {
       points: coords.map((it) => [it.y, it.x]),

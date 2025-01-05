@@ -335,6 +335,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.PosMGRS = DataJson.Field.PosMGRS
 			geo.PosPoint = DataJson.Field.PosPoint
 			geo.Screenshot = DataJson.Field.Screenshot
+			geo.Description = DataJson.Field.Description
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
 			geo.Status = DataJson.Field.Status
@@ -471,6 +472,7 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.PosMGRS = DataJson.Field.PosMGRS
 			geo.PosPoint = DataJson.Field.PosPoint
 			geo.Screenshot = DataJson.Field.Screenshot
+			geo.Description = DataJson.Field.Description
 			geo.Side = DataJson.Field.Side
 			geo.Server = DcsName
 			geo.Status = DataJson.Field.Status

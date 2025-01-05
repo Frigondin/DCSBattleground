@@ -27,7 +27,7 @@ const [draw, setDraw] = useState("");
   return (
     <div className="p-2">
       <div className="">
-		<ColorPicker color={color} hideInput={["rgb", "hsv"]} hideAlpha={true} height={100} onChange={setColor} />
+		<ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} />
 	  </div>
       <div className="flex flex-row text-left items-center w-full gap-2 ml-auto">
 		<table>

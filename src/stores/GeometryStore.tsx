@@ -16,6 +16,8 @@ export type GeometryBase = {
   avatar: string;
   status: string;
   clickable: boolean;
+  screenshot: Array<string>;
+  description: Array<string>;
   store: string;
   color: string;
 };
@@ -54,17 +56,17 @@ export type Border = {
 export type Recon = {
   type: "recon";
   position: [number, number];
-  screenshot: string;
+  //screenshot: string;
 } & GeometryBase;
 
 export type Quest = {
   type: "quest";
   position: [number, number];
-  screenshot: Array<string>;
-  description: Array<string>;
+  //screenshot: Array<string>;
+  //description: Array<string>;
   task:	Array<JSON>;
-  status: string;
-  color: string;
+  //status: string;
+  //color: string;
   subType: string;
 } & GeometryBase;
 
@@ -92,7 +94,7 @@ export function deleteGeometry(id: number) {
 
 export function updateGeometry(value: Geometry) {
   geometryStore.setState((state) => {
-    return { ...state, geometry: state.geometry.set(value.id, value) };
+    return { ...state, geometry: state.geometry.set(value.id, {...value, store:"undo", timeStamp: new Date("01 January 2001 00:01 UTC").toISOString()}) };
   });
 }
 
@@ -100,14 +102,37 @@ export function updateGeometrySafe(id: number, value: Partial<Geometry>) {
   geometryStore.setState((state) => {
     const existing = state.geometry.get(id);
     if (!existing) return;
+	var store = existing.store
+	if (existing.store !== "local") store = "updated";
+		
+	
     return {
       ...state,
-      geometry: state.geometry.set(id, { ...existing, ...value, timeStamp: new Date().toISOString() } as Geometry),
+      geometry: state.geometry.set(id, { ...existing, timeStamp: new Date().toISOString(), store, ...value} as Geometry),
     };
   });
 }
 
+export function getSelectedGeometry() {
+	/*return geometryStore((state) =>
+		{
+			console.log("plop1")
+			if (state.selectedGeometry === null) {
+				console.log("plop2")
+				return undefined
+			} else {
+				console.log("plop3")
+				return state.geometry.get(state.selectedGeometry)
+			}
+		}
+	);*/
+	const selectedGeometryId = geometryStore!.getState()!.selectedGeometry
+	selectedGeometryId ? (return geometryStore!.getState()!.geometry!.get(geo.id)) : return undefined
+}
+
+
 export function setSelectedGeometry(id: number | null) {
+	console.log(id);
   geometryStore.setState({ selectedGeometry: id });
 }
 
@@ -125,6 +150,8 @@ export function addZone(points: Array<[number, number]>, color: string) {
 			avatar: server?.avatar as string,
 			type: "zone",
 			points,
+			screenshot: [],
+			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
@@ -149,6 +176,8 @@ export function addMarkPoint(position: [number, number], color: string) {
 			type: "markpoint",
 			position,
 			//color: '#0068FF',
+			screenshot: [],
+			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
@@ -174,6 +203,8 @@ export function addCircle(center: [number, number], radius: number, color: strin
 			type: "circle",
 			center,
 			radius,
+			screenshot: [],
+			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
@@ -197,6 +228,8 @@ export function addWaypoints(points: Array<[number, number]>, color: string) {
 			avatar: server?.avatar as string,
 			type: "waypoints",
 			points,
+			screenshot: [],
+			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
@@ -220,6 +253,8 @@ export function addLine(points: Array<[number, number]>, color: string) {
 			avatar: server?.avatar as string,
 			type: "line",
 			points,
+			screenshot: [],
+			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
@@ -289,6 +324,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "markpoint",
 							position: geo.posPoint,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -309,6 +346,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "zone",
 							points: geo.points,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -329,6 +368,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "waypoints",
 							points: geo.points,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -350,6 +391,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							type: "circle",
 							center: geo.center,
 							radius: geo.radius,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -370,6 +413,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "line",
 							points: geo.points,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -390,6 +435,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "border",
 							points: geo.points,
+							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,
@@ -412,6 +459,7 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							type: "recon",
 							position: [coord[1], coord[0]],
 							screenshot: geo.screenshot,
+							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
 							color: geo.color,

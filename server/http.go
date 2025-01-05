@@ -372,6 +372,10 @@ func (h *httpServer) streamServerEvents(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+type SqlResponse struct {
+	Id		int
+}
+
 var geoListGlob = []geometry{}
 var geoListDel = []int{}
 var counter = 10000;
@@ -386,6 +390,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 	
 
 	var geo geometry
+	var Id int
 	
     err2 := json.NewDecoder(r.Body).Decode(&geo)
     if err2 != nil {
@@ -428,14 +433,18 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				
 				if (geo.TypeSubmit == "share") {
 					sqlStatement = `INSERT INTO bg_missions (node, data)
-									VALUES ('` + dcsName + `', '` + string(data) + `')`
+									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
+					err = db.QueryRow(sqlStatement).Scan(&Id)
 				} else {
 					sqlStatement = `UPDATE bg_missions
 									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
 									WHERE id = ` + strconv.Itoa(geo.Id)
+					_, err = db.Exec(sqlStatement)
+					Id = geo.Id
 				}
-				fmt.Println(sqlStatement)
-				_, err = db.Exec(sqlStatement)
+				
+				fmt.Println(strconv.Itoa(Id))
+				//_, err = db.Exec(sqlStatement)
 				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
 				
 								
@@ -474,14 +483,18 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 
 				if (geo.TypeSubmit == "share") {
 					sqlStatement = `INSERT INTO bg_geometry2 (node, data)
-									VALUES ('` + dcsName + `', '` + string(data) + `')`
+									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
+					err = db.QueryRow(sqlStatement).Scan(&Id)
 				} else {
 					sqlStatement = `UPDATE bg_geometry2
 									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
 									WHERE id = ` + strconv.Itoa(geo.Id)
+					_, err = db.Exec(sqlStatement)
+					Id = geo.Id
 				}
-
-				_, err = db.Exec(sqlStatement)
+				
+				fmt.Println(strconv.Itoa(Id))
+				//_, err = db.Exec(sqlStatement)
 				//_, err = db.Exec(sqlStatement, pq.Array(geo.PosPoint), pq.Array(geo.Screenshot), pq.Array(geo.Points), pq.Array(geo.Center), geo.Radius)
 				
 								
@@ -510,8 +523,10 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			geo.Side = coalition
 			geo.Server = dcsName
 			geoListGlob = append(geoListGlob, geo)
+			Id = geo.Id
 		}
 		if (geo.TypeSubmit == "delete" && geo.Id > 10000) {
+			Id = geo.Id
 			geoListDel = append(geoListDel, geo.Id)
 			for i, v := range geoListGlob {
 				if v.Id == geo.Id {
@@ -521,7 +536,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	gores.JSON(w, 200, geo)
+	gores.JSON(w, 200, SqlResponse{Id:Id})
 }
 
 type TaskEnrolment struct {
@@ -590,7 +605,7 @@ type UploadResponse struct {
 	Files		[]string
 }
 
-func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
+func (h *httpServer) uploadHandler__(w http.ResponseWriter, r *http.Request) {
     switch r.Method {
     case "POST":
         r.ParseMultipartForm(10 << 20) //10 MB
@@ -623,6 +638,38 @@ func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
 		//gores.JSON(w, 200, user)
     }
 }
+func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+    case "POST":
+        r.ParseMultipartForm(32 << 20) //10 MB
+		filesnames := []string{}
+
+
+		for _, headers := range r.MultipartForm.File["attachments"] {
+			log.Println("test")
+			file, err := headers.Open()
+			defer file.Close()
+			
+			filename := uuid.NewString() + filepath.Ext(headers.Filename)
+			dst, err := os.Create(*h.config.AssetsPathExternal + filename)
+			if err != nil {
+				log.Println("error creating file", err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			defer dst.Close()
+			if _, err := io.Copy(dst, file); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			
+			filesnames = append(filesnames, filename)
+		}
+		resp := UploadResponse{Files:filesnames}
+		gores.JSON(w, 200, resp) 
+    }
+}
+
 
 func CheckError(err error) {
     if err != nil {

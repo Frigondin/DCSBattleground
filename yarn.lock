@@ -4501,10 +4501,10 @@ maptalks.animatemarker@^0.4.1:
   resolved "https://registry.npmjs.org/maptalks.animatemarker/-/maptalks.animatemarker-0.4.1.tgz"
   integrity sha512-UN+OytDYA6wYe68KRCY64VWX3OFvHCpbQubatAIVAxwKGV/GWbnCju934WN6I20XPBqEoGm0dt/ti/rikbC2Zg==
 
-maptalks@^1.0.0-rc.40:
-  version "1.0.0-rc.40"
-  resolved "https://registry.npmjs.org/maptalks/-/maptalks-1.0.0-rc.40.tgz"
-  integrity sha512-XY6Y/ZxM0PvtJBtadMGgKNkOk1bz8f2wqbN/rOJyAF5OTIkrFtlZsNlZFLhl1PgvluKZLY5Mz79+mYPQRhpw6Q==
+maptalks@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/maptalks/-/maptalks-1.0.0.tgz#54e2cade5eeb8b04e75412710feb92076baecdc2"
+  integrity sha512-gb2cxIfRiqRlFVmgYGVXD+XUwn9uCl5/lykyC5DFUEIcY/UpTj+nffbgvXWRew2FXBUy7/59qyQoOdXJUJpRNw==
   dependencies:
     "@maptalks/feature-filter" "^1.3.0"
     "@maptalks/function-type" "^1.4.0"
@@ -6610,6 +6610,11 @@ table@^6.0.9:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
+tailwind-scrollbar@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/tailwind-scrollbar/-/tailwind-scrollbar-3.1.0.tgz#ff7596407b6da5209261d8ff03860ab9206a59e3"
+  integrity sha512-pmrtDIZeHyu2idTejfV59SbaJyvp1VRjYxAjZBH0jnyrPRo6HL1kD5Glz8VPagasqr6oAx6M05+Tuw429Z8jxg==
+
 tailwindcss@^3.4.13:
   version "3.4.16"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.16.tgz#35a7c3030844d6000fc271878db4096b6a8d2ec9"
@@ -7183,6 +7188,11 @@ yargs@^16.0.0:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yet-another-react-lightbox@^3.21.7:
+  version "3.21.7"
+  resolved "https://registry.yarnpkg.com/yet-another-react-lightbox/-/yet-another-react-lightbox-3.21.7.tgz#02c625c65ecf2d415304b027291bbd5a5b3f4ba9"
+  integrity sha512-dcdokNuCIl92f0Vl+uzeKULnQhztIGpoZFUMvtVNUPmtwsQWpqWufeieDPeg9JtFyVCcbj4vYw3V00DS0QNoWA==
 
 zustand@^3.6.7:
   version "3.6.7"
