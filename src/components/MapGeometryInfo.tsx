@@ -122,7 +122,7 @@ function DetailedTask({
 																		  /></span><span> :</span></span>) : (<span>Task {singleTask.data.title} :</span>)}
 								
 												</span>
-												<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.field.max_flight}</span>
+												<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.fields.max_flight}</span>
 											</button>
 										</div>
 										<button onClick={() => {
@@ -153,18 +153,18 @@ function DetailedTask({
 														  <textarea 
 															rows={5}
 															className="flex-grow p-0.5 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300"
-															value={singleTask.data.field.description.join('\n')}
+															value={singleTask.data.fields.description.join('\n')}
 															onChange={(e) => {
 																//updateGeometrySafe(geo.id, { description: e.target.value.split("\n") });
 																const newSingleTask = singleTask;
-																newSingleTask.data.field.description = e.target.value.split("\n");
+																newSingleTask.data.fields.description = e.target.value.split("\n");
 																//const newTask = task.map(el => (el.id === singleTask.id ? {...el, fata
 																task[i] = newSingleTask;
 																updateGeometrySafe(id, { task: task });
 															}}
 														  />
 														</span>) : (<span className="">
-																	{singleTask.data.field.description.map((text:any) => {
+																	{singleTask.data.fields.description.map((text:any) => {
 																		return (<div>{text}</div>)
 																	})}
 																</span>)

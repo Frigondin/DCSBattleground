@@ -45,7 +45,7 @@ type geometry struct {
 	Name     	string  	`json:"name"`
 	DiscordName string		`json:"discordName"`
 	Avatar		string		`json:"avatar"`
-	Position 	[]float32	`json:"position"`
+	//Position 	[]float32	`json:"position"`
 	Points   	[][]float32	`json:"points"`
 	Center	 	[]float32  	`json:"center"`
 	Radius	 	float32  	`json:"radius"`
@@ -62,6 +62,7 @@ type geometry struct {
 	Color		string		`json:"color"`
 	SubType		string		`json:"subType"`
 	TimeStamp	string  	`json:"timeStamp"`
+	Marker		string		`json:"marker"`
 }
 
 type bg_geometry struct {
@@ -410,20 +411,20 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				DataJson.Title = geo.Name
 				DataJson.Author.Name = geo.DiscordName
 				DataJson.Author.Icon_url = geo.Avatar
-				DataJson.Field.Position = geo.PosMGRS
-				DataJson.Field.PosPoint = geo.PosPoint
-				DataJson.Field.PosMGRS = geo.PosMGRS
-				DataJson.Field.PosType = "MGRS"
-				DataJson.Field.Side = geo.Side
-				DataJson.Field.Color = geo.Color
-				DataJson.Field.Status = geo.Status
-				DataJson.Field.Clickable = geo.Clickable
-				DataJson.Field.Type = geo.Type
-				DataJson.Field.Screenshot = geo.Screenshot
-				DataJson.Field.Description = geo.Description
-				DataJson.Field.Points = geo.Points
-				DataJson.Field.Center = geo.Center
-				DataJson.Field.Radius = geo.Radius
+				//DataJson.Fields.Position = geo.PosMGRS
+				DataJson.Fields.PosPoint = geo.PosPoint
+				DataJson.Fields.PosMGRS = geo.PosMGRS
+				DataJson.Fields.PosType = "MGRS"
+				DataJson.Fields.Side = geo.Side
+				DataJson.Fields.Color = geo.Color
+				DataJson.Fields.Status = geo.Status
+				DataJson.Fields.Clickable = geo.Clickable
+				DataJson.Fields.Type = geo.Type
+				DataJson.Fields.Screenshot = geo.Screenshot
+				DataJson.Fields.Description = geo.Description
+				DataJson.Fields.Points = geo.Points
+				DataJson.Fields.Center = geo.Center
+				DataJson.Fields.Radius = geo.Radius
 				
 				data, err := json.Marshal(DataJson)
 				//fmt.Println(string(data))
@@ -462,19 +463,19 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				DataJson.Title = geo.Name
 				DataJson.Author.Name = geo.DiscordName
 				DataJson.Author.Icon_url = geo.Avatar
-				DataJson.Field.PosMGRS = geo.PosMGRS
-				DataJson.Field.PosPoint = geo.PosPoint
-				DataJson.Field.PosType = "POINT"
-				DataJson.Field.Side = geo.Side
-				DataJson.Field.Color = geo.Color
-				DataJson.Field.Status = geo.Status
-				DataJson.Field.Clickable = geo.Clickable
-				DataJson.Field.Type = geo.Type
-				DataJson.Field.Screenshot = geo.Screenshot
-				DataJson.Field.Description = geo.Description
-				DataJson.Field.Points = geo.Points
-				DataJson.Field.Center = geo.Center
-				DataJson.Field.Radius = geo.Radius
+				DataJson.Fields.PosMGRS = geo.PosMGRS
+				DataJson.Fields.PosPoint = geo.PosPoint
+				DataJson.Fields.PosType = "POINT"
+				DataJson.Fields.Side = geo.Side
+				DataJson.Fields.Color = geo.Color
+				DataJson.Fields.Status = geo.Status
+				DataJson.Fields.Clickable = geo.Clickable
+				DataJson.Fields.Type = geo.Type
+				DataJson.Fields.Screenshot = geo.Screenshot
+				DataJson.Fields.Description = geo.Description
+				DataJson.Fields.Points = geo.Points
+				DataJson.Fields.Center = geo.Center
+				DataJson.Fields.Radius = geo.Radius
 				
 				data, err := json.Marshal(DataJson)
 				//fmt.Println(string(data))

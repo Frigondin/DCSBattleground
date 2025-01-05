@@ -66,7 +66,7 @@ type DataJson struct {
 	Color		float32		`json:"color"`
 	Title		string		`json:"title"`
 	Author		Author		`json:"author"`
-	Field		Field		`json:"field"`
+	Fields		Fields		`json:"fields"`
 }
 
 type Author struct {
@@ -74,8 +74,8 @@ type Author struct {
 	Icon_url	string		`json:"icon_url"`
 }
 
-type Field struct {
-	Position	string		`json:"position"`
+type Fields struct {
+	//Position	string		`json:"position"`
 	PosMGRS		string		`json:"posMGRS"`
 	PosPoint	[]float32	`json:"posPoint"`
 	PosType		string		`json:"position_type"`
@@ -90,6 +90,7 @@ type Field struct {
 	Points		[][]float32	`json:"points"`
 	Center		[]float32	`json:"center"`
 	Radius		float32		`json:"radius"`
+	Marker		string		`json:"marker"`
 }
 
 
@@ -312,7 +313,7 @@ func (s *serverSession) runSharedGeometry() error {
 		
 		rows, err := db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE node='` + DcsName + `' AND data->'field'->>'type' = 'recon' ORDER BY id`)
+								WHERE node='` + DcsName + `' AND data->'fields'->>'type' = 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -328,22 +329,22 @@ func (s *serverSession) runSharedGeometry() error {
 			var geo geometry
 			geo.Id = Id
 			geo.TimeStamp = Time
-			geo.Type = DataJson.Field.Type
+			geo.Type = DataJson.Fields.Type
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
 			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Field.PosMGRS
-			geo.PosPoint = DataJson.Field.PosPoint
-			geo.Screenshot = DataJson.Field.Screenshot
-			geo.Description = DataJson.Field.Description
-			geo.Side = DataJson.Field.Side
+			geo.PosMGRS = DataJson.Fields.PosMGRS
+			geo.PosPoint = DataJson.Fields.PosPoint
+			geo.Screenshot = DataJson.Fields.Screenshot
+			geo.Description = DataJson.Fields.Description
+			geo.Side = DataJson.Fields.Side
 			geo.Server = DcsName
-			geo.Status = DataJson.Field.Status
-			geo.Clickable = DataJson.Field.Clickable
-			geo.Color = DataJson.Field.Color
-			geo.Points = DataJson.Field.Points
-			geo.Center = DataJson.Field.Center
-			geo.Radius = DataJson.Field.Radius
+			geo.Status = DataJson.Fields.Status
+			geo.Clickable = DataJson.Fields.Clickable
+			geo.Color = DataJson.Fields.Color
+			geo.Points = DataJson.Fields.Points
+			geo.Center = DataJson.Fields.Center
+			geo.Radius = DataJson.Fields.Radius
 			reconGeometry = append(reconGeometry, geo)
 		}
 
@@ -375,12 +376,12 @@ func (s *serverSession) runSharedGeometry() error {
 											   SELECT json_agg(json_build_object('id', rltn.discord_id, 'name', players.name))
 											   FROM bg_task_user_rltn rltn, players where rltn.id_task=bg_task.id and rltn.discord_id = players.discord_id
 											), '[]'::json))) 
-									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'field'->>'status' != 'Closed'
+									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'fields'->>'status' != 'Closed'
 									), '[]'::json) task  
 								FROM bg_missions 
 								WHERE node='` + DcsName + `' 
-								  AND data->'field'->>'status' != 'Closed'
-								ORDER BY id`) // and data->'field'->>'status' != 'Closed'
+								  AND data->'fields'->>'status' != 'Closed'
+								ORDER BY id`) // and data->'fields'->>'status' != 'Closed'
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -404,17 +405,18 @@ func (s *serverSession) runSharedGeometry() error {
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
 			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Field.Position
-			geo.PosPoint = DataJson.Field.PosPoint
-			geo.Screenshot = DataJson.Field.Screenshot
-			geo.Description = DataJson.Field.Description
-			geo.Side = DataJson.Field.Side
-			geo.Status = DataJson.Field.Status
-			geo.Clickable = DataJson.Field.Clickable
-			geo.Color = DataJson.Field.Color
-			geo.SubType = DataJson.Field.SubType
+			geo.PosMGRS = DataJson.Fields.PosMGRS
+			geo.PosPoint = DataJson.Fields.PosPoint
+			geo.Screenshot = DataJson.Fields.Screenshot
+			geo.Description = DataJson.Fields.Description
+			geo.Side = DataJson.Fields.Side
+			geo.Status = DataJson.Fields.Status
+			geo.Clickable = DataJson.Fields.Clickable
+			geo.Color = DataJson.Fields.Color
+			geo.SubType = DataJson.Fields.SubType
 			geo.Server = DcsName
 			geo.Task = TaskJson
+			geo.Marker = DataJson.Fields.Marker
 			//fmt.Println(TaskJson)
 			questList = append(questList, geo)
 		}
@@ -450,7 +452,7 @@ func (s *serverSession) runSharedGeometry() error {
 		//}
 		rows, err = db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE node='` + DcsName + `' AND data->'field'->>'type' != 'recon' ORDER BY id`)
+								WHERE node='` + DcsName + `' AND data->'fields'->>'type' != 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -465,22 +467,22 @@ func (s *serverSession) runSharedGeometry() error {
 			var geo geometry
 			geo.Id = Id
 			geo.TimeStamp = Time
-			geo.Type = DataJson.Field.Type
+			geo.Type = DataJson.Fields.Type
 			geo.Name = DataJson.Title
 			geo.DiscordName = DataJson.Author.Name
 			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Field.PosMGRS
-			geo.PosPoint = DataJson.Field.PosPoint
-			geo.Screenshot = DataJson.Field.Screenshot
-			geo.Description = DataJson.Field.Description
-			geo.Side = DataJson.Field.Side
+			geo.PosMGRS = DataJson.Fields.PosMGRS
+			geo.PosPoint = DataJson.Fields.PosPoint
+			geo.Screenshot = DataJson.Fields.Screenshot
+			geo.Description = DataJson.Fields.Description
+			geo.Side = DataJson.Fields.Side
 			geo.Server = DcsName
-			geo.Status = DataJson.Field.Status
-			geo.Clickable = DataJson.Field.Clickable
-			geo.Color = DataJson.Field.Color
-			geo.Points = DataJson.Field.Points
-			geo.Center = DataJson.Field.Center
-			geo.Radius = DataJson.Field.Radius
+			geo.Status = DataJson.Fields.Status
+			geo.Clickable = DataJson.Fields.Clickable
+			geo.Color = DataJson.Fields.Color
+			geo.Points = DataJson.Fields.Points
+			geo.Center = DataJson.Fields.Center
+			geo.Radius = DataJson.Fields.Radius
 			geoList = append(geoList, geo)
 		}
 	} else {

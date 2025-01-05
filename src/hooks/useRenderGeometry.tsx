@@ -818,7 +818,8 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 		{
 			'id': quest.id,
 			symbol:{
-				'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
+				//'markerFile'   : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png',
+				'markerFile'   : quest.marker, //'/static/Map-Marker-Ball-Chartreuse-icon.png',
 				'markerWidth'  : 28,
 				'markerHeight' : 28,
 				'markerDx'     : 0,

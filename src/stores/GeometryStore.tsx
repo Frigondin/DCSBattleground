@@ -68,6 +68,7 @@ export type Quest = {
   //status: string;
   //color: string;
   subType: string;
+  marker: string;
 } & GeometryBase;
 
 export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Border | Recon | Quest;
@@ -127,7 +128,9 @@ export function getSelectedGeometry() {
 		}
 	);*/
 	const selectedGeometryId = geometryStore!.getState()!.selectedGeometry
-	selectedGeometryId ? (return geometryStore!.getState()!.geometry!.get(geo.id)) : return undefined
+	if (selectedGeometryId) 
+		return geometryStore!.getState()!.geometry!.get(selectedGeometryId)
+	return undefined
 }
 
 
@@ -285,7 +288,8 @@ export function addQuest(position: [number, number], color: string) {
 			status: 'Active',
 			clickable: true,
 			subType: "",
-			store: "local"
+			store: "local",
+			marker: ""
 		  }),
 		};
 	});
@@ -488,7 +492,8 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							clickable: geo.clickable,
 							color: geo.color,
 							subType: geo.subType,
-							store: "server"
+							store: "server",
+							marker: ((geo.marker && geo.marker) !== "" ? (geo.marker) : "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/256/Map-Marker-Ball-Chartreuse-icon.png")
 						  }),
 						};
 					  });
