@@ -9,9 +9,10 @@ import (
 	"time"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"strconv"
 	"os"
-	
+	"strings"
 	"github.com/alioygur/gores"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -605,36 +606,7 @@ type UploadResponse struct {
 	Files		[]string
 }
 
-func (h *httpServer) uploadHandler__(w http.ResponseWriter, r *http.Request) {
-    switch r.Method {
-    case "POST":
-        r.ParseMultipartForm(10 << 20) //10 MB
-        file, handler, err := r.FormFile("file")
-        if err != nil {
-            log.Println("error retrieving file", err)
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        defer file.Close()
-		
-		filename := uuid.NewString() + filepath.Ext(handler.Filename)
-		//dst, err := os.Create("files/" + filename + filepath.Ext(handler.Filename))
-		dst, err := os.Create(*h.config.AssetsPathExternal + filename)
-        if err != nil {
-            log.Println("error creating file", err)
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        defer dst.Close()
-        if _, err := io.Copy(dst, file); err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-		
-		resp := UploadResponse{Files:[]string{filename}}
-		gores.JSON(w, 200, resp) 
-    }
-}
+
 func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
     switch r.Method {
     case "POST":
@@ -674,11 +646,101 @@ func CheckError(err error) {
     }
 }
 
+func (h *httpServer) cleanLoop() {
+	refreshRate := time.Duration(30)
+	ticker := time.NewTicker(time.Second * refreshRate)
+
+	for {
+		<-ticker.C
+
+		//fmt.Println("cleanLoop")
+		err := db.Ping()
+		var Id int
+		var Nbr int
+		var Data []byte
+		if err == nil {	
+			rows, err := db.Query(`SELECT id, data
+									FROM bg_geometry2 
+									WHERE data->'fields'->>'screenshot' like '%"%ephemeral-attachments%"%'`)
+			CheckError(err)
+			defer rows.Close()
+			for rows.Next() {
+				err = rows.Scan(&Id, &Data)			
+				CheckError(err)
+					
+				var	DataJson DataJson
+				err = json.Unmarshal(Data, &DataJson)
+				//fmt.Println(DataJson.Fields.Screenshot)	
+				
+				for i, screen := range DataJson.Fields.Screenshot {
+					if strings.Contains(screen, "ephemeral-attachments") {
+						//fmt.Println(screen)	
+						file, err1 := http.Get(screen)
+						if err1 != nil {
+							log.Println("error creating file1", err1 )
+						}
+						//filename := uuid.NewString() + filepath.Ext(path.Base(resp.Request.URL.String()))
+						filename := uuid.NewString() + strings.Split(filepath.Ext(screen), "?")[0]
+						
+						dst, err2 := os.Create(*h.config.AssetsPathExternal + filename)
+						if err2 != nil {
+							log.Println("error creating file2", err2)
+						}
+						defer dst.Close()
+						defer file.Body.Close()
+						_, err3 := io.Copy(dst, file.Body)
+						if  err3 != nil {
+							log.Println("error creating file3", err3)
+						}
+						
+						DataJson.Fields.Screenshot[i] = "$CURRENT_SERV/files/" + filename
+					}
+				}
+				//fmt.Println(DataJson.Fields.Screenshot)	
+				
+				data, err4 := json.Marshal(DataJson)
+				CheckError(err4)					
+				sqlStatement := `UPDATE bg_geometry2
+								SET data='` + string(data) + `'
+								WHERE id = ` + strconv.Itoa(Id)
+				_, err = db.Exec(sqlStatement)
+			}
+			
+			//fmt.Println("Loop file")	
+			items, _ := ioutil.ReadDir(*h.config.AssetsPathExternal)
+			for _, item := range items {
+				rows2, err4 := db.Query(`SELECT sum(count)
+										FROM
+											(SELECT count(*)
+											FROM bg_geometry2 
+											WHERE data->'fields'->>'screenshot' like '%"%` + item.Name() + `%"%'	
+											union
+											SELECT count(*)
+											FROM bg_missions
+											WHERE data->'fields'->>'screenshot' like '%"%` + item.Name() + `%"%') t1`)
+				CheckError(err4)
+				for rows2.Next() {
+					err = rows2.Scan(&Nbr)
+					CheckError(err)
+					//fmt.Println(item.Name())
+					//fmt.Println(Nbr)
+					if Nbr == 0 {
+						//fmt.Println(item.Name())
+						e := os.Remove(*h.config.AssetsPathExternal + item.Name()) 
+						CheckError(e)
+					}
+				}
+			}
+		}
+	}
+}
+
 
 func Run(config *Config) error {
 	server := newHttpServer(config)
 	initDB(config)
-
+	go server.cleanLoop()
+	
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(cors.Handler(cors.Options{
