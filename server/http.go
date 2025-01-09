@@ -198,8 +198,8 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 	if db != nil {
 		err := db.Ping()
 		if err == nil {
-			req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = '" + server.DcsName + "' AND coalitions.player_ucid = players.ucid AND discord_id = '" + DiscordId + "'"
-			rows, err := db.Query(req)
+			req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = $1 AND coalitions.player_ucid = players.ucid AND discord_id = $2"
+			rows, err := db.Query(req, server.DcsName, DiscordId)
 			CheckError(err)
 			
 			defer rows.Close()
@@ -223,8 +223,8 @@ func getMap(server *TacViewServerConfig) string {
 	var MapName string
 	err := db.Ping()
 	if err == nil {
-		req := "SELECT mission_theatre FROM public.missions WHERE server_name = '" + server.DcsName + "' ORDER BY id desc limit 1"
-		rows, err := db.Query(req)
+		req := "SELECT mission_theatre FROM public.missions WHERE server_name = $1 ORDER BY id desc limit 1"
+		rows, err := db.Query(req, server.DcsName)
 		CheckError(err)
 		
 		defer rows.Close()
@@ -454,13 +454,13 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				
 				if (geo.TypeSubmit == "share") {
 					sqlStatement = `INSERT INTO bg_missions (node, data)
-									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
-					err = db.QueryRow(sqlStatement).Scan(&Id)
+									VALUES ($1, $2) RETURNING id`
+					err = db.QueryRow(sqlStatement, dcsName, string(data)).Scan(&Id)
 				} else {
 					sqlStatement = `UPDATE bg_missions
-									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
-									WHERE id = ` + strconv.Itoa(geo.Id)
-					_, err = db.Exec(sqlStatement)
+									SET time=$1, data=$2
+									WHERE id = $3`
+					_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(geo.Id))
 					Id = geo.Id
 				}
 				
@@ -494,13 +494,13 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 
 				if (geo.TypeSubmit == "share") {
 					sqlStatement = `INSERT INTO bg_geometry2 (node, data)
-									VALUES ('` + dcsName + `', '` + string(data) + `') RETURNING id`
-					err = db.QueryRow(sqlStatement).Scan(&Id)
+									VALUES ($1, $2) RETURNING id`
+					err = db.QueryRow(sqlStatement, dcsName, string(data)).Scan(&Id)
 				} else {
 					sqlStatement = `UPDATE bg_geometry2
-									SET time='` + geo.TimeStamp + `', data='` + string(data) + `'
-									WHERE id = ` + strconv.Itoa(geo.Id)
-					_, err = db.Exec(sqlStatement)
+									SET time=$1, data=$2
+									WHERE id = $3`
+					_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(geo.Id))
 					Id = geo.Id
 				}
 				
@@ -516,9 +516,9 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					break
 				}
 			}
-			_, e := db.Exec(`DELETE FROM bg_geometry2 where id=` + strconv.Itoa(geo.Id))
+			_, e := db.Exec(`DELETE FROM bg_geometry2 where id=$1`, strconv.Itoa(geo.Id))
 			CheckError(e)
-			_, e2 := db.Exec(`DELETE FROM bg_missions where id=` + strconv.Itoa(geo.Id))
+			_, e2 := db.Exec(`DELETE FROM bg_missions where id=$1`, strconv.Itoa(geo.Id))
 			CheckError(e2)
 		}
 	} else {
@@ -571,7 +571,7 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 		err = db.Ping()
 		if err == nil {
 			TaskId := 0
-			rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = ` + strconv.Itoa(taskEnrolment.TaskId) + ` AND discord_id = ` + DiscordId)
+			rows, err2 := db.Query(`SELECT id_task FROM bg_task_user_rltn WHERE id_task = $1 AND discord_id = $2`, strconv.Itoa(taskEnrolment.TaskId), DiscordId)
 			CheckError(err2)
 			defer rows.Close()
 			for rows.Next() {
@@ -579,15 +579,15 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 				CheckError(err)
 			}
 			
-			sqlStatement := `DELETE FROM bg_task_user_rltn WHERE  discord_id = ` + DiscordId
-			_, err = db.Exec(sqlStatement)
+			sqlStatement := `DELETE FROM bg_task_user_rltn WHERE discord_id = $1`
+			_, err = db.Exec(sqlStatement, DiscordId)
 			CheckError(err)
 			
 			
 			if (TaskId != taskEnrolment.TaskId) {
 				sqlStatement = `INSERT INTO bg_task_user_rltn (id_task, discord_id)
-								VALUES (` + strconv.Itoa(taskEnrolment.TaskId) + `,` + DiscordId + `)`
-				_, err = db.Exec(sqlStatement)
+								VALUES ($1, $2)`
+				_, err = db.Exec(sqlStatement, strconv.Itoa(taskEnrolment.TaskId), DiscordId)
 	
 				CheckError(err)
 			}

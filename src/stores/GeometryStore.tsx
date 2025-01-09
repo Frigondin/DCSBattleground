@@ -118,7 +118,6 @@ export function getSelectedGeometry() {
 
 
 export function setSelectedGeometry(id: number | null) {
-	console.log(id);
   geometryStore.setState({ selectedGeometry: id });
 }
 

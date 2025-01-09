@@ -65,6 +65,7 @@ export class DCSBattlegroundClient {
   }
 
   run(onEvent: (event: DCSBattlegroundSessionEvent) => void) {
+	
     this.eventSource = new EventSource(this.url);
     this.eventSource.onmessage = (event) => {
       const dcsbattlegroundEvent = JSON.parse(event.data) as DCSBattlegroundSessionEvent;
@@ -75,7 +76,8 @@ export class DCSBattlegroundClient {
       console.error(
         "[DCSBattlegroundClient] event source error, reopening in 5 seconds",
       );
-      setTimeout(() => this.run(onEvent), 5000);
+      //setTimeout(() => this.run(onEvent), 5000);
+	  window.location.replace(window.location.href)
     };
   }
 }
