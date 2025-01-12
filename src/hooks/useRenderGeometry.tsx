@@ -45,11 +45,10 @@ function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
 			) as maptalks.GeometryCollection;
 		}
 		
-
-		if (selectedGeometry.type === "zone" ||
+		if (item.isEditing() && (selectedGeometry.type === "zone" ||
 			selectedGeometry.type === "waypoints" ||
 			selectedGeometry.type === "line" ||
-			selectedGeometry.type === "circle" ) {
+			selectedGeometry.type === "circle" )) {
 			item.endEdit();
 		} else if (selectedGeometry.type !== "quest"){
 			item.config("draggable", false);
@@ -235,7 +234,6 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 	}
   });
   col.on("editend", (e) => {
-	console.log("test editend");
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
 	updateGeometrySafe(waypoints.id, {
       points: coords.map((it) => [it.y, it.x]),

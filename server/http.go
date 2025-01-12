@@ -51,6 +51,7 @@ type geometry struct {
 	Side		string		`json:"side"`
 	Server		string		`json:"server"`
 	Task		interface{}	`json:"task"`
+	TaskUpdated	[]Task		`json:"taskUpdated"`
 	Status		string		`json:"status"`
 	Clickable	bool		`json:"clickable"`
 	Color		string		`json:"color"`
@@ -75,6 +76,23 @@ type sessionDiscord struct {
 	username	string
 	avatar		string
 }
+
+type Task struct {
+	Id			int			`json:"id"`
+	Data 		TaskData	`json:"data"`
+}
+
+type TaskData struct {
+	Title		string		`json:"title"`
+	Fields		TaskFields	`json:"fields"`
+}
+
+type TaskFields struct {
+	Max_flight	int			`json:"max_flight"`
+	Description	[]string	`json:"description"`
+	Status		string		`json:"status"`
+}
+
 
 
 
@@ -453,7 +471,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				
 				
 				if (geo.TypeSubmit == "share") {
-					sqlStatement = `INSERT INTO bg_missions (node, data)
+					sqlStatement = `INSERT INTO bg_missions (server_name, data)
 									VALUES ($1, $2) RETURNING id`
 					err = db.QueryRow(sqlStatement, dcsName, string(data)).Scan(&Id)
 				} else {
@@ -463,9 +481,41 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(geo.Id))
 					Id = geo.Id
 				}
-				
-				//fmt.Println(strconv.Itoa(Id))
 				CheckError(err)
+				
+				var	DataJsonTask TaskData
+				for _, Task := range geo.TaskUpdated {
+					//fmt.Println(strconv.Itoa(Task.Id))
+					DataJsonTask.Title = Task.Data.Title
+					DataJsonTask.Fields.Status = Task.Data.Fields.Status
+					DataJsonTask.Fields.Description = Task.Data.Fields.Description
+					DataJsonTask.Fields.Max_flight = Task.Data.Fields.Max_flight
+					data, err = json.Marshal(DataJsonTask)
+					if (Task.Data.Fields.Status == "Deleted") {
+						if (Task.Id != 0) {
+							_, err = db.Exec(`DELETE FROM bg_task where id=$1`, strconv.Itoa(Task.Id))
+							CheckError(err)
+						}
+					} else if (Task.Id == 0) {
+						sqlStatement = `INSERT INTO bg_task (id_mission, server_name, data)
+										VALUES ($1, $2, $3)`
+						_, err = db.Exec(sqlStatement, Id, dcsName, string(data))
+						CheckError(err)
+					} else {
+						sqlStatement = `UPDATE bg_task
+										SET time=$1, data=$2
+										WHERE id = $3`
+						_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(Task.Id))
+						CheckError(err)
+					}
+				}
+				
+				//var	DataJsonTask []DataJsonTask
+				//err = json.Unmarshal(geo.Task, &DataJsonTask)
+				//fmt.Println(strconv.Itoa(len(DataJsonTask)))
+				//m := geo.Task.(map[string]interface{})
+				//fmt.Println(m)
+				//CheckError(err)
 			} else {
 				var	DataJson DataJson
 				//DataJson.Command = "sendEmbed"
@@ -493,7 +543,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				CheckError(err)					
 
 				if (geo.TypeSubmit == "share") {
-					sqlStatement = `INSERT INTO bg_geometry2 (node, data)
+					sqlStatement = `INSERT INTO bg_geometry2 (server_name, data)
 									VALUES ($1, $2) RETURNING id`
 					err = db.QueryRow(sqlStatement, dcsName, string(data)).Scan(&Id)
 				} else {
@@ -520,6 +570,8 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			CheckError(e)
 			_, e2 := db.Exec(`DELETE FROM bg_missions where id=$1`, strconv.Itoa(geo.Id))
 			CheckError(e2)
+			_, e3 := db.Exec(`DELETE FROM bg_task where id_mission=$1`, strconv.Itoa(geo.Id))
+			CheckError(e3)
 		}
 	} else {
 		if (geo.TypeSubmit == "share") {

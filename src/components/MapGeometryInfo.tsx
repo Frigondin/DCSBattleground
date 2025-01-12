@@ -4,7 +4,7 @@ import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import React, { useEffect, useState, useRef } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt, BiUndo } from "react-icons/bi";
+import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt, BiUndo, BiSolidTrash, BiMinusCircle, BiLoader } from "react-icons/bi";
 import Lightbox from 'react-image-lightbox';
 //import Lightbox from 'yet-another-react-lightbox';
 //import { Counter, Download, Fullscreen, Thumbnails, Video } from "yet-another-react-lightbox/plugins";
@@ -72,11 +72,13 @@ function DetailedDescription({
 function DetailedTask({
 	task,
 	edit,
-	id
+	id,
+	store
 }: {
 	task: any;
 	edit: any;
 	id: any;
+	store: any;
 }) {
 	const [isOpen, setIsOpen] = useState(Array(task.length).fill(false));
 	const [isOpenTop, setIsOpenTop] = useState(false);
@@ -91,7 +93,7 @@ function DetailedTask({
 													if (player.id === Number(discord_id)){is_intask = true};
 												});
 						
-						return (<div className="my-2">
+						return (singleTask.data.fields.status !== "Deleted" && (<div className="my-2">
 									<div className="flex gap-1 max-h-72 overflow-auto">
 										<div className="flex flex-col flex-grow">
 											<button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1", { "bg-indigo-200 border-indigo-300": isOpen[i] === true })}
@@ -123,9 +125,10 @@ function DetailedTask({
 												<span className="select-text font-mono">{singleTask.players.length}/{singleTask.data.fields.max_flight}</span>
 											</button>
 										</div>
-										<button onClick={() => {
+										{!edit && store !== "undo" && store !== "local" && store !== "updated" && (<button title="Enrollment" onClick={() => {
 																	const task_id = singleTask.id;
-																	console.log(task_id);
+																	//console.log(task_id);
+																	updateGeometrySafe(id, {store:"undo", timeStamp: new Date("01 January 2001 00:01 UTC").toISOString() });
 																	fetch(window.location.href.concat('/taskenrolment'), {
 																		headers: {
 																		  'Accept': 'application/json',
@@ -141,7 +144,26 @@ function DetailedTask({
 										>
 											{is_intask && (<div className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckSquare className="inline-block w-4 h-4"/></div>)}
 											{!is_intask && (<div className="border bg-blue-300 border-blue-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiCheckbox className="inline-block w-4 h-4"/></div>)}
-										</button>
+										</button>)}
+										{!edit && store === "undo" && (<button title="Waiting..." onClick={() => {
+														}}
+										>
+											<div className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiLoader className="inline-block w-4 h-4"/></div>
+										</button>)}
+										{!edit && (store === "updated" || store === "local") && (<button title="Send or undo update to allow enrollment" onClick={() => {
+														}}
+										>
+											<div className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiMinusCircle className="inline-block w-4 h-4"/></div>
+										</button>)}
+										{edit && (<button title="Delete task" onClick={() => {
+																const newSingleTask = singleTask;
+																newSingleTask.data.fields.status = "Deleted"
+																task[i] = newSingleTask;
+																updateGeometrySafe(id, { task: task });
+														}}
+										>
+											<div className="border bg-red-300 border-red-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidTrash className="inline-block w-4 h-4"/></div>
+										</button>)}
 									</div>		 					
 									<UnmountClosed className="flex flex-col" isOpened={isOpen[i]}>
 										<div className="border rounded-sm border-indigo-300">
@@ -176,8 +198,15 @@ function DetailedTask({
 											</div>
 										</div>
 									</UnmountClosed>
-								</div>)
+								</div>))
 					})}
+					{edit && <button className={classNames("bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1")}
+									onClick={() => {
+														updateGeometrySafe(id, { task: [...task, {"id":0, "data":{"title":"", "fields": {"max_flight": 99, "description":[], "status":"Active"}}, "players":[]}]});
+													}}
+							>
+								<span className="pr-2">New task</span>
+							</button>}
 				</div>)
 }
 
@@ -201,7 +230,7 @@ async function submitGeometry(geo:Geometry, typeSubmit:string) {
 		} else if (geo.type === "recon") {
 			body = JSON.stringify({"Type":"recon","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":"", "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
 		} else if (geo.type === "quest") {
-			body = JSON.stringify({"Type":"quest","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TypeSubmit":typeSubmit})
+			body = JSON.stringify({"Type":"quest","Id":geo.id,"Name":geo.name,"DiscordName":geo.discordName,"Avatar":geo.avatar,"PosPoint":geo.position, "PosMGRS":mgrs.forward([geo.position[1], geo.position[0]]), "Points":[], "Center":[], "Radius":0, "Screenshot":geo.screenshot, "Side": geo.coalition, "Color": geo.color, "Description":geo.description, "TimeStamp": geo.timeStamp, "Status": geo.status, "Clickable":geo.clickable, "TaskUpdated":geo.task, "TypeSubmit":typeSubmit})
 		}
 		const response  = await fetch(window.location.href.concat('/share'), {
 			headers: {
@@ -428,7 +457,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 						</UnmountClosed>
 					</div>
 				</div>
-				{geo.type === "quest" && <DetailedTask task={geo.task} edit={edit} id={geo.id}/>}
+				{geo.type === "quest" && <DetailedTask task={geo.task} edit={edit} id={geo.id} store={geo.store}/>}
 			</div>
 		}
     </>
@@ -654,16 +683,15 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 				) as maptalks.GeometryCollection;
 			}
 			
-
-			if (selectedGeometry.type === "zone" ||
+			if (item.isEditing() && (selectedGeometry.type === "zone" ||
 				selectedGeometry.type === "waypoints" ||
 				selectedGeometry.type === "line" ||
-				selectedGeometry.type === "circle" ) {
+				selectedGeometry.type === "circle" )) {
 				item.endEdit();
 			} else if (selectedGeometry.type !== "quest"){
 			  item.config("draggable", editing);
 			}
-            setSelectedGeometry(null);
+			setSelectedGeometry(null);
           }}
         >
           <BiExit className="inline-block w-4 h-4" />

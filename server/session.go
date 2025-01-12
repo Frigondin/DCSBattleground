@@ -62,8 +62,8 @@ type PlayerMetadata struct {
 }
 
 type DataJson struct {
-	Command		string		`json:"command"`
-	Color		float32		`json:"color"`
+	//Command		string		`json:"command"`
+	//Color		float32		`json:"color"`
 	Title		string		`json:"title"`
 	Author		Author		`json:"author"`
 	Fields		Fields		`json:"fields"`
@@ -283,7 +283,7 @@ func (s *serverSession) runSharedGeometry() error {
 		
 		rows, err := db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE node='` + DcsName + `' AND data->'fields'->>'type' = 'recon' ORDER BY id`)
+								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' = 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -327,7 +327,7 @@ func (s *serverSession) runSharedGeometry() error {
 									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'fields'->>'status' != 'Closed'
 									), '[]'::json) task  
 								FROM bg_missions 
-								WHERE node='` + DcsName + `' 
+								WHERE server_name='` + DcsName + `' 
 								  AND data->'fields'->>'status' != 'Closed'
 								ORDER BY id`) // and data->'fields'->>'status' != 'Closed'
 		CheckError(err)
@@ -374,7 +374,7 @@ func (s *serverSession) runSharedGeometry() error {
 		geoListGlob = []geometry{}
 		rows, err = db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE node='` + DcsName + `' AND data->'fields'->>'type' != 'recon' ORDER BY id`)
+								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' != 'recon' ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
