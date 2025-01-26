@@ -361,6 +361,15 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 
 
 function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
+  const editor_mode_on1 = serverStore.getState().editor_mode_on;
+  const clickable1 = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
+  var interactive
+  if (clickable1 || editor_mode_on1) {
+	interactive = true
+  } else {
+	interactive = false
+  }
+  
   const collection = layer.getGeometryById(
     zone.id
   ) as maptalks.GeometryCollection;
@@ -373,7 +382,7 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     polygon.setCoordinates(zone.points.map((it) => [it[1], it[0]]));
     text.setCoordinates([zone.points[0][1], zone.points[0][0]]);
     (text.setContent as any)(zone.name || `Zone #${zone.id}`);
-
+	collection.setOptions({interactive});
     return;
   }
 
@@ -432,6 +441,8 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     id: zone.id,
     draggable: false,
   });
+  
+  col.setOptions({interactive});
   col.on("click", (e) => {
     const { editor_mode_on } = serverStore.getState();
 	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
@@ -455,6 +466,14 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
 
 
 function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
+  const editor_mode_on1 = serverStore.getState().editor_mode_on;
+  const clickable1 = geometryStore!.getState()!.geometry!.get(circle.id)!.clickable
+  var interactive
+  if (clickable1 || editor_mode_on1) {
+	interactive = true
+  } else {
+	interactive = false
+  }
   const collection = layer.getGeometryById(
     circle.id
   ) as maptalks.GeometryCollection;
@@ -469,6 +488,7 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
 	circleMap.setRadius(circle.radius);
     text.setCoordinates([circle.center[1], circle.center[0]]);
     (text.setContent as any)(circle.name || `Circle #${circle.id}`);
+	collection.setOptions({interactive});
 
     return;
   }
@@ -529,6 +549,8 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
     id: circle.id,
     draggable: false,
   });
+  
+  col.setOptions({interactive});
   col.on("click", (e) => {
     const { editor_mode_on } = serverStore.getState();
 	const clickable = geometryStore!.getState()!.geometry!.get(circle.id)!.clickable
@@ -921,13 +943,14 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 			monoColor: "#FF2802",
 		}).toDataURL();
 	}
+	
 	useEffect(() => {
 		return geometryStore.subscribe(
-			(geometry: Immutable.Map<number, Geometry>) => {
+			([geometry, testUpdateStore]) => {
 				if (map === null) return;
 					renderGeometry(map, geometry);
 				},
-			(state) => state.geometry
+			(state) => [state.geometry, state.testUpdateStore] as [Immutable.Map<number, Geometry>, number]
 		);
 	}, [map]);
 
@@ -937,3 +960,4 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 		}
 	}, [map]);
 }
+

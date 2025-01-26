@@ -5,6 +5,7 @@ import ReactRoundedImage from "react-rounded-image"
 import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
 import { serverStore, setSelectedEntityId, updateServerStore } from "../stores/ServerStore";
+import { updateGeometryStore } from "../stores/GeometryStore";
 import {
   EntityTrackPing,
   estimatedSpeed,
@@ -335,8 +336,8 @@ export function Console({
   return (
     <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
-			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) :
-													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
+			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) : 
+													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
 						</div>)}
 			<div>Connected as {discord_name}</div>
 			<div className="flex flex-row gap-2"><ReactRoundedImage image={avatar} imageWidth="30" imageHeight="30" roundedSize="3"/></div>

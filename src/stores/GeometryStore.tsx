@@ -72,6 +72,7 @@ type GeometryStoreData = {
   geometry: Immutable.Map<number, Geometry>;
   id: number;
   selectedGeometry: number | null;
+  testUpdateStore: number;
 };
 
 export const geometryStore = create<GeometryStoreData>(() => {
@@ -79,6 +80,7 @@ export const geometryStore = create<GeometryStoreData>(() => {
     geometry: Immutable.Map<number, Geometry>(),
     id: 1,
     selectedGeometry: null,
+	testUpdateStore: 0
   };
 });
 
@@ -105,6 +107,15 @@ export function updateGeometrySafe(id: number, value: Partial<Geometry>) {
     return {
       ...state,
       geometry: state.geometry.set(id, { ...existing, timeStamp: new Date().toISOString(), store, ...value} as Geometry),
+    };
+  });
+}
+
+export function updateGeometryStore(value: Partial<GeometryStoreData>) {
+  geometryStore.setState((state) => {
+    return {
+      ...state,
+	  ...value
     };
   });
 }
