@@ -774,10 +774,7 @@ func (h *httpServer) cleanLoop() {
 				for rows2.Next() {
 					err = rows2.Scan(&Nbr)
 					CheckError(err)
-					//fmt.Println(item.Name())
-					//fmt.Println(Nbr)
-					if Nbr == 0 {
-						//fmt.Println(item.Name())
+					if Nbr == 0 && item.ModTime().Add(time.Hour * 24 * 7).Compare(time.Now()) == -1 {
 						e := os.Remove(*h.config.AssetsPathExternal + item.Name()) 
 						CheckError(e)
 					}
