@@ -443,14 +443,28 @@ func (s *serverSession) runSharedGeometry() error {
 func (s *serverSession) runTacViewClient() error {
 	client := NewTacViewClient(s.server.Hostname, s.server.Port, s.server.Password)
 	header, timeFrameStream, err := client.Start()
+	//fmt.Println(s.server.ShowOnShutdown)
 	if err != nil {
-		s.server.Enabled = false
+		if s.server.ShowOnShutdown == true {
+			s.server.Enabled = true
+			s.publish("SESSION_STATE", &sessionStateData{
+				SessionId: "2000-01-01T00:00:00.001Z",
+				Objects:   nil,
+			})
+			s.state.active = true
+		} else { 
+			s.server.Enabled = false
+		}
 		return err
 	}
 
 	err = s.state.initialize(header, s.server)
 	if err != nil {
-		s.server.Enabled = false
+		if s.server.ShowOnShutdown == true {
+			s.server.Enabled = true
+		} else { 
+			s.server.Enabled = false
+		}
 		return err
 	}
 

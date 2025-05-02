@@ -33,4 +33,5 @@ type TacViewServerConfig struct {
 	ZonesSize					[][]interface{}	`json:"zones_size"`
 	EditorId					[]string		`json:"editor_id"`
 	Enabled						bool			`json:"enabled"`
+	ShowOnShutdown				bool			`json:"show_on_shutdown"`
 }
