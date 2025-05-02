@@ -43,7 +43,6 @@ import ScratchPad from "./ScratchPad";
 
 function parseMgrs(coords:[number, number]){
 	var val:string = mgrs.forward([coords[1], coords[0]])
-	//console.log("test")
 	return val.slice(0, 3) + " " + val.slice(3, 5) + " " + val.slice(5, 10) + " " + val.slice(10)
 }
 
@@ -55,6 +54,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const selectedCircle: MutableRefObject<maptalks.Circle | null> = useRef(null);
   const [zoom, setZoom] = useState<number>(8);
   const noZoomLevel: MutableRefObject<maptalks.control.Zoom | null> = useRef(null);
+  const url = new URL(window.location.href)
+  //console.log(url.origin.concat("/maps/{z}/{x}/{y}.png"))
 
   const [drawBraaStart, setDrawBraaStart] = useState<
     number | [number, number] | null
@@ -158,7 +159,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       content: renderToString(<div></div>),
     });
 	noZoomLevel.current = new maptalks.control.Zoom({
-	  'position': 'bottom-right', //  { 'bottom' : '50', 'right' : '20' },
+	  //'position': 'bottom-right', 
+	  'position':  { 'bottom' : 50, 'right' : 20 },
 	  'slider': false,
 	  'zoomLevel': true
 	});
@@ -168,6 +170,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       dragRotate: false,
       dragPitch: false,
       touchZoom: true,
+	  //zoomAnimationDuration:2000,
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
@@ -185,11 +188,12 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
         maxCacheSize: 2048,
         hitDetect: false,
-		visible : true
+		visible : false
       }),
       layers: [
       new maptalks.TileLayer("pretty", {
         urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+		//urlTemplate:"https://maps.dcsolympus.com/maps/alt-syria/{z}/{x}/{y}.png",
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
@@ -197,7 +201,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		maxAvailableZoom  : 12,
         maxCacheSize: 2048,
         hitDetect: false,
-		visible : false
+		visible : true
+      }),
+      new maptalks.TileLayer("DCSMap", {
+        //urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
+		//urlTemplate:"https://maps.dcsolympus.com/maps/alt-syria/{z}/{x}/{y}.png",
+		urlTemplate: url.origin.concat("/maps/{z}/{x}/{y}.png"),
+		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
+		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
+		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
+		opacity: 0.8,
+		maxAvailableZoom  : 15,
+        maxCacheSize: 2048,
+        hitDetect: false,
+		visible : true
       }),
       new maptalks.WMSTileLayer("pretty2", {
         //urlTemplate:"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}",
@@ -220,13 +237,13 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
 		maxAvailableZoom  : 12,
-		visible : true
+		visible : false
       }),
 	new maptalks.WMSTileLayer("CaucasusBorder", {
 		tileSystem: [1, 1, -20037508.34, -20037508.34], 
 		renderer: "canvas",
         urlTemplate:"http://dcsmaps.com/cgi-bin/mapserv?map=CAUCASUS_MAPFILE",
-		layers:"Isolines,Rivers,Water,Railroad,Powerlines,Roads,LBridges,Tunnels,Bridges,Borders,Landmarks,Derricks,Obstacle,MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns,Airbases,DB,DME,NDB,TACAN,VOR",
+		layers:"MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns",
 		format:"image/png",
 		transparent:!0,
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
@@ -714,7 +731,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         ref={mapContainer}
       ></div>
       {currentCursorBulls && (
-        <div className="absolute right-0 bottom-0 max-w-xl max-h-32 text-yellow-600 text-3xl bg-gray-400 bg-opacity-20 p-1">
+        <div className="absolute right-0 bottom-0 max-w-xl max-h-32 text-yellow-600 text-3xl bg-gray-700 p-1">
           {currentCursorBulls}
         </div>
       )}

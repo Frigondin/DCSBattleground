@@ -17,10 +17,11 @@ import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
+  const dcs_map = serverStore((state) => state?.server?.dcs_map);
   return (
     <div className="p-2">
 		<table>
@@ -38,7 +39,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("pretty")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("pretty")!.show(); map.getLayer("base")!.hide(); map.getLayer("CaucasusMap")!.hide(); map.getLayer("CaucasusBorder")!.hide(); setSelectedButton("PrettyMap-On")}}
+								onClick={() => {map.getLayer("pretty")!.show(); map.getLayer("base")!.hide(); setSelectedButton("PrettyMap-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -49,21 +50,22 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					Pretty Map
 				</td>
 			</tr>
+			{dcs_map && 
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("CaucasusMap")!.isVisible() === true && (
+						{map.getLayer("DCSMap")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("CaucasusMap")!.hide(); setSelectedButton("CaucasusMap-Off")}}
+									onClick={() => {map.getLayer("DCSMap")!.hide(); map.getLayer("base")!.show(); setSelectedButton("DCSMap-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
 						)}
-						{!map.getLayer("CaucasusMap")!.isVisible() && (
+						{!map.getLayer("DCSMap")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("CaucasusMap")!.show(); setSelectedButton("CaucasusMap-On");map.getLayer("pretty")!.hide(); map.getLayer("base")!.show();}}
+								onClick={() => {map.getLayer("DCSMap")!.show(); map.getLayer("base")!.hide(); map.getLayer("CaucasusMap")!.hide(); setSelectedButton("DCSMap-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -71,9 +73,10 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					DCS Caucasus Map
+					DCS Map
 				</td>
 			</tr>
+			}
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">

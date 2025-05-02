@@ -112,6 +112,11 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 		isEditor = true
 	}
 	
+	dcsMap := false
+	if h.config.DCSMapsPathExternal != nil {
+		dcsMap = true
+	}
+	
 	result := serverMetadata{
 		Name:            			server.Name,
 		GroundUnitModes: 			getGroundUnitModes(server),
@@ -129,6 +134,7 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig, session_toke
 		Avatar:			 			getAvatar(session_token),
 		GCIs:            			[]gciMetadata{},
 		Enabled:		 			h.sessions[server.Name].server.Enabled,
+		DcsMap:						dcsMap,
 	}
 
 
@@ -177,6 +183,7 @@ type serverMetadata struct {
 	ViewAircraftWhenInFlight bool	 `json:"view_aircraft_when_in_flight"`
 	Enabled			bool			 `json:"enabled"`
 	ZonesSize		[][]interface{}	 `json:"zones_size"`
+	DcsMap			bool			 `json:"dcs_map"`
 }
 
 func getGroundUnitModes(config *TacViewServerConfig) []string {
@@ -898,6 +905,7 @@ func Run(config *Config) error {
 	})
 	r.Get("/static/*", server.serveEmbeddedStaticAssets)
 	r.Get("/files/*", server.serveEmbeddedStaticAssetsExternal)
+	r.Get("/maps/*", server.serverDCSMaps)
 	r.Get("/api/servers", server.getServerList)
 	r.Get("/api/servers/{serverName}", server.getServer)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)

@@ -4,8 +4,9 @@ import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import React, { useEffect, useState, useRef } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt, BiUndo, BiSolidTrash, BiMinusCircle, BiLoader } from "react-icons/bi";
+import { BiExit, BiEdit, BiTrash, BiMailSend, BiCheck, BiMapPin, BiCheckSquare, BiCheckbox, BiUpload, BiLock, BiLockOpen, BiMouseAlt, BiUndo, BiSolidTrash, BiMinusCircle, BiLoader, BiExport } from "react-icons/bi";
 import Lightbox from 'react-image-lightbox';
+import { saveAs } from 'file-saver';
 //import Lightbox from 'yet-another-react-lightbox';
 //import { Counter, Download, Fullscreen, Thumbnails, Video } from "yet-another-react-lightbox/plugins";
 
@@ -520,8 +521,8 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
   if (!selectedGeometry) return <></>;
 	
   return (
-    <div className="max-h-full w-80 flex flex-col shadow select-none rounded-sm">
-      <div className="p-2 bg-gray-400 text-sm flex flex-row border border-gray-500">
+    <div className="max-h-full w-80 flex flex-col select-none rounded-sm">
+      <div className="p-2 bg-gray-400 text-sm flex flex-row border border-gray-500 shadow">
 		{editor_mode_on && (selectedGeometry.status === "Locked" ? 
 					(<button title="Unlock" onClick={() => {
 															setEditing(false);
@@ -547,6 +548,28 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
         <b className="flex flex-grow"> 
           {editor_mode_on && (selectedGeometry.type.substring(0,5).concat(' #', selectedGeometry.id.toString()))}
         </b>
+		{!editing && (selectedGeometry.type === "waypoints") && (
+          <button
+			title="Export to the way" 
+            className="p-1 text-xs bg-yellow-300 border border-yellow-400 ml-2"
+            onClick={() => {
+				//selectedGeometry.points
+				var waypoints: string[];
+				waypoints = [];
+				var counter = 0;
+				selectedGeometry.points.map(point => {
+					waypoints = [...waypoints,`{"id":${counter},"name":"WP${counter+1}","lat":${point[0]},"long":${point[1]},"elev":3000}`];
+					counter = counter+1;
+				})
+				const data = "[".concat(waypoints.toString()).concat("]");
+				const blob = new Blob([data], { type: "text/plain" });
+				//const url = URL.createObjectURL(blob);
+				saveAs(blob, 'exported_waypoints.tw');
+            }}
+          >
+            <BiExport className="inline-block w-4 h-4" />
+        </button>
+		)}
         {!editing && (selectedGeometry.store === "local") && (
           <button
 			title="Share" 
@@ -699,7 +722,7 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
       </div>
       <div className="max-h-screen flex">
 		<div className="flex flex-col w-80">
-			<div className="p-2 flex flex-row bg-gray-300 border border-gray-500 overflow-x-hidden overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300">
+			<div className="p-2 flex flex-row bg-gray-300 border border-gray-500 overflow-x-hidden overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-300 shadow">
 				<div className="flex flex-col pr-2 w-full">
 				  <GeometryDetails geo={selectedGeometry} edit={editing} />
 				  <div className="flex">

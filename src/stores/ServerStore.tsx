@@ -30,6 +30,7 @@ export type Server = {
   player_name: string;
   toggle_connection: boolean;
   zones_size: any[][];
+  dcs_map: boolean;
 };
 
 export type ServerStoreData = {

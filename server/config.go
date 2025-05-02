@@ -5,6 +5,7 @@ type Config struct {
 	Servers    []TacViewServerConfig     `json:"servers"`
 	AssetsPath *string                   `json:"assets_path"`
 	AssetsPathExternal *string           `json:"assets_path_external"`
+	DCSMapsPathExternal *string          `json:"dcsmaps_path_external"`
 	Serverbot	bool					 `json:"serverbot"`
 	Database   string					 `json:"database"`
 	ClientID   string					 `json:"discord_client_id"`

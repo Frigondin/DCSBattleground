@@ -9,6 +9,7 @@ import (
 	//"fmt"
 	//"github.com/lib/pq"
 	"bytes"
+	"strconv"
 	//"strconv"
 )
 
@@ -317,6 +318,23 @@ func (s *serverSession) runSharedGeometry() error {
 		}
 
 
+		rows, err = db.Query(`SELECT id
+								FROM bg_missions 
+								WHERE server_name='` + DcsName + `' 
+								  AND data->'fields'->>'status' = 'To delete'
+								ORDER BY id`)
+		CheckError(err)
+		defer rows.Close()
+		for rows.Next() {
+			err = rows.Scan(&Id)
+			CheckError(err)
+			
+			_, e := db.Exec(`DELETE FROM bg_missions where id=$1`, strconv.Itoa(Id))
+			CheckError(e)
+			geoListDel = append(geoListDel, Id)
+		}	
+
+
 		rows, err = db.Query(`SELECT id, data, time, 
 									COALESCE((
 									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
@@ -324,7 +342,7 @@ func (s *serverSession) runSharedGeometry() error {
 											   SELECT json_agg(json_build_object('id', rltn.discord_id, 'name', players.name))
 											   FROM bg_task_user_rltn rltn, players where rltn.id_task=bg_task.id and rltn.discord_id = players.discord_id
 											), '[]'::json))) 
-									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'fields'->>'status' != 'Closed'
+									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'fields'->>'status' != 'Closed' and bg_task.data->'fields'->>'status' != 'To delete'
 									), '[]'::json) task  
 								FROM bg_missions 
 								WHERE server_name='` + DcsName + `' 
