@@ -332,6 +332,9 @@ func (h *httpServer) getOrCreateSession(serverName string) (*serverSession, erro
 	return h.sessions[serverName], nil
 }
 
+
+
+
 // Streams events for a given server
 func (h *httpServer) streamServerEvents(w http.ResponseWriter, r *http.Request) {
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
@@ -386,6 +389,9 @@ func (h *httpServer) streamServerEvents(w http.ResponseWriter, r *http.Request) 
 			Updated: []*StateObject{},
 			Deleted: []uint64{},
 		})
+		
+		//session.runSharedGeometry("all")
+		session.runSharedGeometry()
 	}
 
 	done := make(chan struct{})
@@ -600,6 +606,8 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	session.runSharedGeometry()
 	gores.JSON(w, 200, SqlResponse{Id:Id})
 }
 

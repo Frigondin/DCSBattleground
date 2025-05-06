@@ -54,6 +54,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const selectedCircle: MutableRefObject<maptalks.Circle | null> = useRef(null);
   const [zoom, setZoom] = useState<number>(8);
   const noZoomLevel: MutableRefObject<maptalks.control.Zoom | null> = useRef(null);
+  //const compass: MutableRefObject<maptalks.control.Compass | null> = useRef(null);
   const url = new URL(window.location.href)
   //console.log(url.origin.concat("/maps/{z}/{x}/{y}.png"))
 
@@ -164,12 +165,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 	  'slider': false,
 	  'zoomLevel': true
 	});
+	
+	//compass.current = new maptalks.control.Compass({
+//		'position':  { 'bottom' : 50, 'left' : 20 }
+//	});
+      
     map.current = new maptalks.Map(mapContainer.current, {
       hitDetect: false,
       panAnimation: false,
       dragRotate: false,
       dragPitch: false,
       touchZoom: true,
+	  touchRotate: false,
+	  touchPitch: false,
+	  touchZoomRotate: false,
 	  //zoomAnimationDuration:2000,
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
@@ -339,8 +348,9 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       ],
     } as any);
 
-
 	map.current.addControl(noZoomLevel.current);
+	//map.current.addControl(compass);
+
     map.current.on("contextmenu", (e) => {});
 
     map.current.on("zooming", (e) => {
@@ -351,6 +361,10 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       setCursorPos([e.coordinate.y, e.coordinate.x]);
     });
 
+    map.current.on("touchmove", (e) => {
+      setCursorPos([e.coordinate.y, e.coordinate.x]);
+    });
+	
     map.current.on("mouseup", (e) => {
       if (e.domEvent.button === 2) {
         setDrawBraaStart(null);
@@ -566,7 +580,11 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   ]);
 
   const currentCursorBulls = useMemo(() => {
-    if (!bullsEntity || !cursorPos) return;
+    if (!bullsEntity && !cursorPos) return;
+	if (!bullsEntity && cursorPos) {
+		return `${parseMgrs(cursorPos)}`;
+	};
+	if (!bullsEntity || !cursorPos) return;
     const bearing = getBearingMap(
       [bullsEntity.latitude, bullsEntity.longitude],
       cursorPos,

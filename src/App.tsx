@@ -127,7 +127,7 @@ function ServerContainer({ serverName }: { serverName: string }) {
     );
   }
 
-  if (loading || !server?.map) {
+  if (loading) {
     return (
       <BiLoader className="h-6 w-6 text-blue-400 animate-spin my-auto mx-auto" />
     );
@@ -155,13 +155,7 @@ function ServerContainer({ serverName }: { serverName: string }) {
   } else if (server && server.map === "Afghanistan") {
     dcsMap = Afghanistan;
   } else {
-    console.log(refLat, refLng);
-    return (
-      <div className="p-2 border border-red-400 bg-red-100 text-red-400">
-        Failed to detect map. Please include the following in a bug report: (
-        {refLat}, {refLng})
-      </div>
-    );
+    dcsMap = Caucasus;
   }
 
   return <Map dcsMap={dcsMap} />;

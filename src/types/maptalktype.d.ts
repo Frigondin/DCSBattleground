@@ -365,6 +365,17 @@ export namespace control {
          */
         buildOn(map: Map): HTMLElement;
     }
+	
+    class Compass extends Control {
+        constructor(options: ZoomOptions);
+
+        /**
+         * method to build DOM of the control
+         * @param   map map to build on
+         * @return
+         */
+        buildOn(map: Map): HTMLElement;
+    }
 
     class LayerSwitcher extends Control {
         constructor(options: LayerSwitcherOptions);
