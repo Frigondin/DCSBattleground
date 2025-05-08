@@ -333,6 +333,13 @@ func (h *httpServer) getOrCreateSession(serverName string) (*serverSession, erro
 }
 
 
+// Streams events for a given server
+func (h *httpServer) initServerEvents(w http.ResponseWriter, r *http.Request) {
+	session, _ := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	sharedGeometry := session.runSharedGeometry(-1, -1, "Init")
+	gores.JSON(w, 200, sharedGeometry)
+}
+
 
 
 // Streams events for a given server
@@ -390,8 +397,9 @@ func (h *httpServer) streamServerEvents(w http.ResponseWriter, r *http.Request) 
 			Deleted: []uint64{},
 		})
 		
-		//session.runSharedGeometry("all")
-		session.runSharedGeometry()
+		//session.runSharedGeometry(-1, -1, "Stream")
+		//fmt.Println(session.server.DcsName)
+		//session.runSharedGeometry()
 	}
 
 	done := make(chan struct{})
@@ -454,6 +462,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 		err = errors.New("no database")
 	}
 	sqlStatement := ""
+	fmt.Println("debut 1")
 	if err == nil {
 		if (geo.TypeSubmit == "share" || geo.TypeSubmit == "update") {
 			if (geo.Type == "quest") {
@@ -530,6 +539,7 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 				//fmt.Println(m)
 				//CheckError(err)
 			} else {
+				fmt.Println("debut 2")
 				var	DataJson DataJson
 				//DataJson.Command = "sendEmbed"
 				//DataJson.Color = 113805 
@@ -561,13 +571,15 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 					err = db.QueryRow(sqlStatement, dcsName, string(data)).Scan(&Id)
 				} else {
 					sqlStatement = `UPDATE bg_geometry2
-									SET time=$1, data=$2
-									WHERE id = $3`
-					_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(geo.Id))
+									SET time=timezone('utc'::text, now()), data=$1
+									WHERE id = $2`
+					fmt.Println(sqlStatement)
+					//_, err = db.Exec(sqlStatement, geo.TimeStamp, string(data), strconv.Itoa(geo.Id))
+					_, err = db.Exec(sqlStatement, string(data), strconv.Itoa(geo.Id))
 					Id = geo.Id
 				}
 				
-				fmt.Println(strconv.Itoa(Id))
+				//fmt.Println(strconv.Itoa(Id))
 				CheckError(err)
 			}
 		}
@@ -607,7 +619,12 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
-	session.runSharedGeometry()
+	var RadarRefreshRate int64
+	RadarRefreshRate = 5
+	if session.server.RadarRefreshRate != 0 {
+		RadarRefreshRate = session.server.RadarRefreshRate
+	}
+	session.runSharedGeometry(RadarRefreshRate, -1, "Stream")
 	gores.JSON(w, 200, SqlResponse{Id:Id})
 }
 
@@ -660,8 +677,28 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	session.runSharedGeometry(-1, -1, "Stream")
 	gores.JSON(w, 200, taskEnrolment)
 }
+
+
+
+func (h *httpServer) resend(w http.ResponseWriter, r *http.Request) {
+	var geo geometry
+	
+    err := json.NewDecoder(r.Body).Decode(&geo)
+    if err != nil {
+		log.Printf(err.Error())
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+	
+	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	session.runSharedGeometry(0, geo.Id, "Stream")
+	gores.JSON(w, 200, SqlResponse{Id:geo.Id})
+}
+
 
 type User struct {
 	Name  string
@@ -916,9 +953,11 @@ func Run(config *Config) error {
 	r.Get("/maps/*", server.serverDCSMaps)
 	r.Get("/api/servers", server.getServerList)
 	r.Get("/api/servers/{serverName}", server.getServer)
+	r.Get("/api/servers/{serverName}/init", server.initServerEvents)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)
 	r.Post("/servers/{serverName}/share", server.share)
 	r.Post("/servers/{serverName}/taskenrolment", server.taskenrolment)
+	r.Post("/servers/{serverName}/resend", server.resend)
 	r.Post("/upload", server.uploadHandler)
 
 

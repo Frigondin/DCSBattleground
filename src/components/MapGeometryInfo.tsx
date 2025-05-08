@@ -212,7 +212,6 @@ function DetailedTask({
 }
 
 
-
 async function submitGeometry(geo:Geometry, typeSubmit:string) {
 	if (typeSubmit === "delete" && geo.store === "local") {
 		deleteGeometry(geo.id);
@@ -326,6 +325,10 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
         <span className="pr-2 flex-grow">Created by</span>
 		<span className="pr-2">{geo.discordName}</span>
 		<ReactRoundedImage image={geo.avatar} imageWidth="30" imageHeight="30" roundedSize="3"/>
+      </div>
+	  <div className="flex flex-row flex-grow w-full">
+        <span className="pr-2 flex-grow">Date</span>
+		<span className="pr-2">{geo.timeStamp}</span>
       </div>
 	  {geo.type === "waypoints" && <DetailedWaypoints points={geo.points}/>}
       {geo.type === "markpoint" && <DetailedCoords coords={geo.position} />}
@@ -590,6 +593,14 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
             onClick={() => {
 				setEditing(false);
 				updateGeometrySafe(selectedGeometry.id, {store:"undo", timeStamp: new Date("01 January 2001 00:01 UTC").toISOString() });
+				fetch(window.location.href.concat('/resend'), {
+					headers: {
+					  'Accept': 'application/json',
+					  'Content-Type': 'application/json'
+					},
+					method: "POST",
+					body: JSON.stringify({"Id":selectedGeometry.id})
+				})
             }}
           >
             <BiUndo className="inline-block w-4 h-4" />

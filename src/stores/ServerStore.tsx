@@ -70,12 +70,29 @@ export function updateServerStore(value: Partial<ServerStoreData>) {
   });
 }
 
+async function initGeometry(server: Server) {
+	const response  = await fetch(route(`/servers/${server.name}/init`), {
+		headers: {
+		  'Accept': 'application/json',
+		  'Content-Type': 'application/json'
+		},
+		method: "GET"
+	})
+	const sharedGeometry = await response.json();
+	if (sharedGeometry) {
+		addGlobalGeometry(sharedGeometry.Add, server.coalition);
+		addGlobalGeometry(sharedGeometry.Recon, server.coalition);
+		addGlobalGeometry(sharedGeometry.Quest, server.coalition);
+		deleteGlobalGeometry(sharedGeometry.Delete, server.coalition);
+	}
+}
 
 function runDCSBattlegroundClient(server: Server | null) {
   dcsBattlegroundClient?.close();
 
   if (server !== null) {
-    setTimeout(() => {
+	 initGeometry(server);
+     setTimeout(() => {
       dcsBattlegroundClient = new DCSBattlegroundClient(
         route(`/servers/${server.name}/events`)
       );

@@ -130,10 +130,15 @@ func (s *serverSession) GetPlayerList() []PlayerMetadata {
 }
 
 func (s *serverSession) updateLoop() {
-	refreshRate := time.Duration(5)
+	//refreshRate := time.Duration(5)
+	var RadarRefreshRate int64
+	RadarRefreshRate = 5
 	if s.server.RadarRefreshRate != 0 {
-		refreshRate = time.Duration(s.server.RadarRefreshRate)
+		RadarRefreshRate = s.server.RadarRefreshRate
+		//refreshRate = time.Duration(s.server.RadarRefreshRate)
 	}
+	refreshRate := time.Duration(RadarRefreshRate)
+
 	ticker := time.NewTicker(time.Second * refreshRate)
 
 	var currentOffset int64
@@ -171,9 +176,10 @@ func (s *serverSession) updateLoop() {
 		s.state.Unlock()
 
 		s.publish("SESSION_RADAR_SNAPSHOT", data)
-
+		
 		if db != nil {		
-			s.runSharedGeometry()
+			//fmt.Println(RadarRefreshRate)
+			s.runSharedGeometry(RadarRefreshRate, -1, "Stream")
 		}
 		s.runConnectedPlayer()
 	}
@@ -268,7 +274,8 @@ func (s *serverSession) runConnectedPlayer() error {
 	return nil
 }
 
-func (s *serverSession) runSharedGeometry() error {
+func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, Mode string) sharedGeometry {
+	//fmt.Println(Id)
 	var DcsName = s.server.DcsName
 	var reconGeometry = []geometry{}
 	var questList = []geometry{}
@@ -284,7 +291,8 @@ func (s *serverSession) runSharedGeometry() error {
 		
 		rows, err := db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' = 'recon' ORDER BY id`)
+								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' = 'recon' AND (id = ` +  strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `) ORDER BY id`)
+		//fmt.Println(RadarRefreshRate)						
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -347,6 +355,7 @@ func (s *serverSession) runSharedGeometry() error {
 								FROM bg_missions 
 								WHERE server_name='` + DcsName + `' 
 								  AND data->'fields'->>'status' != 'Closed'
+								  AND (id = ` + strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `)
 								ORDER BY id`) // and data->'fields'->>'status' != 'Closed'
 		CheckError(err)
 		defer rows.Close()
@@ -392,7 +401,7 @@ func (s *serverSession) runSharedGeometry() error {
 		geoListGlob = []geometry{}
 		rows, err = db.Query(`SELECT id, data, time 
 								FROM bg_geometry2 
-								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' != 'recon' ORDER BY id`)
+								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' != 'recon' AND (id = ` + strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `) ORDER BY id`)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -434,8 +443,10 @@ func (s *serverSession) runSharedGeometry() error {
 
 
 	sharedGeometry := sharedGeometry{Add:geoList, Delete:geoListDel, Recon:reconGeometry, Quest:questList}
-	s.publish("SESSION_SHARED_GEOMETRY", sharedGeometry)
-	return nil
+	if Mode == "Stream" {
+		s.publish("SESSION_SHARED_GEOMETRY", sharedGeometry)
+	} 
+	return sharedGeometry
 }
 
 
