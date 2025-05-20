@@ -49,7 +49,7 @@ DCS Battleground features a built-in Discord authentication
     }
   ],
   "assets_path_external": "D:\\your\\folder\\DCSBattlegroundV2\\files\\",		//Uploaded pictures folder
-  "dcsmaps_path_external": "D:\\Tools\\06MHR\\DCSBattleground\\DCSMaps\\",		//DCS Map folder, you can download the last release here : xxxxx
+  "dcsmaps_path_external": "D:\\Tools\\06MHR\\DCSBattleground\\DCSMaps\\",		//(Optional) DCS Map folder, you can download the last release here : xxxxx
   "serverbot": true,									//Use Special K's server bot
   "database": "postgres://user:password@hostname:5432/postgres?sslmode=disable",	//Special K's server bot Database
   "discord_client_id": "1564564564421",							//Client ID of the discord application
