@@ -1440,6 +1440,9 @@ function renderGeometry(
 ) {
   const { editor_mode_on } = serverStore.getState();
   const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+  const layerZones =
+    (map.getLayer("custom-geometry-zones") as maptalks.VectorLayer | undefined) ||
+    layer;
   const layerQuest = map.getLayer("quest") as maptalks.VectorLayer;
   const layerQuestPin = map.getLayer("quest-pin") as maptalks.VectorLayer;
   const zoom = map.getZoom();
@@ -1461,6 +1464,21 @@ function renderGeometry(
     const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
     const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
     if (!storeGeo || storeGeo.status === "Deleted" || removeForCluster || removeForHidden || removeForLocalHidden) {
+      geo.remove();
+    }
+  }
+  for (const geo of layerZones.getGeometries()) {
+    const id = (geo as any)._id as number;
+    const storeGeo = geometry.get(id);
+    const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
+    const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
+    if (
+      !storeGeo ||
+      storeGeo.status === "Deleted" ||
+      storeGeo.type !== "zone" ||
+      removeForHidden ||
+      removeForLocalHidden
+    ) {
       geo.remove();
     }
   }
@@ -1502,7 +1520,7 @@ function renderGeometry(
 				renderMarkPoint(layer, geo);
 			}
 		} else if (geo.type === "zone") {
-			renderZone(layer, geo);
+			renderZone(layerZones, geo);
 		} else if (geo.type === "waypoints") {
 			renderWaypoints(layer, geo);
 		} else if (geo.type === "circle") {

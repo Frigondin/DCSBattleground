@@ -24,6 +24,7 @@ export type SettingsStoreData = {
     groundUnitMode?: GroundUnitMode;
     prettyMapBrightness?: number;
     dcsMapBrightness?: number;
+    mgrsGridBrightness?: number;
   };
 };
 
@@ -39,6 +40,7 @@ function defaultSettings(): SettingsStoreData {
       groundUnitMode: GroundUnitMode.ENEMY,
       prettyMapBrightness: 1,
       dcsMapBrightness: 1.2,
+      mgrsGridBrightness: 1,
     },
   };
 }

@@ -20,13 +20,14 @@ import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
   const dcs_map = serverStore((state) => state?.server?.dcs_map);
   const prettyMapBrightness = settingsStore((state) => state.map?.prettyMapBrightness ?? 1);
   const dcsMapBrightness = settingsStore((state) => state.map?.dcsMapBrightness ?? 1.2);
+  const mgrsGridBrightness = settingsStore((state) => state.map?.mgrsGridBrightness ?? 1);
   return (
     <div className="p-2">
 		<table>
@@ -128,6 +129,54 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 				</td>
 			</tr>
 			}
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{map.getLayer("mgrs-grid")!.isVisible() === true && (
+								<button 
+									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+									onClick={() => {map.getLayer("mgrs-grid")!.hide(); setSelectedButton("MgrsGrid-Off")}}
+								>
+									<BiShow className="inline-block w-4 h-4" />
+								</button>
+						)}
+						{!map.getLayer("mgrs-grid")!.isVisible() && (
+							<button 
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {map.getLayer("mgrs-grid")!.show(); setSelectedButton("MgrsGrid-On")}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					<div className="relative w-full pr-20">
+						<span className="whitespace-nowrap">MGRS Grid</span>
+						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
+							<span className="text-xs whitespace-nowrap">{mgrsGridBrightness.toFixed(2)}</span>
+							<input
+								className="w-12"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={mgrsGridBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											mgrsGridBrightness: value,
+										},
+									}));
+								}}
+							/>
+						</div>
+					</div>
+				</td>
+			</tr>
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
@@ -234,7 +283,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("custom-geometry")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("custom-geometry")!.hide(); setSelectedButton("Customgeo-Off")}}
+									onClick={() => {map.getLayer("custom-geometry")!.hide(); map.getLayer("custom-geometry-zones")!.hide(); setSelectedButton("Customgeo-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -242,7 +291,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("custom-geometry")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("custom-geometry")!.show(); setSelectedButton("Customgeo-On")}}
+								onClick={() => {map.getLayer("custom-geometry")!.show(); map.getLayer("custom-geometry-zones")!.show(); setSelectedButton("Customgeo-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>

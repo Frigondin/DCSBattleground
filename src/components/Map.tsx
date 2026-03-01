@@ -347,6 +347,9 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
+        new maptalks.VectorLayer("custom-geometry-zones", [], {
+          hitDetect: true,
+        }),
         new maptalks.VectorLayer("custom-geometry", [], {
           hitDetect: true,
         }),

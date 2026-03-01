@@ -1,6 +1,7 @@
 import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import { useEffect } from "react";
+import { settingsStore } from "../stores/SettingsStore";
 
 const MGRS_BANDS = "CDEFGHJKLMNPQRSTUVWX";
 
@@ -649,6 +650,8 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       const minLat = clamp(extent.ymin, -80, 84);
       const maxLat = clamp(extent.ymax, -80, 84);
       const zoom = map.getZoom();
+      const mgrsGridBrightness = settingsStore.getState().map?.mgrsGridBrightness ?? 1;
+      const opacity = (base: number) => clamp(base * mgrsGridBrightness, 0, 1);
 
       const geos: Array<maptalks.Geometry> = [];
 
@@ -658,11 +661,12 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
         const zoneLineSymbol = {
           lineColor: "#ef4444",
           lineWidth: 1.2,
-          lineOpacity: 0.5,
+          lineOpacity: opacity(0.5),
         };
         const zoneLabelSymbol = {
           textSize: zoneLabelSize,
           textFill: "#ef4444",
+          textOpacity: opacity(0.92),
           textHaloFill: "#ffffff",
           textHaloRadius: 1.5,
           textWeight: "bold",
@@ -704,16 +708,17 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
         const lineOutlineSymbol = {
           lineColor: "#000000",
           lineWidth: 2.2,
-          lineOpacity: 0.35,
+          lineOpacity: opacity(0.35),
         };
         const lineSymbol = {
           lineColor: "#d97706",
           lineWidth: 1.2,
-          lineOpacity: 0.58,
+          lineOpacity: opacity(0.58),
         };
         const labelSymbol = {
           textSize: labelSize100km,
           textFill: "#d97706",
+          textOpacity: opacity(0.95),
           textHaloFill: "#000000",
           textHaloRadius: 1.3,
         };
@@ -824,16 +829,17 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
         const lineOutlineSymbol = {
           lineColor: "#000000",
           lineWidth: 1.55,
-          lineOpacity: 0.26,
+          lineOpacity: opacity(0.26),
         };
         const lineSymbol = {
           lineColor: "#fee2e2",
           lineWidth: 1.1,
-          lineOpacity: 0.4,
+          lineOpacity: opacity(0.4),
         };
         const labelSymbol = {
           textSize: labelSize10km,
           textFill: "#ef4444",
+          textOpacity: opacity(0.9),
           textHaloFill: "#000000",
           textHaloRadius: 0.7,
         };
@@ -897,17 +903,17 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
         const lineOutlineSymbol = {
           lineColor: "#000000",
           lineWidth: 1.24,
-          lineOpacity: 0.2,
+          lineOpacity: opacity(0.2),
         };
         const lineSymbol = {
           lineColor: "#fca5a5",
           lineWidth: 1,
-          lineOpacity: 0.22,
+          lineOpacity: opacity(0.22),
         };
         const labelSymbol = {
           textSize: labelSize1km,
           textFill: "#f87171",
-          textOpacity: 0.62,
+          textOpacity: opacity(0.62),
           textHaloFill: "#000000",
           textHaloRadius: 0.45,
         };
@@ -992,12 +998,19 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
     map.on("moveend", renderGrid);
     map.on("zoomend", handleZoomEnd);
     map.on("zooming", scheduleZoomingRender);
+    const unsubscribeSettings = settingsStore.subscribe(
+      () => {
+        renderGrid();
+      },
+      (state) => state.map?.mgrsGridBrightness
+    );
 
     return () => {
       if (zoomingRenderTimer) {
         clearTimeout(zoomingRenderTimer);
         zoomingRenderTimer = null;
       }
+      unsubscribeSettings();
       map.off("moveend", renderGrid);
       map.off("zoomend", handleZoomEnd);
       map.off("zooming", scheduleZoomingRender);
