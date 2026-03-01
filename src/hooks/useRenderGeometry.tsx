@@ -184,6 +184,92 @@ function getReadableSegmentTextRotation(
 	return angle;
 }
 
+function getPolygonCentroidLatLon(
+	points: Array<[number, number]>
+): [number, number] | null {
+	const ring =
+		points.length > 2 &&
+		points[0][0] === points[points.length - 1][0] &&
+		points[0][1] === points[points.length - 1][1]
+			? points.slice(0, -1)
+			: points;
+
+	if (ring.length < 3) {
+		if (ring.length === 0) return null;
+		const avgLat = ring.reduce((acc, p) => acc + p[0], 0) / ring.length;
+		const avgLon = ring.reduce((acc, p) => acc + p[1], 0) / ring.length;
+		return [avgLat, avgLon];
+	}
+
+	// Centroid on lon/lat planar approximation (sufficient for local zone labels).
+	let area2 = 0;
+	let cx = 0;
+	let cy = 0;
+	for (let i = 0; i < ring.length; i++) {
+		const [lat1, lon1] = ring[i];
+		const [lat2, lon2] = ring[(i + 1) % ring.length];
+		const x1 = lon1;
+		const y1 = lat1;
+		const x2 = lon2;
+		const y2 = lat2;
+		const cross = x1 * y2 - x2 * y1;
+		area2 += cross;
+		cx += (x1 + x2) * cross;
+		cy += (y1 + y2) * cross;
+	}
+
+	if (Math.abs(area2) < 1e-12) {
+		const avgLat = ring.reduce((acc, p) => acc + p[0], 0) / ring.length;
+		const avgLon = ring.reduce((acc, p) => acc + p[1], 0) / ring.length;
+		return [avgLat, avgLon];
+	}
+
+	const factor = 1 / (3 * area2);
+	return [cy * factor, cx * factor];
+}
+
+function getZoneLabelCoordinate(points: Array<[number, number]>): [number, number] {
+	const center = getPolygonCentroidLatLon(points);
+	if (!center) return [0, 0];
+	return [center[1], center[0]];
+}
+
+function getZoneLabelBoxStyle() {
+	return {
+		padding: [2, 2],
+		horizontalAlignment: "center",
+		verticalAlignment: "middle",
+		symbol: {
+			markerType: "square",
+			markerFill: "#4B5563",
+			markerFillOpacity: 0.5,
+			markerLineOpacity: 0,
+			textHorizontalAlignment: "center",
+			textVerticalAlignment: "middle",
+			textDx: 0,
+		},
+	};
+}
+
+function getZoneLabelTextSymbol() {
+	return {
+		textFaceName: '"microsoft yahei"',
+		textFill: "#FBBF24",
+		textSize: 12,
+	};
+}
+
+function getZonePolygonSymbol(color: string, hovered = false) {
+	return {
+		lineColor: color,
+		lineWidth: hovered ? 3.2 : 2,
+		polygonFill: color,
+		polygonOpacity: hovered ? 0.18 : 0.1,
+		shadowBlur: hovered ? 10 : 0,
+		shadowColor: color,
+	};
+}
+
 function appendWaypointSegmentLabels(
 	labelList: Array<maptalks.Geometry>,
 	waypoints: Waypoints,
@@ -796,14 +882,9 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 
 
 function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
-  const editor_mode_on1 = serverStore.getState().editor_mode_on;
-  const clickable1 = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
-  var interactive
-  if (clickable1 || editor_mode_on1) {
-	interactive = true
-  } else {
-	interactive = false
-  }
+  // Keep zones interactive for hover-highlight even when not clickable.
+  // Click behavior remains guarded below by clickable/editor checks.
+  const interactive = true;
   
   const collection = layer.getGeometryById(
     zone.id
@@ -815,14 +896,15 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     ];
 	if (polygon.isEditing()) return;
     polygon.setCoordinates(zone.points.map((it) => [it[1], it[0]]));
-	(polygon.setSymbol as any)({
-		lineColor: zone.color,
-		lineWidth: 2,
-		polygonFill: zone.color,
-		polygonOpacity: 0.1
-	});
-    text.setCoordinates([zone.points[0][1], zone.points[0][0]]);
+	(polygon.setSymbol as any)(getZonePolygonSymbol(zone.color));
+    text.setCoordinates(getZoneLabelCoordinate(zone.points));
     (text.setContent as any)(zone.name || `Zone #${zone.id}`);
+	(text.setBoxStyle as any)?.(getZoneLabelBoxStyle());
+	(text.setTextSymbol as any)?.(getZoneLabelTextSymbol());
+	(text.setOptions as any)?.({
+		boxStyle: getZoneLabelBoxStyle(),
+		textSymbol: getZoneLabelTextSymbol(),
+	});
 	collection.setOptions({interactive});
     return;
   }
@@ -839,18 +921,13 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
       draggable: false,
       visible: true,
       editable: true,
-      symbol: {
-        lineColor: zone.color, //color,
-        lineWidth: 2,
-        polygonFill: zone.color, //color,
-        polygonOpacity: 0.1,
-      },
+      symbol: getZonePolygonSymbol(zone.color),
     }
   );
 
   const text = new maptalks.Label(
     zone.name || `Zone #${zone.id}`,
-    [zone.points[0][1], zone.points[0][0]],
+    getZoneLabelCoordinate(zone.points),
     {
       draggable: false,
       visible: true,
@@ -884,6 +961,37 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   });
   
   col.setOptions({interactive});
+  const setZoneHover = (hovered: boolean) => {
+    const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
+    const color = currentZone?.color || zone.color;
+    (polygon.setSymbol as any)(getZonePolygonSymbol(color, hovered));
+  };
+  const isPointerNearLabel = (evt: any): boolean => {
+    const mapRef = layer.getMap();
+    if (!mapRef || !evt?.containerPoint) return false;
+    const labelCoord = text.getCoordinates();
+    if (!labelCoord) return false;
+    const labelPoint = mapRef.coordinateToContainerPoint(labelCoord as any);
+    const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
+    const labelContent = (currentZone?.name || `Zone #${zone.id}`).toString();
+    // Label is centered on the barycenter; use centered rectangular hit-box.
+    const estimatedWidth = Math.max(56, Math.min(260, labelContent.length * 7.4));
+    const halfHeight = 16;
+    const left = labelPoint.x - estimatedWidth / 2;
+    const right = labelPoint.x + estimatedWidth / 2;
+    const top = labelPoint.y - halfHeight;
+    const bottom = labelPoint.y + halfHeight;
+    const x = evt.containerPoint.x;
+    const y = evt.containerPoint.y;
+    return x >= left && x <= right && y >= top && y <= bottom;
+  };
+  text.on("mouseenter", () => setZoneHover(true));
+  text.on("mouseleave", () => setZoneHover(false));
+  text.on("mouseover", () => setZoneHover(true));
+  text.on("mouseout", () => setZoneHover(false));
+  col.on("mouseover", (evt) => setZoneHover(isPointerNearLabel(evt)));
+  col.on("mousemove", (evt) => setZoneHover(isPointerNearLabel(evt)));
+  col.on("mouseout", () => setZoneHover(false));
   col.on("click", (e) => {
     const { editor_mode_on } = serverStore.getState();
 	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
@@ -969,25 +1077,8 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
       draggable: false,
       visible: true,
       editable: false,
-      boxStyle: {
-        padding: [2, 2],
-        horizontalAlignment: "left",
-        verticalAlignment: "middle",
-        symbol: {
-          markerType: "square",
-          markerFill: "#4B5563",
-          markerFillOpacity: 0.5,
-          markerLineOpacity: 0,
-          textHorizontalAlignment: "right",
-          textVerticalAlignment: "middle",
-          textDx: 10,
-        },
-      },
-      textSymbol: {
-        textFaceName: '"microsoft yahei"',
-        textFill: "#FBBF24",
-        textSize: 12,
-      },
+      boxStyle: getZoneLabelBoxStyle(),
+      textSymbol: getZoneLabelTextSymbol(),
     }
   );
 

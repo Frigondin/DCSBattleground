@@ -333,7 +333,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
           opacity: 0.3,
         }),
         new maptalks.VectorLayer("custom-geometry", [], {
-          hitDetect: false,
+          hitDetect: true,
         }),
         new maptalks.VectorLayer("recon-cluster", [], {
           hitDetect: false,
