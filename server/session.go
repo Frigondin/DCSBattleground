@@ -29,7 +29,6 @@ type serverSession struct {
 	sync.Mutex
 
 	server *TacViewServerConfig
-	
 
 	subscriberIdx int
 	subscribers   map[int]chan<- []byte
@@ -37,14 +36,14 @@ type serverSession struct {
 }
 
 type sharedGeometry struct {
-	Add		[]geometry
-	Delete	[]int
-	Recon	[]geometry
-	Quest	[]geometry
+	Add    []geometry
+	Delete []int
+	Recon  []geometry
+	Quest  []geometry
 }
 
 type player struct {
-	DiscordId string
+	DiscordId  string
 	PlayerName string
 }
 
@@ -64,41 +63,40 @@ type PlayerMetadata struct {
 type DataJson struct {
 	//Command		string		`json:"command"`
 	//Color		float32		`json:"color"`
-	Title		string		`json:"title"`
-	Author		Author		`json:"author"`
-	Fields		Fields		`json:"fields"`
+	Title  string `json:"title"`
+	Author Author `json:"author"`
+	Fields Fields `json:"fields"`
 }
 
 type Author struct {
-	Name		string		`json:"name"`
-	Icon_url	string		`json:"icon_url"`
+	Name     string `json:"name"`
+	Icon_url string `json:"icon_url"`
 }
 
 type Fields struct {
 	//Position	string		`json:"position"`
-	PosMGRS		string		`json:"posMGRS"`
-	PosPoint	[]float32	`json:"posPoint"`
-	PosType		string		`json:"position_type"`
-	Screenshot	[]string	`json:"screenshot"`
-	Description	[]string	`json:"description"`
-	Side		string		`json:"side"`
-	Status		string		`json:"status"`
-	Clickable	bool		`json:"clickable"`
-	Hidden		bool		`json:"hidden"`
-	Color		string		`json:"color"`
-	SubType		string		`json:"subType"`
-	Type		string		`json:"type"`
-	Points		[][]float32	`json:"points"`
-	PointNames	[]string	`json:"pointNames"`
-	PointGroundFt []float32 `json:"pointGroundFt"`
-	PointGroundFtSet []bool `json:"pointGroundFtSet"`
-	Center		[]float32	`json:"center"`
-	Radius		float32		`json:"radius"`
-	Marker		string		`json:"marker"`
-	GroundFt	float32		`json:"groundFt"`
-	GroundFtSet	bool		`json:"groundFtSet"`
+	PosMGRS          string      `json:"posMGRS"`
+	PosPoint         []float32   `json:"posPoint"`
+	PosType          string      `json:"position_type"`
+	Screenshot       []string    `json:"screenshot"`
+	Description      []string    `json:"description"`
+	Side             string      `json:"side"`
+	Status           string      `json:"status"`
+	Clickable        bool        `json:"clickable"`
+	Hidden           bool        `json:"hidden"`
+	Color            string      `json:"color"`
+	SubType          string      `json:"subType"`
+	Type             string      `json:"type"`
+	Points           [][]float32 `json:"points"`
+	PointNames       []string    `json:"pointNames"`
+	PointGroundFt    []float32   `json:"pointGroundFt"`
+	PointGroundFtSet []bool      `json:"pointGroundFtSet"`
+	Center           []float32   `json:"center"`
+	Radius           float32     `json:"radius"`
+	Marker           string      `json:"marker"`
+	GroundFt         float32     `json:"groundFt"`
+	GroundFtSet      bool        `json:"groundFtSet"`
 }
-
 
 func (s *serverSession) GetPlayerList() []PlayerMetadata {
 	players := []PlayerMetadata{}
@@ -181,8 +179,8 @@ func (s *serverSession) updateLoop() {
 		s.state.Unlock()
 
 		s.publish("SESSION_RADAR_SNAPSHOT", data)
-		
-		if db != nil {		
+
+		if db != nil {
 			//fmt.Println(RadarRefreshRate)
 			s.runSharedGeometry(RadarRefreshRate, -1, "Stream")
 		}
@@ -269,27 +267,32 @@ func (s *serverSession) run() {
 func (s *serverSession) runConnectedPlayer() error {
 	var DcsName = s.server.DcsName
 	//var ViewAircraftWhenInFlight = s.server.ViewAircraftWhenInFlight
-	
+
 	Player := player{}
-	Player.DiscordId="NADA"
-	Player.PlayerName="NADA"
+	Player.DiscordId = "NADA"
+	Player.PlayerName = "NADA"
 	Players := []player{}
 	Players = append(Players, Player)
-	
-	err := db.Ping()
-	if err == nil {
-		rows, err2 := db.Query(`SELECT discord_id, players.name
+
+	if db != nil {
+		ctx, cancel := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctx, `SELECT discord_id, players.name
 								FROM statistics, players, missions
 								WHERE players.ucid = statistics.player_ucid
 								  AND statistics.mission_id = missions.id
 								  AND hop_off is null
 								  AND server_name = $1`, DcsName)
-		CheckError(err2)
-		defer rows.Close()
+		if err != nil {
+			cancel()
+			CheckError(err)
+			PlayersF := players{Inflight: Players}
+			s.publish("SESSION_PLAYERS_IN_SLOT", PlayersF)
+			return nil
+		}
 		for rows.Next() {
 			var discordId string
 			var playerName string
-			
+
 			err = rows.Scan(&discordId, &playerName)
 			CheckError(err)
 
@@ -297,6 +300,8 @@ func (s *serverSession) runConnectedPlayer() error {
 			Player.PlayerName = playerName
 			Players = append(Players, Player)
 		}
+		_ = rows.Close()
+		cancel()
 	}
 	PlayersF := players{Inflight: Players}
 	s.publish("SESSION_PLAYERS_IN_SLOT", PlayersF)
@@ -309,16 +314,16 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 	var reconGeometry = []geometry{}
 	var questList = []geometry{}
 	var geoList = []geometry{}
-	
-	err := db.Ping()
-	if err == nil {
+
+	if db != nil {
 		var Id int
 
 		var Data []byte
 		var Task []byte
 		var Time string
-		
-		rows, err := db.Query(`SELECT id, data, time
+
+		ctxRecon, cancelRecon := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctxRecon, `SELECT id, data, time
 								FROM bg_geometry2
 								WHERE server_name = $1
 								  AND data->'fields'->>'type' = 'recon'
@@ -329,64 +334,74 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			RadarRefreshRate,
 			RadarRefreshRate*3,
 		)
-		//fmt.Println(RadarRefreshRate)						
-		CheckError(err)
-		defer rows.Close()
-		for rows.Next() {
-			err = rows.Scan(&Id, &Data, &Time)
+		//fmt.Println(RadarRefreshRate)
+		if err != nil {
 			CheckError(err)
-				
-			var	DataJson DataJson
-			err = json.Unmarshal(Data, &DataJson)
-			CheckError(err)			
-			
-			var geo geometry
-			geo.Id = Id
-			geo.TimeStamp = Time
-			geo.Type = DataJson.Fields.Type
-			geo.Name = DataJson.Title
-			geo.DiscordName = DataJson.Author.Name
-			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Fields.PosMGRS
-			geo.PosPoint = DataJson.Fields.PosPoint
-			geo.Screenshot = DataJson.Fields.Screenshot
-			geo.Description = DataJson.Fields.Description
-			geo.Side = DataJson.Fields.Side
-			geo.Server = DcsName
-			geo.Status = DataJson.Fields.Status
-			geo.Clickable = DataJson.Fields.Clickable
-			geo.Hidden = DataJson.Fields.Hidden
-			geo.Color = DataJson.Fields.Color
-			geo.Points = DataJson.Fields.Points
-			geo.PointNames = DataJson.Fields.PointNames
-			geo.PointGroundFt = DataJson.Fields.PointGroundFt
-			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
-			geo.Center = DataJson.Fields.Center
-			geo.Radius = DataJson.Fields.Radius
-			geo.GroundFt = DataJson.Fields.GroundFt
-			geo.GroundFtSet = DataJson.Fields.GroundFtSet
-			reconGeometry = append(reconGeometry, geo)
+		} else {
+			for rows.Next() {
+				err = rows.Scan(&Id, &Data, &Time)
+				CheckError(err)
+
+				var DataJson DataJson
+				err = json.Unmarshal(Data, &DataJson)
+				CheckError(err)
+
+				var geo geometry
+				geo.Id = Id
+				geo.TimeStamp = Time
+				geo.Type = DataJson.Fields.Type
+				geo.Name = DataJson.Title
+				geo.DiscordName = DataJson.Author.Name
+				geo.Avatar = DataJson.Author.Icon_url
+				geo.PosMGRS = DataJson.Fields.PosMGRS
+				geo.PosPoint = DataJson.Fields.PosPoint
+				geo.Screenshot = DataJson.Fields.Screenshot
+				geo.Description = DataJson.Fields.Description
+				geo.Side = DataJson.Fields.Side
+				geo.Server = DcsName
+				geo.Status = DataJson.Fields.Status
+				geo.Clickable = DataJson.Fields.Clickable
+				geo.Hidden = DataJson.Fields.Hidden
+				geo.Color = DataJson.Fields.Color
+				geo.Points = DataJson.Fields.Points
+				geo.PointNames = DataJson.Fields.PointNames
+				geo.PointGroundFt = DataJson.Fields.PointGroundFt
+				geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
+				geo.Center = DataJson.Fields.Center
+				geo.Radius = DataJson.Fields.Radius
+				geo.GroundFt = DataJson.Fields.GroundFt
+				geo.GroundFtSet = DataJson.Fields.GroundFtSet
+				reconGeometry = append(reconGeometry, geo)
+			}
+			_ = rows.Close()
 		}
+		cancelRecon()
 
-
-		rows, err = db.Query(`SELECT id
+		ctxDeleteMissions, cancelDeleteMissions := newDBTimeoutContext()
+		rows, err = db.QueryContext(ctxDeleteMissions, `SELECT id
 								FROM bg_missions
 								WHERE server_name = $1
 								  AND data->'fields'->>'status' = 'To delete'
 								ORDER BY id`, DcsName)
-		CheckError(err)
-		defer rows.Close()
-		for rows.Next() {
-			err = rows.Scan(&Id)
+		if err != nil {
 			CheckError(err)
-			
-			_, e := db.Exec(`DELETE FROM bg_missions where id=$1`, Id)
-			CheckError(e)
-			geoListDel = append(geoListDel, Id)
-		}	
+		} else {
+			for rows.Next() {
+				err = rows.Scan(&Id)
+				CheckError(err)
 
+				ctxDeleteMission, cancelDeleteMission := newDBTimeoutContext()
+				_, e := db.ExecContext(ctxDeleteMission, `DELETE FROM bg_missions where id=$1`, Id)
+				cancelDeleteMission()
+				CheckError(e)
+				geoListDel = append(geoListDel, Id)
+			}
+			_ = rows.Close()
+		}
+		cancelDeleteMissions()
 
-		rows, err = db.Query(`SELECT id, data, time,
+		ctxQuest, cancelQuest := newDBTimeoutContext()
+		rows, err = db.QueryContext(ctxQuest, `SELECT id, data, time,
 									COALESCE((
 									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
 											COALESCE((
@@ -405,54 +420,57 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			RadarRefreshRate,
 			RadarRefreshRate*3,
 		)
-		CheckError(err)
-		defer rows.Close()
-		for rows.Next() {
-			err = rows.Scan(&Id, &Data, &Time, &Task)
+		if err != nil {
 			CheckError(err)
-			
-			var	DataJson DataJson
-			err = json.Unmarshal(Data, &DataJson)
-			CheckError(err)
-			
-			var TaskJson interface{}
-		    d := json.NewDecoder(bytes.NewReader(Task))
-			d.UseNumber()
-			err := d.Decode(&TaskJson)
-			CheckError(err)
-			
-			var geo geometry
-			geo.Id = Id
-			geo.TimeStamp = Time
-			geo.Type = "quest"
-			geo.Name = DataJson.Title
-			geo.DiscordName = DataJson.Author.Name
-			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Fields.PosMGRS
-			geo.PosPoint = DataJson.Fields.PosPoint
-			geo.Screenshot = DataJson.Fields.Screenshot
-			geo.Description = DataJson.Fields.Description
-			geo.Side = DataJson.Fields.Side
-			geo.Status = DataJson.Fields.Status
-			geo.Clickable = DataJson.Fields.Clickable
-			geo.Hidden = DataJson.Fields.Hidden
-			geo.Color = DataJson.Fields.Color
-			geo.SubType = DataJson.Fields.SubType
-			geo.PointGroundFt = DataJson.Fields.PointGroundFt
-			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
-			geo.Server = DcsName
-			geo.Task = TaskJson
-			geo.Marker = DataJson.Fields.Marker
-			geo.GroundFt = DataJson.Fields.GroundFt
-			geo.GroundFtSet = DataJson.Fields.GroundFtSet
-			//fmt.Println(TaskJson)
-			questList = append(questList, geo)
+		} else {
+			for rows.Next() {
+				err = rows.Scan(&Id, &Data, &Time, &Task)
+				CheckError(err)
+
+				var DataJson DataJson
+				err = json.Unmarshal(Data, &DataJson)
+				CheckError(err)
+
+				var TaskJson interface{}
+				d := json.NewDecoder(bytes.NewReader(Task))
+				d.UseNumber()
+				err := d.Decode(&TaskJson)
+				CheckError(err)
+
+				var geo geometry
+				geo.Id = Id
+				geo.TimeStamp = Time
+				geo.Type = "quest"
+				geo.Name = DataJson.Title
+				geo.DiscordName = DataJson.Author.Name
+				geo.Avatar = DataJson.Author.Icon_url
+				geo.PosMGRS = DataJson.Fields.PosMGRS
+				geo.PosPoint = DataJson.Fields.PosPoint
+				geo.Screenshot = DataJson.Fields.Screenshot
+				geo.Description = DataJson.Fields.Description
+				geo.Side = DataJson.Fields.Side
+				geo.Status = DataJson.Fields.Status
+				geo.Clickable = DataJson.Fields.Clickable
+				geo.Hidden = DataJson.Fields.Hidden
+				geo.Color = DataJson.Fields.Color
+				geo.SubType = DataJson.Fields.SubType
+				geo.PointGroundFt = DataJson.Fields.PointGroundFt
+				geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
+				geo.Server = DcsName
+				geo.Task = TaskJson
+				geo.Marker = DataJson.Fields.Marker
+				geo.GroundFt = DataJson.Fields.GroundFt
+				geo.GroundFtSet = DataJson.Fields.GroundFtSet
+				//fmt.Println(TaskJson)
+				questList = append(questList, geo)
+			}
+			_ = rows.Close()
 		}
-		
-		
-		
+		cancelQuest()
+
 		geoListGlob = []geometry{}
-		rows, err = db.Query(`SELECT id, data, time
+		ctxGeo, cancelGeo := newDBTimeoutContext()
+		rows, err = db.QueryContext(ctxGeo, `SELECT id, data, time
 								FROM bg_geometry2
 								WHERE server_name = $1
 								  AND data->'fields'->>'type' != 'recon'
@@ -463,43 +481,47 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			RadarRefreshRate,
 			RadarRefreshRate*3,
 		)
-		CheckError(err)
-		defer rows.Close()
-		for rows.Next() {
-			err = rows.Scan(&Id, &Data, &Time)
+		if err != nil {
 			CheckError(err)
-				
-			var	DataJson DataJson
-			err = json.Unmarshal(Data, &DataJson)
-			CheckError(err)			
-			
-			var geo geometry
-			geo.Id = Id
-			geo.TimeStamp = Time
-			geo.Type = DataJson.Fields.Type
-			geo.Name = DataJson.Title
-			geo.DiscordName = DataJson.Author.Name
-			geo.Avatar = DataJson.Author.Icon_url
-			geo.PosMGRS = DataJson.Fields.PosMGRS
-			geo.PosPoint = DataJson.Fields.PosPoint
-			geo.Screenshot = DataJson.Fields.Screenshot
-			geo.Description = DataJson.Fields.Description
-			geo.Side = DataJson.Fields.Side
-			geo.Server = DcsName
-			geo.Status = DataJson.Fields.Status
-			geo.Clickable = DataJson.Fields.Clickable
-			geo.Hidden = DataJson.Fields.Hidden
-			geo.Color = DataJson.Fields.Color
-			geo.Points = DataJson.Fields.Points
-			geo.PointNames = DataJson.Fields.PointNames
-			geo.PointGroundFt = DataJson.Fields.PointGroundFt
-			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
-			geo.Center = DataJson.Fields.Center
-			geo.Radius = DataJson.Fields.Radius
-			geo.GroundFt = DataJson.Fields.GroundFt
-			geo.GroundFtSet = DataJson.Fields.GroundFtSet
-			geoList = append(geoList, geo)
+		} else {
+			for rows.Next() {
+				err = rows.Scan(&Id, &Data, &Time)
+				CheckError(err)
+
+				var DataJson DataJson
+				err = json.Unmarshal(Data, &DataJson)
+				CheckError(err)
+
+				var geo geometry
+				geo.Id = Id
+				geo.TimeStamp = Time
+				geo.Type = DataJson.Fields.Type
+				geo.Name = DataJson.Title
+				geo.DiscordName = DataJson.Author.Name
+				geo.Avatar = DataJson.Author.Icon_url
+				geo.PosMGRS = DataJson.Fields.PosMGRS
+				geo.PosPoint = DataJson.Fields.PosPoint
+				geo.Screenshot = DataJson.Fields.Screenshot
+				geo.Description = DataJson.Fields.Description
+				geo.Side = DataJson.Fields.Side
+				geo.Server = DcsName
+				geo.Status = DataJson.Fields.Status
+				geo.Clickable = DataJson.Fields.Clickable
+				geo.Hidden = DataJson.Fields.Hidden
+				geo.Color = DataJson.Fields.Color
+				geo.Points = DataJson.Fields.Points
+				geo.PointNames = DataJson.Fields.PointNames
+				geo.PointGroundFt = DataJson.Fields.PointGroundFt
+				geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
+				geo.Center = DataJson.Fields.Center
+				geo.Radius = DataJson.Fields.Radius
+				geo.GroundFt = DataJson.Fields.GroundFt
+				geo.GroundFtSet = DataJson.Fields.GroundFtSet
+				geoList = append(geoList, geo)
+			}
+			_ = rows.Close()
 		}
+		cancelGeo()
 	} else {
 		for i, v := range geoListGlob {
 			if v.Server == DcsName {
@@ -508,15 +530,12 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 		}
 	}
 
-
-	sharedGeometry := sharedGeometry{Add:geoList, Delete:geoListDel, Recon:reconGeometry, Quest:questList}
+	sharedGeometry := sharedGeometry{Add: geoList, Delete: geoListDel, Recon: reconGeometry, Quest: questList}
 	if Mode == "Stream" {
 		s.publish("SESSION_SHARED_GEOMETRY", sharedGeometry)
-	} 
+	}
 	return sharedGeometry
 }
-
-
 
 func (s *serverSession) runTacViewClient() error {
 	client := NewTacViewClient(s.server.Hostname, s.server.Port, s.server.Password)
@@ -530,7 +549,7 @@ func (s *serverSession) runTacViewClient() error {
 				Objects:   nil,
 			})
 			s.state.active = true
-		} else { 
+		} else {
 			s.server.Enabled = false
 		}
 		return err
@@ -540,7 +559,7 @@ func (s *serverSession) runTacViewClient() error {
 	if err != nil {
 		if s.server.ShowOnShutdown == true {
 			s.server.Enabled = true
-		} else { 
+		} else {
 			s.server.Enabled = false
 		}
 		return err

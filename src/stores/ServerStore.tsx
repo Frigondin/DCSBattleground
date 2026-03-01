@@ -59,12 +59,31 @@ export const serverStore = create<ServerStoreData>(() => {
 
 let dcsBattlegroundClient: DCSBattlegroundClient | null = null;
 let maintenanceHealthcheckTimer: ReturnType<typeof setInterval> | null = null;
+let maintenanceBannerDelayTimer: ReturnType<typeof setTimeout> | null = null;
+const MAINTENANCE_BANNER_DELAY_MS = 4000;
 
 function clearMaintenanceHealthcheck() {
   if (maintenanceHealthcheckTimer !== null) {
     clearInterval(maintenanceHealthcheckTimer);
     maintenanceHealthcheckTimer = null;
   }
+}
+
+function clearMaintenanceBannerDelay() {
+  if (maintenanceBannerDelayTimer !== null) {
+    clearTimeout(maintenanceBannerDelayTimer);
+    maintenanceBannerDelayTimer = null;
+  }
+}
+
+function showMaintenanceAfterDelay() {
+  if (maintenanceBannerDelayTimer !== null) {
+    return;
+  }
+  maintenanceBannerDelayTimer = setTimeout(() => {
+    maintenanceBannerDelayTimer = null;
+    serverStore.setState({ backendMaintenance: true });
+  }, MAINTENANCE_BANNER_DELAY_MS);
 }
 
 function startMaintenanceHealthcheck(server: Server) {
@@ -121,6 +140,7 @@ async function initGeometry(server: Server) {
 function runDCSBattlegroundClient(server: Server | null) {
   dcsBattlegroundClient?.close();
   clearMaintenanceHealthcheck();
+  clearMaintenanceBannerDelay();
 
   if (server !== null) {
 	 serverStore.setState({ backendMaintenance: false });
@@ -183,11 +203,12 @@ function runDCSBattlegroundClient(server: Server | null) {
         },
         {
           onOpen: () => {
+            clearMaintenanceBannerDelay();
             serverStore.setState({ backendMaintenance: false });
             clearMaintenanceHealthcheck();
           },
           onError: () => {
-            serverStore.setState({ backendMaintenance: true });
+            showMaintenanceAfterDelay();
             startMaintenanceHealthcheck(server);
           },
         }

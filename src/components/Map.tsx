@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import { renderToString } from "react-dom/server";
+import shallow from "zustand/shallow";
 import { FONT_FAMILY } from "../Constants";
 import { planes } from "../dcs/aircraft";
 import { DCSMap } from "../dcs/maps/DCSMap";
@@ -100,15 +101,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     number | [number, number] | null
   >(null);
   const [cursorPos, setCursorPos] = useState<[number, number] | null>(null);
+  const cursorRafRef = useRef<number | null>(null);
+  const pendingCursorPosRef = useRef<[number, number] | null>(null);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [scratchPadOpen, setScratchPadOpen] = useState(false);
 
-  const [entities, selectedEntity, server] = serverStore((state) => [
-    state.entities,
-    state.selectedEntityId && state.entities.get(state.selectedEntityId),
-	state.server
-  ]);
+  const [entities, selectedEntity, server] = serverStore(
+    (state) => [
+      state.entities,
+      state.selectedEntityId && state.entities.get(state.selectedEntityId),
+      state.server,
+    ],
+    shallow
+  );
 
 
   const bullsEntity = entities.find(
@@ -416,25 +422,64 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 	map.current.addControl(noZoomLevel.current);
 	//map.current.addControl(compass);
 
-    map.current.on("contextmenu", (e) => {});
+    const updateCursorPos = (nextPos: [number, number]) => {
+      pendingCursorPosRef.current = nextPos;
+      if (cursorRafRef.current !== null) {
+        return;
+      }
+      cursorRafRef.current = requestAnimationFrame(() => {
+        cursorRafRef.current = null;
+        if (!pendingCursorPosRef.current) {
+          return;
+        }
+        setCursorPos((prev) => {
+          if (
+            prev &&
+            prev[0] === pendingCursorPosRef.current![0] &&
+            prev[1] === pendingCursorPosRef.current![1]
+          ) {
+            return prev;
+          }
+          return pendingCursorPosRef.current;
+        });
+      });
+    };
 
-    map.current.on("zooming", (e) => {
+    const onContextMenu = (_e: any) => {};
+    const onZooming = (_e: any) => {
       setZoom(map.current!.getZoom());
-    });
-
-    map.current.on("mousemove", (e) => {
-      setCursorPos([e.coordinate.y, e.coordinate.x]);
-    });
-
-    map.current.on("touchmove", (e) => {
-      setCursorPos([e.coordinate.y, e.coordinate.x]);
-    });
-	
-    map.current.on("mouseup", (e) => {
+    };
+    const onMouseMove = (e: any) => {
+      updateCursorPos([e.coordinate.y, e.coordinate.x]);
+    };
+    const onTouchMove = (e: any) => {
+      updateCursorPos([e.coordinate.y, e.coordinate.x]);
+    };
+    const onMouseUp = (e: any) => {
       if (e.domEvent.button === 2) {
         setDrawBraaStart(null);
       }
-    });
+    };
+
+    map.current.on("contextmenu", onContextMenu);
+    map.current.on("zooming", onZooming);
+    map.current.on("mousemove", onMouseMove);
+    map.current.on("touchmove", onTouchMove);
+    map.current.on("mouseup", onMouseUp);
+
+    return () => {
+      if (cursorRafRef.current !== null) {
+        cancelAnimationFrame(cursorRafRef.current);
+        cursorRafRef.current = null;
+      }
+      map.current?.off("contextmenu", onContextMenu);
+      map.current?.off("zooming", onZooming);
+      map.current?.off("mousemove", onMouseMove);
+      map.current?.off("touchmove", onTouchMove);
+      map.current?.off("mouseup", onMouseUp);
+      map.current?.remove();
+      map.current = null;
+    };
   }, [mapContainer, map]);
 
   useEffect(() => {

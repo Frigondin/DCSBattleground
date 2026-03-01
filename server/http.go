@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -200,6 +201,12 @@ func (h *httpServer) getElevation(w http.ResponseWriter, r *http.Request) {
 
 var SessionsDiscord = map[string]sessionDiscord{}
 var sessionsDiscordMu sync.RWMutex
+
+const dbOperationTimeout = 3 * time.Second
+
+func newDBTimeoutContext() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), dbOperationTimeout)
+}
 
 const (
 	maxUploadRequestSize = 32 << 20 // 32 MiB
@@ -553,25 +560,25 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 	DiscordId := discordSession.id
 
 	if db != nil {
-		err := db.Ping()
-		if err == nil {
-			req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = $1 AND coalitions.player_ucid = players.ucid AND discord_id = $2"
-			rows, err := db.Query(req, server.DcsName, DiscordId)
-			if err != nil {
-				log.Printf("getCoalition query error for discord_id=%q: %v", DiscordId, err)
-				return server.DefaultCoalition
-			}
-
-			defer rows.Close()
-			for rows.Next() {
-				var Coal string
-
-				err = rows.Scan(&Coal)
-				CheckError(err)
-
-				Coals = append(Coals, Coal)
-			}
+		req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = $1 AND coalitions.player_ucid = players.ucid AND discord_id = $2"
+		ctx, cancel := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctx, req, server.DcsName, DiscordId)
+		if err != nil {
+			cancel()
+			log.Printf("getCoalition query error for discord_id=%q: %v", DiscordId, err)
+			return server.DefaultCoalition
 		}
+
+		for rows.Next() {
+			var Coal string
+
+			err = rows.Scan(&Coal)
+			CheckError(err)
+
+			Coals = append(Coals, Coal)
+		}
+		_ = rows.Close()
+		cancel()
 	}
 	Coals = append(Coals, server.DefaultCoalition)
 
@@ -581,18 +588,23 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 func getMap(server *TacViewServerConfig) string {
 
 	var MapName string
-	err := db.Ping()
-	if err == nil {
+	if db != nil {
 		req := "SELECT mission_theatre FROM public.missions WHERE server_name = $1 ORDER BY id desc limit 1"
-		rows, err := db.Query(req, server.DcsName)
-		CheckError(err)
+		ctx, cancel := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctx, req, server.DcsName)
+		if err != nil {
+			cancel()
+			CheckError(err)
+			return MapName
+		}
 
-		defer rows.Close()
 		for rows.Next() {
 
 			err = rows.Scan(&MapName)
 			CheckError(err)
 		}
+		_ = rows.Close()
+		cancel()
 	}
 
 	return MapName
@@ -1168,8 +1180,10 @@ func (h *httpServer) cleanLoop() {
 			rows, err := db.Query(`SELECT id, data
 									FROM bg_geometry2 
 									WHERE data->'fields'->>'screenshot' like '%"%ephemeral-attachments%"%'`)
-			CheckError(err)
-			defer rows.Close()
+			if err != nil {
+				CheckError(err)
+				continue
+			}
 			for rows.Next() {
 				err = rows.Scan(&Id, &Data)
 				CheckError(err)
@@ -1225,6 +1239,7 @@ func (h *httpServer) cleanLoop() {
 				_, err = db.Exec(sqlStatement, string(data), Id)
 				CheckError(err)
 			}
+			_ = rows.Close()
 
 			//fmt.Println("Loop file")
 			items, _ := ioutil.ReadDir(*h.config.AssetsPathExternal)
@@ -1239,7 +1254,10 @@ func (h *httpServer) cleanLoop() {
 											SELECT count(*)
 											FROM bg_missions
 											WHERE data->'fields'->>'screenshot' like $1) t1`, pattern)
-				CheckError(err4)
+				if err4 != nil {
+					CheckError(err4)
+					continue
+				}
 				for rows2.Next() {
 					err = rows2.Scan(&Nbr)
 					CheckError(err)
@@ -1248,6 +1266,7 @@ func (h *httpServer) cleanLoop() {
 						CheckError(e)
 					}
 				}
+				_ = rows2.Close()
 			}
 		}
 	}
@@ -1399,9 +1418,10 @@ func Run(config *Config) error {
 		Handler:           r,
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
-		WriteTimeout:      60 * time.Second,
-		IdleTimeout:       120 * time.Second,
-		MaxHeaderBytes:    1 << 20,
+		// Keep write timeout disabled to support long-lived SSE streams.
+		WriteTimeout:   0,
+		IdleTimeout:    120 * time.Second,
+		MaxHeaderBytes: 1 << 20,
 	}
 
 	return httpServer.ListenAndServe()
