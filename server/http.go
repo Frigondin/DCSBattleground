@@ -11,16 +11,18 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
+	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 	//session "github.com/stripe/stripe-go/v71/checkout/session"
 	"github.com/google/uuid"
-	"path/filepath"
-	"slices"
-	"strconv"
 
 	disgoauth "github.com/realTristan/disgoauth"
 )
@@ -28,8 +30,8 @@ import (
 type httpServer struct {
 	sync.Mutex
 
-	config   *Config
-	sessions map[string]*serverSession
+	config         *Config
+	sessions       map[string]*serverSession
 	elevationCache map[string]cachedElevation
 }
 
@@ -45,30 +47,30 @@ type geometry struct {
 	DiscordName string `json:"discordName"`
 	Avatar      string `json:"avatar"`
 	//Position 	[]float32	`json:"position"`
-	Points      [][]float32 `json:"points"`
-	PointNames  []string    `json:"pointNames"`
-	PointGroundFt []float32 `json:"pointGroundFt"`
-	PointGroundFtSet []bool `json:"pointGroundFtSet"`
-	Center      []float32   `json:"center"`
-	Radius      float32     `json:"radius"`
-	TypeSubmit  string      `json:"typeSubmit"`
-	PosMGRS     string      `json:"posMGRS"`
-	PosPoint    []float32   `json:"posPoint"`
-	Screenshot  []string    `json:"screenshot"`
-	Description []string    `json:"description"`
-	Side        string      `json:"side"`
-	Server      string      `json:"server"`
-	Task        interface{} `json:"task"`
-	TaskUpdated []Task      `json:"taskUpdated"`
-	Status      string      `json:"status"`
-	Clickable   bool        `json:"clickable"`
-	Hidden      bool        `json:"hidden"`
-	Color       string      `json:"color"`
-	SubType     string      `json:"subType"`
-	TimeStamp   string      `json:"timeStamp"`
-	Marker      string      `json:"marker"`
-	GroundFt    float32     `json:"groundFt"`
-	GroundFtSet bool        `json:"groundFtSet"`
+	Points           [][]float32 `json:"points"`
+	PointNames       []string    `json:"pointNames"`
+	PointGroundFt    []float32   `json:"pointGroundFt"`
+	PointGroundFtSet []bool      `json:"pointGroundFtSet"`
+	Center           []float32   `json:"center"`
+	Radius           float32     `json:"radius"`
+	TypeSubmit       string      `json:"typeSubmit"`
+	PosMGRS          string      `json:"posMGRS"`
+	PosPoint         []float32   `json:"posPoint"`
+	Screenshot       []string    `json:"screenshot"`
+	Description      []string    `json:"description"`
+	Side             string      `json:"side"`
+	Server           string      `json:"server"`
+	Task             interface{} `json:"task"`
+	TaskUpdated      []Task      `json:"taskUpdated"`
+	Status           string      `json:"status"`
+	Clickable        bool        `json:"clickable"`
+	Hidden           bool        `json:"hidden"`
+	Color            string      `json:"color"`
+	SubType          string      `json:"subType"`
+	TimeStamp        string      `json:"timeStamp"`
+	Marker           string      `json:"marker"`
+	GroundFt         float32     `json:"groundFt"`
+	GroundFtSet      bool        `json:"groundFtSet"`
 }
 
 type bg_geometry struct {
@@ -107,8 +109,8 @@ type TaskFields struct {
 
 func newHttpServer(config *Config) *httpServer {
 	return &httpServer{
-		config:   config,
-		sessions: make(map[string]*serverSession),
+		config:         config,
+		sessions:       make(map[string]*serverSession),
 		elevationCache: make(map[string]cachedElevation),
 	}
 }
@@ -198,6 +200,90 @@ func (h *httpServer) getElevation(w http.ResponseWriter, r *http.Request) {
 
 var SessionsDiscord = map[string]sessionDiscord{}
 var sessionsDiscordMu sync.RWMutex
+
+const (
+	maxUploadRequestSize = 32 << 20 // 32 MiB
+	maxUploadFileSize    = 8 << 20  // 8 MiB per file
+	maxUploadFiles       = 8
+)
+
+var allowedUploadExtensions = map[string]bool{
+	".png":  true,
+	".jpg":  true,
+	".jpeg": true,
+	".webp": true,
+}
+
+var screenshotFetchClient = &http.Client{
+	Timeout: 10 * time.Second,
+	CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
+		// Block redirects to avoid host-switch SSRF tricks.
+		return http.ErrUseLastResponse
+	},
+}
+
+func isAllowedScreenshotURL(raw string) bool {
+	parsed, err := url.Parse(raw)
+	if err != nil {
+		return false
+	}
+	if !strings.EqualFold(parsed.Scheme, "https") {
+		return false
+	}
+	if parsed.User != nil {
+		return false
+	}
+
+	host := strings.ToLower(parsed.Hostname())
+	if host != "cdn.discordapp.com" && host != "media.discordapp.net" {
+		return false
+	}
+
+	return strings.Contains(parsed.Path, "/ephemeral-attachments/")
+}
+
+func sanitizeUploadExtension(filename string) (string, bool) {
+	ext := strings.ToLower(filepath.Ext(filename))
+	return ext, allowedUploadExtensions[ext]
+}
+
+func storeUploadedFile(fileHeader *multipart.FileHeader, assetsPath string) (string, error) {
+	ext, ok := sanitizeUploadExtension(fileHeader.Filename)
+	if !ok {
+		return "", errors.New("unsupported file extension")
+	}
+	if fileHeader.Size <= 0 {
+		return "", errors.New("empty file")
+	}
+	if fileHeader.Size > maxUploadFileSize {
+		return "", errors.New("file too large")
+	}
+
+	src, err := fileHeader.Open()
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
+
+	filename := uuid.NewString() + ext
+	dstPath := filepath.Join(assetsPath, filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+
+	limited := io.LimitReader(src, maxUploadFileSize+1)
+	written, err := io.Copy(dst, limited)
+	if err != nil {
+		return "", err
+	}
+	if written > maxUploadFileSize {
+		return "", errors.New("file exceeds max size")
+	}
+
+	return filename, nil
+}
 
 func isSecureRequest(r *http.Request) bool {
 	if r == nil {
@@ -582,7 +668,15 @@ func (h *httpServer) getOrCreateSession(serverName string) (*serverSession, erro
 
 // Streams events for a given server
 func (h *httpServer) initServerEvents(w http.ResponseWriter, r *http.Request) {
-	session, _ := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	sharedGeometry := session.runSharedGeometry(-1, -1, "Init")
 	gores.JSON(w, 200, sharedGeometry)
 }
@@ -694,8 +788,17 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	serverName := chi.URLParam(r, "serverName")
-	coalition := getCoalition(h.sessions[serverName].server, session_token)
-	dcsName := h.sessions[serverName].server.DcsName
+	session, err := h.getOrCreateSession(serverName)
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
+	coalition := getCoalition(session.server, session_token)
+	dcsName := session.server.DcsName
 
 	var geo geometry
 	var Id int
@@ -880,7 +983,6 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
 	var RadarRefreshRate int64
 	RadarRefreshRate = 5
 	if session.server.RadarRefreshRate != 0 {
@@ -944,6 +1046,14 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	session.runSharedGeometry(-1, -1, "Stream")
 	gores.JSON(w, 200, taskEnrolment)
 }
@@ -959,6 +1069,14 @@ func (h *httpServer) resend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	session.runSharedGeometry(0, geo.Id, "Stream")
 	gores.JSON(w, 200, SqlResponse{Id: geo.Id})
 }
@@ -974,34 +1092,54 @@ type UploadResponse struct {
 }
 
 func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "POST":
-		r.ParseMultipartForm(32 << 20) //10 MB
-		filesnames := []string{}
-
-		for _, headers := range r.MultipartForm.File["attachments"] {
-			log.Println("test")
-			file, err := headers.Open()
-			defer file.Close()
-
-			filename := uuid.NewString() + filepath.Ext(headers.Filename)
-			dst, err := os.Create(*h.config.AssetsPathExternal + filename)
-			if err != nil {
-				log.Println("error creating file", err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			defer dst.Close()
-			if _, err := io.Copy(dst, file); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			filesnames = append(filesnames, filename)
-		}
-		resp := UploadResponse{Files: filesnames}
-		gores.JSON(w, 200, resp)
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
+
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		gores.Error(w, 401, "missing discord session")
+		return
+	}
+	if _, ok := getDiscordSession(cookie.Value); !ok {
+		gores.Error(w, 401, "discord session expired")
+		return
+	}
+
+	if h.config.AssetsPathExternal == nil {
+		gores.Error(w, 500, "upload storage is not configured")
+		return
+	}
+
+	r.Body = http.MaxBytesReader(w, r.Body, maxUploadRequestSize)
+	if err := r.ParseMultipartForm(maxUploadRequestSize); err != nil {
+		gores.Error(w, 400, "invalid multipart form")
+		return
+	}
+
+	headers := r.MultipartForm.File["attachments"]
+	if len(headers) == 0 {
+		gores.Error(w, 400, "no attachments provided")
+		return
+	}
+	if len(headers) > maxUploadFiles {
+		gores.Error(w, 400, "too many attachments")
+		return
+	}
+
+	filesnames := make([]string, 0, len(headers))
+	for _, header := range headers {
+		filename, err := storeUploadedFile(header, *h.config.AssetsPathExternal)
+		if err != nil {
+			gores.Error(w, 400, err.Error())
+			return
+		}
+		filesnames = append(filesnames, filename)
+	}
+
+	resp := UploadResponse{Files: filesnames}
+	gores.JSON(w, 200, resp)
 }
 
 func CheckError(err error) {
@@ -1023,6 +1161,10 @@ func (h *httpServer) cleanLoop() {
 		var Nbr int
 		var Data []byte
 		if err == nil {
+			if h.config.AssetsPathExternal == nil {
+				log.Printf("cleanLoop: assets_path_external is not configured")
+				continue
+			}
 			rows, err := db.Query(`SELECT id, data
 									FROM bg_geometry2 
 									WHERE data->'fields'->>'screenshot' like '%"%ephemeral-attachments%"%'`)
@@ -1038,23 +1180,36 @@ func (h *httpServer) cleanLoop() {
 
 				for i, screen := range DataJson.Fields.Screenshot {
 					if strings.Contains(screen, "ephemeral-attachments") {
-						//fmt.Println(screen)
-						file, err1 := http.Get(screen)
+						if !isAllowedScreenshotURL(screen) {
+							log.Printf("cleanLoop: blocked non-allowlisted screenshot URL")
+							continue
+						}
+
+						file, err1 := screenshotFetchClient.Get(screen)
 						if err1 != nil {
-							log.Println("error creating file1", err1)
+							log.Println("cleanLoop screenshot fetch error:", err1)
+							continue
+						}
+						if file.StatusCode < 200 || file.StatusCode >= 300 {
+							_ = file.Body.Close()
+							log.Printf("cleanLoop screenshot fetch status=%d", file.StatusCode)
+							continue
 						}
 						//filename := uuid.NewString() + filepath.Ext(path.Base(resp.Request.URL.String()))
 						filename := uuid.NewString() + strings.Split(filepath.Ext(screen), "?")[0]
 
 						dst, err2 := os.Create(*h.config.AssetsPathExternal + filename)
 						if err2 != nil {
-							log.Println("error creating file2", err2)
+							_ = file.Body.Close()
+							log.Println("cleanLoop screenshot store error:", err2)
+							continue
 						}
-						defer dst.Close()
-						defer file.Body.Close()
 						_, err3 := io.Copy(dst, file.Body)
+						_ = file.Body.Close()
+						_ = dst.Close()
 						if err3 != nil {
-							log.Println("error creating file3", err3)
+							log.Println("cleanLoop screenshot copy error:", err3)
+							continue
 						}
 
 						DataJson.Fields.Screenshot[i] = "$CURRENT_SERV/files/" + filename
@@ -1114,6 +1269,7 @@ func Run(config *Config) error {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -1238,5 +1394,15 @@ func Run(config *Config) error {
 		server.getOrCreateSession(serverConfig.Name)
 	}
 
-	return http.ListenAndServe(config.Bind, r)
+	httpServer := &http.Server{
+		Addr:              config.Bind,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      60 * time.Second,
+		IdleTimeout:       120 * time.Second,
+		MaxHeaderBytes:    1 << 20,
+	}
+
+	return httpServer.ListenAndServe()
 }
