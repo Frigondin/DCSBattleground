@@ -27,6 +27,17 @@ import { setSelectedEntityId,  serverStore} from "../stores/ServerStore";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 
+const DEFAULT_DRAW_MARKER_COLOR = "#0068FF";
+const DRAW_MARKER_COLOR_STORAGE_KEY = "draw:markerColor";
+
+function getInitialDrawMarkerColor(): string {
+  const raw = localStorage.getItem(DRAW_MARKER_COLOR_STORAGE_KEY);
+  if (raw && /^#[0-9A-Fa-f]{6}$/.test(raw)) {
+    return raw;
+  }
+  return DEFAULT_DRAW_MARKER_COLOR;
+}
+
 export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
   const [geometry, selectedId, localHiddenGeometryIds] = geometryStore((state: any) => [
     state.geometry,
@@ -34,7 +45,8 @@ export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
     state.localHiddenGeometryIds,
   ]);
   const rowRefs = useRef<Record<number, HTMLDivElement | null>>({});
-const [color, setColor] = useColor("#0068FF");
+const [initialColor] = useState(getInitialDrawMarkerColor);
+const [color, setColor] = useColor(initialColor);
 const [draw, setDraw] = useState("");
 
   useEffect(() => {
@@ -43,6 +55,12 @@ const [draw, setDraw] = useState("");
     if (!row) return;
     row.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [selectedId]);
+
+  useEffect(() => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(color.hex)) {
+      localStorage.setItem(DRAW_MARKER_COLOR_STORAGE_KEY, color.hex);
+    }
+  }, [color.hex]);
 
   return (
     <div className="p-2">

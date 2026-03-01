@@ -1,10 +1,8 @@
 import classNames from "classnames";
 import * as maptalks from "maptalks";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv, BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { AiOutlineDisconnect } from "react-icons/ai";
-import { PiPlugsConnectedFill } from "react-icons/pi";
+import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
 import { serverStore, setSelectedEntityId, updateServerStore } from "../stores/ServerStore";
 import { updateGeometryStore } from "../stores/GeometryStore";
@@ -13,17 +11,20 @@ import {
   estimatedSpeed,
   trackStore,
 } from "../stores/TrackStore";
+import { settingsStore } from "../stores/SettingsStore";
 import { Entity } from "../types/entity";
 import DrawConsoleTab from "./DrawConsoleTab";
 import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
   const dcs_map = serverStore((state) => state?.server?.dcs_map);
+  const prettyMapBrightness = settingsStore((state) => state.map?.prettyMapBrightness ?? 1);
+  const dcsMapBrightness = settingsStore((state) => state.map?.dcsMapBrightness ?? 1.2);
   return (
     <div className="p-2">
 		<table>
@@ -49,7 +50,30 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					Pretty Map
+					<div className="relative w-full pr-20">
+						<span className="whitespace-nowrap">Pretty Map</span>
+						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
+							<span className="text-xs whitespace-nowrap">{prettyMapBrightness.toFixed(2)}</span>
+							<input
+								className="w-12"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={prettyMapBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											prettyMapBrightness: value,
+										},
+									}));
+								}}
+							/>
+						</div>
+					</div>
 				</td>
 			</tr>
 			{dcs_map && 
@@ -75,7 +99,30 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					DCS Map
+					<div className="relative w-full pr-20">
+						<span className="whitespace-nowrap">DCS Map</span>
+						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
+							<span className="text-xs whitespace-nowrap">{dcsMapBrightness.toFixed(2)}</span>
+							<input
+								className="w-12"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={dcsMapBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											dcsMapBrightness: value,
+										},
+									}));
+								}}
+							/>
+						</div>
+					</div>
 				</td>
 			</tr>
 			}
@@ -102,31 +149,6 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					DCS Caucasus Borders
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("mgrs-grid")!.isVisible() === true && (
-								<button 
-									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("mgrs-grid")!.hide(); setSelectedButton("MgrsGrid-Off")}}
-								>
-									<BiShow className="inline-block w-4 h-4" />
-								</button>
-						)}
-						{!map.getLayer("mgrs-grid")!.isVisible() && (
-							<button 
-								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("mgrs-grid")!.show(); setSelectedButton("MgrsGrid-On")}}
-							>
-								<BiHide className="inline-block w-4 h-4" />
-							</button>
-						)}
-					</div>
-				</td>
-				<td>
-					MGRS grid
 				</td>
 			</tr>
 			<tr>
@@ -354,115 +376,23 @@ export function Console({
   setScratchPadOpen: (value: boolean) => void;
   map: maptalks.Map;
 }) {
-  type ConsoleTab = null | "search" | "watch" | "draw" | "mission";
-  const [selectedTab, setSelectedTab] = useState<ConsoleTab>(null);
-  const [renderedTab, setRenderedTab] = useState<ConsoleTab>(null);
-  const [tabPhase, setTabPhase] = useState<"idle" | "leaving" | "entering">("idle");
-  const tabTransitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const TAB_ANIMATION_MS = 180;
-  const [collapsed, setCollapsed] = useState(false);
-  const isAuthenticated = !!serverStore((state) => state?.server?.discord_id);
+  const [selectedTab, setSelectedTab] = useState<
+    null | "search" | "watch" | "draw" | "quest"
+  >(null);
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const is_editor = serverStore((state) => state?.server?.is_editor);
   const editor_mode_on = serverStore((state) => state?.editor_mode_on);
   const player_name = serverStore((state) => state?.server?.player_name);
-  const handleConnect = () => {
-    const returnTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-    window.location.replace(`/discord/?return_to=${encodeURIComponent(returnTo)}`);
-  };
-  const handleDisconnect = async () => {
-    try {
-      await fetch("/api/logout", { method: "POST" });
-    } catch (_err) {
-      // Ignore network errors; we still clear local cookie.
-    }
-    document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-    window.location.reload();
-  };
-
-  useEffect(() => {
-    if (tabTransitionTimerRef.current) {
-      clearTimeout(tabTransitionTimerRef.current);
-      tabTransitionTimerRef.current = null;
-    }
-
-    if (selectedTab === renderedTab) {
-      return;
-    }
-
-    if (renderedTab === null && selectedTab !== null) {
-      setRenderedTab(selectedTab);
-      setTabPhase("entering");
-      requestAnimationFrame(() => setTabPhase("idle"));
-      return;
-    }
-
-    if (renderedTab === null && selectedTab === null) {
-      return;
-    }
-
-    // Old tab leaves, then the new one enters.
-    setTabPhase("leaving");
-    tabTransitionTimerRef.current = setTimeout(() => {
-      setRenderedTab(selectedTab);
-      if (selectedTab !== null) {
-        setTabPhase("entering");
-        requestAnimationFrame(() => setTabPhase("idle"));
-      } else {
-        setTabPhase("idle");
-      }
-    }, TAB_ANIMATION_MS);
-  }, [selectedTab, renderedTab]);
-
-  useEffect(() => {
-    return () => {
-      if (tabTransitionTimerRef.current) {
-        clearTimeout(tabTransitionTimerRef.current);
-      }
-    };
-  }, []);
-
   return (
-    <div className="m-2 absolute right-0 top-0 z-40">
-	  <div
-		className="relative transition-transform duration-300 ease-in-out"
-		style={{ transform: collapsed ? "translateX(236px)" : "translateX(0)" }}
-	  >
-	  <button
-		title={collapsed ? "Show menu" : "Hide menu"}
-		onClick={() => setCollapsed(!collapsed)}
-		className="absolute left-[-16px] top-0 h-full w-4 bg-gray-200 border border-gray-500 rounded-l-sm shadow flex items-center justify-center"
-	  >
-		{collapsed ? <BiChevronLeft className="w-4 h-4" /> : <BiChevronRight className="w-4 h-4" />}
-	  </button>
-    <div className="flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm w-60">
+    <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
 			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) : 
 													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
 						</div>)}
-			<div>{isAuthenticated ? `Connected as ${discord_name}` : "Guest mode"}</div>
+			<div>Connected as {discord_name}</div>
 			<div className="flex flex-row gap-2"><ReactRoundedImage image={avatar} imageWidth="30" imageHeight="30" roundedSize="3"/></div>
-			<div>
-				{isAuthenticated ? (
-					<button
-						title="Disconnect"
-						onClick={handleDisconnect}
-						className="border bg-red-100 border-red-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
-					>
-						<AiOutlineDisconnect className="inline-block w-4 h-4" />
-					</button>
-				) : (
-					<button
-						title="Connect"
-						onClick={handleConnect}
-						className="border bg-green-100 border-green-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
-					>
-						<PiPlugsConnectedFill className="inline-block w-4 h-4" />
-					</button>
-				)}
-			</div>
 	  </div>
 	  {is_connected && (<div className="p-2 flex flex-row gap-2 align-middle ml-auto text-xs pr-4 pt-0">
 			<div>{player_name}</div>
@@ -479,10 +409,10 @@ export function Console({
         <div>
           <button
             title="Draw"
-			onClick={() => isAuthenticated && setSelectedTab("draw")}
+			onClick={() => setSelectedTab("draw")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
-              { "bg-blue-200": selectedTab === "draw", "opacity-40 cursor-not-allowed": !isAuthenticated }
+              { "bg-blue-200": selectedTab === "draw" }
             )}
           >
             <BiBrush className="inline-block w-4 h-4" />
@@ -491,10 +421,10 @@ export function Console({
         <div>
           <button
             title="Missions"
-            onClick={() => isAuthenticated && setSelectedTab("mission")}
+            onClick={() => setSelectedTab("quest")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
-              { "bg-blue-200": selectedTab === "mission", "opacity-40 cursor-not-allowed": !isAuthenticated }
+              { "bg-blue-200": selectedTab === "quest" }
             )}
           >
             <BiSolidMap className="inline-block w-4 h-4" />
@@ -533,35 +463,10 @@ export function Console({
           </button>
         </div>
       </div>
-      <div
-        className={classNames(
-          "overflow-hidden origin-top transition-[max-height,opacity] ease-in-out",
-          {
-            "max-h-0 opacity-0":
-              renderedTab === null && tabPhase === "idle",
-            "max-h-[70vh] opacity-100":
-              renderedTab !== null || tabPhase !== "idle",
-          }
-        )}
-        style={{ transitionDuration: `${TAB_ANIMATION_MS}ms` }}
-      >
-        {renderedTab !== null && (
-          <div
-            className={classNames("transition-all", {
-              "translate-x-4 opacity-0": tabPhase === "leaving",
-              "-translate-x-4 opacity-0": tabPhase === "entering",
-            })}
-            style={{ transitionDuration: `${TAB_ANIMATION_MS}ms` }}
-          >
-            {renderedTab === "search" && <SearchTab map={map} />}
-            {renderedTab === "watch" && <WatchTab map={map} />}
-	        {renderedTab === "mission" && <QuestConsoleTab map={map} />}
-            {renderedTab === "draw" && <DrawConsoleTab map={map} />}
-          </div>
-        )}
-      </div>
+      {selectedTab === "search" && <SearchTab map={map} />}
+      {selectedTab === "watch" && <WatchTab map={map} />}
+	  {selectedTab === "quest" && <QuestConsoleTab map={map} />}
+      {selectedTab === "draw" && <DrawConsoleTab map={map} />}
     </div>
-	</div>
-	</div>
   );
 }

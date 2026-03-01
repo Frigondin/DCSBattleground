@@ -253,6 +253,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
 		opacity: 0.8,
+		cssFilter: `brightness(${settings.map?.prettyMapBrightness ?? 1})`,
 		maxAvailableZoom  : 12,
         maxCacheSize: 2048,
         hitDetect: false,
@@ -266,6 +267,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
 		opacity: 0.8,
+		// Brightness is user-configurable from the Layers tab.
+		cssFilter: `brightness(${settings.map?.dcsMapBrightness ?? 1.2})`,
 		maxAvailableZoom  : 15,
         maxCacheSize: 2048,
         hitDetect: false,
@@ -444,6 +447,14 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       map.current!.getLayer("track-name").hide();
     } else {
       map.current!.getLayer("track-name").show();
+    }
+    const dcsMapLayer = map.current!.getLayer("DCSMap") as any;
+    if (dcsMapLayer && dcsMapLayer.config) {
+      dcsMapLayer.config("cssFilter", `brightness(${settings.map?.dcsMapBrightness ?? 1.2})`);
+    }
+    const prettyLayer = map.current!.getLayer("pretty") as any;
+    if (prettyLayer && prettyLayer.config) {
+      prettyLayer.config("cssFilter", `brightness(${settings.map?.prettyMapBrightness ?? 1})`);
     }
   }, [map, settings]);
 

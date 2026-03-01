@@ -22,14 +22,14 @@ export type SettingsStoreData = {
     showTrackLabels?: boolean;
     trackTrailLength?: number;
     groundUnitMode?: GroundUnitMode;
+    prettyMapBrightness?: number;
+    dcsMapBrightness?: number;
   };
 };
 
-export const settingsStore = create<SettingsStoreData>(() => {
-  const localData = localStorage.getItem("settings");
-  if (localData) {
-    return JSON.parse(localData) as SettingsStoreData;
-  }
+const SETTINGS_STORAGE_KEY = "settings";
+
+function defaultSettings(): SettingsStoreData {
   return {
     unitSystem: UnitSystem.IMPERIAL,
     map: {
@@ -37,12 +37,42 @@ export const settingsStore = create<SettingsStoreData>(() => {
       showTrackLabels: true,
       trackTrailLength: 9,
       groundUnitMode: GroundUnitMode.ENEMY,
+      prettyMapBrightness: 1,
+      dcsMapBrightness: 1.2,
     },
   };
-});
+}
+
+function readSettings(storageKey: string): SettingsStoreData | null {
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as SettingsStoreData;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function readAnyLegacyUserSettings(): SettingsStoreData | null {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !key.startsWith("settings:user:")) continue;
+    const parsed = readSettings(key);
+    if (parsed) return parsed;
+  }
+  return null;
+}
+
+const bootstrapSettings =
+  readSettings(SETTINGS_STORAGE_KEY) ||
+  readSettings("settings:guest") ||
+  readAnyLegacyUserSettings() ||
+  defaultSettings();
+
+export const settingsStore = create<SettingsStoreData>(() => bootstrapSettings);
 
 settingsStore.subscribe((state) => {
-  localStorage.setItem("settings", JSON.stringify(state));
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(state));
 });
 
 export function updateSettingsStore(value: Partial<SettingsStoreData>) {
