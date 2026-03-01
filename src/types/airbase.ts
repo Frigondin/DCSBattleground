@@ -17,5 +17,5 @@ export type RawAirbaseData = {
   };
   point: [number, number, number];
   id: number;
-  runways: Array<RawRunwayData>;
+  runways: Array<RawRunwayData> | Record<string, never>;
 };

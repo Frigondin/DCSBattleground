@@ -5,6 +5,8 @@ import ms from "milsymbol";
 import { useEffect } from "react";
 import { iconCache } from "../components/MapEntity";
 import * as mgrs from "mgrs";
+import { getFlyDistance } from "../util";
+import { settingsStore, UnitSystem } from "../stores/SettingsStore";
 import {
   Geometry,
   geometryStore,
@@ -38,6 +40,34 @@ type MarkerCluster = {
 	items: ClusterableGeometry[];
 	type: ClusterableGeometry["type"];
 };
+
+const MAP_MAG_DEC: Record<string, number> = {
+	Caucasus: -6,
+	Sinai: 5,
+	SinaiMap: 5,
+	Syria: 5,
+	PersianGulf: 2,
+	Marianas: 0,
+	Falklands: 6,
+	Normandy: 1,
+	Nevada: 11,
+	Kola: 13,
+	Afghanistan: 3,
+	GermanyCW: 1,
+	TheChannel: 1,
+};
+
+function normalizeBearing(bearing: number): number {
+	let normalized = Math.round(bearing) % 360;
+	if (normalized < 0) normalized += 360;
+	return normalized;
+}
+
+function getWaypointMagneticBearing(trueBearing: number): number {
+	const mapName = serverStore.getState().server?.map ?? "";
+	const magDec = MAP_MAG_DEC[mapName] ?? 0;
+	return normalizeBearing(trueBearing - magDec);
+}
 
 function getWaypointPointName(waypoints: Waypoints, index: number): string {
 	return waypoints.pointNames?.[index] || `WPT#${index}`;
@@ -100,6 +130,106 @@ function waypointNamesEqual(a: string[], b: string[]): boolean {
 		if (a[i] !== b[i]) return false;
 	}
 	return true;
+}
+
+function getWaypointBearing(
+	[startLat, startLong]: [number, number],
+	[endLat, endLong]: [number, number]
+) {
+	const radians = (n: number) => n * (Math.PI / 180);
+	const degrees = (n: number) => n * (180 / Math.PI);
+
+	const startLatRad = radians(startLat);
+	const startLongRad = radians(startLong);
+	const endLatRad = radians(endLat);
+	const endLongRad = radians(endLong);
+
+	let dLong = endLongRad - startLongRad;
+	const dPhi = Math.log(
+		Math.tan(endLatRad / 2.0 + Math.PI / 4.0) /
+			Math.tan(startLatRad / 2.0 + Math.PI / 4.0)
+	);
+	if (Math.abs(dLong) > Math.PI) {
+		if (dLong > 0.0) {
+			dLong = -(2.0 * Math.PI - dLong);
+		} else {
+			dLong = 2.0 * Math.PI + dLong;
+		}
+	}
+
+	return Math.round((degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0);
+}
+
+function formatWaypointDistance(distanceNm: number, unitSystem: UnitSystem): string {
+	return unitSystem === UnitSystem.IMPERIAL
+		? `${distanceNm.toFixed(1)}nm`
+		: `${(distanceNm * 1.852).toFixed(1)}km`;
+}
+
+function getReadableSegmentTextRotation(
+	from: [number, number],
+	to: [number, number]
+): number {
+	// Use lon/lat vector as a stable approximation for on-map segment angle.
+	const dx = to[1] - from[1];
+	const dy = to[0] - from[0];
+	let angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+	// Keep text readable left-to-right: flip upside-down orientations.
+	if (angle > 90 || angle < -90) {
+		angle += 180;
+	}
+	// Normalize to [-180, 180]
+	if (angle > 180) angle -= 360;
+	if (angle < -180) angle += 360;
+	return angle;
+}
+
+function appendWaypointSegmentLabels(
+	labelList: Array<maptalks.Geometry>,
+	waypoints: Waypoints,
+	unitSystem: UnitSystem
+) {
+	if (waypoints.points.length < 2) return;
+	for (let i = 1; i < waypoints.points.length; i++) {
+		const from = waypoints.points[i - 1];
+		const to = waypoints.points[i];
+		const midLat = (from[0] + to[0]) / 2;
+		const midLon = (from[1] + to[1]) / 2;
+		const trueBearing = getWaypointBearing(from, to);
+		const magneticBearing = getWaypointMagneticBearing(trueBearing);
+		const distanceNm = getFlyDistance(from, to);
+		const segmentText = `${magneticBearing.toString().padStart(3, "0")}°M / ${trueBearing
+			.toString()
+			.padStart(3, "0")}°T / ${formatWaypointDistance(
+			distanceNm,
+			unitSystem
+		)}`;
+		const textRotation = getReadableSegmentTextRotation(from, to);
+		const segmentLabel = new maptalks.Label(segmentText, [midLon, midLat], {
+			draggable: false,
+			visible: true,
+			editable: false,
+			boxStyle: {
+				padding: [2, 3],
+				horizontalAlignment: "center",
+				verticalAlignment: "middle",
+				symbol: {
+					markerType: "square",
+					markerFill: "#111827",
+					markerFillOpacity: 0.65,
+					markerLineOpacity: 0,
+					markerRotation: textRotation,
+				},
+			},
+			textSymbol: {
+				textFaceName: '"microsoft yahei"',
+				textFill: "#FBBF24",
+				textSize: 11,
+				textRotation,
+			},
+		});
+		labelList.push(segmentLabel);
+	}
 }
 
 function isClusterableGeometry(geo: Geometry): geo is ClusterableGeometry {
@@ -320,6 +450,8 @@ function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
 
 
 function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
+	const unitSystem = settingsStore.getState().unitSystem || UnitSystem.IMPERIAL;
+	const isSelected = geometryStore.getState().selectedGeometry === waypoints.id;
 	const collection = layer.getGeometryById(
 		waypoints.id
 	) as maptalks.GeometryCollection;
@@ -354,40 +486,45 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 		});
 		let labelList1 = [labelListTmp[0], labelListTmp[1]];
 		var counter = -1;
-		waypoints.points.forEach((point) => {
-		  counter = counter + 1;
-			if (counter > 0) {
-				const textWpt = new maptalks.Label(
-					getWaypointPointName(waypoints, counter),
-					[point[1], point[0]],
-					{
-					  draggable: false,
-					  visible: true,
-					  editable: false,
-					  boxStyle: {
-						padding: [2, 2],
-						horizontalAlignment: "left",
-						verticalAlignment: "middle",
-						symbol: {
-						  markerType: "square",
-						  markerFill: "#4B5563",
-						  markerFillOpacity: 0.5,
-						  markerLineOpacity: 0,
-						  textHorizontalAlignment: "right",
-						  textVerticalAlignment: "middle",
-						  textDx: 10,
-						},
-					  },
-					  textSymbol: {
-						textFaceName: '"microsoft yahei"',
-						textFill: "#FBBF24",
-						textSize: 12,
-					  },
-					}
-				  );
-				labelList1.push(textWpt);
-			}
-		}); 
+		if (isSelected) {
+			waypoints.points.forEach((point) => {
+				counter = counter + 1;
+				if (counter > 0) {
+					const textWpt = new maptalks.Label(
+						getWaypointPointName(waypoints, counter),
+						[point[1], point[0]],
+						{
+							draggable: false,
+							visible: true,
+							editable: false,
+							boxStyle: {
+								padding: [2, 2],
+								horizontalAlignment: "left",
+								verticalAlignment: "middle",
+								symbol: {
+									markerType: "square",
+									markerFill: "#4B5563",
+									markerFillOpacity: 0.5,
+									markerLineOpacity: 0,
+									textHorizontalAlignment: "right",
+									textVerticalAlignment: "middle",
+									textDx: 10,
+								},
+							},
+							textSymbol: {
+								textFaceName: '"microsoft yahei"',
+								textFill: "#FBBF24",
+								textSize: 12,
+							},
+						}
+					);
+					labelList1.push(textWpt);
+				}
+			});
+		}
+		if (isSelected) {
+			appendWaypointSegmentLabels(labelList1, waypoints, unitSystem);
+		}
 		collection.setGeometries(labelList1);
     return;
   }
@@ -447,40 +584,45 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 
   let labelList = [lineString, text];
   var counter = -1;
-  waypoints.points.forEach((point) => {
-	  counter = counter + 1;
-	  if (counter > 0) {
-		  const textWpt = new maptalks.Label(
-			getWaypointPointName(waypoints, counter),
-			[point[1], point[0]],
-			{
-			  draggable: false,
-			  visible: true,
-			  editable: false,
-			  boxStyle: {
-				padding: [2, 2],
-				horizontalAlignment: "left",
-				verticalAlignment: "middle",
-				symbol: {
-				  markerType: "square",
-				  markerFill: "#4B5563",
-				  markerFillOpacity: 0.5,
-				  markerLineOpacity: 0,
-				  textHorizontalAlignment: "right",
-				  textVerticalAlignment: "middle",
-				  textDx: 10,
-				},
-			  },
-			  textSymbol: {
-				textFaceName: '"microsoft yahei"',
-				textFill: "#FBBF24",
-				textSize: 12,
-			  },
-			}
-		  );
-		 labelList.push(textWpt);
-	}
-  });
+  if (isSelected) {
+	waypoints.points.forEach((point) => {
+		counter = counter + 1;
+		if (counter > 0) {
+			const textWpt = new maptalks.Label(
+				getWaypointPointName(waypoints, counter),
+				[point[1], point[0]],
+				{
+					draggable: false,
+					visible: true,
+					editable: false,
+					boxStyle: {
+						padding: [2, 2],
+						horizontalAlignment: "left",
+						verticalAlignment: "middle",
+						symbol: {
+							markerType: "square",
+							markerFill: "#4B5563",
+							markerFillOpacity: 0.5,
+							markerLineOpacity: 0,
+							textHorizontalAlignment: "right",
+							textVerticalAlignment: "middle",
+							textDx: 10,
+						},
+					},
+					textSymbol: {
+						textFaceName: '"microsoft yahei"',
+						textFill: "#FBBF24",
+						textSize: 12,
+					},
+				}
+			);
+			labelList.push(textWpt);
+		}
+	});
+  }
+  if (isSelected) {
+	appendWaypointSegmentLabels(labelList, waypoints, unitSystem);
+  }
   
   const col = new maptalks.GeometryCollection(labelList, {
     id: waypoints.id,
@@ -1328,15 +1470,21 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 	
 	useEffect(() => {
 		return geometryStore.subscribe(
-			([geometry, localHiddenGeometryIds, testUpdateStore]) => {
+			([geometry, localHiddenGeometryIds, testUpdateStore, selectedGeometry]) => {
 				if (map === null) return;
 				renderGeometry(map, geometry, localHiddenGeometryIds);
 			},
 			(state) =>
-				[state.geometry, state.localHiddenGeometryIds, state.testUpdateStore] as [
+				[
+					state.geometry,
+					state.localHiddenGeometryIds,
+					state.testUpdateStore,
+					state.selectedGeometry,
+				] as [
 					Immutable.Map<number, Geometry>,
 					Immutable.Set<number>,
-					number
+					number,
+					number | null
 				]
 		);
 	}, [map]);
@@ -1358,6 +1506,22 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 		return () => {
 			map.off("zoomend", handler);
 		};
+	}, [map]);
+
+	useEffect(() => {
+		if (map === null) {
+			return;
+		}
+		return settingsStore.subscribe(
+			() => {
+				renderGeometry(
+					map,
+					geometryStore.getState().geometry,
+					geometryStore.getState().localHiddenGeometryIds
+				);
+			},
+			(state) => state.unitSystem
+		);
 	}, [map]);
 }
 

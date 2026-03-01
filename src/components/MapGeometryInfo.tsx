@@ -30,8 +30,36 @@ import {
   updateGeometry
 } from "../stores/GeometryStore";
 import DetailedCoords from "./DetailedCoords";
-import { formatDDM, formatDMS, getCardinal, getFlyDistance, route } from "../util";
+import { formatDDM, formatDMS, getFlyDistance, route } from "../util";
 import { settingsStore, UnitSystem } from "../stores/SettingsStore";
+
+const MAP_MAG_DEC: Record<string, number> = {
+  Caucasus: -6,
+  Sinai: 5,
+  SinaiMap: 5,
+  Syria: 5,
+  PersianGulf: 2,
+  Marianas: 0,
+  Falklands: 6,
+  Normandy: 1,
+  Nevada: 11,
+  Kola: 13,
+  Afghanistan: 3,
+  GermanyCW: 1,
+  TheChannel: 1,
+};
+
+function normalizeBearing(bearing: number): number {
+  let normalized = Math.round(bearing) % 360;
+  if (normalized < 0) normalized += 360;
+  return normalized;
+}
+
+function getWaypointMagneticBearing(trueBearing: number): number {
+  const mapName = serverStore.getState().server?.map ?? "";
+  const magDec = MAP_MAG_DEC[mapName] ?? 0;
+  return normalizeBearing(trueBearing - magDec);
+}
 
 
 
@@ -197,12 +225,14 @@ function DetailedWaypoints({
     fromPoint: [number, number],
     toPoint: [number, number]
   ) => {
-    const bearing = getWaypointBearing(fromPoint, toPoint);
+    const trueBearing = getWaypointBearing(fromPoint, toPoint);
+    const magneticBearing = getWaypointMagneticBearing(trueBearing);
     const distance = getFlyDistance(fromPoint, toPoint);
     return (
       <div className="text-xs text-gray-700">
-        {label}: {bearing.toString().padStart(3, "0")}
-        {getCardinal(bearing)} / {formatDistance(distance)}
+        {label}: {magneticBearing.toString().padStart(3, "0")}°M /{" "}
+        {trueBearing.toString().padStart(3, "0")}°T /{" "}
+        {formatDistance(distance)}
       </div>
     );
   };
@@ -233,7 +263,11 @@ function DetailedWaypoints({
       const pointGroundRaw = pointGroundFt?.[index];
       const hasPointGround = typeof pointGroundRaw === "number";
       const inputValue = groundDrafts[index] ?? getDisplayGroundValue(index);
-      const resolvedByUser = pointGroundFtSet?.[index] === true;
+      const pointGroundSetFlag = pointGroundFtSet?.[index];
+      // Backward compatibility: old persisted rows may have a value
+      // without an explicit "set by user" flag.
+      const resolvedByUser =
+        pointGroundSetFlag === true || (pointGroundSetFlag === undefined && hasPointGround);
 		return (
         <div
           key={`waypoint-${index}`}
@@ -647,7 +681,10 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
     const pointGroundFtSet = geo.pointGroundFtSet || [];
     const unresolvedIndexes = geo.points
       .map((_, index) => index)
-      .filter((index) => pointGroundFtSet[index] === undefined);
+      .filter(
+        (index) =>
+          pointGroundFtSet[index] === undefined && typeof pointGroundFt[index] !== "number"
+      );
 
     if (unresolvedIndexes.length === 0) return;
 
@@ -664,9 +701,17 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
           const response = await fetch(route(`/elevation?lat=${lat}&lon=${lon}`), {
             signal: controller.signal,
           });
-          if (!response.ok) continue;
+          if (!response.ok) {
+            // Prevent endless retries on persistent failures for this point.
+            nextSets[index] = false;
+            continue;
+          }
           const payload = await response.json();
-          if (typeof payload.elevation_m !== "number") continue;
+          if (typeof payload.elevation_m !== "number") {
+            // Water/no-data: mark as auto-resolved without altitude.
+            nextSets[index] = false;
+            continue;
+          }
           nextGrounds[index] = Math.round(payload.elevation_m * 3.28084);
           nextSets[index] = false;
         } catch (err: any) {
@@ -777,6 +822,11 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
                 ? `${Math.round(effectiveGroundFt)}ft`
                 : `${Math.round(effectiveGroundFt * 0.3048)}m`
               : "-"}
+            {effectiveGroundFt !== null &&
+            effectiveGroundFt !== undefined &&
+            !hasUserGroundFt
+              ? " (auto)"
+              : ""}
           </span>
         )}
       </div>
@@ -786,7 +836,7 @@ function GeometryDetails({ geo, edit }: { geo: Geometry; edit: boolean }) {
 			<ColorPicker
 				color={pickerColor}
 				hideInput={["rgb", "hsv"]}
-				height={90}
+				height={72}
 				onChange={(newColor) => {
 					setPickerColor(newColor);
 					updateGeometrySafe(geo.id, { color: newColor.hex });
@@ -1139,15 +1189,51 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 
   useEffect(() => {
     if (!renderGeometry) return;
-    if (renderGeometry.hidden && !editor_mode_on) {
+    if (editor_mode_on) return;
+    const hiddenForUser = !!renderGeometry.hidden;
+    const deletedForUser = renderGeometry.status === "Deleted";
+    const disabledForUser = renderGeometry.clickable === false;
+    if (hiddenForUser || deletedForUser || disabledForUser) {
       setEditing(false);
       setSelectedGeometry(null);
     }
-  }, [renderGeometry?.id, renderGeometry?.hidden, editor_mode_on]);
+  }, [
+    renderGeometry?.id,
+    renderGeometry?.hidden,
+    renderGeometry?.status,
+    renderGeometry?.clickable,
+    editor_mode_on,
+  ]);
 
   if (!renderGeometry) return <></>;
   const canModify = isAuthenticated && (renderGeometry.status !== "Locked" || editor_mode_on);
-	
+  const closeSelectedPanel = (event?: React.SyntheticEvent) => {
+    event?.preventDefault();
+    event?.stopPropagation();
+    setEditing(false);
+    const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+    const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
+    let item = layer.getGeometryById(renderGeometry.id) as maptalks.GeometryCollection | null;
+    if (!item) {
+      item = layerQuest.getGeometryById(renderGeometry.id) as maptalks.GeometryCollection | null;
+    }
+
+    if (item) {
+      if (
+        item.isEditing() &&
+        (renderGeometry.type === "zone" ||
+          renderGeometry.type === "waypoints" ||
+          renderGeometry.type === "line" ||
+          renderGeometry.type === "circle")
+      ) {
+        item.endEdit();
+      } else if (renderGeometry.type !== "quest") {
+        item.config("draggable", editing);
+      }
+    }
+    setSelectedGeometry(null);
+  };
+
   return (
     <div
       className={classNames(
@@ -1189,7 +1275,6 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
 															setEditing(false);
 															renderGeometry.hidden = true;
 															updateGeometrySafe(renderGeometry.id, { hidden: true });
-															setSelectedGeometry(null);
 														}} className="p-1 text-xs bg-green-300 border border-green-400 mr-2"><BiShow className="inline-block w-4 h-4" /></button>))}
         <b className="flex flex-grow"> 
           {editor_mode_on && (renderGeometry.type.substring(0,5).concat(' #', renderGeometry.id.toString()))}
@@ -1371,32 +1456,9 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
         )}
         <button
           title="Close tab" 
-		  className="p-1 text-xs bg-red-300 border border-red-400 ml-2"
-          onClick={() => {
-            setEditing(false);
-			const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
-			const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
-			let item = layer.getGeometryById(
-				renderGeometry.id
-			) as maptalks.GeometryCollection | null;
-			if (!item) {
-				item = layerQuest.getGeometryById(
-				renderGeometry.id
-				) as maptalks.GeometryCollection | null;
-			}
-			
-			if (item) {
-				if (item.isEditing() && (renderGeometry.type === "zone" ||
-					renderGeometry.type === "waypoints" ||
-					renderGeometry.type === "line" ||
-					renderGeometry.type === "circle" )) {
-					item.endEdit();
-				} else if (renderGeometry.type !== "quest"){
-				  item.config("draggable", editing);
-				}
-			}
-			setSelectedGeometry(null);
-          }}
+		  className="p-1 text-xs bg-red-300 border border-red-400 ml-2 touch-manipulation"
+          onClick={closeSelectedPanel}
+          onTouchEnd={closeSelectedPanel}
         >
           <BiExit className="inline-block w-4 h-4" />
         </button>
