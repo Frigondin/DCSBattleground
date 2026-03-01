@@ -4,7 +4,7 @@ import { registerPlugin, Workspace } from "runtime/core.ts";
 export async function setup(ws: Workspace) {
   registerPlugin(
     new GithubCheckRunPlugin({
-      repositorySlug: "b1naryth1ef/sneaker",
+      repositorySlug: "Frigondin/DCSBattleground",
     }),
   );
 }

@@ -197,6 +197,17 @@ func (h *httpServer) getElevation(w http.ResponseWriter, r *http.Request) {
 }
 
 var SessionsDiscord = map[string]sessionDiscord{}
+var sessionsDiscordMu sync.RWMutex
+
+func isSecureRequest(r *http.Request) bool {
+	if r == nil {
+		return false
+	}
+	if r.TLS != nil {
+		return true
+	}
+	return strings.EqualFold(r.Header.Get("X-Forwarded-Proto"), "https")
+}
 
 const discordSessionsFile = "discord_sessions.json"
 
@@ -220,6 +231,8 @@ func loadDiscordSessions() {
 	}
 
 	now := time.Now()
+	sessionsDiscordMu.Lock()
+	defer sessionsDiscordMu.Unlock()
 	for _, item := range data {
 		if strings.TrimSpace(item.SessionToken) == "" || item.ExpiresAt.Before(now) {
 			continue
@@ -239,6 +252,7 @@ func loadDiscordSessions() {
 func saveDiscordSessions() {
 	now := time.Now()
 	payload := []persistedDiscordSession{}
+	sessionsDiscordMu.Lock()
 	for sessionToken, session := range SessionsDiscord {
 		if session.expiresAt.Before(now) {
 			delete(SessionsDiscord, sessionToken)
@@ -252,6 +266,7 @@ func saveDiscordSessions() {
 			ExpiresAt:    session.expiresAt,
 		})
 	}
+	sessionsDiscordMu.Unlock()
 
 	raw, err := json.Marshal(payload)
 	if err != nil {
@@ -266,14 +281,20 @@ func saveDiscordSessions() {
 func (h *httpServer) logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session_token")
 	if err == nil {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, cookie.Value)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 	}
 	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-		Path:    "/",
+		Name:     "session_token",
+		Value:    "",
+		Expires:  time.Unix(0, 0),
+		MaxAge:   -1,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   isSecureRequest(r),
+		SameSite: http.SameSiteLaxMode,
 	})
 	gores.JSON(w, 200, map[string]bool{"ok": true})
 }
@@ -281,12 +302,14 @@ func (h *httpServer) logout(w http.ResponseWriter, r *http.Request) {
 func cleanDiscordSessions() {
 	changed := false
 	now := time.Now()
+	sessionsDiscordMu.Lock()
 	for token, session := range SessionsDiscord {
 		if !session.expiresAt.IsZero() && session.expiresAt.Before(now) {
 			delete(SessionsDiscord, token)
 			changed = true
 		}
 	}
+	sessionsDiscordMu.Unlock()
 	if changed {
 		saveDiscordSessions()
 	}
@@ -409,17 +432,23 @@ func getAvatar(session_token string) string {
 }
 
 func getDiscordSession(session_token string) (sessionDiscord, bool) {
+	sessionsDiscordMu.RLock()
 	discordSession, ok := SessionsDiscord[session_token]
+	sessionsDiscordMu.RUnlock()
 	if !ok {
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
 	if strings.TrimSpace(discordSession.id) == "" {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, session_token)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
 	if !discordSession.expiresAt.IsZero() && discordSession.expiresAt.Before(time.Now()) {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, session_token)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
@@ -977,7 +1006,7 @@ func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 func CheckError(err error) {
 	if err != nil {
-		panic(err)
+		log.Printf("runtime error: %v", err)
 	}
 }
 
@@ -1150,10 +1179,13 @@ func Run(config *Config) error {
 		// Finally, we set the client cookie for "session_token" as the session token we just generated
 		// we also set an expiry time of 120 seconds
 		http.SetCookie(w, &http.Cookie{
-			Name:    "session_token",
-			Value:   sessionToken,
-			Expires: expiresAt,
-			Path:    "/",
+			Name:     "session_token",
+			Value:    sessionToken,
+			Expires:  expiresAt,
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   isSecureRequest(r),
+			SameSite: http.SameSiteLaxMode,
 		})
 		//fmt.Fprint(w, userData)
 
@@ -1167,12 +1199,14 @@ func Run(config *Config) error {
 		if err4 == false {
 			avatar = "nop"
 		}
+		sessionsDiscordMu.Lock()
 		SessionsDiscord[sessionToken] = sessionDiscord{
 			id:        id,
 			username:  user,
 			avatar:    avatar,
 			expiresAt: expiresAt,
 		}
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 
 		log.Printf("Redirect - Session created")
