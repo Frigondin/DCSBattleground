@@ -899,12 +899,6 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
 	(polygon.setSymbol as any)(getZonePolygonSymbol(zone.color));
     text.setCoordinates(getZoneLabelCoordinate(zone.points));
     (text.setContent as any)(zone.name || `Zone #${zone.id}`);
-	(text.setBoxStyle as any)?.(getZoneLabelBoxStyle());
-	(text.setTextSymbol as any)?.(getZoneLabelTextSymbol());
-	(text.setOptions as any)?.({
-		boxStyle: getZoneLabelBoxStyle(),
-		textSymbol: getZoneLabelTextSymbol(),
-	});
 	collection.setOptions({interactive});
     return;
   }
@@ -932,25 +926,8 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
       draggable: false,
       visible: true,
       editable: false,
-      boxStyle: {
-        padding: [2, 2],
-        horizontalAlignment: "left",
-        verticalAlignment: "middle",
-        symbol: {
-          markerType: "square",
-          markerFill: "#4B5563",
-          markerFillOpacity: 0.5,
-          markerLineOpacity: 0,
-          textHorizontalAlignment: "right",
-          textVerticalAlignment: "middle",
-          textDx: 10,
-        },
-      },
-      textSymbol: {
-        textFaceName: '"microsoft yahei"',
-        textFill: "#FBBF24",
-        textSize: 12,
-      },
+      boxStyle: getZoneLabelBoxStyle(),
+      textSymbol: getZoneLabelTextSymbol(),
     }
   );
 
@@ -961,7 +938,12 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   });
   
   col.setOptions({interactive});
+  let isZoneHovered = false;
   const setZoneHover = (hovered: boolean) => {
+    if (hovered === isZoneHovered) {
+      return;
+    }
+    isZoneHovered = hovered;
     const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
     const color = currentZone?.color || zone.color;
     (polygon.setSymbol as any)(getZonePolygonSymbol(color, hovered));
@@ -972,8 +954,9 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     const labelCoord = text.getCoordinates();
     if (!labelCoord) return false;
     const labelPoint = mapRef.coordinateToContainerPoint(labelCoord as any);
-    const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
-    const labelContent = (currentZone?.name || `Zone #${zone.id}`).toString();
+    const rawContent = (text.getContent as any)?.();
+    const labelContent =
+      (typeof rawContent === "string" ? rawContent : `Zone #${zone.id}`).toString();
     // Label is centered on the barycenter; use centered rectangular hit-box.
     const estimatedWidth = Math.max(56, Math.min(260, labelContent.length * 7.4));
     const halfHeight = 16;
@@ -987,9 +970,11 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   };
   text.on("mouseenter", () => setZoneHover(true));
   text.on("mouseleave", () => setZoneHover(false));
-  text.on("mouseover", () => setZoneHover(true));
-  text.on("mouseout", () => setZoneHover(false));
-  col.on("mouseover", (evt) => setZoneHover(isPointerNearLabel(evt)));
+  col.on("mouseover", (evt) => {
+    if (isPointerNearLabel(evt)) {
+      setZoneHover(true);
+    }
+  });
   col.on("mousemove", (evt) => setZoneHover(isPointerNearLabel(evt)));
   col.on("mouseout", () => setZoneHover(false));
   col.on("click", (e) => {
