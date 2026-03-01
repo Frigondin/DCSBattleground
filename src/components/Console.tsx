@@ -3,6 +3,8 @@ import * as maptalks from "maptalks";
 import React, { useMemo, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
 import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
+import { AiOutlineDisconnect } from "react-icons/ai";
+import { PiPlugsConnectedFill } from "react-icons/pi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
 import { serverStore, setSelectedEntityId, updateServerStore } from "../stores/ServerStore";
 import { updateGeometryStore } from "../stores/GeometryStore";
@@ -379,20 +381,53 @@ export function Console({
   const [selectedTab, setSelectedTab] = useState<
     null | "search" | "watch" | "draw" | "quest"
   >(null);
+  const isAuthenticated = !!serverStore((state) => state?.server?.discord_id);
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const is_editor = serverStore((state) => state?.server?.is_editor);
   const editor_mode_on = serverStore((state) => state?.editor_mode_on);
   const player_name = serverStore((state) => state?.server?.player_name);
+  const handleConnect = () => {
+    const returnTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    window.location.replace(`/discord/?return_to=${encodeURIComponent(returnTo)}`);
+  };
+  const handleDisconnect = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch (_err) {
+      // Ignore network errors and still clear local cookie.
+    }
+    document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    window.location.reload();
+  };
   return (
     <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
 			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) : 
 													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
 						</div>)}
-			<div>Connected as {discord_name}</div>
+			<div>{isAuthenticated ? `Connected as ${discord_name}` : "Guest mode"}</div>
 			<div className="flex flex-row gap-2"><ReactRoundedImage image={avatar} imageWidth="30" imageHeight="30" roundedSize="3"/></div>
+			<div>
+				{isAuthenticated ? (
+					<button
+						title="Disconnect"
+						onClick={handleDisconnect}
+						className="border bg-red-100 border-red-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
+					>
+						<AiOutlineDisconnect className="inline-block w-4 h-4" />
+					</button>
+				) : (
+					<button
+						title="Connect"
+						onClick={handleConnect}
+						className="border bg-green-100 border-green-300 p-1 rounded-sm shadow-sm flex flex-row items-center"
+					>
+						<PiPlugsConnectedFill className="inline-block w-4 h-4" />
+					</button>
+				)}
+			</div>
 	  </div>
 	  {is_connected && (<div className="p-2 flex flex-row gap-2 align-middle ml-auto text-xs pr-4 pt-0">
 			<div>{player_name}</div>
@@ -409,10 +444,10 @@ export function Console({
         <div>
           <button
             title="Draw"
-			onClick={() => setSelectedTab("draw")}
+			onClick={() => isAuthenticated && setSelectedTab("draw")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
-              { "bg-blue-200": selectedTab === "draw" }
+              { "bg-blue-200": selectedTab === "draw", "opacity-40 cursor-not-allowed": !isAuthenticated }
             )}
           >
             <BiBrush className="inline-block w-4 h-4" />
@@ -421,10 +456,10 @@ export function Console({
         <div>
           <button
             title="Missions"
-            onClick={() => setSelectedTab("quest")}
+            onClick={() => isAuthenticated && setSelectedTab("quest")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
-              { "bg-blue-200": selectedTab === "quest" }
+              { "bg-blue-200": selectedTab === "quest", "opacity-40 cursor-not-allowed": !isAuthenticated }
             )}
           >
             <BiSolidMap className="inline-block w-4 h-4" />
