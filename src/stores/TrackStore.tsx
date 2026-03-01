@@ -92,7 +92,13 @@ export const trackStore = create<TrackStoreData>(() => {
 (window as any).trackStore = trackStore;
 
 function isEntityTrackable(entity: RawEntityData) {
-  return entity.types.includes("Air") && !entity.types.includes("Parachutist") || entity.types.includes("Ground") && !entity.types.includes("Static") || entity.types.includes("Sea");
+  const runtimeTypes = (entity as any)?.types;
+  const types = Array.isArray(runtimeTypes) ? runtimeTypes : [];
+  return (
+    (types.includes("Air") && !types.includes("Parachutist")) ||
+    (types.includes("Ground") && !types.includes("Static")) ||
+    types.includes("Sea")
+  );
 }
 
 export function createTracks(event: DCSBattlegroundInitialStateEvent) {

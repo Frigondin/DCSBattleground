@@ -13,8 +13,9 @@ A live example of DCS Battlegound can be viewed [here](http://wawacs.ddns.net/).
 ## Installation
 
 1. Download the latest released version [from here](https://github.com/Frigondin/DCSBattleground/releases).
-2. Create a configuration file based off the [example](/example.config.json), replacing the required information (and optionally adding multiple servers to the array)
-3. Run the executable with the configuration path: `DCSBattleground.exe --config config.json --bind 0.0.0.0:yourport`
+2. **Do not edit the example file directly.** Create your own configuration file (for example `config.prod.json`) based off the [example](/example.config.json), replacing the required information (and optionally adding multiple servers to the array).
+3. If you want to modify Battleground, make sure your real configuration file (with passwords, tokens, etc.) is **not committed** into git (keep it outside the repo or add it to your `.gitignore`).
+4. Run the executable with the configuration path: `DCSBattleground.exe --config path\to\config.prod.json --bind 0.0.0.0:yourport`
 
 ## Configuration
 
@@ -23,7 +24,8 @@ DCS Battleground features a built-in Discord authentication
 1. Create a new [Discord Application](https://discord.com/developers/applications) 
 2. Configure the redirect url (used later) and copy the client id and client secret
 ![UI preview](https://i.imgur.com/APMF8zE.png)
-4. Add the following to your `config.json` (delete comments before saving) :
+4. Add the following to your `config.json` (delete comments before saving).  
+   **Important:** this JSON is an *example*. You must replace all secrets (database password, Discord client secret, Tacview password, etc.) by your own values and keep this file private (never commit it to a public repository).
 ```json
 {
   "servers": [
@@ -47,14 +49,64 @@ DCS Battleground features a built-in Discord authentication
 	"editor_id":["289817258535157761"]						//Discord user ID, used for advanced feature enabled for the user
     }
   ],
-  "assets_path_external": "D:\\your\\folder\\DCSBattlegroundV2\\files\\",		//Uploaded pictures folder
+  "assets_path_external": "D:\\your\\folder\\DCSBattlegroundV2\\files\\",		//Uploaded pictures folder (must be writable, not inside the git repo)
   "serverbot": true,									//Use Special K's server bot
-  "database": "postgres://user:password@hostname:5432/postgres?sslmode=disable",	//Special K's server bot Database
-  "discord_client_id": "1564564564421",							//Client ID of the discord application
-  "discord_client_secret": "azrfdsflkdsfokdsklfjdskfj",					//Client secret of the discord application
+  "database": "postgres://user:password@hostname:5432/postgres?sslmode=disable",	//Special K's server bot Database (contains credentials, keep it secret)
+  "discord_client_id": "1564564564421",							//Client ID of the discord application (public)
+  "discord_client_secret": "azrfdsflkdsfokdsklfjdskfj",					//Client secret of the discord application (secret, never share)
   "redirect_url": "http://my-url.kaboom/redirect/"					//The url used to access DCS Battleground (/redirect/ needed)
 }
 ```
+
+## Development, tests and build
+
+### Requirements
+
+- Node.js / Yarn
+- Go (version compatible with the `go.mod` in this repository)
+
+### Frontend (React / TypeScript)
+
+Install JavaScript dependencies:
+
+```bash
+yarn
+```
+
+Run the frontend test suite (Jest + Testing Library):
+
+```bash
+yarn test
+```
+
+Build the frontend bundle:
+
+```bash
+yarn build
+```
+
+### Backend (Go)
+
+Run the Go tests for the HTTP/server package:
+
+```bash
+go test ./server
+```
+
+Build the Windows and Linux binaries using the provided script:
+
+```bash
+build.cmd
+```
+
+`build.cmd` will:
+
+1. Clean the `dist` directory.
+2. Install/update JS dependencies with `yarn`.
+3. Run `yarn test` (frontend tests).
+4. Build the frontend bundle with `yarn build`.
+5. Run `go test ./server`.
+6. Build `DCSBattleground.exe` (Windows) and `DCSBattleground` (Linux).
 
 ## Web UI
 

@@ -9,7 +9,6 @@ import (
 	//"fmt"
 	//"github.com/lib/pq"
 	"bytes"
-	"strconv"
 	//"strconv"
 )
 
@@ -85,13 +84,19 @@ type Fields struct {
 	Side		string		`json:"side"`
 	Status		string		`json:"status"`
 	Clickable	bool		`json:"clickable"`
+	Hidden		bool		`json:"hidden"`
 	Color		string		`json:"color"`
 	SubType		string		`json:"subType"`
 	Type		string		`json:"type"`
 	Points		[][]float32	`json:"points"`
+	PointNames	[]string	`json:"pointNames"`
+	PointGroundFt []float32 `json:"pointGroundFt"`
+	PointGroundFtSet []bool `json:"pointGroundFtSet"`
 	Center		[]float32	`json:"center"`
 	Radius		float32		`json:"radius"`
 	Marker		string		`json:"marker"`
+	GroundFt	float32		`json:"groundFt"`
+	GroundFtSet	bool		`json:"groundFtSet"`
 }
 
 
@@ -161,9 +166,9 @@ func (s *serverSession) updateLoop() {
 			if object.Deleted {
 				data.Deleted = append(data.Deleted, object.Id)
 			} else if object.CreatedAt > currentOffset {
-				data.Created = append(data.Created, object)
+				data.Created = append(data.Created, object.Clone())
 			} else if object.UpdatedAt > currentOffset {
-				data.Updated = append(data.Updated, object)
+				data.Updated = append(data.Updated, object.Clone())
 			}
 		}
 
@@ -185,6 +190,25 @@ func (s *serverSession) updateLoop() {
 	}
 }
 
+func (o *StateObject) Clone() *StateObject {
+	clone := *o
+
+	// Copy map to avoid concurrent iteration/write while JSON encodes.
+	if o.Properties != nil {
+		clone.Properties = make(map[string]string, len(o.Properties))
+		for k, v := range o.Properties {
+			clone.Properties[k] = v
+		}
+	}
+
+	// Copy slice backing array for safe concurrent read.
+	if o.Types != nil {
+		clone.Types = append([]string(nil), o.Types...)
+	}
+
+	return &clone
+}
+
 func (s *serverSession) getInitialState() (*sessionStateData, []*StateObject) {
 	s.state.RLock()
 	defer s.state.RUnlock()
@@ -197,7 +221,7 @@ func (s *serverSession) getInitialState() (*sessionStateData, []*StateObject) {
 
 	idx := 0
 	for _, object := range s.state.objects {
-		objects[idx] = object
+		objects[idx] = object.Clone()
 		idx += 1
 	}
 
@@ -254,7 +278,12 @@ func (s *serverSession) runConnectedPlayer() error {
 	
 	err := db.Ping()
 	if err == nil {
-		rows, err2 := db.Query(`SELECT discord_id, players.name FROM statistics, players, missions WHERE players.ucid = statistics.player_ucid AND statistics.mission_id = missions.id AND hop_off is null AND server_name = '` + DcsName + `'`)
+		rows, err2 := db.Query(`SELECT discord_id, players.name
+								FROM statistics, players, missions
+								WHERE players.ucid = statistics.player_ucid
+								  AND statistics.mission_id = missions.id
+								  AND hop_off is null
+								  AND server_name = $1`, DcsName)
 		CheckError(err2)
 		defer rows.Close()
 		for rows.Next() {
@@ -289,9 +318,17 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 		var Task []byte
 		var Time string
 		
-		rows, err := db.Query(`SELECT id, data, time 
-								FROM bg_geometry2 
-								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' = 'recon' AND (id = ` +  strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `) ORDER BY id`)
+		rows, err := db.Query(`SELECT id, data, time
+								FROM bg_geometry2
+								WHERE server_name = $1
+								  AND data->'fields'->>'type' = 'recon'
+								  AND (id = $2 OR $3 < 0 OR extract(EPOCH FROM timezone('utc'::text, now()) - time) < $4)
+								ORDER BY id`,
+			DcsName,
+			IdResend,
+			RadarRefreshRate,
+			RadarRefreshRate*3,
+		)
 		//fmt.Println(RadarRefreshRate)						
 		CheckError(err)
 		defer rows.Close()
@@ -318,32 +355,38 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			geo.Server = DcsName
 			geo.Status = DataJson.Fields.Status
 			geo.Clickable = DataJson.Fields.Clickable
+			geo.Hidden = DataJson.Fields.Hidden
 			geo.Color = DataJson.Fields.Color
 			geo.Points = DataJson.Fields.Points
+			geo.PointNames = DataJson.Fields.PointNames
+			geo.PointGroundFt = DataJson.Fields.PointGroundFt
+			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
 			geo.Center = DataJson.Fields.Center
 			geo.Radius = DataJson.Fields.Radius
+			geo.GroundFt = DataJson.Fields.GroundFt
+			geo.GroundFtSet = DataJson.Fields.GroundFtSet
 			reconGeometry = append(reconGeometry, geo)
 		}
 
 
 		rows, err = db.Query(`SELECT id
-								FROM bg_missions 
-								WHERE server_name='` + DcsName + `' 
+								FROM bg_missions
+								WHERE server_name = $1
 								  AND data->'fields'->>'status' = 'To delete'
-								ORDER BY id`)
+								ORDER BY id`, DcsName)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
 			err = rows.Scan(&Id)
 			CheckError(err)
 			
-			_, e := db.Exec(`DELETE FROM bg_missions where id=$1`, strconv.Itoa(Id))
+			_, e := db.Exec(`DELETE FROM bg_missions where id=$1`, Id)
 			CheckError(e)
 			geoListDel = append(geoListDel, Id)
 		}	
 
 
-		rows, err = db.Query(`SELECT id, data, time, 
+		rows, err = db.Query(`SELECT id, data, time,
 									COALESCE((
 									   SELECT json_agg(json_build_object('id', id, 'data', data, 'players',
 											COALESCE((
@@ -352,11 +395,16 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 											), '[]'::json))) 
 									   FROM bg_task where bg_task.id_mission=bg_missions.id and bg_task.data->'fields'->>'status' != 'Closed' and bg_task.data->'fields'->>'status' != 'To delete'
 									), '[]'::json) task  
-								FROM bg_missions 
-								WHERE server_name='` + DcsName + `' 
+								FROM bg_missions
+								WHERE server_name = $1
 								  AND data->'fields'->>'status' != 'Closed'
-								  AND (id = ` + strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `)
-								ORDER BY id`) // and data->'fields'->>'status' != 'Closed'
+								  AND (id = $2 OR $3 < 0 OR extract(EPOCH FROM timezone('utc'::text, now()) - time) < $4)
+								ORDER BY id`, // and data->'fields'->>'status' != 'Closed'
+			DcsName,
+			IdResend,
+			RadarRefreshRate,
+			RadarRefreshRate*3,
+		)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -387,11 +435,16 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			geo.Side = DataJson.Fields.Side
 			geo.Status = DataJson.Fields.Status
 			geo.Clickable = DataJson.Fields.Clickable
+			geo.Hidden = DataJson.Fields.Hidden
 			geo.Color = DataJson.Fields.Color
 			geo.SubType = DataJson.Fields.SubType
+			geo.PointGroundFt = DataJson.Fields.PointGroundFt
+			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
 			geo.Server = DcsName
 			geo.Task = TaskJson
 			geo.Marker = DataJson.Fields.Marker
+			geo.GroundFt = DataJson.Fields.GroundFt
+			geo.GroundFtSet = DataJson.Fields.GroundFtSet
 			//fmt.Println(TaskJson)
 			questList = append(questList, geo)
 		}
@@ -399,9 +452,17 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 		
 		
 		geoListGlob = []geometry{}
-		rows, err = db.Query(`SELECT id, data, time 
-								FROM bg_geometry2 
-								WHERE server_name='` + DcsName + `' AND data->'fields'->>'type' != 'recon' AND (id = ` + strconv.Itoa(IdResend) + ` or ` + strconv.Itoa(int(RadarRefreshRate)) + ` < 0 or extract(EPOCH FROM timezone('utc'::text, now())-time) < ` + strconv.Itoa(int(RadarRefreshRate)*3) + `) ORDER BY id`)
+		rows, err = db.Query(`SELECT id, data, time
+								FROM bg_geometry2
+								WHERE server_name = $1
+								  AND data->'fields'->>'type' != 'recon'
+								  AND (id = $2 OR $3 < 0 OR extract(EPOCH FROM timezone('utc'::text, now()) - time) < $4)
+								ORDER BY id`,
+			DcsName,
+			IdResend,
+			RadarRefreshRate,
+			RadarRefreshRate*3,
+		)
 		CheckError(err)
 		defer rows.Close()
 		for rows.Next() {
@@ -427,10 +488,16 @@ func (s *serverSession) runSharedGeometry(RadarRefreshRate int64, IdResend int, 
 			geo.Server = DcsName
 			geo.Status = DataJson.Fields.Status
 			geo.Clickable = DataJson.Fields.Clickable
+			geo.Hidden = DataJson.Fields.Hidden
 			geo.Color = DataJson.Fields.Color
 			geo.Points = DataJson.Fields.Points
+			geo.PointNames = DataJson.Fields.PointNames
+			geo.PointGroundFt = DataJson.Fields.PointGroundFt
+			geo.PointGroundFtSet = DataJson.Fields.PointGroundFtSet
 			geo.Center = DataJson.Fields.Center
 			geo.Radius = DataJson.Fields.Radius
+			geo.GroundFt = DataJson.Fields.GroundFt
+			geo.GroundFtSet = DataJson.Fields.GroundFtSet
 			geoList = append(geoList, geo)
 		}
 	} else {

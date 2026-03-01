@@ -1,8 +1,8 @@
 package server
 
 import (
-"fmt"
 "database/sql"
+"log"
 //"net/http"
 //"log"
 _ "github.com/lib/pq"
@@ -25,6 +25,6 @@ func initDB(config *Config) {
 			panic(err)
 		}
 		// this will be printed in the terminal, confirming the connection to the database
-		fmt.Println("The database is connected")
+		log.Printf("The database is connected")
 	}
 }

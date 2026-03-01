@@ -31,8 +31,10 @@ export class Entity {
 
   constructor(data: RawEntityData) {
     this.id = data.id;
-    this.types = data.types;
-    this.properties = data.properties;
+    const runtimeTypes = (data as any)?.types;
+    const runtimeProperties = (data as any)?.properties;
+    this.types = Array.isArray(runtimeTypes) ? runtimeTypes : [];
+    this.properties = runtimeProperties && typeof runtimeProperties === "object" ? runtimeProperties : {};
     this.longitude = data.longitude;
     this.latitude = data.latitude;
     this.altitude = data.altitude;

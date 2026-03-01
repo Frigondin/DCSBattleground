@@ -12,6 +12,7 @@ import {
   getSelectedGeometry,
   setSelectedGeometry,
   updateGeometrySafe,
+  updateGeometryStore,
   deleteGeometry,
   Zone,
   Waypoints,
@@ -26,8 +27,265 @@ import { setSelectedEntityId, serverStore } from "../stores/ServerStore";
 
 const markPointSIDC = "GHG-GPRN--";
 const reconSIDC = "GHGPGPPO----";
+const MARKER_CLUSTER_ZOOM_THRESHOLD = 10;
+const MARKER_CLUSTER_PIXEL_RADIUS = 48;
+const clusterIconCache: Record<string, string> = {};
 
+type ClusterableGeometry = MarkPoint | Recon | Quest;
 
+type MarkerCluster = {
+	center: maptalks.Point;
+	items: ClusterableGeometry[];
+	type: ClusterableGeometry["type"];
+};
+
+function getWaypointPointName(waypoints: Waypoints, index: number): string {
+	return waypoints.pointNames?.[index] || `WPT#${index}`;
+}
+
+function areWaypointPointsClose(a: [number, number], b: [number, number]): boolean {
+	const epsilon = 0.00001;
+	return Math.abs(a[0] - b[0]) <= epsilon && Math.abs(a[1] - b[1]) <= epsilon;
+}
+
+function alignWaypointNames(
+	oldPoints: [number, number][],
+	oldNames: string[],
+	newPoints: [number, number][]
+): string[] {
+	const aligned = newPoints.map((_, index) => `WPT#${index}`);
+	let i = 0; // old index
+	let j = 0; // new index
+
+	while (i < oldPoints.length && j < newPoints.length) {
+		if (areWaypointPointsClose(oldPoints[i], newPoints[j])) {
+			aligned[j] = oldNames[i] || `WPT#${j}`;
+			i += 1;
+			j += 1;
+			continue;
+		}
+
+		// Insertion in the new path at index j.
+		if (j + 1 < newPoints.length && areWaypointPointsClose(oldPoints[i], newPoints[j + 1])) {
+			j += 1;
+			continue;
+		}
+
+		// Deletion from old path at index i.
+		if (i + 1 < oldPoints.length && areWaypointPointsClose(oldPoints[i + 1], newPoints[j])) {
+			i += 1;
+			continue;
+		}
+
+		// Fallback for moved/edited node: keep same relative slot name.
+		aligned[j] = oldNames[i] || `WPT#${j}`;
+		i += 1;
+		j += 1;
+	}
+
+	return aligned;
+}
+
+function waypointPointsEqual(a: [number, number][], b: [number, number][]): boolean {
+	if (a.length !== b.length) return false;
+	for (let i = 0; i < a.length; i++) {
+		if (!areWaypointPointsClose(a[i], b[i])) return false;
+	}
+	return true;
+}
+
+function waypointNamesEqual(a: string[], b: string[]): boolean {
+	if (a.length !== b.length) return false;
+	for (let i = 0; i < a.length; i++) {
+		if (a[i] !== b[i]) return false;
+	}
+	return true;
+}
+
+function isClusterableGeometry(geo: Geometry): geo is ClusterableGeometry {
+	return geo.type === "markpoint" || geo.type === "recon" || geo.type === "quest";
+}
+
+function buildMarkerClusters(
+	map: maptalks.Map,
+	items: ClusterableGeometry[],
+	pixelRadius: number
+): MarkerCluster[] {
+	const clusters: MarkerCluster[] = [];
+
+	for (const item of items) {
+		const coord = new maptalks.Coordinate(
+			item.position[1],
+			item.position[0]
+		);
+		const pt = map.coordinateToContainerPoint(coord);
+
+		let target: MarkerCluster | null = null;
+		for (const cluster of clusters) {
+			if (cluster.type !== item.type) {
+				continue;
+			}
+			const dx = cluster.center.x - pt.x;
+			const dy = cluster.center.y - pt.y;
+			if (dx * dx + dy * dy <= pixelRadius * pixelRadius) {
+				target = cluster;
+				break;
+			}
+		}
+
+		if (!target) {
+			clusters.push({
+				center: pt,
+				items: [item],
+				type: item.type,
+			});
+		} else {
+			const n = target.items.length;
+			target.center = new maptalks.Point(
+				(target.center.x * n + pt.x) / (n + 1),
+				(target.center.y * n + pt.y) / (n + 1)
+			);
+			target.items.push(item);
+		}
+	}
+
+	return clusters;
+}
+
+function getClusterDropIcon(color: string, count: number): string {
+	const key = `${color}-${count}`;
+	if (clusterIconCache[key]) {
+		return clusterIconCache[key];
+	}
+
+	const safeCount = count > 99 ? "99+" : `${count}`;
+	const fontSize = safeCount.length >= 3 ? 14 : 16;
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="56" viewBox="0 0 44 56">
+  <path d="M22 2C10.4 2 1 11.4 1 23c0 14.9 17.5 29.8 20.3 32.1.4.3 1 .3 1.4 0C25.5 52.8 43 37.9 43 23 43 11.4 33.6 2 22 2z" fill="${color}" stroke="#111827" stroke-width="2"/>
+  <text x="22" y="28" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="${fontSize}" font-weight="700" fill="#ffffff">${safeCount}</text>
+</svg>`;
+	const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+	clusterIconCache[key] = url;
+	return url;
+}
+
+function updateMarkerClusters(
+	map: maptalks.Map,
+	geometry: Immutable.Map<number, Geometry>,
+	localHiddenGeometryIds: Immutable.Set<number>,
+	zoom: number,
+	editorModeOn: boolean
+): Set<number> {
+	const clusteredIds = new Set<number>();
+	const clusterLayer = map.getLayer("recon-cluster") as
+		| maptalks.VectorLayer
+		| undefined;
+	const missionPulseLayer = map.getLayer("quest") as
+		| maptalks.VectorLayer
+		| undefined;
+	if (!clusterLayer) {
+		return clusteredIds;
+	}
+
+	for (const geo of clusterLayer.getGeometries()) {
+		geo.remove();
+	}
+	if (missionPulseLayer) {
+		for (const geo of missionPulseLayer.getGeometries()) {
+			const id = geo.getId();
+			if (typeof id === "string" && id.startsWith("mission-cluster-")) {
+				geo.remove();
+			}
+		}
+	}
+
+	if (zoom > MARKER_CLUSTER_ZOOM_THRESHOLD) {
+		return clusteredIds;
+	}
+
+	const markers: ClusterableGeometry[] = [];
+	for (const geo of geometry.valueSeq()) {
+		if (
+			geo.status !== "Deleted" &&
+			(editorModeOn || !geo.hidden) &&
+			!localHiddenGeometryIds.has(geo.id) &&
+			isClusterableGeometry(geo)
+		) {
+			markers.push(geo);
+		}
+	}
+
+	if (markers.length === 0) {
+		return clusteredIds;
+	}
+
+	const clusters = buildMarkerClusters(map, markers, MARKER_CLUSTER_PIXEL_RADIUS);
+	for (const cluster of clusters) {
+		if (cluster.items.length <= 1) {
+			continue;
+		}
+
+		for (const item of cluster.items) {
+			clusteredIds.add(item.id);
+		}
+
+		const coord = map.containerPointToCoordinate(cluster.center);
+		const lng = coord.x;
+		const lat = coord.y;
+		const primary = cluster.items[0];
+		const count = cluster.items.length;
+
+		const icon = new maptalks.Marker([lng, lat], {
+			draggable: false,
+			visible: true,
+			editable: false,
+			symbol: {
+				markerFile: getClusterDropIcon(primary.color, count),
+				markerWidth: 30,
+				markerHeight: 38,
+				markerDy: 10
+			},
+		});
+
+		const col = new maptalks.GeometryCollection([icon], {
+			id: `marker-cluster-${primary.id}`,
+			draggable: false,
+		});
+
+		col.on("click", () => {
+			const targetZoom = zoom + 2;
+			map.animateTo(
+				{
+					center: [lng, lat],
+					zoom: targetZoom,
+				},
+				{
+					duration: 450,
+					easing: "out",
+				}
+			);
+		});
+
+		clusterLayer.addGeometry(col);
+
+		if (cluster.type === "quest" && missionPulseLayer) {
+			const pulse = new maptalks.Marker([lng, lat], {
+				id: `mission-cluster-${primary.id}-pulse`,
+				symbol: {
+					markerType: "ellipse",
+					markerFill: primary.color,
+					markerFillOpacity: 0.8,
+					markerLineWidth: 0,
+					markerWidth: 75,
+					markerHeight: 75
+				}
+			});
+			missionPulseLayer.addGeometry(pulse);
+		}
+	}
+
+	return clusteredIds;
+}
 
 
 function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
@@ -38,12 +296,13 @@ function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
 		const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
 		var item = layer.getGeometryById(
 			selectedGeometry.id
-		) as maptalks.GeometryCollection;
-		if (item === null) {
+		) as maptalks.GeometryCollection | null;
+		if (!item) {
 			item = layerQuest.getGeometryById(
 				selectedGeometry.id
-			) as maptalks.GeometryCollection;
+			) as maptalks.GeometryCollection | null;
 		}
+		if (!item) return;
 		
 		if (item.isEditing() && (selectedGeometry.type === "zone" ||
 			selectedGeometry.type === "waypoints" ||
@@ -78,6 +337,10 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 			if (counter === 0) {
 				const geo2 = geo as maptalks.LineString
 				geo2.setCoordinates(waypoints.points.map((it) => [it[1], it[0]]));
+				(geo2.setSymbol as any)({
+					lineColor: waypoints.color,
+					lineWidth: 3
+				});
 				geo2.remove();
 			} else if (counter === 1){
 				const geo2 = geo as maptalks.Label
@@ -95,7 +358,7 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 		  counter = counter + 1;
 			if (counter > 0) {
 				const textWpt = new maptalks.Label(
-					`WPT#${counter}`,
+					getWaypointPointName(waypoints, counter),
 					[point[1], point[0]],
 					{
 					  draggable: false,
@@ -188,7 +451,7 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 	  counter = counter + 1;
 	  if (counter > 0) {
 		  const textWpt = new maptalks.Label(
-			`WPT#${counter}`,
+			getWaypointPointName(waypoints, counter),
 			[point[1], point[0]],
 			{
 			  draggable: false,
@@ -233,11 +496,37 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 		setSelectedEntityId(null);
 	}
   });
-  col.on("editend", (e) => {
+  const syncWaypointsFromEditor = () => {
+	if (!lineString.isEditing()) {
+		return;
+	}
 	let coords = lineString.getCoordinates() as Array<{x:number,y:number}>;
+	const nextPoints = coords.map((it) => [it.y, it.x] as [number, number]);
+	const currentWaypoints = geometryStore.getState().geometry.get(waypoints.id) as Waypoints | undefined;
+	const prevPoints = currentWaypoints?.points || [];
+	const prevNames = currentWaypoints?.pointNames || [];
+	const nextPointNames = alignWaypointNames(prevPoints, prevNames, nextPoints);
+	if (
+		waypointPointsEqual(prevPoints as [number, number][], nextPoints) &&
+		waypointNamesEqual(prevNames, nextPointNames)
+	) {
+		return;
+	}
 	updateGeometrySafe(waypoints.id, {
-      points: coords.map((it) => [it.y, it.x]),
+      points: nextPoints,
+      pointNames: nextPointNames,
     });
+  };
+
+  // Keep store synced during edition so newly inserted middle points
+  // are immediately available in the left panel for renaming.
+  col.on("shapechange", syncWaypointsFromEditor);
+  col.on("editend", () => {
+	syncWaypointsFromEditor();
+	// Ensure label refresh runs after Maptalks leaves editing state.
+	requestAnimationFrame(() => {
+		updateGeometryStore({ testUpdateStore: Math.random() });
+	});
   });  
 
   layer.addGeometry(col);
@@ -263,6 +552,10 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 			if (counter === 0) {
 				const geo2 = geo as maptalks.LineString
 				geo2.setCoordinates(line.points.map((it) => [it[1], it[0]]));
+				(geo2.setSymbol as any)({
+					lineColor: line.color,
+					lineWidth: 2
+				});
 				geo2.remove();
 			} else if (counter === 1){
 				const geo2 = geo as maptalks.Label
@@ -380,6 +673,12 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     ];
 	if (polygon.isEditing()) return;
     polygon.setCoordinates(zone.points.map((it) => [it[1], it[0]]));
+	(polygon.setSymbol as any)({
+		lineColor: zone.color,
+		lineWidth: 2,
+		polygonFill: zone.color,
+		polygonOpacity: 0.1
+	});
     text.setCoordinates([zone.points[0][1], zone.points[0][0]]);
     (text.setContent as any)(zone.name || `Zone #${zone.id}`);
 	collection.setOptions({interactive});
@@ -486,6 +785,12 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
 
     circleMap.setCoordinates([circle.center[1], circle.center[0]]);
 	circleMap.setRadius(circle.radius);
+	(circleMap.setSymbol as any)({
+		lineColor: circle.color,
+		lineWidth: 2,
+		polygonFill: circle.color,
+		polygonOpacity: 0.1
+	});
     text.setCoordinates([circle.center[1], circle.center[0]]);
     (text.setContent as any)(circle.name || `Circle #${circle.id}`);
 	collection.setOptions({interactive});
@@ -587,6 +892,17 @@ function renderMarkPoint(layer: maptalks.VectorLayer, markPoint: MarkPoint) {
       maptalks.Label
     ];
 
+    (icon.setSymbol as any)({
+      markerFile: new ms.Symbol(markPointSIDC, {
+					  size: 14,
+					  frame: false,
+					  fill: true,
+					  strokeWidth: 8,
+					  monoColor: markPoint.color,
+					}).toDataURL(),
+	  monocolor: markPoint.color,
+      markerDy: 7
+    });
     icon.setCoordinates([markPoint.position[1], markPoint.position[0]]);
     text.setCoordinates([markPoint.position[1], markPoint.position[0]]);
     (text.setContent as any)(markPoint.name || `Mark #${markPoint.id}`);
@@ -683,6 +999,16 @@ function renderRecon(layer: maptalks.VectorLayer, recon: Recon) {
       maptalks.Label
     ];
 
+	(icon.setSymbol as any)({
+		markerFile: new ms.Symbol(reconSIDC, {
+					  size: 20,
+					  frame: false,
+					  fill: true,
+					  strokeWidth: 11,
+					  monoColor: recon.color,
+					}).toDataURL(),
+        markerDy: 10
+	});
 	icon.setCoordinates([recon.position[1], recon.position[0]]);
 	text.setCoordinates([recon.position[1], recon.position[0]]);
 	(text.setContent as any)(recon.name || `Recon #${recon.id}`);
@@ -787,7 +1113,18 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 
     icon.setCoordinates([quest.position[1], quest.position[0]]);
     text.setCoordinates([quest.position[1], quest.position[0]]);
-    (text.setContent as any)(quest.name || `Quest #${quest.id}`);
+    (text.setContent as any)(quest.name || `Mission #${quest.id}`);
+	const pulse = layerQuest.getGeometryById(quest.id) as maptalks.Marker;
+	if (pulse) {
+		(pulse.setSymbol as any)({
+			markerType: 'ellipse',
+			markerFill: quest.color,
+			markerFillOpacity: 0.8,
+			markerLineWidth: 0,
+			markerWidth: 75,
+			markerHeight: 75
+		});
+	}
 
     return;
   }
@@ -822,7 +1159,7 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
       );
 
   const text = new maptalks.Label(
-	quest.name || `Quest #${quest.id}`,
+	quest.name || `Mission #${quest.id}`,
 	[quest.position[1], quest.position[0]],
 	{
 	  draggable: false,
@@ -880,31 +1217,72 @@ function renderQuest(layer: maptalks.VectorLayer, layerQuest: maptalks.VectorLay
 
 function renderGeometry(
   map: maptalks.Map,
-  geometry: Immutable.Map<number, Geometry>
+  geometry: Immutable.Map<number, Geometry>,
+  localHiddenGeometryIds: Immutable.Set<number>
 ) {
+  const { editor_mode_on } = serverStore.getState();
   const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
   const layerQuest = map.getLayer("quest") as maptalks.VectorLayer;
   const layerQuestPin = map.getLayer("quest-pin") as maptalks.VectorLayer;
+  const zoom = map.getZoom();
+  const clusteredMarkerIds = updateMarkerClusters(
+	map,
+	geometry,
+	localHiddenGeometryIds,
+	zoom,
+	editor_mode_on
+  );
+
   for (const geo of layer.getGeometries() ) {
-    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
+    const id = (geo as any)._id as number;
+    const storeGeo = geometry.get(id);
+    const removeForCluster =
+      !!storeGeo &&
+      (storeGeo.type === "recon" || storeGeo.type === "markpoint") &&
+      clusteredMarkerIds.has(storeGeo.id);
+    const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
+    const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
+    if (!storeGeo || storeGeo.status === "Deleted" || removeForCluster || removeForHidden || removeForLocalHidden) {
       geo.remove();
     }
   }
   for (const geo of layerQuest.getGeometries()) {
-    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
+    const rawId = (geo as any)._id as number | string;
+    if (typeof rawId === "string" && rawId.startsWith("mission-cluster-")) {
+      continue;
+    }
+    const id = rawId as number;
+    const storeGeo = geometry.get(id);
+    const removeForCluster =
+      !!storeGeo && storeGeo.type === "quest" && clusteredMarkerIds.has(storeGeo.id);
+    const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
+    const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
+    if (!storeGeo || storeGeo.status === "Deleted" || removeForCluster || removeForHidden || removeForLocalHidden) {
       geo.remove();
     } 
   }
   for (const geo of layerQuestPin.getGeometries()) {
-    if (!geometry.has((geo as any)._id as number) || geometry.get((geo as any)._id as number)!.status === "Deleted") {
+    const id = (geo as any)._id as number;
+    const storeGeo = geometry.get(id);
+    const removeForCluster =
+      !!storeGeo && storeGeo.type === "quest" && clusteredMarkerIds.has(storeGeo.id);
+    const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
+    const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
+    if (!storeGeo || storeGeo.status === "Deleted" || removeForCluster || removeForHidden || removeForLocalHidden) {
       geo.remove();
     }
   }
 
   for (const geo of geometry.valueSeq()) {
-	if (geo.status !== "Deleted") {
+	if (
+		geo.status !== "Deleted" &&
+		(editor_mode_on || !geo.hidden) &&
+		!localHiddenGeometryIds.has(geo.id)
+	) {
 		if (geo.type === "markpoint") {
-			renderMarkPoint(layer, geo);
+			if (!clusteredMarkerIds.has(geo.id)) {
+				renderMarkPoint(layer, geo);
+			}
 		} else if (geo.type === "zone") {
 			renderZone(layer, geo);
 		} else if (geo.type === "waypoints") {
@@ -916,9 +1294,13 @@ function renderGeometry(
 		} else if (geo.type === "border") {
 			renderLine(layer, geo);
 		} else if (geo.type === "recon") {
-			renderRecon(layer, geo);
+			if (!clusteredMarkerIds.has(geo.id)) {
+				renderRecon(layer, geo);
+			}
 		} else if (geo.type === "quest") {
-			renderQuest(layerQuestPin, layerQuest, geo);
+			if (!clusteredMarkerIds.has(geo.id)) {
+				renderQuest(layerQuestPin, layerQuest, geo);
+			}
 		}
 	}
   }
@@ -946,18 +1328,36 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 	
 	useEffect(() => {
 		return geometryStore.subscribe(
-			([geometry, testUpdateStore]) => {
+			([geometry, localHiddenGeometryIds, testUpdateStore]) => {
 				if (map === null) return;
-					renderGeometry(map, geometry);
-				},
-			(state) => [state.geometry, state.testUpdateStore] as [Immutable.Map<number, Geometry>, number]
+				renderGeometry(map, geometry, localHiddenGeometryIds);
+			},
+			(state) =>
+				[state.geometry, state.localHiddenGeometryIds, state.testUpdateStore] as [
+					Immutable.Map<number, Geometry>,
+					Immutable.Set<number>,
+					number
+				]
 		);
 	}, [map]);
 
 	useEffect(() => {
 		if (map !== null) {
-			renderGeometry(map, geometryStore.getState().geometry);
+			renderGeometry(map, geometryStore.getState().geometry, geometryStore.getState().localHiddenGeometryIds);
 		}
+	}, [map]);
+
+	useEffect(() => {
+		if (map === null) {
+			return;
+		}
+		const handler = () => {
+			renderGeometry(map, geometryStore.getState().geometry, geometryStore.getState().localHiddenGeometryIds);
+		};
+		map.on("zoomend", handler);
+		return () => {
+			map.off("zoomend", handler);
+		};
 	}, [map]);
 }
 

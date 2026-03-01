@@ -18,9 +18,10 @@ import useRenderGeometry from "../hooks/useRenderGeometry";
 import useRenderGroundUnit from "../hooks/useRenderGroundUnits";
 import useRenderCombatZones from "../hooks/useRenderCombatZones";
 import useRenderRadarTracks from "../hooks/useRenderRadarTracks";
+import useRenderMgrsGrid from "../hooks/useRenderMgrsGrid";
 import { alertStore } from "../stores/AlertStore";
 import { serverStore, setSelectedEntityId } from "../stores/ServerStore";
-import { settingsStore } from "../stores/SettingsStore";
+import { settingsStore, UnitSystem, updateSettingsStore } from "../stores/SettingsStore";
 import {
   estimatedAltitudeRate,
   estimatedSpeed,
@@ -32,6 +33,7 @@ import {
   getBearingMap,
   getCardinal,
   getFlyDistance,
+  route,
 } from "../util";
 import { Console } from "./Console";
 import { EntityInfo, iconCache, MapSimpleEntity } from "./MapEntity";
@@ -44,6 +46,23 @@ import ScratchPad from "./ScratchPad";
 function parseMgrs(coords:[number, number]){
 	var val:string = mgrs.forward([coords[1], coords[0]])
 	return val.slice(0, 3) + " " + val.slice(3, 5) + " " + val.slice(5, 10) + " " + val.slice(10)
+}
+
+function getEstimatedGroundElevationFt(
+  coords: [number, number],
+  dcsMap: DCSMap
+): number | null {
+  if (!dcsMap.airports || dcsMap.airports.length === 0) return null;
+  let nearestDistanceNm = Number.POSITIVE_INFINITY;
+  let nearestElevationFt: number | null = null;
+  for (const airport of dcsMap.airports) {
+    const distanceNm = getFlyDistance(coords, [airport.position[0], airport.position[1]]);
+    if (distanceNm < nearestDistanceNm) {
+      nearestDistanceNm = distanceNm;
+      nearestElevationFt = airport.position[2];
+    }
+  }
+  return nearestElevationFt;
 }
 
 export function Map({ dcsMap }: { dcsMap: DCSMap }) {
@@ -62,6 +81,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     number | [number, number] | null
   >(null);
   const [cursorPos, setCursorPos] = useState<[number, number] | null>(null);
+  const [cursorGroundFt, setCursorGroundFt] = useState<number | null>(null);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [scratchPadOpen, setScratchPadOpen] = useState(false);
@@ -96,6 +116,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const isSnapPressed = useKeyPress("s");
 
   const settings = settingsStore();
+  const unitSystem = settingsStore((state) => state.unitSystem || UnitSystem.IMPERIAL);
 
   useEffect(() => {
     if (!mapContainer.current || map.current !== null) {
@@ -282,9 +303,16 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
+        new maptalks.VectorLayer("mgrs-grid", [], {
+          hitDetect: false,
+          visible: true,
+        }),
         new maptalks.VectorLayer("custom-geometry", [], {
           hitDetect: false,
-        }),	
+        }),
+        new maptalks.VectorLayer("recon-cluster", [], {
+          hitDetect: true,
+        }),
 		new animatemarker.AnimateMarkerLayer("quest", [], {
           forceRenderOnZooming: true,
           forceRenderOnMoving: true,
@@ -528,6 +556,43 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   ]);
 
   useEffect(() => {
+    if (!cursorPos) {
+      setCursorGroundFt(null);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        const [lat, lon] = cursorPos;
+        const response = await fetch(
+          route(`/elevation?lat=${lat}&lon=${lon}`),
+          { signal: controller.signal }
+        );
+        if (!response.ok) {
+          setCursorGroundFt(null);
+          return;
+        }
+        const payload = await response.json();
+        if (typeof payload.elevation_m === "number") {
+          setCursorGroundFt(Math.round(payload.elevation_m * 3.28084));
+        } else {
+          setCursorGroundFt(null);
+        }
+      } catch (err: any) {
+        if (err?.name !== "AbortError") {
+          setCursorGroundFt(null);
+        }
+      }
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [cursorPos]);
+
+  useEffect(() => {
     if (!map.current) return;
     const braaLayer = map.current.getLayer("braa") as maptalks.VectorLayer;
     const line = braaLayer.getGeometryById("braa-line") as maptalks.LineString;
@@ -552,6 +617,11 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 
       if (typeof start !== "number" && typeof end !== "number") {
         const bearing = getBearingMap(start, end, dcsMap);
+        const braaDistanceNm = getFlyDistance(start, end);
+        const braaDistance =
+          unitSystem === UnitSystem.IMPERIAL
+            ? `${Math.round(braaDistanceNm)}nm`
+            : `${Math.round(braaDistanceNm * 1.852)}km`;
         line.setCoordinates([
           [start[1], start[0]],
           [end[1], end[0]],
@@ -563,7 +633,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         (text.setContent as any)(
           `${bearing.toString().padStart(3, "0")}${getCardinal(
             bearing
-          )} / ${Math.round(getFlyDistance(start, end))}`
+          )} / ${braaDistance}`
         );
 
         text.show();
@@ -577,12 +647,27 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     drawBraaStart,
     cursorPos,
     typeof drawBraaStart === "number" && entities.get(drawBraaStart),
+    unitSystem,
   ]);
 
   const currentCursorBulls = useMemo(() => {
     if (!bullsEntity && !cursorPos) return;
+    const estimatedGroundFt = cursorPos
+      ? getEstimatedGroundElevationFt(cursorPos, dcsMap)
+      : null;
+    const groundFt = cursorGroundFt ?? (estimatedGroundFt !== null ? Math.round(estimatedGroundFt) : null);
+    const groundPart =
+      groundFt !== null
+        ? unitSystem === UnitSystem.IMPERIAL
+          ? ` / GND~${groundFt}ft`
+          : ` / GND~${Math.round(groundFt * 0.3048)}m`
+        : "";
+    const formatDistance = (distanceNm: number) =>
+      unitSystem === UnitSystem.IMPERIAL
+        ? `${Math.round(distanceNm)}nm`
+        : `${Math.round(distanceNm * 1.852)}km`;
 	if (!bullsEntity && cursorPos) {
-		return `${parseMgrs(cursorPos)}`;
+		return `${parseMgrs(cursorPos)}${groundPart}`;
 	};
 	if (!bullsEntity || !cursorPos) return;
     const bearing = getBearingMap(
@@ -592,10 +677,10 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     );
     return `${bearing.toString().padStart(3, "0")}${getCardinal(
       bearing
-    )} / ${Math.round(
+    )} / ${formatDistance(
       getFlyDistance(cursorPos, [bullsEntity.latitude, bullsEntity.longitude])
-    )} / ${parseMgrs(cursorPos)}`;
-  }, [cursorPos, bullsEntity]);
+    )} / ${parseMgrs(cursorPos)}${groundPart}`;
+  }, [cursorPos, bullsEntity, dcsMap, cursorGroundFt, unitSystem]);
 
   const farps = useMemo(
     () => {
@@ -722,6 +807,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   useRenderGeometry(map.current);
   useRenderGroundUnit(map.current);
   useRenderCombatZones(map.current);
+  useRenderMgrsGrid(map.current);
   var selectedEntityId = selectedEntity ? selectedEntity.id : null
   useRenderRadarTracks(map.current, selectedEntityId);
 
@@ -749,8 +835,24 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         ref={mapContainer}
       ></div>
       {currentCursorBulls && (
-        <div className="absolute right-0 bottom-0 max-w-xl max-h-32 text-yellow-600 text-3xl bg-gray-700 p-1">
-          {currentCursorBulls}
+        <div className="absolute right-0 bottom-0 flex flex-row items-center gap-1">
+          <div className="text-yellow-600 text-2xl bg-gray-700 px-3 py-1 min-w-[38rem] max-w-[90vw] whitespace-nowrap overflow-x-auto">
+            {currentCursorBulls}
+          </div>
+          <button
+            title="Units"
+            onClick={() =>
+              updateSettingsStore({
+                unitSystem:
+                  unitSystem === UnitSystem.IMPERIAL
+                    ? UnitSystem.METRIC
+                    : UnitSystem.IMPERIAL,
+              })
+            }
+            className="h-full border border-gray-500 bg-gray-700 text-yellow-600 px-2 py-1 text-sm font-semibold"
+          >
+            {unitSystem === UnitSystem.IMPERIAL ? "IMP" : "MET"}
+          </button>
         </div>
       )}
       <MissionTimer />
@@ -764,8 +866,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
           />
         )}
         {map.current && <MapGeometryInfo map={map.current} />}
-        {scratchPadOpen && (
-          <ScratchPad close={() => setScratchPadOpen(false)} />
+        {scratchPadOpen && map.current && (
+          <ScratchPad close={() => setScratchPadOpen(false)} map={map.current} />
         )}
       </div>
       {map.current && (

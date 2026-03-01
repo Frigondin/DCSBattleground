@@ -16,10 +16,13 @@ export type GeometryBase = {
   avatar: string;
   status: string;
   clickable: boolean;
+  hidden: boolean;
   screenshot: Array<string>;
   description: Array<string>;
   store: string;
   color: string;
+  groundFt?: number;
+  groundFtSet?: boolean;
 };
 
 export type MarkPoint = {
@@ -35,6 +38,9 @@ export type Zone = {
 export type Waypoints = {
   type: "waypoints";
   points: Array<[number, number]>;
+  pointNames: Array<string>;
+  pointGroundFt?: Array<number>;
+  pointGroundFtSet?: Array<boolean>;
 } & GeometryBase;
 
 export type Circle = {
@@ -70,6 +76,7 @@ export type Geometry = MarkPoint | Zone | Waypoints | Circle | Line | Border | R
 
 type GeometryStoreData = {
   geometry: Immutable.Map<number, Geometry>;
+  localHiddenGeometryIds: Immutable.Set<number>;
   id: number;
   selectedGeometry: number | null;
   testUpdateStore: number;
@@ -78,6 +85,7 @@ type GeometryStoreData = {
 export const geometryStore = create<GeometryStoreData>(() => {
   return {
     geometry: Immutable.Map<number, Geometry>(),
+    localHiddenGeometryIds: Immutable.Set<number>(),
     id: 1,
     selectedGeometry: null,
 	testUpdateStore: 0
@@ -86,8 +94,25 @@ export const geometryStore = create<GeometryStoreData>(() => {
 
 export function deleteGeometry(id: number) {
   geometryStore.setState((state) => {
-    return { ...state, geometry: state.geometry.remove(id) };
+    return {
+      ...state,
+      geometry: state.geometry.remove(id),
+      localHiddenGeometryIds: state.localHiddenGeometryIds.remove(id),
+    };
   });
+}
+
+export function toggleLocalGeometryHidden(id: number) {
+  geometryStore.setState((state) => {
+    const next = state.localHiddenGeometryIds.has(id)
+      ? state.localHiddenGeometryIds.remove(id)
+      : state.localHiddenGeometryIds.add(id);
+    return { ...state, localHiddenGeometryIds: next };
+  });
+}
+
+export function isGeometryHiddenLocally(id: number): boolean {
+  return geometryStore.getState().localHiddenGeometryIds.has(id);
 }
 
 export function updateGeometry(value: Geometry) {
@@ -107,6 +132,18 @@ export function updateGeometrySafe(id: number, value: Partial<Geometry>) {
     return {
       ...state,
       geometry: state.geometry.set(id, { ...existing, timeStamp: new Date().toISOString(), store, ...value} as Geometry),
+    };
+  });
+}
+
+// Update computed fields without touching timestamp/store state.
+export function updateGeometryComputed(id: number, value: Partial<Geometry>) {
+  geometryStore.setState((state) => {
+    const existing = state.geometry.get(id);
+    if (!existing) return;
+    return {
+      ...state,
+      geometry: state.geometry.set(id, { ...existing, ...value } as Geometry),
     };
   });
 }
@@ -151,6 +188,7 @@ export function addZone(points: Array<[number, number]>, color: string) {
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			store: "local"
 		  }),
 		};
@@ -177,6 +215,7 @@ export function addMarkPoint(position: [number, number], color: string) {
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			store: "local"
 		  }),
 		};
@@ -204,6 +243,7 @@ export function addCircle(center: [number, number], radius: number, color: strin
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			store: "local"
 		  }),
 		};
@@ -224,11 +264,15 @@ export function addWaypoints(points: Array<[number, number]>, color: string) {
 			avatar: server?.avatar as string,
 			type: "waypoints",
 			points,
+			pointNames: points.map((_, index) => `WPT#${index}`),
+			pointGroundFt: [],
+			pointGroundFtSet: [],
 			screenshot: [],
 			description: [],
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			store: "local"
 		  }),
 		};
@@ -254,6 +298,7 @@ export function addLine(points: Array<[number, number]>, color: string) {
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			store: "local"
 		  }),
 		};
@@ -280,6 +325,7 @@ export function addQuest(position: [number, number], color: string) {
 			color: color,
 			status: 'Active',
 			clickable: true,
+			hidden: false,
 			subType: "",
 			store: "local",
 			marker: "/static/Map-Marker-Ball-Chartreuse-icon.png"
@@ -319,7 +365,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -341,7 +390,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -359,11 +411,17 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							avatar: geo.avatar,
 							type: "waypoints",
 							points: geo.points,
+							pointNames: geo.pointNames || geo.points.map((_: any, index: number) => `WPT#${index}`),
+							pointGroundFt: geo.pointGroundFt || [],
+							pointGroundFtSet: geo.pointGroundFtSet || [],
 							screenshot: geo.screenshot,
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -386,7 +444,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -408,7 +469,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -430,7 +494,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -453,7 +520,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							description: geo.description,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							store: "server"
 						  }),
 						};
@@ -477,7 +547,10 @@ export function addGlobalGeometry(geoList:any, coalition:string) {
 							task: geo.task,
 							status: geo.status,
 							clickable: geo.clickable,
+							hidden: geo.hidden || false,
 							color: geo.color,
+							groundFt: geo.groundFt,
+							groundFtSet: geo.groundFtSet,
 							subType: geo.subType,
 							store: "server",
 							marker: ((geo.marker && geo.marker) !== "" ? (geo.marker) : "/static/Map-Marker-Ball-Chartreuse-icon.png")

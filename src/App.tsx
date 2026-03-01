@@ -16,6 +16,7 @@ import { TheChannel } from "./dcs/maps/TheChannel";
 import { Nevada } from "./dcs/maps/Nevada";
 import { Kola } from "./dcs/maps/Kola";
 import { Afghanistan } from "./dcs/maps/Afghanistan";
+import { GermanyCW } from "./dcs/maps/GermanyCW";
 import { Server, serverStore } from "./stores/ServerStore";
 import { route } from "./util";
 
@@ -88,6 +89,7 @@ function ServerConnectModal() {
 }
 
 function ServerContainer({ serverName }: { serverName: string }) {
+  const backendMaintenance = serverStore((state) => state.backendMaintenance);
   const [refLat, refLng] = serverStore((state) => {
     const globalObj = state.entities.get(0);
     if (!globalObj) return [undefined, undefined];
@@ -138,6 +140,8 @@ function ServerContainer({ serverName }: { serverName: string }) {
     dcsMap = Caucasus;
   } else if (server && server.map === "Sinai") {
     dcsMap = Sinai;
+  } else if (server && server.map === "SinaiMap") {
+    dcsMap = Sinai;
   } else if (server && server.map === "Syria") {
     dcsMap = Syria;
   } else if (server && server.map === "PersianGulf") {
@@ -154,11 +158,28 @@ function ServerContainer({ serverName }: { serverName: string }) {
     dcsMap = Kola;
   } else if (server && server.map === "Afghanistan") {
     dcsMap = Afghanistan;
+  } else if (server && server.map === "GermanyCW") {
+    dcsMap = GermanyCW;
   } else {
     dcsMap = Caucasus;
   }
 
-  return <Map dcsMap={dcsMap} />;
+  return (
+    <div className="relative w-full h-full">
+      <Map dcsMap={dcsMap} />
+      {backendMaintenance && (
+        <div className="absolute inset-0 z-50 bg-gray-900/80 flex items-center justify-center">
+          <div className="max-w-lg mx-4 p-6 rounded-md border border-yellow-600 bg-gray-800 text-yellow-100">
+            <div className="text-2xl font-semibold mb-2">Maintenance in progress</div>
+            <div className="text-sm opacity-90">
+              The DCSBattleground server is temporarily unavailable.
+              Automatic reconnection in progress...
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function App() {

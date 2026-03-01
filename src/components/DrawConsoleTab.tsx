@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import * as maptalks from "maptalks";
-import React, { useState } from "react";
-import { BiShapeCircle, BiShapeSquare, BiRadioCircle, BiPencil, BiShareAlt, BiRuler, BiMinus } from "react-icons/bi";
+import React, { useEffect, useRef, useState } from "react";
+import { BiShapeCircle, BiShapeSquare, BiRadioCircle, BiPencil, BiShareAlt, BiRuler, BiMinus, BiShow, BiHide } from "react-icons/bi";
 import {
   addMarkPoint,
   addZone,
@@ -9,7 +9,8 @@ import {
   addCircle,
   addLine,
   geometryStore,
-  setSelectedGeometry
+  setSelectedGeometry,
+  toggleLocalGeometryHidden
 } from "../stores/GeometryStore";
 import { iconCache } from "../components/MapEntity";
 import { setSelectedEntityId,  serverStore} from "../stores/ServerStore";
@@ -17,12 +18,19 @@ import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 
 export default function DrawConsoleTab({ map }: { map: maptalks.Map }) {
-  const [geometry, selectedId] = geometryStore((state) => [
+  const [geometry, selectedId, localHiddenGeometryIds] = geometryStore((state) => [
     state.geometry,
     state.selectedGeometry,
+    state.localHiddenGeometryIds,
   ]);
+const editor_mode_on = serverStore((state) => state?.editor_mode_on);
 const [color, setColor] = useColor("#0068FF");
 const [draw, setDraw] = useState("");
+const colorRef = useRef(color);
+
+useEffect(() => {
+	colorRef.current = color;
+}, [color]);
 
   return (
     <div className="p-2">
@@ -51,7 +59,7 @@ const [draw, setDraw] = useState("");
 						drawTool.on('drawend', function(param) {
 							setDraw("")
 							const pos = param!.geometry!.getFirstCoordinate();
-							addMarkPoint([pos.y, pos.x], color.hex);
+							addMarkPoint([pos.y, pos.x], colorRef.current.hex);
 						});
 						drawTool.setMode('Point').enable(); 
 						
@@ -85,7 +93,7 @@ const [draw, setDraw] = useState("");
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addZone(coords, color.hex);
+							addZone(coords, colorRef.current.hex);
 						});
 						drawTool.setMode('Polygon').enable(); 
 					  }}
@@ -117,7 +125,7 @@ const [draw, setDraw] = useState("");
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addWaypoints(coords, color.hex) 
+							addWaypoints(coords, colorRef.current.hex) 
 						});
 						drawTool.setMode('LineString').enable(); 
 						
@@ -151,7 +159,7 @@ const [draw, setDraw] = useState("");
 							setDraw("")
 							const pos = param!.geometry!.getCoordinates();
 							const radius = param!.geometry!.getRadius();
-							addCircle([pos.y, pos.x], radius, color.hex) 
+							addCircle([pos.y, pos.x], radius, colorRef.current.hex) 
 						});
 						drawTool.setMode('Circle').enable(); 
 					  }}
@@ -183,7 +191,7 @@ const [draw, setDraw] = useState("");
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addLine(coords, color.hex) 
+							addLine(coords, colorRef.current.hex) 
 						});
 						drawTool.setMode('LineString').enable(); 
 						
@@ -218,7 +226,7 @@ const [draw, setDraw] = useState("");
 							coordsTmp.forEach((coord) => {
 								coords.push([ coord.y, coord.x]);
 							});
-							addLine(coords, color.hex) 
+							addLine(coords, colorRef.current.hex) 
 						});
 						drawTool.setMode('FreeHandLineString').enable(); 
 					  }}
@@ -251,54 +259,90 @@ const [draw, setDraw] = useState("");
 			{(draw === "Zone"  || draw === "Wpts"  || draw === "Line" || draw === "Dist") && (<div>Double click to end drawing</div>)}
 	  </div>
       <div className="my-2 flex flex-col gap-1 max-h-56 overflow-auto">
-        {geometry.valueSeq().map((it) => {
-		  const { editor_mode_on } = serverStore.getState();
-		  if (it.type !== "quest" && (it.clickable || editor_mode_on)) {
-			  return (
-				<button
-				  key={it.id}
-				  className={classNames(
-					"bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1",
-					{ "bg-indigo-200 border-indigo-300": it.id === selectedId }
-				  )}
-				  onClick={() => {
-					setSelectedGeometry(it.id);
-					setSelectedEntityId(null);
+        {geometry
+          .valueSeq()
+          .filter(
+            (it) =>
+              it.type !== "quest" &&
+              (!it.hidden || editor_mode_on) &&
+              (it.clickable || editor_mode_on)
+          )
+          .sort((a, b) =>
+            (a.name || `${a.type} #${a.id}`).localeCompare(
+              b.name || `${b.type} #${b.id}`,
+              undefined,
+              { sensitivity: "base" }
+            )
+          )
+          .map((it) => {
+            return (
+              <div
+                key={it.id}
+                className="flex items-center gap-1"
+              >
+                <button
+                  className={classNames(
+                    "flex-grow bg-indigo-100 hover:border-indigo-300 hover:bg-indigo-200 border-indigo-200 border rounded-sm p-1 text-left",
+                    {
+                      "bg-indigo-200 border-indigo-300": it.id === selectedId,
+                      "opacity-50": localHiddenGeometryIds.has(it.id),
+                    }
+                  )}
+                  onClick={() => {
+                    setSelectedGeometry(it.id);
+                    setSelectedEntityId(null);
 
-					let position;
-					if (it.type === "markpoint") {
-						position = [it.position[1], it.position[0]];
-					} else if (it.type === "recon") {
-						position = [it.position[1], it.position[0]];
-					} else if (it.type === "zone") {
-						position = [it.points[0][1], it.points[0][0]];
-					} else if (it.type === "waypoints") {
-						position = [it.points[0][1], it.points[0][0]];
-					} else if (it.type === "circle") {
-						position = [it.center[1], it.center[0]];
-					} else if (it.type === "line") {
-						position = [it.points[0][1], it.points[0][0]];
-					}
+                    let position;
+                    if (it.type === "markpoint") {
+                      position = [it.position[1], it.position[0]];
+                    } else if (it.type === "recon") {
+                      position = [it.position[1], it.position[0]];
+                    } else if (it.type === "zone") {
+                      position = [it.points[0][1], it.points[0][0]];
+                    } else if (it.type === "waypoints") {
+                      position = [it.points[0][1], it.points[0][0]];
+                    } else if (it.type === "circle") {
+                      position = [it.center[1], it.center[0]];
+                    } else if (it.type === "line") {
+                      position = [it.points[0][1], it.points[0][0]];
+                    }
 
-					if (position) {
-					  map.animateTo(
-						{
-						  center: position,
-						  zoom: 10,
-						},
-						{
-						  duration: 250,
-						  easing: "out",
-						}
-					  );
-					}
-				  }}
-				>
-				  {it.name || `${it.type} #${it.id}`}
-				</button>
-			  );
-		  }
-		})}
+                    if (position) {
+                      map.animateTo(
+                        {
+                          center: position,
+                          zoom: 10,
+                        },
+                        {
+                          duration: 250,
+                          easing: "out",
+                        }
+                      );
+                    }
+                  }}
+                >
+                  {it.name || `${it.type} #${it.id}`}
+                </button>
+                <button
+                  type="button"
+                  title={localHiddenGeometryIds.has(it.id) ? "Show locally" : "Hide locally"}
+                  className={classNames(
+                    "border p-1 rounded-sm shadow-sm flex flex-row items-center",
+                    localHiddenGeometryIds.has(it.id)
+                      ? "bg-grey-300 border-green-600"
+                      : "bg-green-300 border-green-600"
+                  )}
+                  onClick={() => toggleLocalGeometryHidden(it.id)}
+                >
+                  {localHiddenGeometryIds.has(it.id) ? (
+                    <BiHide className="inline-block w-4 h-4" />
+                  ) : (
+                    <BiShow className="inline-block w-4 h-4" />
+                  )}
+                </button>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

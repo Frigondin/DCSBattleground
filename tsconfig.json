@@ -15,7 +15,11 @@
     "isolatedModules": false,
     "noEmit": false,
     "jsx": "react-jsx",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "maptalks": ["dep/maptalks/index.d.ts"]
+    }
   },
   "include": ["src"]
 }

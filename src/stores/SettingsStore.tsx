@@ -10,7 +10,13 @@ export enum FlightUnitMode {
   ENEMY = "enemy",
 }
 
+export enum UnitSystem {
+  IMPERIAL = "imperial",
+  METRIC = "metric",
+}
+
 export type SettingsStoreData = {
+  unitSystem: UnitSystem;
   map: {
     showTrackIcons?: boolean;
     showTrackLabels?: boolean;
@@ -25,6 +31,7 @@ export const settingsStore = create<SettingsStoreData>(() => {
     return JSON.parse(localData) as SettingsStoreData;
   }
   return {
+    unitSystem: UnitSystem.IMPERIAL,
     map: {
       showTrackIcons: true,
       showTrackLabels: true,
@@ -37,3 +44,7 @@ export const settingsStore = create<SettingsStoreData>(() => {
 settingsStore.subscribe((state) => {
   localStorage.setItem("settings", JSON.stringify(state));
 });
+
+export function updateSettingsStore(value: Partial<SettingsStoreData>) {
+  settingsStore.setState((state) => ({ ...state, ...value }));
+}
