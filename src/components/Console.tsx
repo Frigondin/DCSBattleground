@@ -20,7 +20,7 @@ import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Missionpoints-On" | "Missionpoints-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Missionpoints-On" | "Missionpoints-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off" | "GeoLabelsFocus-On" | "GeoLabelsFocus-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
@@ -31,6 +31,9 @@ function WatchTab({ map }: { map: maptalks.Map }) {
   const dcsMapOpacity = settingsStore((state) => state.map?.dcsMapOpacity ?? 1);
   const mgrsGridBrightness = settingsStore((state) => state.map?.mgrsGridBrightness ?? 1);
   const mgrsGridOpacity = settingsStore((state) => state.map?.mgrsGridOpacity ?? 1);
+  const showOnlySelectedGeometryLabels = settingsStore(
+    (state) => state.map?.showOnlySelectedGeometryLabels ?? false
+  );
   return (
     <div className="p-2">
 		<table>
@@ -364,6 +367,49 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					Draw
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{!showOnlySelectedGeometryLabels && (
+							<button
+								className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											showOnlySelectedGeometryLabels: true,
+										},
+									}));
+									setSelectedButton("GeoLabelsFocus-On");
+								}}
+							>
+								<BiShow className="inline-block w-4 h-4" />
+							</button>
+						)}
+						{showOnlySelectedGeometryLabels && (
+							<button
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											showOnlySelectedGeometryLabels: false,
+										},
+									}));
+									setSelectedButton("GeoLabelsFocus-Off");
+								}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Labels : all objects
 				</td>
 			</tr>
 			<tr>

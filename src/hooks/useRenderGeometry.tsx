@@ -1540,6 +1540,50 @@ function renderGeometry(
 		}
 	}
   }
+
+  const selectedOnly =
+    settingsStore.getState().map?.showOnlySelectedGeometryLabels ?? false;
+  const selectedGeometryId = geometryStore.getState().selectedGeometry;
+  const labelLayers: Array<maptalks.VectorLayer | undefined> = [
+    map.getLayer("custom-geometry-zones") as maptalks.VectorLayer | undefined,
+    map.getLayer("custom-geometry") as maptalks.VectorLayer | undefined,
+    map.getLayer("quest-pin") as maptalks.VectorLayer | undefined,
+  ];
+  for (const labelLayer of labelLayers) {
+    if (!labelLayer) continue;
+    for (const mapGeo of labelLayer.getGeometries()) {
+      if (!(mapGeo instanceof maptalks.GeometryCollection)) continue;
+      const id = Number((mapGeo as any)._id);
+      if (!Number.isFinite(id)) continue;
+      const isSelected = selectedGeometryId !== null && id === selectedGeometryId;
+      const shouldShowLabels = !selectedOnly || isSelected;
+      for (const item of mapGeo.getGeometries()) {
+        const isLabelLike =
+          typeof (item as any).getContent === "function" &&
+          typeof (item as any).setContent === "function";
+        if (!isLabelLike) continue;
+        const labelAny = item as any;
+        const optionsAny = ((labelAny.options ??= {}) as any);
+        const currentContent = String((labelAny.getContent?.() ?? "") as string);
+        if (shouldShowLabels) {
+          if (optionsAny.__hiddenLabelContent !== undefined) {
+            labelAny.setContent(optionsAny.__hiddenLabelContent);
+            delete optionsAny.__hiddenLabelContent;
+          }
+          item.show();
+        } else {
+          if (
+            optionsAny.__hiddenLabelContent === undefined &&
+            currentContent.trim().length > 0
+          ) {
+            optionsAny.__hiddenLabelContent = currentContent;
+          }
+          labelAny.setContent("");
+          item.hide();
+        }
+      }
+    }
+  }
 }
 
 export default function useRenderGeometry(map: maptalks.Map | null) {
@@ -1614,7 +1658,8 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 					geometryStore.getState().localHiddenGeometryIds
 				);
 			},
-			(state) => state.unitSystem
+			(state) =>
+				`${state.unitSystem}|${state.map?.showOnlySelectedGeometryLabels ? "1" : "0"}`
 		);
 	}, [map]);
 }

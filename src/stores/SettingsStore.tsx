@@ -28,6 +28,7 @@ export type SettingsStoreData = {
     dcsMapOpacity?: number;
     mgrsGridBrightness?: number;
     mgrsGridOpacity?: number;
+    showOnlySelectedGeometryLabels?: boolean;
   };
 };
 
@@ -47,6 +48,7 @@ function defaultSettings(): SettingsStoreData {
       dcsMapOpacity: 1,
       mgrsGridBrightness: 1,
       mgrsGridOpacity: 1,
+      showOnlySelectedGeometryLabels: false,
     },
   };
 }
