@@ -651,7 +651,9 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       const maxLat = clamp(extent.ymax, -80, 84);
       const zoom = map.getZoom();
       const mgrsGridBrightness = settingsStore.getState().map?.mgrsGridBrightness ?? 1;
-      const opacity = (base: number) => clamp(base * mgrsGridBrightness, 0, 1);
+      const mgrsGridOpacity = settingsStore.getState().map?.mgrsGridOpacity ?? 1;
+      const opacity = (base: number) =>
+        clamp(base * mgrsGridBrightness * mgrsGridOpacity, 0, 1);
 
       const geos: Array<maptalks.Geometry> = [];
 
@@ -1002,7 +1004,8 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       () => {
         renderGrid();
       },
-      (state) => state.map?.mgrsGridBrightness
+      (state) =>
+        `${state.map?.mgrsGridBrightness ?? 1}|${state.map?.mgrsGridOpacity ?? 1}`
     );
 
     return () => {

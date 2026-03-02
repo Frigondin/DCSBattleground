@@ -26,8 +26,11 @@ function WatchTab({ map }: { map: maptalks.Map }) {
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
   const dcs_map = serverStore((state) => state?.server?.dcs_map);
   const prettyMapBrightness = settingsStore((state) => state.map?.prettyMapBrightness ?? 1);
+  const prettyMapOpacity = settingsStore((state) => state.map?.prettyMapOpacity ?? 0.8);
   const dcsMapBrightness = settingsStore((state) => state.map?.dcsMapBrightness ?? 1.2);
+  const dcsMapOpacity = settingsStore((state) => state.map?.dcsMapOpacity ?? 1);
   const mgrsGridBrightness = settingsStore((state) => state.map?.mgrsGridBrightness ?? 1);
+  const mgrsGridOpacity = settingsStore((state) => state.map?.mgrsGridOpacity ?? 1);
   return (
     <div className="p-2">
 		<table>
@@ -53,12 +56,14 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					<div className="relative w-full pr-20">
+					<div className="relative w-full pr-36">
 						<span className="whitespace-nowrap">Pretty Map</span>
-						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
-							<span className="text-xs whitespace-nowrap">{prettyMapBrightness.toFixed(2)}</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
 							<input
-								className="w-12"
+									title={`Brightness ${prettyMapBrightness.toFixed(2)}`}
+								className="h-2 w-20"
 								type="range"
 								min={0.5}
 								max={2}
@@ -75,6 +80,29 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 									}));
 								}}
 							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${prettyMapOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={prettyMapOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											prettyMapOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
 						</div>
 					</div>
 				</td>
@@ -113,12 +141,14 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					<div className="relative w-full pr-20">
+					<div className="relative w-full pr-36">
 						<span className="whitespace-nowrap">DCS Map</span>
-						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
-							<span className="text-xs whitespace-nowrap">{dcsMapBrightness.toFixed(2)}</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
 							<input
-								className="w-12"
+									title={`Brightness ${dcsMapBrightness.toFixed(2)}`}
+								className="h-2 w-20"
 								type="range"
 								min={0.5}
 								max={2}
@@ -135,6 +165,29 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 									}));
 								}}
 							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${dcsMapOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={dcsMapOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											dcsMapOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
 						</div>
 					</div>
 				</td>
@@ -162,12 +215,14 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					<div className="relative w-full pr-20">
+					<div className="relative w-full pr-36">
 						<span className="whitespace-nowrap">MGRS Grid</span>
-						<div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-1">
-							<span className="text-xs whitespace-nowrap">{mgrsGridBrightness.toFixed(2)}</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
 							<input
-								className="w-12"
+									title={`Brightness ${mgrsGridBrightness.toFixed(2)}`}
+								className="h-2 w-20"
 								type="range"
 								min={0.5}
 								max={2}
@@ -184,6 +239,29 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 									}));
 								}}
 							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${mgrsGridOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={mgrsGridOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											mgrsGridOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
 						</div>
 					</div>
 				</td>

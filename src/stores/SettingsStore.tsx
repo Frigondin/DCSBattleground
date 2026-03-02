@@ -23,8 +23,11 @@ export type SettingsStoreData = {
     trackTrailLength?: number;
     groundUnitMode?: GroundUnitMode;
     prettyMapBrightness?: number;
+    prettyMapOpacity?: number;
     dcsMapBrightness?: number;
+    dcsMapOpacity?: number;
     mgrsGridBrightness?: number;
+    mgrsGridOpacity?: number;
   };
 };
 
@@ -39,8 +42,11 @@ function defaultSettings(): SettingsStoreData {
       trackTrailLength: 9,
       groundUnitMode: GroundUnitMode.ENEMY,
       prettyMapBrightness: 1,
+      prettyMapOpacity: 0.8,
       dcsMapBrightness: 1.2,
+      dcsMapOpacity: 1,
       mgrsGridBrightness: 1,
+      mgrsGridOpacity: 1,
     },
   };
 }

@@ -98,8 +98,8 @@ function getMagneticBearing(trueBearing: number, dcsMap: DCSMap): number {
 }
 
 function getMapCitiesOpacity(zoom: number): number {
-  if (zoom < 8) return 0;
-  if (zoom < 10) return (zoom - 8) * 0.3;
+  if (zoom < 7) return 0;
+  if (zoom < 10) return (zoom - 7) * 0.3;
   if (zoom < 12) return 0.6 + (zoom - 10) * 0.2;
   return 1;
 }
@@ -344,7 +344,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
-		opacity: 0.8,
+		opacity: settings.map?.prettyMapOpacity ?? 0.8,
 		cssFilter: getBrightnessFilter(settings.map?.prettyMapBrightness, 1),
 		maxAvailableZoom  : 12,
         maxCacheSize: 2048,
@@ -358,7 +358,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
-		opacity: 1,
+		opacity: settings.map?.dcsMapOpacity ?? 1,
 		// Brightness is user-configurable from the Layers tab.
 		cssFilter: getBrightnessFilter(settings.map?.dcsMapBrightness, 1.2),
 		maxAvailableZoom  : 15,
@@ -581,12 +581,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     const dcsMapLayer = map.current!.getLayer("DCSMap") as any;
     if (dcsMapLayer && dcsMapLayer.config) {
       dcsMapLayer.config(
+        "opacity",
+        Math.max(0, Math.min(1, settings.map?.dcsMapOpacity ?? 1))
+      );
+      dcsMapLayer.config(
         "cssFilter",
         getBrightnessFilter(settings.map?.dcsMapBrightness, 1.2)
       );
     }
     const prettyLayer = map.current!.getLayer("pretty") as any;
     if (prettyLayer && prettyLayer.config) {
+      prettyLayer.config(
+        "opacity",
+        Math.max(0, Math.min(1, settings.map?.prettyMapOpacity ?? 0.8))
+      );
       prettyLayer.config(
         "cssFilter",
         getBrightnessFilter(settings.map?.prettyMapBrightness, 1)
