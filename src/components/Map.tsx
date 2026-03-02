@@ -12,6 +12,18 @@ import React, {
 import { renderToString } from "react-dom/server";
 import shallow from "zustand/shallow";
 import { FONT_FAMILY } from "../Constants";
+import AfghanistanCities from "../data/cities/afghanistan_cities.json";
+import CaucasusCities from "../data/cities/caucasus_cities.json";
+import FalklandsCities from "../data/cities/falklands_cities.json";
+import GermanyCWCities from "../data/cities/germanycw_cities.json";
+import KolaCities from "../data/cities/kola_cities.json";
+import MarianasCities from "../data/cities/marianas_cities.json";
+import NevadaCities from "../data/cities/nevada_cities.json";
+import NormandyCities from "../data/cities/normandy_cities.json";
+import PersianGulfCities from "../data/cities/persian_gulf_cities.json";
+import SinaiCities from "../data/cities/sinai_cities.json";
+import SyriaCities from "../data/cities/syria_cities.json";
+import TheChannelCities from "../data/cities/thechannel_cities.json";
 import { planes } from "../dcs/aircraft";
 import { DCSMap } from "../dcs/maps/DCSMap";
 import { useKeyPress } from "../hooks/useKeyPress";
@@ -85,6 +97,70 @@ function getMagneticBearing(trueBearing: number, dcsMap: DCSMap): number {
   return normalizeBearing(trueBearing + dcsMap.magDec);
 }
 
+function getMapCitiesOpacity(zoom: number): number {
+  if (zoom < 8) return 0;
+  if (zoom < 10) return (zoom - 8) * 0.3;
+  if (zoom < 12) return 0.6 + (zoom - 10) * 0.2;
+  return 1;
+}
+
+type CityLabelEntry = {
+  name: string;
+  lat: number;
+  lon: number;
+  importance: number;
+};
+
+function getMapCityMinImportance(zoom: number): number {
+  if (zoom < 10.5) return 5;
+  if (zoom < 12) return 4;
+  if (zoom < 13.5) return 3;
+  if (zoom < 15) return 2;
+  return 1;
+}
+
+function getMapCityTextSize(zoom: number): number {
+  if (zoom < 8) return 10;
+  if (zoom < 10) return 11;
+  if (zoom < 12) return 12;
+  return 13;
+}
+
+function getMapCityDataset(mapName: string): CityLabelEntry[] {
+  if (mapName === "Afghanistan") return AfghanistanCities as CityLabelEntry[];
+  if (mapName === "Caucasus") return CaucasusCities as CityLabelEntry[];
+  if (mapName === "Falklands") return FalklandsCities as CityLabelEntry[];
+  if (mapName === "GermanyCW") return GermanyCWCities as CityLabelEntry[];
+  if (mapName === "Kola") return KolaCities as CityLabelEntry[];
+  if (mapName === "Marianas") return MarianasCities as CityLabelEntry[];
+  if (mapName === "Nevada") return NevadaCities as CityLabelEntry[];
+  if (mapName === "Normandy") return NormandyCities as CityLabelEntry[];
+  if (mapName === "Persian Gulf") return PersianGulfCities as CityLabelEntry[];
+  if (mapName === "Sinai") return SinaiCities as CityLabelEntry[];
+  if (mapName === "Syria") return SyriaCities as CityLabelEntry[];
+  if (mapName === "TheChannel") return TheChannelCities as CityLabelEntry[];
+  return [];
+}
+
+function getMapCityRenderLimit(mapName: string): number {
+  if (mapName === "GermanyCW") return 800;
+  return 400;
+}
+
+function getMapCityDisplayName(mapName: string, cityName: string): string {
+  if (mapName !== "Syria") return cityName;
+  const mixedNames: Record<string, string> = {
+    "Tadmur": "Palmyra (Tadmur)",
+    "Hamah": "Hama (Hamah)",
+    "Ar Raqqah": "Raqqa (Ar Raqqah)",
+    "Al Hasakah": "Hasakah (Al Hasakah)",
+    "Al Bab": "Al-Bab (Al Bab)",
+    "Al Qunaytirah": "Quneitra (Al Qunaytirah)",
+    "Jisr ash-Shughur": "Jisr al-Shughur (Jisr ash-Shughur)",
+  };
+  return mixedNames[cityName] ?? cityName;
+}
+
 export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const mapContainer: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const map: MutableRefObject<maptalks.Map | null> = useRef(null);
@@ -101,6 +177,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     number | [number, number] | null
   >(null);
   const [cursorPos, setCursorPos] = useState<[number, number] | null>(null);
+  const [mapInitTick, setMapInitTick] = useState(0);
   const cursorRafRef = useRef<number | null>(null);
   const pendingCursorPosRef = useRef<[number, number] | null>(null);
 
@@ -233,16 +310,19 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       panAnimation: false,
       dragRotate: false,
       dragPitch: false,
+      scrollWheelZoom: true,
       touchZoom: true,
 	  touchRotate: false,
 	  touchPitch: false,
 	  touchZoomRotate: false,
+    zoomAnimation : true,
 	  //zoomAnimationDuration:2000,
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
 	  //maxZoom : 12,
       seamlessZoom: false,
+      zoomAnimationDuration: 1000,
       fpsOnInteracting: 60,
 	  zoomControl: false,
       attribution: null,
@@ -278,7 +358,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
-		opacity: 0.8,
+		opacity: 1,
 		// Brightness is user-configurable from the Layers tab.
 		cssFilter: getBrightnessFilter(settings.map?.dcsMapBrightness, 1.2),
 		maxAvailableZoom  : 15,
@@ -307,21 +387,17 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
 		maxAvailableZoom  : 12,
+		maxCacheSize: 2048,
+		hitDetect: false,
+		forceRenderOnZooming: true,
+		forceRenderOnMoving: true,
 		visible : false
       }),
-	new maptalks.WMSTileLayer("CaucasusBorder", {
-		tileSystem: [1, 1, -20037508.34, -20037508.34], 
-		renderer: "canvas",
-        urlTemplate:"http://dcsmaps.com/cgi-bin/mapserv?map=CAUCASUS_MAPFILE",
-		layers:"MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns",
-		format:"image/png",
-		transparent:!0,
-		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
-		service:"WMS",
-		version:"1.1.1",
-		styles:"",
-		crs:"EPSG:3857",
-		visible : false
+	new maptalks.VectorLayer("map-cities", [], {
+		hitDetect: false,
+		forceRenderOnZooming: true,
+		forceRenderOnMoving: true,
+		visible : true
       }),  
  
         new maptalks.VectorLayer("mgrs-grid", [], {
@@ -463,12 +539,12 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         setDrawBraaStart(null);
       }
     };
-
     map.current.on("contextmenu", onContextMenu);
     map.current.on("zooming", onZooming);
     map.current.on("mousemove", onMouseMove);
     map.current.on("touchmove", onTouchMove);
     map.current.on("mouseup", onMouseUp);
+    setMapInitTick((tick) => tick + 1);
 
     return () => {
       if (cursorRafRef.current !== null) {
@@ -517,6 +593,91 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       );
     }
   }, [map, settings]);
+
+  useEffect(() => {
+    if (!map.current) return;
+    const mapRef = map.current;
+    const citiesLayer = mapRef.getLayer("map-cities") as
+      | maptalks.VectorLayer
+      | undefined;
+    if (!citiesLayer) return;
+
+    const cityDataset = getMapCityDataset(dcsMap.name);
+    const renderCaucasusCities = () => {
+      const dcsMapLayer = mapRef.getLayer("DCSMap");
+      if (!dcsMapLayer?.isVisible()) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      if (cityDataset.length === 0) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      const currentZoom = mapRef.getZoom();
+      const opacity = getMapCitiesOpacity(currentZoom);
+      if (opacity <= 0) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      const minImportance = getMapCityMinImportance(currentZoom);
+      const textSize = getMapCityTextSize(currentZoom);
+      const renderLimit = getMapCityRenderLimit(dcsMap.name);
+      const labels = cityDataset
+        .filter(
+          (city) =>
+            city.importance >= minImportance
+        )
+        .sort((a, b) => b.importance - a.importance)
+        .slice(0, renderLimit)
+        .map(
+          (city) =>
+            new maptalks.Label(getMapCityDisplayName(dcsMap.name, city.name), [city.lon, city.lat], {
+              draggable: false,
+              editable: false,
+              interactive: false,
+              boxStyle: {
+                padding: [1, 2],
+                horizontalAlignment: "center",
+                verticalAlignment: "middle",
+                symbol: {
+                  markerType: "square",
+                  markerFill: "black",
+                  markerFillOpacity: 0.22 * opacity,
+                  markerLineOpacity: 0,
+                },
+              },
+              textSymbol: {
+                textFaceName: FONT_FAMILY,
+                textFill: "#fde68a",
+                textSize: textSize + 6,
+                textOpacity: 0.58 * opacity,
+                textHaloFill: "#000000",
+                textHaloRadius: 1.2,
+              },
+            })
+        );
+
+      citiesLayer.clear();
+      if (labels.length > 0) {
+        citiesLayer.addGeometry(labels);
+      }
+      citiesLayer.show();
+    };
+
+    renderCaucasusCities();
+    mapRef.on("moveend", renderCaucasusCities);
+    mapRef.on("zoomend", renderCaucasusCities);
+    return () => {
+      mapRef.off("moveend", renderCaucasusCities);
+      mapRef.off("zoomend", renderCaucasusCities);
+    };
+  }, [mapInitTick, dcsMap.name]);
 
   // Configure airports
   useEffect(() => {

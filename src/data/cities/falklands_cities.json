@@ -1,0 +1,164 @@
+[
+  {
+    "name": "Punta Arenas",
+    "lat": -53.1628,
+    "lon": -70.9092,
+    "importance": 5
+  },
+  {
+    "name": "Rio Gallegos",
+    "lat": -51.6253,
+    "lon": -69.2523,
+    "importance": 5
+  },
+  {
+    "name": "Ushuaia",
+    "lat": -54.8108,
+    "lon": -68.3159,
+    "importance": 5
+  },
+  {
+    "name": "Rio Grande",
+    "lat": -53.7877,
+    "lon": -67.7097,
+    "importance": 5
+  },
+  {
+    "name": "Puerto Natales",
+    "lat": -51.7299,
+    "lon": -72.506,
+    "importance": 5
+  },
+  {
+    "name": "Pico Truncado",
+    "lat": -46.7994,
+    "lon": -67.9578,
+    "importance": 5
+  },
+  {
+    "name": "Puerto Deseado",
+    "lat": -47.7513,
+    "lon": -65.8967,
+    "importance": 5
+  },
+  {
+    "name": "Las Heras",
+    "lat": -46.5413,
+    "lon": -68.9323,
+    "importance": 5
+  },
+  {
+    "name": "El Calafate",
+    "lat": -50.3407,
+    "lon": -72.2768,
+    "importance": 5
+  },
+  {
+    "name": "Porvenir",
+    "lat": -53.296,
+    "lon": -70.3663,
+    "importance": 5
+  },
+  {
+    "name": "Yacimientos Rio Turbio",
+    "lat": -51.5364,
+    "lon": -72.3379,
+    "importance": 5
+  },
+  {
+    "name": "Rio Turbio",
+    "lat": -51.5359,
+    "lon": -72.3367,
+    "importance": 5
+  },
+  {
+    "name": "Puerto San Julian",
+    "lat": -49.307,
+    "lon": -67.7298,
+    "importance": 5
+  },
+  {
+    "name": "28 de Noviembre",
+    "lat": -51.5839,
+    "lon": -72.2138,
+    "importance": 5
+  },
+  {
+    "name": "Comandante Luis Piedrabuena",
+    "lat": -49.9852,
+    "lon": -68.9151,
+    "importance": 5
+  },
+  {
+    "name": "Perito Moreno",
+    "lat": -46.5905,
+    "lon": -70.9257,
+    "importance": 5
+  },
+  {
+    "name": "Puerto Santa Cruz",
+    "lat": -50.0192,
+    "lon": -68.5238,
+    "importance": 5
+  },
+  {
+    "name": "Tolhuin",
+    "lat": -54.5108,
+    "lon": -67.1955,
+    "importance": 5
+  },
+  {
+    "name": "Cochrane",
+    "lat": -47.2557,
+    "lon": -72.5695,
+    "importance": 5
+  },
+  {
+    "name": "Chile Chico",
+    "lat": -46.541,
+    "lon": -71.7237,
+    "importance": 5
+  },
+  {
+    "name": "Stanley",
+    "lat": -51.6938,
+    "lon": -57.857,
+    "importance": 4
+  },
+  {
+    "name": "Los Antiguos",
+    "lat": -46.5489,
+    "lon": -71.6312,
+    "importance": 4
+  },
+  {
+    "name": "Puerto Williams",
+    "lat": -54.9335,
+    "lon": -67.6096,
+    "importance": 4
+  },
+  {
+    "name": "Canadon Seco",
+    "lat": -46.558,
+    "lon": -67.6109,
+    "importance": 4
+  },
+  {
+    "name": "El Chalten",
+    "lat": -49.3299,
+    "lon": -72.886,
+    "importance": 4
+  },
+  {
+    "name": "Gobernador Gregores",
+    "lat": -48.7506,
+    "lon": -70.2474,
+    "importance": 4
+  },
+  {
+    "name": "Cameron",
+    "lat": -53.6399,
+    "lon": -69.6469,
+    "importance": 4
+  }
+]

@@ -1,0 +1,200 @@
+[
+  {
+    "name": "Saipan",
+    "lat": 15.2123,
+    "lon": 145.7545,
+    "importance": 5
+  },
+  {
+    "name": "Dededo Village",
+    "lat": 13.5178,
+    "lon": 144.8391,
+    "importance": 5
+  },
+  {
+    "name": "Yigo Village",
+    "lat": 13.536,
+    "lon": 144.8886,
+    "importance": 5
+  },
+  {
+    "name": "Tamuning-Tumon-Harmon Village",
+    "lat": 13.4877,
+    "lon": 144.7814,
+    "importance": 5
+  },
+  {
+    "name": "Tamuning",
+    "lat": 13.4875,
+    "lon": 144.7814,
+    "importance": 5
+  },
+  {
+    "name": "Mangilao Village",
+    "lat": 13.4476,
+    "lon": 144.8011,
+    "importance": 5
+  },
+  {
+    "name": "San Jose Village",
+    "lat": 14.9682,
+    "lon": 145.62,
+    "importance": 5
+  },
+  {
+    "name": "Barrigada Village",
+    "lat": 13.4691,
+    "lon": 144.799,
+    "importance": 5
+  },
+  {
+    "name": "Santa Rita Village",
+    "lat": 13.3861,
+    "lon": 144.6723,
+    "importance": 5
+  },
+  {
+    "name": "Mongmong-Toto-Maite Village",
+    "lat": 13.4686,
+    "lon": 144.7821,
+    "importance": 5
+  },
+  {
+    "name": "Chalan Pago-Ordot Village",
+    "lat": 13.4474,
+    "lon": 144.759,
+    "importance": 5
+  },
+  {
+    "name": "Yona Village",
+    "lat": 13.4097,
+    "lon": 144.777,
+    "importance": 5
+  },
+  {
+    "name": "Garapan",
+    "lat": 15.2111,
+    "lon": 145.7204,
+    "importance": 5
+  },
+  {
+    "name": "Apotgan",
+    "lat": 13.4882,
+    "lon": 144.7764,
+    "importance": 5
+  },
+  {
+    "name": "Agana Heights Village",
+    "lat": 13.4656,
+    "lon": 144.748,
+    "importance": 5
+  },
+  {
+    "name": "Adacao",
+    "lat": 13.4924,
+    "lon": 144.8447,
+    "importance": 5
+  },
+  {
+    "name": "Agat Village",
+    "lat": 13.383,
+    "lon": 144.66,
+    "importance": 5
+  },
+  {
+    "name": "Talofofo Village",
+    "lat": 13.3551,
+    "lon": 144.7584,
+    "importance": 5
+  },
+  {
+    "name": "Inarajan Village",
+    "lat": 13.2736,
+    "lon": 144.7484,
+    "importance": 5
+  },
+  {
+    "name": "Apra Harbor",
+    "lat": 13.4283,
+    "lon": 144.6525,
+    "importance": 5
+  },
+  {
+    "name": "Sinajana Village",
+    "lat": 13.4633,
+    "lon": 144.7541,
+    "importance": 4
+  },
+  {
+    "name": "Chaguian",
+    "lat": 13.5717,
+    "lon": 144.8806,
+    "importance": 4
+  },
+  {
+    "name": "Anao",
+    "lat": 13.5289,
+    "lon": 144.9182,
+    "importance": 4
+  },
+  {
+    "name": "Merizo Village",
+    "lat": 13.2658,
+    "lon": 144.6691,
+    "importance": 4
+  },
+  {
+    "name": "Asan-Maina Village",
+    "lat": 13.4721,
+    "lon": 144.7165,
+    "importance": 4
+  },
+  {
+    "name": "Piti Village",
+    "lat": 13.4626,
+    "lon": 144.6933,
+    "importance": 4
+  },
+  {
+    "name": "Hagatna",
+    "lat": 13.4757,
+    "lon": 144.7489,
+    "importance": 4
+  },
+  {
+    "name": "Hagatna Village",
+    "lat": 13.4728,
+    "lon": 144.758,
+    "importance": 4
+  },
+  {
+    "name": "China Town Village",
+    "lat": 15.2029,
+    "lon": 145.7221,
+    "importance": 4
+  },
+  {
+    "name": "Capitol Hill Village",
+    "lat": 15.2082,
+    "lon": 145.7531,
+    "importance": 4
+  },
+  {
+    "name": "Umatac Village",
+    "lat": 13.2984,
+    "lon": 144.6631,
+    "importance": 4
+  },
+  {
+    "name": "Asan",
+    "lat": 13.4717,
+    "lon": 144.7158,
+    "importance": 4
+  },
+  {
+    "name": "Songsong",
+    "lat": 14.1397,
+    "lon": 145.1411,
+    "importance": 4
+  }
+]

@@ -1,0 +1,2402 @@
+[
+  {
+    "name": "Aleppo",
+    "lat": 36.2012,
+    "lon": 37.1612,
+    "importance": 5
+  },
+  {
+    "name": "Damascus",
+    "lat": 33.5102,
+    "lon": 36.2913,
+    "importance": 5
+  },
+  {
+    "name": "Homs",
+    "lat": 34.724,
+    "lon": 36.7256,
+    "importance": 5
+  },
+  {
+    "name": "Latakia",
+    "lat": 35.5312,
+    "lon": 35.7909,
+    "importance": 5
+  },
+  {
+    "name": "Ar Raqqah",
+    "lat": 35.9528,
+    "lon": 39.0079,
+    "importance": 5
+  },
+  {
+    "name": "Hamah",
+    "lat": 35.1318,
+    "lon": 36.7578,
+    "importance": 5
+  },
+  {
+    "name": "Tartus",
+    "lat": 34.889,
+    "lon": 35.8866,
+    "importance": 5
+  },
+  {
+    "name": "Al Hasakah",
+    "lat": 36.5024,
+    "lon": 40.7477,
+    "importance": 5
+  },
+  {
+    "name": "Deir ez-Zor",
+    "lat": 35.3359,
+    "lon": 40.1408,
+    "importance": 5
+  },
+  {
+    "name": "Al Bab",
+    "lat": 36.3705,
+    "lon": 37.5157,
+    "importance": 5
+  },
+  {
+    "name": "Idlib",
+    "lat": 35.9306,
+    "lon": 36.6339,
+    "importance": 5
+  },
+  {
+    "name": "Duma",
+    "lat": 33.5718,
+    "lon": 36.4027,
+    "importance": 5
+  },
+  {
+    "name": "Manbij",
+    "lat": 36.5281,
+    "lon": 37.9549,
+    "importance": 5
+  },
+  {
+    "name": "Dar'a",
+    "lat": 32.6189,
+    "lon": 36.1021,
+    "importance": 5
+  },
+  {
+    "name": "As Salamiyah",
+    "lat": 35.0113,
+    "lon": 37.0532,
+    "importance": 5
+  },
+  {
+    "name": "Al-Tabqa",
+    "lat": 35.8376,
+    "lon": 38.5483,
+    "importance": 5
+  },
+  {
+    "name": "Darayya",
+    "lat": 33.4584,
+    "lon": 36.2326,
+    "importance": 5
+  },
+  {
+    "name": "I`zaz",
+    "lat": 36.5866,
+    "lon": 37.0463,
+    "importance": 5
+  },
+  {
+    "name": "Jablah",
+    "lat": 35.3621,
+    "lon": 35.9276,
+    "importance": 5
+  },
+  {
+    "name": "As Safirah",
+    "lat": 36.077,
+    "lon": 37.3725,
+    "importance": 5
+  },
+  {
+    "name": "As-Suwayda",
+    "lat": 32.709,
+    "lon": 36.5695,
+    "importance": 4
+  },
+  {
+    "name": "Albu Kamal",
+    "lat": 34.4523,
+    "lon": 40.9185,
+    "importance": 4
+  },
+  {
+    "name": "At Tall",
+    "lat": 33.6103,
+    "lon": 36.3107,
+    "importance": 4
+  },
+  {
+    "name": "Al Mayadin",
+    "lat": 35.0198,
+    "lon": 40.4515,
+    "importance": 4
+  },
+  {
+    "name": "Ar Rastan",
+    "lat": 34.9267,
+    "lon": 36.7324,
+    "importance": 4
+  },
+  {
+    "name": "Kabbasin",
+    "lat": 36.4327,
+    "lon": 37.5686,
+    "importance": 4
+  },
+  {
+    "name": "Tadmur",
+    "lat": 34.5624,
+    "lon": 38.284,
+    "importance": 4
+  },
+  {
+    "name": "'Ayn al 'Arab",
+    "lat": 36.8909,
+    "lon": 38.3535,
+    "importance": 4
+  },
+  {
+    "name": "An Nabk",
+    "lat": 34.024,
+    "lon": 36.7285,
+    "importance": 4
+  },
+  {
+    "name": "Khan Shaykhun",
+    "lat": 35.4421,
+    "lon": 36.651,
+    "importance": 4
+  },
+  {
+    "name": "`Afrin",
+    "lat": 36.5119,
+    "lon": 36.8695,
+    "importance": 4
+  },
+  {
+    "name": "Kafranbel",
+    "lat": 35.6138,
+    "lon": 36.5645,
+    "importance": 4
+  },
+  {
+    "name": "`Irbin",
+    "lat": 33.5372,
+    "lon": 36.3663,
+    "importance": 4
+  },
+  {
+    "name": "Al Qusayr",
+    "lat": 34.5078,
+    "lon": 36.5803,
+    "importance": 4
+  },
+  {
+    "name": "Yabrud",
+    "lat": 33.9692,
+    "lon": 36.6573,
+    "importance": 4
+  },
+  {
+    "name": "Jisr ash Shughur",
+    "lat": 35.8142,
+    "lon": 36.3198,
+    "importance": 4
+  },
+  {
+    "name": "Baniyas",
+    "lat": 35.1819,
+    "lon": 35.9487,
+    "importance": 4
+  },
+  {
+    "name": "Tallbisah",
+    "lat": 34.8407,
+    "lon": 36.7309,
+    "importance": 4
+  },
+  {
+    "name": "Harasta",
+    "lat": 33.5587,
+    "lon": 36.3651,
+    "importance": 4
+  },
+  {
+    "name": "Al Qunaytirah",
+    "lat": 33.126,
+    "lon": 35.8246,
+    "importance": 4
+  },
+  {
+    "name": "Tadif",
+    "lat": 36.3481,
+    "lon": 37.5309,
+    "importance": 4
+  },
+  {
+    "name": "Saraqib",
+    "lat": 35.8645,
+    "lon": 36.8059,
+    "importance": 4
+  },
+  {
+    "name": "Jayrud",
+    "lat": 33.8071,
+    "lon": 36.7386,
+    "importance": 4
+  },
+  {
+    "name": "Masyaf",
+    "lat": 35.0653,
+    "lon": 36.3406,
+    "importance": 4
+  },
+  {
+    "name": "Ma`arratmisrin",
+    "lat": 36.0115,
+    "lon": 36.6718,
+    "importance": 4
+  },
+  {
+    "name": "Al Qaryatayn",
+    "lat": 34.2296,
+    "lon": 37.2407,
+    "importance": 4
+  },
+  {
+    "name": "Salqin",
+    "lat": 36.1386,
+    "lon": 36.4524,
+    "importance": 4
+  },
+  {
+    "name": "Tafas",
+    "lat": 32.7371,
+    "lon": 36.0665,
+    "importance": 4
+  },
+  {
+    "name": "Suran",
+    "lat": 35.2919,
+    "lon": 36.7485,
+    "importance": 4
+  },
+  {
+    "name": "Binnish",
+    "lat": 35.9566,
+    "lon": 36.7138,
+    "importance": 4
+  },
+  {
+    "name": "Jasim",
+    "lat": 32.9913,
+    "lon": 36.0609,
+    "importance": 4
+  },
+  {
+    "name": "Burj Islam",
+    "lat": 35.674,
+    "lon": 35.8026,
+    "importance": 4
+  },
+  {
+    "name": "Tallkalakh",
+    "lat": 34.6684,
+    "lon": 36.26,
+    "importance": 4
+  },
+  {
+    "name": "Az Zabadani",
+    "lat": 33.7249,
+    "lon": 36.1005,
+    "importance": 4
+  },
+  {
+    "name": "Tayyibat al Imam",
+    "lat": 35.2659,
+    "lon": 36.7122,
+    "importance": 4
+  },
+  {
+    "name": "Hajin",
+    "lat": 34.6951,
+    "lon": 40.8314,
+    "importance": 4
+  },
+  {
+    "name": "Inkhil",
+    "lat": 33.0181,
+    "lon": 36.1283,
+    "importance": 4
+  },
+  {
+    "name": "Dayr Hafir",
+    "lat": 36.1569,
+    "lon": 37.7078,
+    "importance": 4
+  },
+  {
+    "name": "Safita",
+    "lat": 34.821,
+    "lon": 36.1177,
+    "importance": 4
+  },
+  {
+    "name": "'Amuda",
+    "lat": 37.1042,
+    "lon": 40.93,
+    "importance": 4
+  },
+  {
+    "name": "Shaykh Miskin",
+    "lat": 32.8267,
+    "lon": 36.1605,
+    "importance": 4
+  },
+  {
+    "name": "As Sanamayn",
+    "lat": 33.0719,
+    "lon": 36.1832,
+    "importance": 4
+  },
+  {
+    "name": "Tall Rif`at",
+    "lat": 36.4723,
+    "lon": 37.0947,
+    "importance": 4
+  },
+  {
+    "name": "Batabo",
+    "lat": 36.1345,
+    "lon": 36.7398,
+    "importance": 4
+  },
+  {
+    "name": "Nubl",
+    "lat": 36.3787,
+    "lon": 36.9929,
+    "importance": 4
+  },
+  {
+    "name": "Subaykhan",
+    "lat": 34.8531,
+    "lon": 40.5999,
+    "importance": 4
+  },
+  {
+    "name": "Jarabulus",
+    "lat": 36.8175,
+    "lon": 38.0111,
+    "importance": 4
+  },
+  {
+    "name": "Al Hirak",
+    "lat": 32.7495,
+    "lon": 36.3058,
+    "importance": 4
+  },
+  {
+    "name": "Al Kiswah",
+    "lat": 33.3581,
+    "lon": 36.2419,
+    "importance": 4
+  },
+  {
+    "name": "Halfaya",
+    "lat": 35.2601,
+    "lon": 36.6058,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Takharim",
+    "lat": 36.1168,
+    "lon": 36.5152,
+    "importance": 4
+  },
+  {
+    "name": "Ad Dana",
+    "lat": 36.2125,
+    "lon": 36.77,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Zayta",
+    "lat": 35.3743,
+    "lon": 36.6033,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Laha",
+    "lat": 34.8947,
+    "lon": 36.4958,
+    "importance": 4
+  },
+  {
+    "name": "Ad Darbasiyah",
+    "lat": 37.0728,
+    "lon": 40.652,
+    "importance": 4
+  },
+  {
+    "name": "Qarah",
+    "lat": 34.1556,
+    "lon": 36.7428,
+    "importance": 4
+  },
+  {
+    "name": "Qatana",
+    "lat": 33.4376,
+    "lon": 36.0789,
+    "importance": 4
+  },
+  {
+    "name": "Maharda",
+    "lat": 35.2479,
+    "lon": 36.5725,
+    "importance": 4
+  },
+  {
+    "name": "Al Qutayfah",
+    "lat": 33.7385,
+    "lon": 36.6007,
+    "importance": 4
+  },
+  {
+    "name": "Shahba",
+    "lat": 32.8524,
+    "lon": 36.6285,
+    "importance": 4
+  },
+  {
+    "name": "Murak",
+    "lat": 35.3762,
+    "lon": 36.6897,
+    "importance": 4
+  },
+  {
+    "name": "Izra`",
+    "lat": 32.8671,
+    "lon": 36.2507,
+    "importance": 4
+  },
+  {
+    "name": "Jindayris",
+    "lat": 36.395,
+    "lon": 36.6889,
+    "importance": 4
+  },
+  {
+    "name": "Salakhid",
+    "lat": 32.8715,
+    "lon": 36.5728,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Buhum",
+    "lat": 35.0596,
+    "lon": 36.699,
+    "importance": 4
+  },
+  {
+    "name": "Qabbasin",
+    "lat": 36.3077,
+    "lon": 38.156,
+    "importance": 4
+  },
+  {
+    "name": "Ad Duraykish",
+    "lat": 34.8951,
+    "lon": 36.143,
+    "importance": 4
+  },
+  {
+    "name": "Al Ghantu",
+    "lat": 34.822,
+    "lon": 36.6961,
+    "importance": 4
+  },
+  {
+    "name": "Mukharram al Fawqani",
+    "lat": 34.8152,
+    "lon": 37.0868,
+    "importance": 4
+  },
+  {
+    "name": "As Susah",
+    "lat": 34.5337,
+    "lon": 40.9582,
+    "importance": 4
+  },
+  {
+    "name": "Shathah",
+    "lat": 35.5051,
+    "lon": 36.2438,
+    "importance": 4
+  },
+  {
+    "name": "Tremseh",
+    "lat": 35.2718,
+    "lon": 36.504,
+    "importance": 4
+  },
+  {
+    "name": "Buq'ata",
+    "lat": 33.2011,
+    "lon": 35.7792,
+    "importance": 4
+  },
+  {
+    "name": "Afis",
+    "lat": 35.9069,
+    "lon": 36.8042,
+    "importance": 4
+  },
+  {
+    "name": "Dayr al 'Asafir",
+    "lat": 33.4659,
+    "lon": 36.4204,
+    "importance": 4
+  },
+  {
+    "name": "Ma`lula",
+    "lat": 33.8453,
+    "lon": 36.5451,
+    "importance": 4
+  },
+  {
+    "name": "Jinniyah",
+    "lat": 36.3187,
+    "lon": 38.9142,
+    "importance": 4
+  },
+  {
+    "name": "Kaff al-Jaa",
+    "lat": 35.0864,
+    "lon": 36.206,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Saghir",
+    "lat": 36.2926,
+    "lon": 37.2559,
+    "importance": 4
+  },
+  {
+    "name": "Kafr Musa Al-Hmidiya",
+    "lat": 34.5829,
+    "lon": 36.5339,
+    "importance": 4
+  },
+  {
+    "name": "Ayyubiyah",
+    "lat": 35.0329,
+    "lon": 36.7358,
+    "importance": 3
+  },
+  {
+    "name": "Lislamin",
+    "lat": 35.8569,
+    "lon": 36.9036,
+    "importance": 3
+  },
+  {
+    "name": "Busra ash Sham",
+    "lat": 32.5174,
+    "lon": 36.4816,
+    "importance": 3
+  },
+  {
+    "name": "Judaydat Yabus",
+    "lat": 33.6545,
+    "lon": 35.9734,
+    "importance": 3
+  },
+  {
+    "name": "Qal`at al Hisn",
+    "lat": 34.7858,
+    "lon": 36.2724,
+    "importance": 3
+  },
+  {
+    "name": "Altala",
+    "lat": 36.1802,
+    "lon": 38.1135,
+    "importance": 3
+  },
+  {
+    "name": "Flaleh",
+    "lat": 36.1577,
+    "lon": 38.2135,
+    "importance": 3
+  },
+  {
+    "name": "Salman",
+    "lat": 35.9995,
+    "lon": 40.6172,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat adh Dhababir",
+    "lat": 32.9813,
+    "lon": 36.2971,
+    "importance": 3
+  },
+  {
+    "name": "Wuraydah",
+    "lat": 36.5316,
+    "lon": 37.7579,
+    "importance": 3
+  },
+  {
+    "name": "Umm as Safa",
+    "lat": 36.5253,
+    "lon": 37.9144,
+    "importance": 3
+  },
+  {
+    "name": "Qasr al Banat",
+    "lat": 36.5458,
+    "lon": 37.9685,
+    "importance": 3
+  },
+  {
+    "name": "Mu`aysirah",
+    "lat": 36.5155,
+    "lon": 37.7495,
+    "importance": 3
+  },
+  {
+    "name": "Madanah Saghir",
+    "lat": 36.5158,
+    "lon": 37.8917,
+    "importance": 3
+  },
+  {
+    "name": "Madanah Kabir",
+    "lat": 36.5308,
+    "lon": 37.8792,
+    "importance": 3
+  },
+  {
+    "name": "Kujuk Kuy",
+    "lat": 36.5242,
+    "lon": 37.8405,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat ash Shiyab",
+    "lat": 36.523,
+    "lon": 37.7873,
+    "importance": 3
+  },
+  {
+    "name": "Aqwiran",
+    "lat": 36.5166,
+    "lon": 37.8094,
+    "importance": 3
+  },
+  {
+    "name": "Ma`arriyah",
+    "lat": 32.7688,
+    "lon": 35.7918,
+    "importance": 3
+  },
+  {
+    "name": "Al Musayritiyah",
+    "lat": 32.8426,
+    "lon": 35.8606,
+    "importance": 3
+  },
+  {
+    "name": "Sanawbar",
+    "lat": 32.9972,
+    "lon": 35.6806,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat Khasfayn",
+    "lat": 32.8956,
+    "lon": 35.8636,
+    "importance": 3
+  },
+  {
+    "name": "Al Khushniyah",
+    "lat": 32.9944,
+    "lon": 35.8222,
+    "importance": 3
+  },
+  {
+    "name": "`Abbud al Jad`an",
+    "lat": 35.7591,
+    "lon": 41.1001,
+    "importance": 3
+  },
+  {
+    "name": "Habbat Nazzal",
+    "lat": 35.8025,
+    "lon": 41.0785,
+    "importance": 3
+  },
+  {
+    "name": "`Annad",
+    "lat": 35.811,
+    "lon": 41.0263,
+    "importance": 3
+  },
+  {
+    "name": "Husayn al A`war",
+    "lat": 35.809,
+    "lon": 41.078,
+    "importance": 3
+  },
+  {
+    "name": "Amri",
+    "lat": 35.827,
+    "lon": 41.0688,
+    "importance": 3
+  },
+  {
+    "name": "Ahmad al Muhammad",
+    "lat": 35.8216,
+    "lon": 41.0534,
+    "importance": 3
+  },
+  {
+    "name": "Ma`ish",
+    "lat": 35.8385,
+    "lon": 41.0435,
+    "importance": 3
+  },
+  {
+    "name": "Tuwaymin",
+    "lat": 35.919,
+    "lon": 41.2655,
+    "importance": 3
+  },
+  {
+    "name": "Kulaywah",
+    "lat": 35.9864,
+    "lon": 41.033,
+    "importance": 3
+  },
+  {
+    "name": "Ad Dabhah",
+    "lat": 35.9751,
+    "lon": 41.0352,
+    "importance": 3
+  },
+  {
+    "name": "Jalgham",
+    "lat": 35.9561,
+    "lon": 41.0693,
+    "importance": 3
+  },
+  {
+    "name": "Ar Rayhaniyah",
+    "lat": 35.9636,
+    "lon": 41.2,
+    "importance": 3
+  },
+  {
+    "name": "Bir Khan `Unaybah",
+    "lat": 34.0406,
+    "lon": 37.3439,
+    "importance": 3
+  },
+  {
+    "name": "Hufayr",
+    "lat": 34.1364,
+    "lon": 37.3252,
+    "importance": 3
+  },
+  {
+    "name": "Al `Amya",
+    "lat": 34.2901,
+    "lon": 37.0247,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat al Bayda",
+    "lat": 34.3967,
+    "lon": 37.0593,
+    "importance": 3
+  },
+  {
+    "name": "Al Fayyadiyah",
+    "lat": 34.3571,
+    "lon": 37.0379,
+    "importance": 3
+  },
+  {
+    "name": "Mazra`at Habl at Tin",
+    "lat": 34.3497,
+    "lon": 37.1035,
+    "importance": 3
+  },
+  {
+    "name": "Al Jabbat",
+    "lat": 34.3848,
+    "lon": 37.2801,
+    "importance": 3
+  },
+  {
+    "name": "Ar Rudayfah",
+    "lat": 34.4492,
+    "lon": 37.0131,
+    "importance": 3
+  },
+  {
+    "name": "Al Bayda",
+    "lat": 34.4186,
+    "lon": 37.0217,
+    "importance": 3
+  },
+  {
+    "name": "Kubayshah",
+    "lat": 34.4414,
+    "lon": 37.1069,
+    "importance": 3
+  },
+  {
+    "name": "Jubb ash Shami",
+    "lat": 34.5218,
+    "lon": 37.0917,
+    "importance": 3
+  },
+  {
+    "name": "Rujm Tuqqu",
+    "lat": 34.5653,
+    "lon": 37.1698,
+    "importance": 3
+  },
+  {
+    "name": "Ghalwa",
+    "lat": 34.5448,
+    "lon": 37.1445,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat al Jajar",
+    "lat": 34.4906,
+    "lon": 37.1213,
+    "importance": 3
+  },
+  {
+    "name": "Al Buliyah",
+    "lat": 34.5093,
+    "lon": 37.2082,
+    "importance": 3
+  },
+  {
+    "name": "Farhah",
+    "lat": 34.56,
+    "lon": 37.2121,
+    "importance": 3
+  },
+  {
+    "name": "Tubayjiyah",
+    "lat": 34.5461,
+    "lon": 37.3113,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat al `Araminah",
+    "lat": 34.483,
+    "lon": 37.2627,
+    "importance": 3
+  },
+  {
+    "name": "Sharifah",
+    "lat": 34.5192,
+    "lon": 37.5055,
+    "importance": 3
+  },
+  {
+    "name": "Dar al `Abd",
+    "lat": 34.5498,
+    "lon": 37.7216,
+    "importance": 3
+  },
+  {
+    "name": "Bayt Jarbu` al `Azw",
+    "lat": 34.4645,
+    "lon": 37.7899,
+    "importance": 3
+  },
+  {
+    "name": "Al Qulaybah",
+    "lat": 34.5326,
+    "lon": 37.9836,
+    "importance": 3
+  },
+  {
+    "name": "Al Mushayrifah",
+    "lat": 34.6354,
+    "lon": 37.1459,
+    "importance": 3
+  },
+  {
+    "name": "Mat`ab",
+    "lat": 34.611,
+    "lon": 37.1557,
+    "importance": 3
+  },
+  {
+    "name": "Al Jamaliyah",
+    "lat": 34.6851,
+    "lon": 37.0474,
+    "importance": 3
+  },
+  {
+    "name": "Ar Razzuqiyah",
+    "lat": 34.7034,
+    "lon": 37.0493,
+    "importance": 3
+  },
+  {
+    "name": "Al Hammudiyah",
+    "lat": 34.7408,
+    "lon": 37.0519,
+    "importance": 3
+  },
+  {
+    "name": "Umm Dali",
+    "lat": 34.753,
+    "lon": 37.1106,
+    "importance": 3
+  },
+  {
+    "name": "Al Muhashsham",
+    "lat": 34.7082,
+    "lon": 37.171,
+    "importance": 3
+  },
+  {
+    "name": "Umm Jami'",
+    "lat": 34.7406,
+    "lon": 37.17,
+    "importance": 3
+  },
+  {
+    "name": "Baghliyah",
+    "lat": 34.6813,
+    "lon": 37.3072,
+    "importance": 3
+  },
+  {
+    "name": "Tal`at al Gharbiyah",
+    "lat": 34.679,
+    "lon": 37.328,
+    "importance": 3
+  },
+  {
+    "name": "Matallat Rasm Kasad",
+    "lat": 34.6958,
+    "lon": 37.35,
+    "importance": 3
+  },
+  {
+    "name": "Manukh",
+    "lat": 34.7077,
+    "lon": 37.451,
+    "importance": 3
+  },
+  {
+    "name": "Abu Liyah",
+    "lat": 34.7059,
+    "lon": 37.3374,
+    "importance": 3
+  },
+  {
+    "name": "Tal`at ash Sharqiyah",
+    "lat": 34.6816,
+    "lon": 37.3373,
+    "importance": 3
+  },
+  {
+    "name": "Tafhah",
+    "lat": 34.6573,
+    "lon": 37.4522,
+    "importance": 3
+  },
+  {
+    "name": "Hasw Jihar",
+    "lat": 34.6512,
+    "lon": 37.8291,
+    "importance": 3
+  },
+  {
+    "name": "Rasm at Tuwayliyah",
+    "lat": 34.85,
+    "lon": 37.1,
+    "importance": 3
+  },
+  {
+    "name": "Karimah",
+    "lat": 34.7647,
+    "lon": 37.0957,
+    "importance": 3
+  },
+  {
+    "name": "Jubb Umm Murayghan",
+    "lat": 34.7599,
+    "lon": 37.1025,
+    "importance": 3
+  },
+  {
+    "name": "Al Khan",
+    "lat": 34.7678,
+    "lon": 37.3502,
+    "importance": 3
+  },
+  {
+    "name": "At Tawil",
+    "lat": 34.7583,
+    "lon": 37.3542,
+    "importance": 3
+  },
+  {
+    "name": "Rasm ad Dabah",
+    "lat": 34.7557,
+    "lon": 37.3913,
+    "importance": 3
+  },
+  {
+    "name": "Shayman",
+    "lat": 34.7674,
+    "lon": 37.4378,
+    "importance": 3
+  },
+  {
+    "name": "Abu Jurays",
+    "lat": 34.8102,
+    "lon": 37.3981,
+    "importance": 3
+  },
+  {
+    "name": "Al Haba",
+    "lat": 34.8244,
+    "lon": 37.4518,
+    "importance": 3
+  },
+  {
+    "name": "Umm Huwaysh",
+    "lat": 34.8248,
+    "lon": 37.4814,
+    "importance": 3
+  },
+  {
+    "name": "Al Mukarram",
+    "lat": 34.8126,
+    "lon": 37.4773,
+    "importance": 3
+  },
+  {
+    "name": "Darwishiyah",
+    "lat": 34.7723,
+    "lon": 37.4706,
+    "importance": 3
+  },
+  {
+    "name": "An Nusayr",
+    "lat": 34.7618,
+    "lon": 37.4529,
+    "importance": 3
+  },
+  {
+    "name": "Zaghrutiyah",
+    "lat": 34.7524,
+    "lon": 37.464,
+    "importance": 3
+  },
+  {
+    "name": "Al Mashquqah",
+    "lat": 34.7698,
+    "lon": 37.5111,
+    "importance": 3
+  },
+  {
+    "name": "Al Khawiyah",
+    "lat": 34.7902,
+    "lon": 37.5164,
+    "importance": 3
+  },
+  {
+    "name": "An Nabatiyah",
+    "lat": 34.8177,
+    "lon": 37.5225,
+    "importance": 3
+  },
+  {
+    "name": "Muntar ash Shaykh",
+    "lat": 34.817,
+    "lon": 37.5521,
+    "importance": 3
+  },
+  {
+    "name": "Muntar al Mu`allaq",
+    "lat": 34.7962,
+    "lon": 37.5435,
+    "importance": 3
+  },
+  {
+    "name": "Al `Amudiyah",
+    "lat": 34.7797,
+    "lon": 37.5316,
+    "importance": 3
+  },
+  {
+    "name": "As Sawwanah",
+    "lat": 34.7699,
+    "lon": 37.558,
+    "importance": 3
+  },
+  {
+    "name": "Al `Aybidiyah",
+    "lat": 34.7659,
+    "lon": 37.6113,
+    "importance": 3
+  },
+  {
+    "name": "Hazirat al Mu`allaq",
+    "lat": 34.7874,
+    "lon": 37.5446,
+    "importance": 3
+  },
+  {
+    "name": "Al `Illiyah",
+    "lat": 34.8138,
+    "lon": 37.5762,
+    "importance": 3
+  },
+  {
+    "name": "Hanjaf",
+    "lat": 34.8146,
+    "lon": 37.6256,
+    "importance": 3
+  },
+  {
+    "name": "Sunaydah",
+    "lat": 34.906,
+    "lon": 37.0029,
+    "importance": 3
+  },
+  {
+    "name": "Buraysat as Sunayd",
+    "lat": 34.9039,
+    "lon": 37.0373,
+    "importance": 3
+  },
+  {
+    "name": "Tall `Urun",
+    "lat": 34.8865,
+    "lon": 37.0434,
+    "importance": 3
+  },
+  {
+    "name": "Rayyaniyah",
+    "lat": 34.8989,
+    "lon": 37.0988,
+    "importance": 3
+  },
+  {
+    "name": "Tall Hasan Basha",
+    "lat": 34.9078,
+    "lon": 37.0705,
+    "importance": 3
+  },
+  {
+    "name": "Shaykh Rih",
+    "lat": 34.9248,
+    "lon": 37.1662,
+    "importance": 3
+  },
+  {
+    "name": "Abu Hakfa ash Shamali",
+    "lat": 34.9035,
+    "lon": 37.1318,
+    "importance": 3
+  },
+  {
+    "name": "Abu Hakfa al Janubi",
+    "lat": 34.8866,
+    "lon": 37.1409,
+    "importance": 3
+  },
+  {
+    "name": "As Sa`diyah",
+    "lat": 34.8518,
+    "lon": 37.135,
+    "importance": 3
+  },
+  {
+    "name": "Khalfah",
+    "lat": 34.8875,
+    "lon": 37.2,
+    "importance": 3
+  },
+  {
+    "name": "Khattab",
+    "lat": 34.9066,
+    "lon": 37.3224,
+    "importance": 3
+  },
+  {
+    "name": "Rasm at Tahta",
+    "lat": 34.858,
+    "lon": 37.3824,
+    "importance": 3
+  },
+  {
+    "name": "As Salihiyah",
+    "lat": 34.9159,
+    "lon": 37.3446,
+    "importance": 3
+  },
+  {
+    "name": "Rasm al `Ukaydat",
+    "lat": 34.8598,
+    "lon": 37.46,
+    "importance": 3
+  },
+  {
+    "name": "Umm Fusus",
+    "lat": 34.8318,
+    "lon": 37.4871,
+    "importance": 3
+  },
+  {
+    "name": "Ar Rab`ah",
+    "lat": 34.8814,
+    "lon": 37.4871,
+    "importance": 3
+  },
+  {
+    "name": "Al Jurf al Janubi",
+    "lat": 34.8984,
+    "lon": 37.4967,
+    "importance": 3
+  },
+  {
+    "name": "Al Jurf ash Shamali",
+    "lat": 34.9073,
+    "lon": 37.4994,
+    "importance": 3
+  },
+  {
+    "name": "Tall Shihab",
+    "lat": 34.9162,
+    "lon": 37.5029,
+    "importance": 3
+  },
+  {
+    "name": "Umm Qubaybah",
+    "lat": 34.9067,
+    "lon": 37.5297,
+    "importance": 3
+  },
+  {
+    "name": "Al Muhayniyah",
+    "lat": 34.8341,
+    "lon": 37.5511,
+    "importance": 3
+  },
+  {
+    "name": "Al Khafiyah",
+    "lat": 34.848,
+    "lon": 37.567,
+    "importance": 3
+  },
+  {
+    "name": "Khirbat Sinnu al Fadil",
+    "lat": 34.8937,
+    "lon": 37.5708,
+    "importance": 2
+  },
+  {
+    "name": "Shakarah",
+    "lat": 34.9413,
+    "lon": 37.0027,
+    "importance": 2
+  },
+  {
+    "name": "`Arbid",
+    "lat": 34.9839,
+    "lon": 37.0167,
+    "importance": 2
+  },
+  {
+    "name": "Al Mulayhah",
+    "lat": 34.9962,
+    "lon": 37.0145,
+    "importance": 2
+  },
+  {
+    "name": "Fir`awniyah",
+    "lat": 34.9647,
+    "lon": 37.0469,
+    "importance": 2
+  },
+  {
+    "name": "Muhammadiyah",
+    "lat": 34.9496,
+    "lon": 37.0741,
+    "importance": 2
+  },
+  {
+    "name": "Bahdaliyah",
+    "lat": 34.9573,
+    "lon": 37.0582,
+    "importance": 2
+  },
+  {
+    "name": "Ghuzaylah",
+    "lat": 34.9795,
+    "lon": 37.0673,
+    "importance": 2
+  },
+  {
+    "name": "Tall `Arak",
+    "lat": 34.9887,
+    "lon": 37.0707,
+    "importance": 2
+  },
+  {
+    "name": "Fayruzah",
+    "lat": 34.9641,
+    "lon": 37.1256,
+    "importance": 2
+  },
+  {
+    "name": "Al Qalbiyah",
+    "lat": 34.9447,
+    "lon": 37.1438,
+    "importance": 2
+  },
+  {
+    "name": "Maltah",
+    "lat": 34.9602,
+    "lon": 37.1488,
+    "importance": 2
+  },
+  {
+    "name": "Furaytan",
+    "lat": 34.9583,
+    "lon": 37.2417,
+    "importance": 2
+  },
+  {
+    "name": "Fanusiyah",
+    "lat": 34.9783,
+    "lon": 37.2675,
+    "importance": 2
+  },
+  {
+    "name": "Barghutiyah",
+    "lat": 34.9583,
+    "lon": 37.275,
+    "importance": 2
+  },
+  {
+    "name": "Abu al `Alaya",
+    "lat": 34.9332,
+    "lon": 37.2894,
+    "importance": 2
+  },
+  {
+    "name": "An Nashmi",
+    "lat": 34.928,
+    "lon": 37.4079,
+    "importance": 2
+  },
+  {
+    "name": "Jubb ar Rayyan",
+    "lat": 34.9784,
+    "lon": 37.5032,
+    "importance": 2
+  },
+  {
+    "name": "Mu`addamiyah",
+    "lat": 34.9964,
+    "lon": 37.5165,
+    "importance": 2
+  },
+  {
+    "name": "Al Makhbutah",
+    "lat": 34.9631,
+    "lon": 37.527,
+    "importance": 2
+  },
+  {
+    "name": "Al Lujj",
+    "lat": 34.935,
+    "lon": 37.5125,
+    "importance": 2
+  },
+  {
+    "name": "Bustan Subayh",
+    "lat": 34.9584,
+    "lon": 37.5638,
+    "importance": 2
+  },
+  {
+    "name": "Jawwasiyah al Janubiyah",
+    "lat": 34.981,
+    "lon": 37.5857,
+    "importance": 2
+  },
+  {
+    "name": "Jawwasiyah ash Shamaliyah",
+    "lat": 34.9971,
+    "lon": 37.5763,
+    "importance": 2
+  },
+  {
+    "name": "Khirbat Salih Hamid",
+    "lat": 34.928,
+    "lon": 37.8941,
+    "importance": 2
+  },
+  {
+    "name": "Rasm Hamdawi",
+    "lat": 34.9447,
+    "lon": 37.9496,
+    "importance": 2
+  },
+  {
+    "name": "Khirbat ad Dablat",
+    "lat": 34.9541,
+    "lon": 37.9018,
+    "importance": 2
+  },
+  {
+    "name": "Butaysah",
+    "lat": 34.7859,
+    "lon": 36.5028,
+    "importance": 2
+  },
+  {
+    "name": "Tasnin",
+    "lat": 34.8702,
+    "lon": 36.6538,
+    "importance": 2
+  },
+  {
+    "name": "Salim at Tahtani",
+    "lat": 34.9192,
+    "lon": 36.945,
+    "importance": 2
+  },
+  {
+    "name": "Sammuqah",
+    "lat": 34.893,
+    "lon": 36.2092,
+    "importance": 2
+  },
+  {
+    "name": "Sunun",
+    "lat": 34.6774,
+    "lon": 36.4785,
+    "importance": 2
+  },
+  {
+    "name": "Sufr",
+    "lat": 34.7839,
+    "lon": 36.4732,
+    "importance": 2
+  },
+  {
+    "name": "Tall as Safa",
+    "lat": 34.7237,
+    "lon": 36.3943,
+    "importance": 2
+  },
+  {
+    "name": "Khirbat as Sawdah",
+    "lat": 34.7827,
+    "lon": 36.6231,
+    "importance": 2
+  },
+  {
+    "name": "Qubayhah",
+    "lat": 34.987,
+    "lon": 36.8683,
+    "importance": 2
+  },
+  {
+    "name": "Nizariyah",
+    "lat": 34.4322,
+    "lon": 36.5442,
+    "importance": 2
+  },
+  {
+    "name": "Tall al Muzayri`ah",
+    "lat": 34.9883,
+    "lon": 36.9886,
+    "importance": 2
+  },
+  {
+    "name": "Khirbat Jumrah",
+    "lat": 34.3311,
+    "lon": 36.6861,
+    "importance": 2
+  },
+  {
+    "name": "Khirbat Buzliya",
+    "lat": 34.9306,
+    "lon": 36.6667,
+    "importance": 2
+  },
+  {
+    "name": "Khan Kafr Jali",
+    "lat": 34.8833,
+    "lon": 36.7361,
+    "importance": 2
+  },
+  {
+    "name": "Jibab az Zayt",
+    "lat": 34.4094,
+    "lon": 36.8736,
+    "importance": 2
+  },
+  {
+    "name": "Hubub ar Rih",
+    "lat": 34.8042,
+    "lon": 36.6841,
+    "importance": 2
+  },
+  {
+    "name": "Huwayk",
+    "lat": 34.5474,
+    "lon": 36.4227,
+    "importance": 2
+  },
+  {
+    "name": "Hadathah",
+    "lat": 34.8019,
+    "lon": 36.4781,
+    "importance": 2
+  },
+  {
+    "name": "Hamush Raslan",
+    "lat": 34.9347,
+    "lon": 36.1627,
+    "importance": 2
+  },
+  {
+    "name": "Qusayr Dayr Huwayt",
+    "lat": 34.9917,
+    "lon": 36.4167,
+    "importance": 2
+  },
+  {
+    "name": "Dallak",
+    "lat": 34.9749,
+    "lon": 36.9751,
+    "importance": 2
+  },
+  {
+    "name": "Jawbar",
+    "lat": 34.6835,
+    "lon": 36.6626,
+    "importance": 2
+  },
+  {
+    "name": "Busayrah",
+    "lat": 34.9135,
+    "lon": 36.2821,
+    "importance": 2
+  },
+  {
+    "name": "Burayghith",
+    "lat": 34.9846,
+    "lon": 36.9133,
+    "importance": 2
+  },
+  {
+    "name": "Az Zaybaq",
+    "lat": 34.8077,
+    "lon": 36.5495,
+    "importance": 2
+  },
+  {
+    "name": "Az Zurzuriyah",
+    "lat": 34.7299,
+    "lon": 36.6364,
+    "importance": 2
+  },
+  {
+    "name": "Az Zahiriyah",
+    "lat": 34.5022,
+    "lon": 36.5356,
+    "importance": 2
+  },
+  {
+    "name": "An Nuzhah",
+    "lat": 34.5591,
+    "lon": 36.8093,
+    "importance": 2
+  },
+  {
+    "name": "Al Wazi`iyah",
+    "lat": 34.7215,
+    "lon": 36.9324,
+    "importance": 2
+  },
+  {
+    "name": "Al Khalidiyah",
+    "lat": 34.5074,
+    "lon": 36.5115,
+    "importance": 2
+  },
+  {
+    "name": "Al Mazhariyah",
+    "lat": 34.5869,
+    "lon": 36.8314,
+    "importance": 2
+  },
+  {
+    "name": "Al Hashmah",
+    "lat": 34.7946,
+    "lon": 36.5649,
+    "importance": 2
+  },
+  {
+    "name": "Al Hamra'",
+    "lat": 34.5626,
+    "lon": 36.6705,
+    "importance": 2
+  },
+  {
+    "name": "Al Haddadiyat",
+    "lat": 34.8468,
+    "lon": 36.0357,
+    "importance": 2
+  },
+  {
+    "name": "Al Ghasibiyah",
+    "lat": 34.7774,
+    "lon": 36.6835,
+    "importance": 2
+  },
+  {
+    "name": "Al Barjudiyah",
+    "lat": 34.7586,
+    "lon": 36.9369,
+    "importance": 2
+  },
+  {
+    "name": "Al Baghaliyah",
+    "lat": 34.4724,
+    "lon": 36.8774,
+    "importance": 2
+  },
+  {
+    "name": "Al `Aziziyah",
+    "lat": 34.3647,
+    "lon": 36.8531,
+    "importance": 2
+  },
+  {
+    "name": "Al `Awjah",
+    "lat": 34.8482,
+    "lon": 36.4827,
+    "importance": 2
+  },
+  {
+    "name": "Al `Adiliyah",
+    "lat": 34.6677,
+    "lon": 36.9288,
+    "importance": 2
+  },
+  {
+    "name": "Adh Dhibah",
+    "lat": 34.5596,
+    "lon": 36.7768,
+    "importance": 2
+  },
+  {
+    "name": "`Ayn Hajal",
+    "lat": 34.9106,
+    "lon": 36.6851,
+    "importance": 2
+  },
+  {
+    "name": "Ayn Halaqim",
+    "lat": 34.94,
+    "lon": 36.3221,
+    "importance": 2
+  },
+  {
+    "name": "Tall `Umari",
+    "lat": 34.874,
+    "lon": 36.9197,
+    "importance": 2
+  },
+  {
+    "name": "Zughayr",
+    "lat": 35.5038,
+    "lon": 40.0159,
+    "importance": 2
+  },
+  {
+    "name": "Zila",
+    "lat": 35.4991,
+    "lon": 39.9376,
+    "importance": 2
+  },
+  {
+    "name": "Zawr Shammar",
+    "lat": 35.7838,
+    "lon": 39.3656,
+    "importance": 2
+  },
+  {
+    "name": "Zalmawiyah",
+    "lat": 35.3957,
+    "lon": 39.4156,
+    "importance": 2
+  },
+  {
+    "name": "Winsah",
+    "lat": 35.5148,
+    "lon": 39.9485,
+    "importance": 2
+  },
+  {
+    "name": "Bir Turki Safr",
+    "lat": 35.9095,
+    "lon": 39.8235,
+    "importance": 2
+  },
+  {
+    "name": "Tuhmaz al Wawi",
+    "lat": 35.9388,
+    "lon": 39.8185,
+    "importance": 2
+  },
+  {
+    "name": "Tashshah",
+    "lat": 35.2932,
+    "lon": 39.3142,
+    "importance": 2
+  },
+  {
+    "name": "Shuraydah",
+    "lat": 35.8027,
+    "lon": 39.2778,
+    "importance": 2
+  },
+  {
+    "name": "Shujayri",
+    "lat": 35.4186,
+    "lon": 39.4193,
+    "importance": 2
+  },
+  {
+    "name": "Jazirat ash Shiti",
+    "lat": 35.7591,
+    "lon": 39.8006,
+    "importance": 2
+  },
+  {
+    "name": "Shaykh Jadid",
+    "lat": 35.9019,
+    "lon": 39.643,
+    "importance": 2
+  },
+  {
+    "name": "Sha`fa",
+    "lat": 35.4202,
+    "lon": 39.4781,
+    "importance": 2
+  },
+  {
+    "name": "Raqqat Samrah Wastaniyah",
+    "lat": 35.9118,
+    "lon": 39.0875,
+    "importance": 2
+  },
+  {
+    "name": "Salh al Jabrahim",
+    "lat": 35.3713,
+    "lon": 39.4203,
+    "importance": 2
+  },
+  {
+    "name": "Sahran",
+    "lat": 35.9691,
+    "lon": 39.7679,
+    "importance": 2
+  },
+  {
+    "name": "Sabkhawi",
+    "lat": 35.695,
+    "lon": 39.2367,
+    "importance": 2
+  },
+  {
+    "name": "Rujum ar Rashid",
+    "lat": 35.3779,
+    "lon": 39.6391,
+    "importance": 2
+  },
+  {
+    "name": "Rawdah",
+    "lat": 35.9032,
+    "lon": 39.7993,
+    "importance": 2
+  },
+  {
+    "name": "Qibli",
+    "lat": 35.8098,
+    "lon": 39.3413,
+    "importance": 2
+  },
+  {
+    "name": "Qaryat Sukkar",
+    "lat": 35.9922,
+    "lon": 39.6324,
+    "importance": 2
+  },
+  {
+    "name": "Mushayrifah",
+    "lat": 35.5777,
+    "lon": 39.356,
+    "importance": 2
+  },
+  {
+    "name": "Muhammad Rimah",
+    "lat": 35.9264,
+    "lon": 39.8406,
+    "importance": 2
+  },
+  {
+    "name": "Muhammad Husayn",
+    "lat": 35.9143,
+    "lon": 39.6359,
+    "importance": 2
+  },
+  {
+    "name": "Muhammad al `Ayyash",
+    "lat": 35.9473,
+    "lon": 39.7513,
+    "importance": 2
+  },
+  {
+    "name": "Muhammad ad Dandal",
+    "lat": 35.3993,
+    "lon": 39.4469,
+    "importance": 2
+  },
+  {
+    "name": "Jabal Mu`ayzilah",
+    "lat": 35.6493,
+    "lon": 39.8603,
+    "importance": 2
+  },
+  {
+    "name": "Mutur `Ayfan",
+    "lat": 35.9205,
+    "lon": 39.7176,
+    "importance": 2
+  },
+  {
+    "name": "Mashrafat ash Shahnat",
+    "lat": 35.8576,
+    "lon": 39.3748,
+    "importance": 2
+  },
+  {
+    "name": "Laja",
+    "lat": 35.6519,
+    "lon": 39.8402,
+    "importance": 2
+  },
+  {
+    "name": "Kusubi",
+    "lat": 35.7324,
+    "lon": 39.7608,
+    "importance": 2
+  },
+  {
+    "name": "Khuraybah",
+    "lat": 35.4017,
+    "lon": 39.4075,
+    "importance": 2
+  },
+  {
+    "name": "Khass Hibal",
+    "lat": 35.8278,
+    "lon": 39.5167,
+    "importance": 2
+  },
+  {
+    "name": "Khass Dakur",
+    "lat": 35.8146,
+    "lon": 39.5979,
+    "importance": 2
+  },
+  {
+    "name": "Khass `Ujayl",
+    "lat": 35.8179,
+    "lon": 39.5535,
+    "importance": 2
+  },
+  {
+    "name": "Kasrat `Affan",
+    "lat": 35.9099,
+    "lon": 39.0394,
+    "importance": 2
+  },
+  {
+    "name": "Julayb Khalil",
+    "lat": 35.9882,
+    "lon": 39.7404,
+    "importance": 2
+  },
+  {
+    "name": "Huwayjat Shinan",
+    "lat": 35.827,
+    "lon": 39.2153,
+    "importance": 2
+  },
+  {
+    "name": "Huwayjah",
+    "lat": 35.7996,
+    "lon": 39.3571,
+    "importance": 2
+  },
+  {
+    "name": "Husayn Hamadah",
+    "lat": 35.9601,
+    "lon": 39.7578,
+    "importance": 2
+  },
+  {
+    "name": "Hamrat Nasir",
+    "lat": 35.9156,
+    "lon": 39.1675,
+    "importance": 2
+  },
+  {
+    "name": "Hamrat Jamasi",
+    "lat": 35.9014,
+    "lon": 39.13,
+    "importance": 2
+  },
+  {
+    "name": "Hamrat Ghanam",
+    "lat": 35.9343,
+    "lon": 39.1439,
+    "importance": 2
+  },
+  {
+    "name": "Hamrat Balasim",
+    "lat": 35.882,
+    "lon": 39.1978,
+    "importance": 2
+  },
+  {
+    "name": "Hamad `Assaf",
+    "lat": 35.8394,
+    "lon": 39.4625,
+    "importance": 2
+  },
+  {
+    "name": "Hawi Khuraytah",
+    "lat": 35.4534,
+    "lon": 39.985,
+    "importance": 2
+  },
+  {
+    "name": "Ghurayb `Abd Allah",
+    "lat": 35.9743,
+    "lon": 39.7417,
+    "importance": 2
+  },
+  {
+    "name": "Ghanim al `Ali",
+    "lat": 35.7754,
+    "lon": 39.4033,
+    "importance": 2
+  },
+  {
+    "name": "Al Karamah",
+    "lat": 35.8687,
+    "lon": 39.278,
+    "importance": 2
+  },
+  {
+    "name": "Fatsat al Kusun",
+    "lat": 35.8792,
+    "lon": 39.2554,
+    "importance": 1
+  },
+  {
+    "name": "Fatsat `Ali Bayram",
+    "lat": 35.8598,
+    "lon": 39.3111,
+    "importance": 1
+  },
+  {
+    "name": "Fatsat `Abd Isma`il",
+    "lat": 35.8541,
+    "lon": 39.3276,
+    "importance": 1
+  },
+  {
+    "name": "Faqrat ad Darbuliyah",
+    "lat": 35.3757,
+    "lon": 39.3821,
+    "importance": 1
+  },
+  {
+    "name": "Dafinat Juwayfat",
+    "lat": 35.2815,
+    "lon": 39.3973,
+    "importance": 1
+  },
+  {
+    "name": "Dalhah",
+    "lat": 35.8541,
+    "lon": 39.1722,
+    "importance": 1
+  },
+  {
+    "name": "Bustan al `Ubayd",
+    "lat": 35.5091,
+    "lon": 39.957,
+    "importance": 1
+  },
+  {
+    "name": "Bustan `Ali Hafqar",
+    "lat": 35.5089,
+    "lon": 39.9711,
+    "importance": 1
+  },
+  {
+    "name": "Balash",
+    "lat": 35.9936,
+    "lon": 39.9053,
+    "importance": 1
+  },
+  {
+    "name": "Bir at Tuwaym",
+    "lat": 35.9341,
+    "lon": 39.8299,
+    "importance": 1
+  },
+  {
+    "name": "Ash Shula",
+    "lat": 35.1859,
+    "lon": 39.8488,
+    "importance": 1
+  },
+  {
+    "name": "As Subay`at",
+    "lat": 35.7972,
+    "lon": 39.4014,
+    "importance": 1
+  },
+  {
+    "name": "As Sawa",
+    "lat": 35.5323,
+    "lon": 39.9632,
+    "importance": 1
+  },
+  {
+    "name": "As Sarkhan",
+    "lat": 35.8451,
+    "lon": 39.3557,
+    "importance": 1
+  },
+  {
+    "name": "As Salam `Alaykum",
+    "lat": 35.6708,
+    "lon": 39.3197,
+    "importance": 1
+  },
+  {
+    "name": "An Numaysah",
+    "lat": 35.7865,
+    "lon": 39.515,
+    "importance": 1
+  },
+  {
+    "name": "Al Matabb",
+    "lat": 35.8101,
+    "lon": 39.6206,
+    "importance": 1
+  },
+  {
+    "name": "Al Ma`an",
+    "lat": 35.4203,
+    "lon": 39.6732,
+    "importance": 1
+  },
+  {
+    "name": "Al Kamb",
+    "lat": 35.9247,
+    "lon": 39.0048,
+    "importance": 1
+  },
+  {
+    "name": "Al Kulayb",
+    "lat": 35.8264,
+    "lon": 39.4728,
+    "importance": 1
+  },
+  {
+    "name": "Al Jabir",
+    "lat": 35.778,
+    "lon": 39.5442,
+    "importance": 1
+  },
+  {
+    "name": "Al Hamd",
+    "lat": 35.4789,
+    "lon": 39.9716,
+    "importance": 1
+  },
+  {
+    "name": "Al Hawi",
+    "lat": 35.4849,
+    "lon": 39.9582,
+    "importance": 1
+  },
+  {
+    "name": "Al Falw",
+    "lat": 35.6263,
+    "lon": 39.8523,
+    "importance": 1
+  },
+  {
+    "name": "Al `Ali",
+    "lat": 35.6367,
+    "lon": 39.8317,
+    "importance": 1
+  },
+  {
+    "name": "Abu Hammad",
+    "lat": 35.7855,
+    "lon": 39.4366,
+    "importance": 1
+  },
+  {
+    "name": "Abu Hayyah",
+    "lat": 35.9977,
+    "lon": 39.6494,
+    "importance": 1
+  },
+  {
+    "name": "`Azman",
+    "lat": 35.9827,
+    "lon": 39.9349,
+    "importance": 1
+  },
+  {
+    "name": "`Ali Badr",
+    "lat": 35.9868,
+    "lon": 39.6914,
+    "importance": 1
+  },
+  {
+    "name": "`Ali ad Dandal",
+    "lat": 35.408,
+    "lon": 39.469,
+    "importance": 1
+  },
+  {
+    "name": "Rujm al `Ajuz",
+    "lat": 35.5434,
+    "lon": 39.0633,
+    "importance": 1
+  },
+  {
+    "name": "`Abd al Matni",
+    "lat": 35.9648,
+    "lon": 39.7391,
+    "importance": 1
+  },
+  {
+    "name": "Khubbah",
+    "lat": 35.0917,
+    "lon": 35.9667,
+    "importance": 1
+  },
+  {
+    "name": "Dhurti",
+    "lat": 35.0875,
+    "lon": 35.9833,
+    "importance": 1
+  },
+  {
+    "name": "Karim",
+    "lat": 35.0667,
+    "lon": 36.0417,
+    "importance": 1
+  },
+  {
+    "name": "Mazra`at al Himsiyah",
+    "lat": 35.0188,
+    "lon": 36.0726,
+    "importance": 1
+  },
+  {
+    "name": "Balhalah",
+    "lat": 35.0208,
+    "lon": 36.025,
+    "importance": 1
+  },
+  {
+    "name": "`Asaliyah",
+    "lat": 35.0077,
+    "lon": 36.018,
+    "importance": 1
+  },
+  {
+    "name": "Banmarah",
+    "lat": 35.0208,
+    "lon": 36.1083,
+    "importance": 1
+  },
+  {
+    "name": "Muqaybilah",
+    "lat": 35.0989,
+    "lon": 36.1173,
+    "importance": 1
+  },
+  {
+    "name": "An Nayhah",
+    "lat": 35.0083,
+    "lon": 36.15,
+    "importance": 1
+  },
+  {
+    "name": "Al Harf",
+    "lat": 35.0333,
+    "lon": 36.325,
+    "importance": 1
+  },
+  {
+    "name": "Ballalin",
+    "lat": 35.0417,
+    "lon": 36.5083,
+    "importance": 1
+  },
+  {
+    "name": "Al Yaljah",
+    "lat": 35.025,
+    "lon": 36.525,
+    "importance": 1
+  },
+  {
+    "name": "Ruqaytah",
+    "lat": 35.1083,
+    "lon": 36.725,
+    "importance": 1
+  },
+  {
+    "name": "Nisrin",
+    "lat": 35.0208,
+    "lon": 36.6958,
+    "importance": 1
+  },
+  {
+    "name": "Zawr az Ziyarah",
+    "lat": 35.0167,
+    "lon": 36.8583,
+    "importance": 1
+  },
+  {
+    "name": "Nawatif",
+    "lat": 35.1542,
+    "lon": 36.1625,
+    "importance": 1
+  },
+  {
+    "name": "Altun al Jurd",
+    "lat": 35.1958,
+    "lon": 36.1458,
+    "importance": 1
+  },
+  {
+    "name": "Shindakhah",
+    "lat": 35.2174,
+    "lon": 36.1812,
+    "importance": 1
+  },
+  {
+    "name": "Umm Tarazi",
+    "lat": 35.175,
+    "lon": 36.2125,
+    "importance": 1
+  },
+  {
+    "name": "Balluqa",
+    "lat": 35.1583,
+    "lon": 36.2,
+    "importance": 1
+  },
+  {
+    "name": "Haylunah",
+    "lat": 35.1458,
+    "lon": 36.275,
+    "importance": 1
+  },
+  {
+    "name": "Asili",
+    "lat": 35.1967,
+    "lon": 36.4892,
+    "importance": 1
+  },
+  {
+    "name": "`Aqrab",
+    "lat": 35.1631,
+    "lon": 36.4651,
+    "importance": 1
+  },
+  {
+    "name": "Wa`r Ma`arrzaf",
+    "lat": 35.2052,
+    "lon": 36.5758,
+    "importance": 1
+  },
+  {
+    "name": "Bilhusayn al Wala",
+    "lat": 35.1902,
+    "lon": 36.6954,
+    "importance": 1
+  },
+  {
+    "name": "Sufaynah",
+    "lat": 35.141,
+    "lon": 36.9038,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Qanuta",
+    "lat": 35.2833,
+    "lon": 35.9792,
+    "importance": 1
+  },
+  {
+    "name": "Juwaybat",
+    "lat": 35.2292,
+    "lon": 36.025,
+    "importance": 1
+  }
+]

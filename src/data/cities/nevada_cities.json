@@ -1,0 +1,602 @@
+[
+  {
+    "name": "Los Angeles",
+    "lat": 34.0522,
+    "lon": -118.2437,
+    "importance": 5
+  },
+  {
+    "name": "Las Vegas",
+    "lat": 36.175,
+    "lon": -115.1372,
+    "importance": 5
+  },
+  {
+    "name": "Bakersfield",
+    "lat": 35.3733,
+    "lon": -119.0187,
+    "importance": 5
+  },
+  {
+    "name": "Henderson",
+    "lat": 36.0397,
+    "lon": -114.9819,
+    "importance": 5
+  },
+  {
+    "name": "North Las Vegas",
+    "lat": 36.1989,
+    "lon": -115.1175,
+    "importance": 5
+  },
+  {
+    "name": "Paradise",
+    "lat": 36.0972,
+    "lon": -115.1467,
+    "importance": 5
+  },
+  {
+    "name": "San Bernardino",
+    "lat": 34.1083,
+    "lon": -117.2898,
+    "importance": 5
+  },
+  {
+    "name": "Fontana",
+    "lat": 34.0922,
+    "lon": -117.4351,
+    "importance": 5
+  },
+  {
+    "name": "Oxnard",
+    "lat": 34.1975,
+    "lon": -119.177,
+    "importance": 5
+  },
+  {
+    "name": "Glendale",
+    "lat": 34.1425,
+    "lon": -118.2551,
+    "importance": 5
+  },
+  {
+    "name": "Sunrise Manor",
+    "lat": 36.2111,
+    "lon": -115.0731,
+    "importance": 5
+  },
+  {
+    "name": "Santa Clarita",
+    "lat": 34.3917,
+    "lon": -118.5426,
+    "importance": 5
+  },
+  {
+    "name": "Spring Valley",
+    "lat": 36.108,
+    "lon": -115.245,
+    "importance": 5
+  },
+  {
+    "name": "Rancho Cucamonga",
+    "lat": 34.1064,
+    "lon": -117.5931,
+    "importance": 5
+  },
+  {
+    "name": "Ontario",
+    "lat": 34.0633,
+    "lon": -117.6509,
+    "importance": 5
+  },
+  {
+    "name": "Hollywood",
+    "lat": 34.0983,
+    "lon": -118.3267,
+    "importance": 5
+  },
+  {
+    "name": "Lancaster",
+    "lat": 34.698,
+    "lon": -118.1367,
+    "importance": 5
+  },
+  {
+    "name": "Palmdale",
+    "lat": 34.5794,
+    "lon": -118.1165,
+    "importance": 5
+  },
+  {
+    "name": "Pomona",
+    "lat": 34.0553,
+    "lon": -117.7523,
+    "importance": 5
+  },
+  {
+    "name": "Valencia",
+    "lat": 34.4436,
+    "lon": -118.6095,
+    "importance": 5
+  },
+  {
+    "name": "Pasadena",
+    "lat": 34.1478,
+    "lon": -118.1445,
+    "importance": 4
+  },
+  {
+    "name": "Van Nuys",
+    "lat": 34.1867,
+    "lon": -118.449,
+    "importance": 4
+  },
+  {
+    "name": "Visalia",
+    "lat": 36.3302,
+    "lon": -119.2921,
+    "importance": 4
+  },
+  {
+    "name": "Thousand Oaks",
+    "lat": 34.1706,
+    "lon": -118.8376,
+    "importance": 4
+  },
+  {
+    "name": "Simi Valley",
+    "lat": 34.2694,
+    "lon": -118.7815,
+    "importance": 4
+  },
+  {
+    "name": "East Los Angeles",
+    "lat": 34.0239,
+    "lon": -118.172,
+    "importance": 4
+  },
+  {
+    "name": "Koreatown",
+    "lat": 34.0578,
+    "lon": -118.3009,
+    "importance": 4
+  },
+  {
+    "name": "Victorville",
+    "lat": 34.5361,
+    "lon": -117.2912,
+    "importance": 4
+  },
+  {
+    "name": "El Monte",
+    "lat": 34.0686,
+    "lon": -118.0276,
+    "importance": 4
+  },
+  {
+    "name": "West Covina",
+    "lat": 34.0686,
+    "lon": -117.939,
+    "importance": 4
+  },
+  {
+    "name": "Enterprise",
+    "lat": 36.0252,
+    "lon": -115.2419,
+    "importance": 4
+  },
+  {
+    "name": "Burbank",
+    "lat": 34.1808,
+    "lon": -118.309,
+    "importance": 4
+  },
+  {
+    "name": "Universal City",
+    "lat": 34.1389,
+    "lon": -118.3534,
+    "importance": 4
+  },
+  {
+    "name": "Rialto",
+    "lat": 34.1064,
+    "lon": -117.3703,
+    "importance": 4
+  },
+  {
+    "name": "Ventura",
+    "lat": 34.2783,
+    "lon": -119.2932,
+    "importance": 4
+  },
+  {
+    "name": "Hesperia",
+    "lat": 34.4264,
+    "lon": -117.3009,
+    "importance": 4
+  },
+  {
+    "name": "Santa Monica",
+    "lat": 34.0195,
+    "lon": -118.4914,
+    "importance": 4
+  },
+  {
+    "name": "Boyle Heights",
+    "lat": 34.0339,
+    "lon": -118.2053,
+    "importance": 4
+  },
+  {
+    "name": "Whittier",
+    "lat": 33.9792,
+    "lon": -118.0328,
+    "importance": 4
+  },
+  {
+    "name": "Chino",
+    "lat": 34.0122,
+    "lon": -117.6889,
+    "importance": 4
+  },
+  {
+    "name": "Alhambra",
+    "lat": 34.0953,
+    "lon": -118.127,
+    "importance": 4
+  },
+  {
+    "name": "Mid-City",
+    "lat": 34.0413,
+    "lon": -118.3606,
+    "importance": 4
+  },
+  {
+    "name": "Sylmar",
+    "lat": 34.3078,
+    "lon": -118.4493,
+    "importance": 4
+  },
+  {
+    "name": "Chino Hills",
+    "lat": 33.9938,
+    "lon": -117.7589,
+    "importance": 4
+  },
+  {
+    "name": "Baldwin Park",
+    "lat": 34.0853,
+    "lon": -117.9609,
+    "importance": 4
+  },
+  {
+    "name": "Upland",
+    "lat": 34.0975,
+    "lon": -117.6484,
+    "importance": 4
+  },
+  {
+    "name": "Saint George",
+    "lat": 37.1041,
+    "lon": -113.5841,
+    "importance": 4
+  },
+  {
+    "name": "Apple Valley",
+    "lat": 34.5008,
+    "lon": -117.1859,
+    "importance": 4
+  },
+  {
+    "name": "Redlands",
+    "lat": 34.0556,
+    "lon": -117.1825,
+    "importance": 4
+  },
+  {
+    "name": "Woodland Hills",
+    "lat": 34.1683,
+    "lon": -118.6059,
+    "importance": 4
+  },
+  {
+    "name": "Northridge",
+    "lat": 34.2283,
+    "lon": -118.5367,
+    "importance": 4
+  },
+  {
+    "name": "Camarillo",
+    "lat": 34.2164,
+    "lon": -119.0376,
+    "importance": 4
+  },
+  {
+    "name": "Reseda",
+    "lat": 34.2011,
+    "lon": -118.5365,
+    "importance": 4
+  },
+  {
+    "name": "North Hollywood",
+    "lat": 34.1722,
+    "lon": -118.379,
+    "importance": 4
+  },
+  {
+    "name": "Pico Rivera",
+    "lat": 33.9831,
+    "lon": -118.0967,
+    "importance": 4
+  },
+  {
+    "name": "Montebello",
+    "lat": 34.0095,
+    "lon": -118.1054,
+    "importance": 4
+  },
+  {
+    "name": "Florence-Graham",
+    "lat": 33.9677,
+    "lon": -118.2444,
+    "importance": 4
+  },
+  {
+    "name": "Monterey Park",
+    "lat": 34.0625,
+    "lon": -118.1228,
+    "importance": 4
+  },
+  {
+    "name": "Canoga Park",
+    "lat": 34.2011,
+    "lon": -118.5981,
+    "importance": 4
+  },
+  {
+    "name": "Valley Glen",
+    "lat": 34.1857,
+    "lon": -118.4203,
+    "importance": 4
+  },
+  {
+    "name": "Canyon Country",
+    "lat": 34.4233,
+    "lon": -118.472,
+    "importance": 4
+  },
+  {
+    "name": "Huntington Park",
+    "lat": 33.9817,
+    "lon": -118.2251,
+    "importance": 4
+  },
+  {
+    "name": "Arcadia",
+    "lat": 34.1397,
+    "lon": -118.0353,
+    "importance": 4
+  },
+  {
+    "name": "North Hills",
+    "lat": 34.2364,
+    "lon": -118.4847,
+    "importance": 4
+  },
+  {
+    "name": "Diamond Bar",
+    "lat": 34.0286,
+    "lon": -117.8103,
+    "importance": 4
+  },
+  {
+    "name": "Porterville",
+    "lat": 36.0652,
+    "lon": -119.0168,
+    "importance": 4
+  },
+  {
+    "name": "Rosemead",
+    "lat": 34.0806,
+    "lon": -118.0729,
+    "importance": 4
+  },
+  {
+    "name": "Highland",
+    "lat": 34.1283,
+    "lon": -117.2087,
+    "importance": 4
+  },
+  {
+    "name": "Colton",
+    "lat": 34.0739,
+    "lon": -117.3136,
+    "importance": 4
+  },
+  {
+    "name": "Hacienda Heights",
+    "lat": 33.9931,
+    "lon": -117.9687,
+    "importance": 4
+  },
+  {
+    "name": "Lake Havasu City",
+    "lat": 34.4839,
+    "lon": -114.3225,
+    "importance": 4
+  },
+  {
+    "name": "Yucaipa",
+    "lat": 34.0336,
+    "lon": -117.0431,
+    "importance": 4
+  },
+  {
+    "name": "Delano",
+    "lat": 35.7688,
+    "lon": -119.2471,
+    "importance": 4
+  },
+  {
+    "name": "Sherman Oaks",
+    "lat": 34.1511,
+    "lon": -118.4493,
+    "importance": 4
+  },
+  {
+    "name": "Glendora",
+    "lat": 34.1361,
+    "lon": -117.8653,
+    "importance": 4
+  },
+  {
+    "name": "Azusa",
+    "lat": 34.1336,
+    "lon": -117.9076,
+    "importance": 4
+  },
+  {
+    "name": "Rowland Heights",
+    "lat": 33.9761,
+    "lon": -117.9053,
+    "importance": 4
+  },
+  {
+    "name": "Covina",
+    "lat": 34.09,
+    "lon": -117.8903,
+    "importance": 4
+  },
+  {
+    "name": "Vermont Square",
+    "lat": 34.002,
+    "lon": -118.299,
+    "importance": 4
+  },
+  {
+    "name": "Winnetka",
+    "lat": 34.2133,
+    "lon": -118.572,
+    "importance": 4
+  },
+  {
+    "name": "Encino",
+    "lat": 34.1592,
+    "lon": -118.5012,
+    "importance": 4
+  },
+  {
+    "name": "Echo Park",
+    "lat": 34.0781,
+    "lon": -118.2607,
+    "importance": 4
+  },
+  {
+    "name": "Altadena",
+    "lat": 34.1897,
+    "lon": -118.1312,
+    "importance": 4
+  },
+  {
+    "name": "West Hills",
+    "lat": 34.1973,
+    "lon": -118.644,
+    "importance": 4
+  },
+  {
+    "name": "Chatsworth",
+    "lat": 34.2572,
+    "lon": -118.6012,
+    "importance": 4
+  },
+  {
+    "name": "Venice",
+    "lat": 33.9908,
+    "lon": -118.4601,
+    "importance": 4
+  },
+  {
+    "name": "La Puente",
+    "lat": 34.02,
+    "lon": -117.9495,
+    "importance": 4
+  },
+  {
+    "name": "San Gabriel",
+    "lat": 34.0961,
+    "lon": -118.1058,
+    "importance": 4
+  },
+  {
+    "name": "Sawtelle",
+    "lat": 34.0363,
+    "lon": -118.4495,
+    "importance": 4
+  },
+  {
+    "name": "Culver City",
+    "lat": 34.0211,
+    "lon": -118.3965,
+    "importance": 4
+  },
+  {
+    "name": "Bullhead City",
+    "lat": 35.1478,
+    "lon": -114.5683,
+    "importance": 4
+  },
+  {
+    "name": "Montclair",
+    "lat": 34.0775,
+    "lon": -117.6898,
+    "importance": 4
+  },
+  {
+    "name": "Whitney",
+    "lat": 36.0983,
+    "lon": -115.0363,
+    "importance": 4
+  },
+  {
+    "name": "Monrovia",
+    "lat": 34.1481,
+    "lon": -117.9989,
+    "importance": 4
+  },
+  {
+    "name": "Pahrump",
+    "lat": 36.2083,
+    "lon": -115.9839,
+    "importance": 4
+  },
+  {
+    "name": "Temple City",
+    "lat": 34.1072,
+    "lon": -118.0579,
+    "importance": 4
+  },
+  {
+    "name": "Claremont",
+    "lat": 34.0967,
+    "lon": -117.7198,
+    "importance": 4
+  },
+  {
+    "name": "West Hollywood",
+    "lat": 34.09,
+    "lon": -118.3617,
+    "importance": 4
+  },
+  {
+    "name": "Bell",
+    "lat": 33.9775,
+    "lon": -118.187,
+    "importance": 4
+  },
+  {
+    "name": "Moorpark",
+    "lat": 34.2856,
+    "lon": -118.882,
+    "importance": 4
+  }
+]

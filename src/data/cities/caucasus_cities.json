@@ -1,0 +1,2402 @@
+[
+  {
+    "name": "Gaziantep",
+    "lat": 37.0594,
+    "lon": 37.3825,
+    "importance": 5
+  },
+  {
+    "name": "Aleppo",
+    "lat": 36.2012,
+    "lon": 37.1612,
+    "importance": 5
+  },
+  {
+    "name": "Al Mawsil al Jadidah",
+    "lat": 36.3327,
+    "lon": 43.1056,
+    "importance": 5
+  },
+  {
+    "name": "Adana",
+    "lat": 36.9862,
+    "lon": 35.3253,
+    "importance": 5
+  },
+  {
+    "name": "Diyarbakir",
+    "lat": 37.9136,
+    "lon": 40.2172,
+    "importance": 5
+  },
+  {
+    "name": "Mosul",
+    "lat": 36.335,
+    "lon": 43.1189,
+    "importance": 5
+  },
+  {
+    "name": "Erbil",
+    "lat": 36.1912,
+    "lon": 44.0094,
+    "importance": 5
+  },
+  {
+    "name": "Kayseri",
+    "lat": 38.7322,
+    "lon": 35.4853,
+    "importance": 5
+  },
+  {
+    "name": "Tabriz",
+    "lat": 38.08,
+    "lon": 46.2919,
+    "importance": 5
+  },
+  {
+    "name": "Yerevan",
+    "lat": 40.1776,
+    "lon": 44.5126,
+    "importance": 5
+  },
+  {
+    "name": "Rostov-na-Donu",
+    "lat": 47.22,
+    "lon": 39.7077,
+    "importance": 5
+  },
+  {
+    "name": "Baku",
+    "lat": 40.3777,
+    "lon": 49.892,
+    "importance": 5
+  },
+  {
+    "name": "Tbilisi",
+    "lat": 41.6914,
+    "lon": 44.8341,
+    "importance": 5
+  },
+  {
+    "name": "Volgograd",
+    "lat": 48.7138,
+    "lon": 44.4976,
+    "importance": 5
+  },
+  {
+    "name": "Dnipro",
+    "lat": 48.4666,
+    "lon": 35.0407,
+    "importance": 5
+  },
+  {
+    "name": "Donetsk",
+    "lat": 48.023,
+    "lon": 37.8022,
+    "importance": 5
+  },
+  {
+    "name": "Krasnodar",
+    "lat": 45.0453,
+    "lon": 38.9818,
+    "importance": 5
+  },
+  {
+    "name": "Malatya",
+    "lat": 38.3502,
+    "lon": 38.3167,
+    "importance": 5
+  },
+  {
+    "name": "Erzurum",
+    "lat": 39.9086,
+    "lon": 41.2769,
+    "importance": 5
+  },
+  {
+    "name": "Zaporizhzhya",
+    "lat": 47.8517,
+    "lon": 35.1171,
+    "importance": 5
+  },
+  {
+    "name": "Makhachkala",
+    "lat": 42.9778,
+    "lon": 47.5003,
+    "importance": 4
+  },
+  {
+    "name": "Rasht",
+    "lat": 37.2761,
+    "lon": 49.5886,
+    "importance": 4
+  },
+  {
+    "name": "Orumiyeh",
+    "lat": 37.5527,
+    "lon": 45.0761,
+    "importance": 4
+  },
+  {
+    "name": "Mersin",
+    "lat": 36.812,
+    "lon": 34.6389,
+    "importance": 4
+  },
+  {
+    "name": "Astrakhan",
+    "lat": 46.3497,
+    "lon": 48.0408,
+    "importance": 4
+  },
+  {
+    "name": "Van",
+    "lat": 38.4946,
+    "lon": 43.3832,
+    "importance": 4
+  },
+  {
+    "name": "Batman",
+    "lat": 37.8874,
+    "lon": 41.1322,
+    "importance": 4
+  },
+  {
+    "name": "Sanliurfa",
+    "lat": 37.1671,
+    "lon": 38.7939,
+    "importance": 4
+  },
+  {
+    "name": "Elazig",
+    "lat": 38.6743,
+    "lon": 39.2232,
+    "importance": 4
+  },
+  {
+    "name": "Stavropol'",
+    "lat": 45.0344,
+    "lon": 41.9642,
+    "importance": 4
+  },
+  {
+    "name": "Al Hasakah",
+    "lat": 36.5024,
+    "lon": 40.7477,
+    "importance": 4
+  },
+  {
+    "name": "Ardabil",
+    "lat": 38.2498,
+    "lon": 48.2933,
+    "importance": 4
+  },
+  {
+    "name": "Luhansk",
+    "lat": 48.5681,
+    "lon": 39.3055,
+    "importance": 4
+  },
+  {
+    "name": "Samsun",
+    "lat": 41.2798,
+    "lon": 36.3361,
+    "importance": 4
+  },
+  {
+    "name": "Kahramanmaras",
+    "lat": 37.5847,
+    "lon": 36.9264,
+    "importance": 4
+  },
+  {
+    "name": "Sumqayit",
+    "lat": 40.5897,
+    "lon": 49.6686,
+    "importance": 4
+  },
+  {
+    "name": "Zanjan",
+    "lat": 36.6764,
+    "lon": 48.4963,
+    "importance": 4
+  },
+  {
+    "name": "Tarsus",
+    "lat": 36.9177,
+    "lon": 34.8928,
+    "importance": 4
+  },
+  {
+    "name": "Dihok",
+    "lat": 36.8661,
+    "lon": 42.9879,
+    "importance": 4
+  },
+  {
+    "name": "Makiivka",
+    "lat": 48.0478,
+    "lon": 37.9258,
+    "importance": 4
+  },
+  {
+    "name": "Simferopol",
+    "lat": 44.9572,
+    "lon": 34.1108,
+    "importance": 4
+  },
+  {
+    "name": "Ganja",
+    "lat": 40.6816,
+    "lon": 46.3613,
+    "importance": 4
+  },
+  {
+    "name": "Qazvin",
+    "lat": 36.2688,
+    "lon": 50.0041,
+    "importance": 4
+  },
+  {
+    "name": "Sochi",
+    "lat": 43.597,
+    "lon": 39.7248,
+    "importance": 4
+  },
+  {
+    "name": "Volzhsky",
+    "lat": 48.7858,
+    "lon": 44.7797,
+    "importance": 4
+  },
+  {
+    "name": "Vladikavkaz",
+    "lat": 43.041,
+    "lon": 44.6699,
+    "importance": 4
+  },
+  {
+    "name": "Grozny",
+    "lat": 43.312,
+    "lon": 45.6889,
+    "importance": 4
+  },
+  {
+    "name": "Atyrau",
+    "lat": 47.1048,
+    "lon": 51.8843,
+    "importance": 4
+  },
+  {
+    "name": "Taganrog",
+    "lat": 47.2363,
+    "lon": 38.9053,
+    "importance": 4
+  },
+  {
+    "name": "Corum",
+    "lat": 40.5489,
+    "lon": 34.9533,
+    "importance": 4
+  },
+  {
+    "name": "Adiyaman",
+    "lat": 37.7644,
+    "lon": 38.2763,
+    "importance": 4
+  },
+  {
+    "name": "Sivas",
+    "lat": 39.7483,
+    "lon": 37.0161,
+    "importance": 4
+  },
+  {
+    "name": "Maragheh",
+    "lat": 37.3921,
+    "lon": 46.2391,
+    "importance": 4
+  },
+  {
+    "name": "Iskenderun",
+    "lat": 36.5872,
+    "lon": 36.1735,
+    "importance": 4
+  },
+  {
+    "name": "Aksaray",
+    "lat": 38.3725,
+    "lon": 34.0254,
+    "importance": 4
+  },
+  {
+    "name": "Trabzon",
+    "lat": 41.005,
+    "lon": 39.7269,
+    "importance": 4
+  },
+  {
+    "name": "Novorossiysk",
+    "lat": 44.7319,
+    "lon": 37.7618,
+    "importance": 4
+  },
+  {
+    "name": "Lankaran",
+    "lat": 38.7543,
+    "lon": 48.8506,
+    "importance": 4
+  },
+  {
+    "name": "Horlivka",
+    "lat": 48.3358,
+    "lon": 38.0532,
+    "importance": 4
+  },
+  {
+    "name": "Nalchik",
+    "lat": 43.4981,
+    "lon": 43.6189,
+    "importance": 4
+  },
+  {
+    "name": "Amol",
+    "lat": 36.4696,
+    "lon": 52.3507,
+    "importance": 4
+  },
+  {
+    "name": "Ordu",
+    "lat": 40.9778,
+    "lon": 37.8905,
+    "importance": 4
+  },
+  {
+    "name": "Kamyanske",
+    "lat": 48.5172,
+    "lon": 34.6062,
+    "importance": 4
+  },
+  {
+    "name": "Shakhty",
+    "lat": 47.7192,
+    "lon": 40.216,
+    "importance": 4
+  },
+  {
+    "name": "Bukan",
+    "lat": 36.521,
+    "lon": 46.2089,
+    "importance": 4
+  },
+  {
+    "name": "Antakya",
+    "lat": 36.2066,
+    "lon": 36.1572,
+    "importance": 4
+  },
+  {
+    "name": "Osmaniye",
+    "lat": 37.0742,
+    "lon": 36.2478,
+    "importance": 4
+  },
+  {
+    "name": "Armavir",
+    "lat": 44.9985,
+    "lon": 41.1147,
+    "importance": 4
+  },
+  {
+    "name": "Batumi",
+    "lat": 41.6408,
+    "lon": 41.6306,
+    "importance": 4
+  },
+  {
+    "name": "Mianeh",
+    "lat": 37.421,
+    "lon": 47.715,
+    "importance": 4
+  },
+  {
+    "name": "Tovuz",
+    "lat": 40.9925,
+    "lon": 45.6284,
+    "importance": 4
+  },
+  {
+    "name": "Khowy",
+    "lat": 38.5503,
+    "lon": 44.9521,
+    "importance": 4
+  },
+  {
+    "name": "Siverek",
+    "lat": 37.755,
+    "lon": 39.3167,
+    "importance": 4
+  },
+  {
+    "name": "Kirovskyi",
+    "lat": 47.976,
+    "lon": 37.6968,
+    "importance": 4
+  },
+  {
+    "name": "Volgodonsk",
+    "lat": 47.5114,
+    "lon": 42.1527,
+    "importance": 4
+  },
+  {
+    "name": "Novocherkassk",
+    "lat": 47.4222,
+    "lon": 40.0937,
+    "importance": 4
+  },
+  {
+    "name": "Nazran",
+    "lat": 43.226,
+    "lon": 44.7732,
+    "importance": 4
+  },
+  {
+    "name": "Mahabad",
+    "lat": 36.7631,
+    "lon": 45.7222,
+    "importance": 4
+  },
+  {
+    "name": "Nyzhnyodniprovsk",
+    "lat": 48.4755,
+    "lon": 35.1167,
+    "importance": 4
+  },
+  {
+    "name": "Viransehir",
+    "lat": 37.2235,
+    "lon": 39.7552,
+    "importance": 4
+  },
+  {
+    "name": "Saqqez",
+    "lat": 36.2499,
+    "lon": 46.2735,
+    "importance": 4
+  },
+  {
+    "name": "Erzincan",
+    "lat": 39.7392,
+    "lon": 39.4901,
+    "importance": 4
+  },
+  {
+    "name": "Kirsehir",
+    "lat": 39.1458,
+    "lon": 34.1639,
+    "importance": 4
+  },
+  {
+    "name": "Malatia-Sebastia",
+    "lat": 40.174,
+    "lon": 44.4457,
+    "importance": 4
+  },
+  {
+    "name": "Kiziltepe",
+    "lat": 37.1884,
+    "lon": 40.5772,
+    "importance": 4
+  },
+  {
+    "name": "Kerch",
+    "lat": 45.3567,
+    "lon": 36.4754,
+    "importance": 4
+  },
+  {
+    "name": "Melitopol",
+    "lat": 46.8473,
+    "lon": 35.382,
+    "importance": 4
+  },
+  {
+    "name": "Aktau",
+    "lat": 43.6611,
+    "lon": 51.1739,
+    "importance": 4
+  },
+  {
+    "name": "Kramatorsk",
+    "lat": 48.7305,
+    "lon": 37.5879,
+    "importance": 4
+  },
+  {
+    "name": "Pyatigorsk",
+    "lat": 44.05,
+    "lon": 43.0504,
+    "importance": 4
+  },
+  {
+    "name": "Maykop",
+    "lat": 44.6079,
+    "lon": 40.1024,
+    "importance": 4
+  },
+  {
+    "name": "Shengavit",
+    "lat": 40.1557,
+    "lon": 44.4779,
+    "importance": 4
+  },
+  {
+    "name": "Kyivskyi",
+    "lat": 48.0465,
+    "lon": 37.7757,
+    "importance": 4
+  },
+  {
+    "name": "Nor Nork",
+    "lat": 40.1966,
+    "lon": 44.5669,
+    "importance": 4
+  },
+  {
+    "name": "Kutaisi",
+    "lat": 42.2679,
+    "lon": 42.6946,
+    "importance": 4
+  },
+  {
+    "name": "Nevinnomyssk",
+    "lat": 44.6333,
+    "lon": 41.9444,
+    "importance": 4
+  },
+  {
+    "name": "Kentron",
+    "lat": 40.1781,
+    "lon": 44.513,
+    "importance": 4
+  },
+  {
+    "name": "Miandoab",
+    "lat": 36.9667,
+    "lon": 46.1096,
+    "importance": 4
+  },
+  {
+    "name": "Kislovodsk",
+    "lat": 43.9133,
+    "lon": 42.7208,
+    "importance": 4
+  },
+  {
+    "name": "Al Bab",
+    "lat": 36.3705,
+    "lon": 37.5157,
+    "importance": 4
+  },
+  {
+    "name": "Mardin",
+    "lat": 37.3131,
+    "lon": 40.7436,
+    "importance": 3
+  },
+  {
+    "name": "Tokat",
+    "lat": 40.3139,
+    "lon": 36.5544,
+    "importance": 3
+  },
+  {
+    "name": "Erebuni",
+    "lat": 40.1331,
+    "lon": 44.5301,
+    "importance": 3
+  },
+  {
+    "name": "Bingoel",
+    "lat": 38.8847,
+    "lon": 40.4939,
+    "importance": 3
+  },
+  {
+    "name": "Sinah",
+    "lat": 36.8085,
+    "lon": 43.0393,
+    "importance": 3
+  },
+  {
+    "name": "Rustavi",
+    "lat": 41.5627,
+    "lon": 44.9787,
+    "importance": 3
+  },
+  {
+    "name": "Yevlakh",
+    "lat": 40.6183,
+    "lon": 47.1501,
+    "importance": 3
+  },
+  {
+    "name": "Khasavyurt",
+    "lat": 43.2487,
+    "lon": 46.5857,
+    "importance": 3
+  },
+  {
+    "name": "Giresun",
+    "lat": 40.917,
+    "lon": 38.3874,
+    "importance": 3
+  },
+  {
+    "name": "Soran",
+    "lat": 36.6556,
+    "lon": 44.5422,
+    "importance": 3
+  },
+  {
+    "name": "Marand",
+    "lat": 38.4329,
+    "lon": 45.7749,
+    "importance": 3
+  },
+  {
+    "name": "Samandag",
+    "lat": 36.0801,
+    "lon": 35.976,
+    "importance": 3
+  },
+  {
+    "name": "Ajapnyak",
+    "lat": 40.1992,
+    "lon": 44.4706,
+    "importance": 3
+  },
+  {
+    "name": "Cherkessk",
+    "lat": 44.2238,
+    "lon": 42.0462,
+    "importance": 3
+  },
+  {
+    "name": "Agri",
+    "lat": 39.7147,
+    "lon": 43.0401,
+    "importance": 3
+  },
+  {
+    "name": "Mariupol",
+    "lat": 47.0951,
+    "lon": 37.5413,
+    "importance": 3
+  },
+  {
+    "name": "Rize",
+    "lat": 41.0208,
+    "lon": 40.5219,
+    "importance": 3
+  },
+  {
+    "name": "Arabkir",
+    "lat": 40.2062,
+    "lon": 44.5037,
+    "importance": 3
+  },
+  {
+    "name": "Kuybyshevskyi",
+    "lat": 48.0144,
+    "lon": 37.7362,
+    "importance": 3
+  },
+  {
+    "name": "Amasya",
+    "lat": 40.6533,
+    "lon": 35.8331,
+    "importance": 3
+  },
+  {
+    "name": "Gyumri",
+    "lat": 40.7931,
+    "lon": 43.8464,
+    "importance": 3
+  },
+  {
+    "name": "Siirt",
+    "lat": 37.9293,
+    "lon": 41.9413,
+    "importance": 3
+  },
+  {
+    "name": "Kilis",
+    "lat": 36.7161,
+    "lon": 37.115,
+    "importance": 3
+  },
+  {
+    "name": "Turhal",
+    "lat": 40.3875,
+    "lon": 36.0811,
+    "importance": 3
+  },
+  {
+    "name": "Bandar-e Anzali",
+    "lat": 37.4732,
+    "lon": 49.4579,
+    "importance": 3
+  },
+  {
+    "name": "Bataysk",
+    "lat": 47.1375,
+    "lon": 39.7571,
+    "importance": 3
+  },
+  {
+    "name": "Arsuz",
+    "lat": 36.413,
+    "lon": 35.8903,
+    "importance": 3
+  },
+  {
+    "name": "Elista",
+    "lat": 46.3079,
+    "lon": 44.2554,
+    "importance": 3
+  },
+  {
+    "name": "Berdyansk",
+    "lat": 46.7558,
+    "lon": 36.7882,
+    "importance": 3
+  },
+  {
+    "name": "Alchevsk",
+    "lat": 48.4689,
+    "lon": 38.8167,
+    "importance": 3
+  },
+  {
+    "name": "Mingachevir",
+    "lat": 40.7642,
+    "lon": 47.0623,
+    "importance": 3
+  },
+  {
+    "name": "Derbent",
+    "lat": 42.0662,
+    "lon": 48.2876,
+    "importance": 3
+  },
+  {
+    "name": "Nikopol",
+    "lat": 47.5683,
+    "lon": 34.3913,
+    "importance": 3
+  },
+  {
+    "name": "Sloviansk",
+    "lat": 48.8497,
+    "lon": 37.5974,
+    "importance": 3
+  },
+  {
+    "name": "Kalininskyi",
+    "lat": 48.0074,
+    "lon": 37.8538,
+    "importance": 3
+  },
+  {
+    "name": "Proletarskyi",
+    "lat": 47.9567,
+    "lon": 37.9419,
+    "importance": 3
+  },
+  {
+    "name": "Igdir",
+    "lat": 39.9237,
+    "lon": 44.045,
+    "importance": 3
+  },
+  {
+    "name": "Parsabad",
+    "lat": 39.6482,
+    "lon": 47.9174,
+    "importance": 3
+  },
+  {
+    "name": "Pavlohrad",
+    "lat": 48.5321,
+    "lon": 35.8688,
+    "importance": 3
+  },
+  {
+    "name": "Suruc",
+    "lat": 36.9761,
+    "lon": 38.4253,
+    "importance": 3
+  },
+  {
+    "name": "Lahijan",
+    "lat": 37.2042,
+    "lon": 50.0092,
+    "importance": 3
+  },
+  {
+    "name": "Leninskyi",
+    "lat": 47.9679,
+    "lon": 37.8034,
+    "importance": 3
+  },
+  {
+    "name": "Manbij",
+    "lat": 36.5281,
+    "lon": 37.9549,
+    "importance": 3
+  },
+  {
+    "name": "Novoshakhtinsk",
+    "lat": 47.7604,
+    "lon": 39.9333,
+    "importance": 3
+  },
+  {
+    "name": "Sievierodonetsk",
+    "lat": 48.9463,
+    "lon": 38.4862,
+    "importance": 3
+  },
+  {
+    "name": "Naxcivan",
+    "lat": 39.2089,
+    "lon": 45.4122,
+    "importance": 3
+  },
+  {
+    "name": "Ceyhan",
+    "lat": 37.0247,
+    "lon": 35.8175,
+    "importance": 3
+  },
+  {
+    "name": "Zaxo",
+    "lat": 37.1487,
+    "lon": 42.6859,
+    "importance": 3
+  },
+  {
+    "name": "Ahar",
+    "lat": 38.4774,
+    "lon": 47.0699,
+    "importance": 3
+  },
+  {
+    "name": "Voroshylovskyi",
+    "lat": 48.0,
+    "lon": 37.8001,
+    "importance": 3
+  },
+  {
+    "name": "Lysychansk",
+    "lat": 48.9042,
+    "lon": 38.4409,
+    "importance": 3
+  },
+  {
+    "name": "Bafra",
+    "lat": 41.5679,
+    "lon": 35.9031,
+    "importance": 3
+  },
+  {
+    "name": "Eregli",
+    "lat": 37.5133,
+    "lon": 34.0467,
+    "importance": 3
+  },
+  {
+    "name": "Ercis",
+    "lat": 39.0259,
+    "lon": 43.3596,
+    "importance": 3
+  },
+  {
+    "name": "Kars",
+    "lat": 40.5983,
+    "lon": 43.0855,
+    "importance": 3
+  },
+  {
+    "name": "Nigde",
+    "lat": 37.9658,
+    "lon": 34.6793,
+    "importance": 3
+  },
+  {
+    "name": "Budyonnivskyi",
+    "lat": 47.9669,
+    "lon": 37.8625,
+    "importance": 3
+  },
+  {
+    "name": "Alvand",
+    "lat": 36.1893,
+    "lon": 50.0643,
+    "importance": 3
+  },
+  {
+    "name": "Nusaybin",
+    "lat": 37.0703,
+    "lon": 41.2146,
+    "importance": 3
+  },
+  {
+    "name": "Kozan",
+    "lat": 37.4552,
+    "lon": 35.8157,
+    "importance": 3
+  },
+  {
+    "name": "Yozgat",
+    "lat": 39.82,
+    "lon": 34.8044,
+    "importance": 3
+  },
+  {
+    "name": "Yeysk",
+    "lat": 46.6926,
+    "lon": 38.2791,
+    "importance": 3
+  },
+  {
+    "name": "Patnos",
+    "lat": 39.2249,
+    "lon": 42.8569,
+    "importance": 3
+  },
+  {
+    "name": "Qaracuxur",
+    "lat": 40.3967,
+    "lon": 49.9736,
+    "importance": 3
+  },
+  {
+    "name": "Saatli",
+    "lat": 39.9321,
+    "lon": 48.3689,
+    "importance": 3
+  },
+  {
+    "name": "Lerik",
+    "lat": 38.7739,
+    "lon": 48.415,
+    "importance": 3
+  },
+  {
+    "name": "Petrovskyi",
+    "lat": 47.9316,
+    "lon": 37.6297,
+    "importance": 3
+  },
+  {
+    "name": "Akcapinar",
+    "lat": 38.9473,
+    "lon": 38.9423,
+    "importance": 3
+  },
+  {
+    "name": "Mus",
+    "lat": 38.7316,
+    "lon": 41.4848,
+    "importance": 3
+  },
+  {
+    "name": "Nizip",
+    "lat": 37.0097,
+    "lon": 37.7942,
+    "importance": 3
+  },
+  {
+    "name": "Fatsa",
+    "lat": 41.0289,
+    "lon": 37.4998,
+    "importance": 3
+  },
+  {
+    "name": "Azov",
+    "lat": 47.1069,
+    "lon": 39.4149,
+    "importance": 3
+  },
+  {
+    "name": "Kaspiysk",
+    "lat": 42.8817,
+    "lon": 47.6392,
+    "importance": 3
+  },
+  {
+    "name": "Salmas",
+    "lat": 38.1973,
+    "lon": 44.7653,
+    "importance": 3
+  },
+  {
+    "name": "Yessentuki",
+    "lat": 44.0483,
+    "lon": 42.8564,
+    "importance": 3
+  },
+  {
+    "name": "Cizre",
+    "lat": 37.3302,
+    "lon": 42.1848,
+    "importance": 3
+  },
+  {
+    "name": "Bakhmut",
+    "lat": 48.5944,
+    "lon": 37.9998,
+    "importance": 3
+  },
+  {
+    "name": "Elbistan",
+    "lat": 38.2059,
+    "lon": 37.1983,
+    "importance": 3
+  },
+  {
+    "name": "Bonab",
+    "lat": 37.3404,
+    "lon": 46.0561,
+    "importance": 3
+  },
+  {
+    "name": "Hajiawa",
+    "lat": 36.2358,
+    "lon": 44.7947,
+    "importance": 3
+  },
+  {
+    "name": "Kropotkin",
+    "lat": 45.4372,
+    "lon": 40.5704,
+    "importance": 3
+  },
+  {
+    "name": "Khrustalnyi",
+    "lat": 48.1395,
+    "lon": 38.9372,
+    "importance": 3
+  },
+  {
+    "name": "Vanadzor",
+    "lat": 40.8074,
+    "lon": 44.497,
+    "importance": 3
+  },
+  {
+    "name": "Hakkari",
+    "lat": 37.5744,
+    "lon": 43.7408,
+    "importance": 3
+  },
+  {
+    "name": "UEnye",
+    "lat": 41.1405,
+    "lon": 37.2885,
+    "importance": 3
+  },
+  {
+    "name": "Yalta",
+    "lat": 44.5022,
+    "lon": 34.1662,
+    "importance": 3
+  },
+  {
+    "name": "Yenakiieve",
+    "lat": 48.2386,
+    "lon": 38.204,
+    "importance": 3
+  },
+  {
+    "name": "Mineralnye Vody",
+    "lat": 44.2103,
+    "lon": 43.1353,
+    "importance": 3
+  },
+  {
+    "name": "Midyat",
+    "lat": 37.4191,
+    "lon": 41.3391,
+    "importance": 3
+  },
+  {
+    "name": "Kamensk-Shakhtinsky",
+    "lat": 48.3178,
+    "lon": 40.2595,
+    "importance": 3
+  },
+  {
+    "name": "Nevsehir",
+    "lat": 38.625,
+    "lon": 34.7122,
+    "importance": 3
+  },
+  {
+    "name": "Kanaker-Zeytun",
+    "lat": 40.22,
+    "lon": 44.5383,
+    "importance": 3
+  },
+  {
+    "name": "Tekstylnyk",
+    "lat": 47.9459,
+    "lon": 37.6985,
+    "importance": 3
+  },
+  {
+    "name": "Silopi",
+    "lat": 37.2438,
+    "lon": 42.4635,
+    "importance": 3
+  },
+  {
+    "name": "Bismil",
+    "lat": 37.8451,
+    "lon": 40.6593,
+    "importance": 3
+  },
+  {
+    "name": "Meshgin Shahr",
+    "lat": 38.399,
+    "lon": 47.682,
+    "importance": 3
+  },
+  {
+    "name": "Naqadeh",
+    "lat": 36.9553,
+    "lon": 45.388,
+    "importance": 3
+  },
+  {
+    "name": "Kadiyivka",
+    "lat": 48.5682,
+    "lon": 38.6435,
+    "importance": 3
+  },
+  {
+    "name": "Tatvan",
+    "lat": 38.4922,
+    "lon": 42.2827,
+    "importance": 3
+  },
+  {
+    "name": "Kahta",
+    "lat": 37.7855,
+    "lon": 38.6237,
+    "importance": 3
+  },
+  {
+    "name": "Georgiyevsk",
+    "lat": 44.1494,
+    "lon": 43.4702,
+    "importance": 3
+  },
+  {
+    "name": "Sunzha",
+    "lat": 43.3206,
+    "lon": 45.049,
+    "importance": 3
+  },
+  {
+    "name": "Yueksekova",
+    "lat": 37.5736,
+    "lon": 44.2872,
+    "importance": 3
+  },
+  {
+    "name": "Shakhtarsk",
+    "lat": 48.0566,
+    "lon": 38.4383,
+    "importance": 3
+  },
+  {
+    "name": "Simele",
+    "lat": 36.8583,
+    "lon": 42.8501,
+    "importance": 3
+  },
+  {
+    "name": "Takestan",
+    "lat": 36.0706,
+    "lon": 49.6957,
+    "importance": 3
+  },
+  {
+    "name": "Samar",
+    "lat": 48.6289,
+    "lon": 35.2589,
+    "importance": 3
+  },
+  {
+    "name": "Kadirli",
+    "lat": 37.3739,
+    "lon": 36.0961,
+    "importance": 3
+  },
+  {
+    "name": "Sirvan",
+    "lat": 39.9378,
+    "lon": 48.929,
+    "importance": 3
+  },
+  {
+    "name": "Adler",
+    "lat": 43.429,
+    "lon": 39.9239,
+    "importance": 3
+  },
+  {
+    "name": "Dogubayazit",
+    "lat": 39.5469,
+    "lon": 44.0842,
+    "importance": 3
+  },
+  {
+    "name": "Abhar",
+    "lat": 36.1468,
+    "lon": 49.218,
+    "importance": 3
+  },
+  {
+    "name": "Chalus",
+    "lat": 36.655,
+    "lon": 51.4204,
+    "importance": 3
+  },
+  {
+    "name": "Feodosiya",
+    "lat": 45.032,
+    "lon": 35.3815,
+    "importance": 3
+  },
+  {
+    "name": "Sheki",
+    "lat": 41.1919,
+    "lon": 47.1706,
+    "importance": 3
+  },
+  {
+    "name": "Langarud",
+    "lat": 37.1955,
+    "lon": 50.1526,
+    "importance": 3
+  },
+  {
+    "name": "Ardesen",
+    "lat": 41.1906,
+    "lon": 40.9793,
+    "importance": 3
+  },
+  {
+    "name": "Budyonnovsk",
+    "lat": 44.7839,
+    "lon": 44.1658,
+    "importance": 3
+  },
+  {
+    "name": "Sirnak",
+    "lat": 37.5139,
+    "lon": 42.4543,
+    "importance": 3
+  },
+  {
+    "name": "Kostiantynivka",
+    "lat": 48.5273,
+    "lon": 37.7059,
+    "importance": 3
+  },
+  {
+    "name": "Bakixanov",
+    "lat": 40.4189,
+    "lon": 49.9669,
+    "importance": 2
+  },
+  {
+    "name": "I`zaz",
+    "lat": 36.5866,
+    "lon": 37.0463,
+    "importance": 2
+  },
+  {
+    "name": "Gukovo",
+    "lat": 48.0621,
+    "lon": 39.9355,
+    "importance": 2
+  },
+  {
+    "name": "Silvan",
+    "lat": 38.1371,
+    "lon": 41.0082,
+    "importance": 2
+  },
+  {
+    "name": "Sokhumi",
+    "lat": 43.007,
+    "lon": 40.9893,
+    "importance": 2
+  },
+  {
+    "name": "Slavyansk-na-Kubani",
+    "lat": 45.2514,
+    "lon": 38.1213,
+    "importance": 2
+  },
+  {
+    "name": "Ahlat",
+    "lat": 38.7489,
+    "lon": 42.4801,
+    "importance": 2
+  },
+  {
+    "name": "Tikhoretsk",
+    "lat": 45.8531,
+    "lon": 40.1187,
+    "importance": 2
+  },
+  {
+    "name": "Tuapse",
+    "lat": 44.1008,
+    "lon": 39.0833,
+    "importance": 2
+  },
+  {
+    "name": "As Safirah",
+    "lat": 36.077,
+    "lon": 37.3725,
+    "importance": 2
+  },
+  {
+    "name": "Sorgun",
+    "lat": 39.8101,
+    "lon": 35.186,
+    "importance": 2
+  },
+  {
+    "name": "Dovzhansk",
+    "lat": 48.0896,
+    "lon": 39.6524,
+    "importance": 2
+  },
+  {
+    "name": "Buynaksk",
+    "lat": 42.818,
+    "lon": 47.1268,
+    "importance": 2
+  },
+  {
+    "name": "Piranshahr",
+    "lat": 36.701,
+    "lon": 45.1413,
+    "importance": 2
+  },
+  {
+    "name": "Labinsk",
+    "lat": 44.636,
+    "lon": 40.7357,
+    "importance": 2
+  },
+  {
+    "name": "Sal'sk",
+    "lat": 46.4749,
+    "lon": 41.5416,
+    "importance": 2
+  },
+  {
+    "name": "Kirikhan",
+    "lat": 36.4994,
+    "lon": 36.3576,
+    "importance": 2
+  },
+  {
+    "name": "Prokhladnyy",
+    "lat": 43.7574,
+    "lon": 44.0297,
+    "importance": 2
+  },
+  {
+    "name": "Pokrovsk",
+    "lat": 48.2824,
+    "lon": 37.1777,
+    "importance": 2
+  },
+  {
+    "name": "Mikhaylovsk",
+    "lat": 45.131,
+    "lon": 42.027,
+    "importance": 2
+  },
+  {
+    "name": "Avan",
+    "lat": 40.2144,
+    "lon": 44.5785,
+    "importance": 2
+  },
+  {
+    "name": "Krymsk",
+    "lat": 44.9263,
+    "lon": 37.9903,
+    "importance": 2
+  },
+  {
+    "name": "Reyhanli",
+    "lat": 36.2679,
+    "lon": 36.5675,
+    "importance": 2
+  },
+  {
+    "name": "Doertyol",
+    "lat": 36.8392,
+    "lon": 36.2302,
+    "importance": 2
+  },
+  {
+    "name": "Khartsyzk",
+    "lat": 48.0424,
+    "lon": 38.1473,
+    "importance": 2
+  },
+  {
+    "name": "Zile",
+    "lat": 40.3031,
+    "lon": 35.8864,
+    "importance": 2
+  },
+  {
+    "name": "Snizhne",
+    "lat": 48.0261,
+    "lon": 38.7722,
+    "importance": 2
+  },
+  {
+    "name": "Rubizhne",
+    "lat": 49.0061,
+    "lon": 38.3812,
+    "importance": 2
+  },
+  {
+    "name": "Abyek",
+    "lat": 36.0667,
+    "lon": 50.55,
+    "importance": 2
+  },
+  {
+    "name": "Belorechensk",
+    "lat": 44.77,
+    "lon": 39.8725,
+    "importance": 2
+  },
+  {
+    "name": "Lozova",
+    "lat": 48.8894,
+    "lon": 36.3175,
+    "importance": 2
+  },
+  {
+    "name": "Druzhkivka",
+    "lat": 48.619,
+    "lon": 37.527,
+    "importance": 2
+  },
+  {
+    "name": "Timashyovsk",
+    "lat": 45.6169,
+    "lon": 38.9453,
+    "importance": 2
+  },
+  {
+    "name": "Anapa",
+    "lat": 44.895,
+    "lon": 37.3162,
+    "importance": 2
+  },
+  {
+    "name": "Chystyakove",
+    "lat": 48.0388,
+    "lon": 38.5969,
+    "importance": 2
+  },
+  {
+    "name": "Sotsmisto",
+    "lat": 48.7366,
+    "lon": 37.5907,
+    "importance": 2
+  },
+  {
+    "name": "Bitlis",
+    "lat": 38.4012,
+    "lon": 42.1078,
+    "importance": 2
+  },
+  {
+    "name": "Enerhodar",
+    "lat": 47.4905,
+    "lon": 34.662,
+    "importance": 2
+  },
+  {
+    "name": "Adilcevaz",
+    "lat": 38.7991,
+    "lon": 42.7316,
+    "importance": 2
+  },
+  {
+    "name": "Ergani",
+    "lat": 38.269,
+    "lon": 39.7545,
+    "importance": 2
+  },
+  {
+    "name": "Erbaa",
+    "lat": 40.6689,
+    "lon": 36.5675,
+    "importance": 2
+  },
+  {
+    "name": "Antratsyt",
+    "lat": 48.115,
+    "lon": 39.0913,
+    "importance": 2
+  },
+  {
+    "name": "Davtashen",
+    "lat": 40.2164,
+    "lon": 44.4809,
+    "importance": 2
+  },
+  {
+    "name": "Takab",
+    "lat": 36.4009,
+    "lon": 47.1133,
+    "importance": 2
+  },
+  {
+    "name": "Kabbasin",
+    "lat": 36.4327,
+    "lon": 37.5686,
+    "importance": 2
+  },
+  {
+    "name": "Khalkhal",
+    "lat": 37.6184,
+    "lon": 48.5293,
+    "importance": 2
+  },
+  {
+    "name": "Gelendzhik",
+    "lat": 44.5801,
+    "lon": 38.0665,
+    "importance": 2
+  },
+  {
+    "name": "Oshnaviyeh",
+    "lat": 37.0397,
+    "lon": 45.0983,
+    "importance": 2
+  },
+  {
+    "name": "Merzifon",
+    "lat": 40.8733,
+    "lon": 35.4631,
+    "importance": 2
+  },
+  {
+    "name": "Kizlyar",
+    "lat": 43.8469,
+    "lon": 46.7098,
+    "importance": 2
+  },
+  {
+    "name": "Khorramdarreh",
+    "lat": 36.2078,
+    "lon": 49.1953,
+    "importance": 2
+  },
+  {
+    "name": "Carsamba",
+    "lat": 41.1989,
+    "lon": 36.7219,
+    "importance": 2
+  },
+  {
+    "name": "Al-Hamdaniya",
+    "lat": 36.2709,
+    "lon": 43.3776,
+    "importance": 2
+  },
+  {
+    "name": "'Ayn al 'Arab",
+    "lat": 36.8909,
+    "lon": 38.3535,
+    "importance": 2
+  },
+  {
+    "name": "Bosse",
+    "lat": 47.9552,
+    "lon": 37.8003,
+    "importance": 2
+  },
+  {
+    "name": "Niksar",
+    "lat": 40.5917,
+    "lon": 36.9517,
+    "importance": 2
+  },
+  {
+    "name": "Hrazdan",
+    "lat": 40.5169,
+    "lon": 44.7559,
+    "importance": 2
+  },
+  {
+    "name": "Sorokyne",
+    "lat": 48.2923,
+    "lon": 39.7392,
+    "importance": 2
+  },
+  {
+    "name": "`Afrin",
+    "lat": 36.5119,
+    "lon": 36.8695,
+    "importance": 2
+  },
+  {
+    "name": "Bayburt",
+    "lat": 40.2563,
+    "lon": 40.2229,
+    "importance": 2
+  },
+  {
+    "name": "Kurganinsk",
+    "lat": 44.8845,
+    "lon": 40.5889,
+    "importance": 2
+  },
+  {
+    "name": "Suluova",
+    "lat": 40.8313,
+    "lon": 35.6479,
+    "importance": 2
+  },
+  {
+    "name": "Abovyan",
+    "lat": 40.2717,
+    "lon": 44.6334,
+    "importance": 2
+  },
+  {
+    "name": "Belaya Kalitva",
+    "lat": 48.1793,
+    "lon": 40.7792,
+    "importance": 2
+  },
+  {
+    "name": "Rudsar",
+    "lat": 37.137,
+    "lon": 50.2917,
+    "importance": 2
+  },
+  {
+    "name": "Sebin Karahisar",
+    "lat": 40.2883,
+    "lon": 38.4236,
+    "importance": 2
+  },
+  {
+    "name": "Sowme'eh Sara",
+    "lat": 37.3013,
+    "lon": 49.315,
+    "importance": 2
+  },
+  {
+    "name": "Erdemli",
+    "lat": 36.605,
+    "lon": 34.3084,
+    "importance": 2
+  },
+  {
+    "name": "Sardasht",
+    "lat": 36.1552,
+    "lon": 45.4788,
+    "importance": 2
+  },
+  {
+    "name": "Staryy Malgobek",
+    "lat": 43.5444,
+    "lon": 44.5959,
+    "importance": 2
+  },
+  {
+    "name": "Myrnohrad",
+    "lat": 48.3099,
+    "lon": 37.2651,
+    "importance": 2
+  },
+  {
+    "name": "Izium",
+    "lat": 49.207,
+    "lon": 37.2768,
+    "importance": 2
+  },
+  {
+    "name": "Vagharshapat",
+    "lat": 40.1656,
+    "lon": 44.2946,
+    "importance": 2
+  },
+  {
+    "name": "Rovenky",
+    "lat": 48.0833,
+    "lon": 39.3776,
+    "importance": 2
+  },
+  {
+    "name": "Kirecocagi",
+    "lat": 37.05,
+    "lon": 35.2333,
+    "importance": 2
+  },
+  {
+    "name": "Kanevskaya",
+    "lat": 46.0953,
+    "lon": 38.9769,
+    "importance": 2
+  },
+  {
+    "name": "Hashtpar",
+    "lat": 37.7966,
+    "lon": 48.9052,
+    "importance": 2
+  },
+  {
+    "name": "Akcaabat",
+    "lat": 41.0212,
+    "lon": 39.5715,
+    "importance": 2
+  },
+  {
+    "name": "Sarab",
+    "lat": 37.9408,
+    "lon": 47.5367,
+    "importance": 2
+  },
+  {
+    "name": "Koysinceq",
+    "lat": 36.0829,
+    "lon": 44.6287,
+    "importance": 2
+  },
+  {
+    "name": "Marhanets",
+    "lat": 47.6309,
+    "lon": 34.6245,
+    "importance": 2
+  },
+  {
+    "name": "Brianka",
+    "lat": 48.511,
+    "lon": 38.6722,
+    "importance": 2
+  },
+  {
+    "name": "Akhtubinsk",
+    "lat": 48.2834,
+    "lon": 46.1652,
+    "importance": 2
+  },
+  {
+    "name": "Birecik",
+    "lat": 37.0258,
+    "lon": 37.9784,
+    "importance": 2
+  },
+  {
+    "name": "Krasnyy Sulin",
+    "lat": 47.8925,
+    "lon": 40.0718,
+    "importance": 2
+  },
+  {
+    "name": "Ust'-Labinsk",
+    "lat": 45.2144,
+    "lon": 39.6884,
+    "importance": 2
+  },
+  {
+    "name": "Bulancak",
+    "lat": 40.938,
+    "lon": 38.2315,
+    "importance": 2
+  },
+  {
+    "name": "Pashkovskiy",
+    "lat": 45.0237,
+    "lon": 39.1044,
+    "importance": 2
+  },
+  {
+    "name": "Malgobek",
+    "lat": 43.5112,
+    "lon": 44.5905,
+    "importance": 2
+  },
+  {
+    "name": "Agdzhabedy",
+    "lat": 40.0502,
+    "lon": 47.4594,
+    "importance": 2
+  },
+  {
+    "name": "Astaneh-ye Ashrafiyeh",
+    "lat": 37.2632,
+    "lon": 49.9432,
+    "importance": 2
+  },
+  {
+    "name": "Goeycay",
+    "lat": 40.6506,
+    "lon": 47.7422,
+    "importance": 2
+  },
+  {
+    "name": "Bilajari",
+    "lat": 40.4444,
+    "lon": 49.8057,
+    "importance": 2
+  },
+  {
+    "name": "Poldasht",
+    "lat": 39.348,
+    "lon": 45.071,
+    "importance": 2
+  },
+  {
+    "name": "Izberbash",
+    "lat": 42.5671,
+    "lon": 47.8755,
+    "importance": 2
+  },
+  {
+    "name": "Gori",
+    "lat": 41.9853,
+    "lon": 44.1129,
+    "importance": 2
+  },
+  {
+    "name": "Besni",
+    "lat": 37.6928,
+    "lon": 37.8611,
+    "importance": 2
+  },
+  {
+    "name": "Dzhankoi",
+    "lat": 45.7131,
+    "lon": 34.3927,
+    "importance": 2
+  },
+  {
+    "name": "Korenovsk",
+    "lat": 45.4672,
+    "lon": 39.4492,
+    "importance": 2
+  },
+  {
+    "name": "Urus-Martan",
+    "lat": 43.1305,
+    "lon": 45.5379,
+    "importance": 2
+  },
+  {
+    "name": "Shahin Dezh",
+    "lat": 36.6793,
+    "lon": 46.5669,
+    "importance": 2
+  },
+  {
+    "name": "Zelenokumsk",
+    "lat": 44.4104,
+    "lon": 43.8801,
+    "importance": 2
+  },
+  {
+    "name": "Poti",
+    "lat": 42.1427,
+    "lon": 41.6738,
+    "importance": 2
+  },
+  {
+    "name": "Mozdok",
+    "lat": 43.7398,
+    "lon": 44.6516,
+    "importance": 2
+  },
+  {
+    "name": "Apsheronsk",
+    "lat": 44.4599,
+    "lon": 39.73,
+    "importance": 2
+  },
+  {
+    "name": "Mastaga",
+    "lat": 40.5298,
+    "lon": 50.0062,
+    "importance": 2
+  },
+  {
+    "name": "Zugdidi",
+    "lat": 42.5084,
+    "lon": 41.868,
+    "importance": 2
+  },
+  {
+    "name": "Khanzhenkove",
+    "lat": 48.0945,
+    "lon": 38.0755,
+    "importance": 2
+  },
+  {
+    "name": "Nowshahr",
+    "lat": 36.6485,
+    "lon": 51.4962,
+    "importance": 2
+  },
+  {
+    "name": "Svetlograd",
+    "lat": 45.3274,
+    "lon": 42.8562,
+    "importance": 2
+  },
+  {
+    "name": "Afsin",
+    "lat": 38.2477,
+    "lon": 36.914,
+    "importance": 2
+  },
+  {
+    "name": "Cimin",
+    "lat": 39.7095,
+    "lon": 39.7002,
+    "importance": 2
+  },
+  {
+    "name": "Agdam",
+    "lat": 39.991,
+    "lon": 46.9274,
+    "importance": 2
+  },
+  {
+    "name": "Guemueshane",
+    "lat": 40.46,
+    "lon": 39.4718,
+    "importance": 2
+  },
+  {
+    "name": "Astara",
+    "lat": 38.4308,
+    "lon": 48.8699,
+    "importance": 2
+  },
+  {
+    "name": "Izobil'nyy",
+    "lat": 45.3665,
+    "lon": 41.7091,
+    "importance": 2
+  },
+  {
+    "name": "Aksay",
+    "lat": 47.2633,
+    "lon": 39.869,
+    "importance": 2
+  },
+  {
+    "name": "Leningradskaya",
+    "lat": 46.3214,
+    "lon": 39.3855,
+    "importance": 2
+  },
+  {
+    "name": "Millerovo",
+    "lat": 48.9252,
+    "lon": 40.3998,
+    "importance": 2
+  },
+  {
+    "name": "Sinjar",
+    "lat": 36.3209,
+    "lon": 41.8766,
+    "importance": 2
+  },
+  {
+    "name": "Khirdalan",
+    "lat": 40.4481,
+    "lon": 49.755,
+    "importance": 1
+  },
+  {
+    "name": "Vakfikebir",
+    "lat": 41.0458,
+    "lon": 39.2764,
+    "importance": 1
+  },
+  {
+    "name": "Yasynuvata",
+    "lat": 48.1298,
+    "lon": 37.8594,
+    "importance": 1
+  },
+  {
+    "name": "Sungurlu",
+    "lat": 40.1675,
+    "lon": 34.3739,
+    "importance": 1
+  },
+  {
+    "name": "Baksan",
+    "lat": 43.6837,
+    "lon": 43.5351,
+    "importance": 1
+  },
+  {
+    "name": "Tonekabon",
+    "lat": 36.8163,
+    "lon": 50.8738,
+    "importance": 1
+  },
+  {
+    "name": "Pokrov",
+    "lat": 47.6536,
+    "lon": 34.1149,
+    "importance": 1
+  },
+  {
+    "name": "Barda",
+    "lat": 40.3758,
+    "lon": 47.1262,
+    "importance": 1
+  },
+  {
+    "name": "Xacmaz",
+    "lat": 41.4643,
+    "lon": 48.8056,
+    "importance": 1
+  },
+  {
+    "name": "Besikduezue",
+    "lat": 41.052,
+    "lon": 39.2329,
+    "importance": 1
+  },
+  {
+    "name": "Talas",
+    "lat": 38.6908,
+    "lon": 35.5538,
+    "importance": 1
+  },
+  {
+    "name": "Salyan",
+    "lat": 39.5962,
+    "lon": 48.9848,
+    "importance": 1
+  },
+  {
+    "name": "Temryuk",
+    "lat": 45.2689,
+    "lon": 37.3975,
+    "importance": 1
+  },
+  {
+    "name": "Osmancik",
+    "lat": 40.9782,
+    "lon": 34.8047,
+    "importance": 1
+  },
+  {
+    "name": "Novokubansk",
+    "lat": 45.1133,
+    "lon": 41.0365,
+    "importance": 1
+  },
+  {
+    "name": "Hovsan",
+    "lat": 40.3744,
+    "lon": 50.0853,
+    "importance": 1
+  },
+  {
+    "name": "Jalilabad",
+    "lat": 39.2096,
+    "lon": 48.4919,
+    "importance": 1
+  },
+  {
+    "name": "Pervomaisk",
+    "lat": 48.6283,
+    "lon": 38.562,
+    "importance": 1
+  },
+  {
+    "name": "Ramsar",
+    "lat": 36.918,
+    "lon": 50.648,
+    "importance": 1
+  },
+  {
+    "name": "Blagodarnyy",
+    "lat": 45.0978,
+    "lon": 43.4364,
+    "importance": 1
+  },
+  {
+    "name": "Develi",
+    "lat": 38.3906,
+    "lon": 35.4922,
+    "importance": 1
+  },
+  {
+    "name": "Avdiivka",
+    "lat": 48.1402,
+    "lon": 37.7501,
+    "importance": 1
+  },
+  {
+    "name": "Beslan",
+    "lat": 43.1928,
+    "lon": 44.5327,
+    "importance": 1
+  },
+  {
+    "name": "Hinis",
+    "lat": 39.3577,
+    "lon": 41.6925,
+    "importance": 1
+  },
+  {
+    "name": "Shamkhor",
+    "lat": 40.8297,
+    "lon": 46.0178,
+    "importance": 1
+  },
+  {
+    "name": "Yerkoey",
+    "lat": 39.6381,
+    "lon": 34.4672,
+    "importance": 1
+  },
+  {
+    "name": "Tunceli",
+    "lat": 39.0992,
+    "lon": 39.5435,
+    "importance": 1
+  },
+  {
+    "name": "Goryachevodskiy",
+    "lat": 44.0236,
+    "lon": 43.0922,
+    "importance": 1
+  },
+  {
+    "name": "Gul'kevichi",
+    "lat": 45.3538,
+    "lon": 40.6947,
+    "importance": 1
+  },
+  {
+    "name": "Sinop",
+    "lat": 42.0268,
+    "lon": 35.1625,
+    "importance": 1
+  },
+  {
+    "name": "Tadif",
+    "lat": 36.3481,
+    "lon": 37.5309,
+    "importance": 1
+  },
+  {
+    "name": "Abinsk",
+    "lat": 44.8706,
+    "lon": 38.1576,
+    "importance": 1
+  },
+  {
+    "name": "Dinskaya",
+    "lat": 45.2167,
+    "lon": 39.2259,
+    "importance": 1
+  },
+  {
+    "name": "Karabulak",
+    "lat": 43.3051,
+    "lon": 44.8995,
+    "importance": 1
+  },
+  {
+    "name": "Goeksun",
+    "lat": 38.021,
+    "lon": 36.4973,
+    "importance": 1
+  },
+  {
+    "name": "Imishli",
+    "lat": 39.871,
+    "lon": 48.06,
+    "importance": 1
+  },
+  {
+    "name": "Ust'-Dzheguta",
+    "lat": 44.0834,
+    "lon": 41.9763,
+    "importance": 1
+  },
+  {
+    "name": "Yablonovskiy",
+    "lat": 44.989,
+    "lon": 38.9432,
+    "importance": 1
+  },
+  {
+    "name": "Kizilyurt",
+    "lat": 43.2028,
+    "lon": 46.8659,
+    "importance": 1
+  },
+  {
+    "name": "Nartkala",
+    "lat": 43.5544,
+    "lon": 43.855,
+    "importance": 1
+  },
+  {
+    "name": "Primorsko-Akhtarsk",
+    "lat": 46.0485,
+    "lon": 38.179,
+    "importance": 1
+  },
+  {
+    "name": "Kapan",
+    "lat": 39.2076,
+    "lon": 46.4068,
+    "importance": 1
+  },
+  {
+    "name": "Gudermes",
+    "lat": 43.3508,
+    "lon": 46.1009,
+    "importance": 1
+  },
+  {
+    "name": "Bor",
+    "lat": 37.8906,
+    "lon": 34.5589,
+    "importance": 1
+  },
+  {
+    "name": "Ts'khinvali",
+    "lat": 42.2276,
+    "lon": 43.9686,
+    "importance": 1
+  },
+  {
+    "name": "Kumru",
+    "lat": 40.8744,
+    "lon": 37.2639,
+    "importance": 1
+  },
+  {
+    "name": "Zaqatala",
+    "lat": 41.6316,
+    "lon": 46.6448,
+    "importance": 1
+  },
+  {
+    "name": "Ma`arratmisrin",
+    "lat": 36.0115,
+    "lon": 36.6718,
+    "importance": 1
+  },
+  {
+    "name": "Kurtalan",
+    "lat": 37.9253,
+    "lon": 41.6849,
+    "importance": 1
+  },
+  {
+    "name": "Akcakale",
+    "lat": 36.7111,
+    "lon": 38.9475,
+    "importance": 1
+  },
+  {
+    "name": "Yesilli",
+    "lat": 37.3381,
+    "lon": 40.8174,
+    "importance": 1
+  },
+  {
+    "name": "Of",
+    "lat": 40.9406,
+    "lon": 40.2592,
+    "importance": 1
+  },
+  {
+    "name": "Qarah Zia' od Din",
+    "lat": 38.8915,
+    "lon": 45.0255,
+    "importance": 1
+  },
+  {
+    "name": "Znamensk",
+    "lat": 48.5842,
+    "lon": 45.7338,
+    "importance": 1
+  },
+  {
+    "name": "Imamoglu",
+    "lat": 37.2651,
+    "lon": 35.6572,
+    "importance": 1
+  },
+  {
+    "name": "Mahmudabad",
+    "lat": 36.6319,
+    "lon": 52.2629,
+    "importance": 1
+  },
+  {
+    "name": "Salqin",
+    "lat": 36.1386,
+    "lon": 36.4524,
+    "importance": 1
+  },
+  {
+    "name": "Ceylanpinar",
+    "lat": 36.8472,
+    "lon": 40.05,
+    "importance": 1
+  },
+  {
+    "name": "Bulanik",
+    "lat": 39.0866,
+    "lon": 42.2716,
+    "importance": 1
+  },
+  {
+    "name": "Mangistau",
+    "lat": 43.6909,
+    "lon": 51.3224,
+    "importance": 1
+  }
+]

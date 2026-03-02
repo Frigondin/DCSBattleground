@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import * as maptalks from "maptalks";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ReactRoundedImage from "react-rounded-image"
-import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv } from "react-icons/bi";
+import { BiCog, BiNote, BiHide, BiShow, BiBrush, BiLayer, BiExit, BiSolidMap, BiSolidCctv, BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { AiOutlineDisconnect } from "react-icons/ai";
 import { PiPlugsConnectedFill } from "react-icons/pi";
 import { entityMetadataStore } from "../stores/EntityMetadataStore";
@@ -20,7 +20,7 @@ import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Missionpoints-On" | "Missionpoints-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
@@ -86,7 +86,12 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("DCSMap")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("DCSMap")!.hide(); map.getLayer("base")!.show(); setSelectedButton("DCSMap-Off")}}
+									onClick={() => {
+                    map.getLayer("DCSMap")!.hide();
+                    map.getLayer("map-cities")?.hide();
+                    map.getLayer("base")!.show();
+                    setSelectedButton("DCSMap-Off");
+                  }}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -94,7 +99,13 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("DCSMap")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("DCSMap")!.show(); map.getLayer("base")!.hide(); map.getLayer("CaucasusMap")!.hide(); setSelectedButton("DCSMap-On")}}
+								onClick={() => {
+                    map.getLayer("DCSMap")!.show();
+                    map.getLayer("map-cities")?.show();
+                    map.getLayer("base")!.hide();
+                    map.getLayer("CaucasusMap")!.hide();
+                    setSelectedButton("DCSMap-On");
+                  }}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -175,31 +186,6 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 							/>
 						</div>
 					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("CaucasusBorder")!.isVisible() === true && (
-								<button 
-									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("CaucasusBorder")!.hide(); setSelectedButton("CaucasusBorder-Off")}}
-								>
-									<BiShow className="inline-block w-4 h-4" />
-								</button>
-						)}
-						{!map.getLayer("CaucasusBorder")!.isVisible() && (
-							<button 
-								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("CaucasusBorder")!.show(); setSelectedButton("CaucasusBorder-On")}}
-							>
-								<BiHide className="inline-block w-4 h-4" />
-							</button>
-						)}
-					</div>
-				</td>
-				<td>
-					DCS Caucasus Borders
 				</td>
 			</tr>
 			<tr>
@@ -300,6 +286,31 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 				</td>
 				<td>
 					Draw
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{map.getLayer("quest")!.isVisible() === true && (
+								<button 
+									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+									onClick={() => {map.getLayer("quest")!.hide(); map.getLayer("quest-pin")!.hide(); setSelectedButton("Missionpoints-Off")}}
+								>
+									<BiShow className="inline-block w-4 h-4" />
+								</button>
+						)}
+						{!map.getLayer("quest")!.isVisible() && (
+							<button 
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {map.getLayer("quest")!.show(); map.getLayer("quest-pin")!.show(); setSelectedButton("Missionpoints-On")}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Mission points
 				</td>
 			</tr>
 			<tr>
@@ -427,9 +438,13 @@ export function Console({
   setScratchPadOpen: (value: boolean) => void;
   map: maptalks.Map;
 }) {
-  const [selectedTab, setSelectedTab] = useState<
-    null | "search" | "watch" | "draw" | "quest"
-  >(null);
+  type ConsoleTab = null | "search" | "watch" | "draw" | "quest";
+  const [selectedTab, setSelectedTab] = useState<ConsoleTab>(null);
+  const [renderedTab, setRenderedTab] = useState<ConsoleTab>(null);
+  const [tabPhase, setTabPhase] = useState<"idle" | "leaving" | "entering">("idle");
+  const tabTransitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const TAB_ANIMATION_MS = 180;
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const isAuthenticated = !!serverStore((state) => state?.server?.discord_id);
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
@@ -450,8 +465,63 @@ export function Console({
     document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (tabTransitionTimerRef.current) {
+      clearTimeout(tabTransitionTimerRef.current);
+      tabTransitionTimerRef.current = null;
+    }
+
+    if (selectedTab === renderedTab) return;
+
+    if (renderedTab === null && selectedTab !== null) {
+      setRenderedTab(selectedTab);
+      setTabPhase("entering");
+      requestAnimationFrame(() => setTabPhase("idle"));
+      return;
+    }
+
+    if (renderedTab === null && selectedTab === null) return;
+
+    // Old tab leaves, then the new one enters.
+    setTabPhase("leaving");
+    tabTransitionTimerRef.current = setTimeout(() => {
+      setRenderedTab(selectedTab);
+      if (selectedTab !== null) {
+        setTabPhase("entering");
+        requestAnimationFrame(() => setTabPhase("idle"));
+      } else {
+        setTabPhase("idle");
+      }
+    }, TAB_ANIMATION_MS);
+  }, [selectedTab, renderedTab]);
+
+  useEffect(() => {
+    return () => {
+      if (tabTransitionTimerRef.current) {
+        clearTimeout(tabTransitionTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="m-2 absolute flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm right-0 w-60">
+    <div className="m-2 absolute right-0 top-0 z-40">
+      <div
+        className="relative transition-transform duration-300 ease-in-out"
+        style={{ transform: isCollapsed ? "translateX(236px)" : "translateX(0)" }}
+      >
+        <button
+          title={isCollapsed ? "Show menu" : "Hide menu"}
+          onClick={() => setIsCollapsed((value) => !value)}
+          className="absolute left-[-16px] top-0 h-full w-4 bg-gray-200 border border-gray-500 rounded-l-sm shadow flex items-center justify-center"
+        >
+          {isCollapsed ? (
+            <BiChevronLeft className="w-4 h-4" />
+          ) : (
+            <BiChevronRight className="w-4 h-4" />
+          )}
+        </button>
+        <div className="flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
 			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) : 
 													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
@@ -547,10 +617,35 @@ export function Console({
           </button>
         </div>
       </div>
-      {selectedTab === "search" && <SearchTab map={map} />}
-      {selectedTab === "watch" && <WatchTab map={map} />}
-	  {selectedTab === "quest" && <QuestConsoleTab map={map} />}
-      {selectedTab === "draw" && <DrawConsoleTab map={map} />}
+      <div
+        className={classNames(
+          "overflow-hidden origin-top transition-[max-height,opacity] ease-in-out",
+          {
+            "max-h-0 opacity-0":
+              renderedTab === null && tabPhase === "idle",
+            "max-h-[70vh] opacity-100":
+              renderedTab !== null || tabPhase !== "idle",
+          }
+        )}
+        style={{ transitionDuration: `${TAB_ANIMATION_MS}ms` }}
+      >
+        {renderedTab !== null && (
+          <div
+            className={classNames("transition-all", {
+              "translate-x-4 opacity-0": tabPhase === "leaving",
+              "-translate-x-4 opacity-0": tabPhase === "entering",
+            })}
+            style={{ transitionDuration: `${TAB_ANIMATION_MS}ms` }}
+          >
+            {renderedTab === "search" && <SearchTab map={map} />}
+            {renderedTab === "watch" && <WatchTab map={map} />}
+	        {renderedTab === "quest" && <QuestConsoleTab map={map} />}
+            {renderedTab === "draw" && <DrawConsoleTab map={map} />}
+          </div>
+        )}
+      </div>
+        </div>
+      </div>
     </div>
   );
 }

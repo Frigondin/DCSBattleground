@@ -1,0 +1,2402 @@
+[
+  {
+    "name": "London",
+    "lat": 51.5085,
+    "lon": -0.1257,
+    "importance": 5
+  },
+  {
+    "name": "Brent",
+    "lat": 51.5531,
+    "lon": -0.3023,
+    "importance": 5
+  },
+  {
+    "name": "Islington",
+    "lat": 51.5362,
+    "lon": -0.103,
+    "importance": 5
+  },
+  {
+    "name": "Reading",
+    "lat": 51.4562,
+    "lon": -0.9711,
+    "importance": 5
+  },
+  {
+    "name": "Southend-on-Sea",
+    "lat": 51.5378,
+    "lon": 0.7143,
+    "importance": 5
+  },
+  {
+    "name": "Brighton",
+    "lat": 50.8284,
+    "lon": -0.1395,
+    "importance": 5
+  },
+  {
+    "name": "Gent",
+    "lat": 51.05,
+    "lon": 3.7167,
+    "importance": 5
+  },
+  {
+    "name": "Milton Keynes",
+    "lat": 52.0417,
+    "lon": -0.7558,
+    "importance": 5
+  },
+  {
+    "name": "City of Westminster",
+    "lat": 51.4975,
+    "lon": -0.1357,
+    "importance": 5
+  },
+  {
+    "name": "Northampton",
+    "lat": 52.25,
+    "lon": -0.8833,
+    "importance": 5
+  },
+  {
+    "name": "Lille",
+    "lat": 50.6339,
+    "lon": 3.0551,
+    "importance": 5
+  },
+  {
+    "name": "Bexley",
+    "lat": 51.4416,
+    "lon": 0.1487,
+    "importance": 5
+  },
+  {
+    "name": "Luton",
+    "lat": 51.8797,
+    "lon": -0.4175,
+    "importance": 5
+  },
+  {
+    "name": "Archway",
+    "lat": 51.5673,
+    "lon": -0.1341,
+    "importance": 5
+  },
+  {
+    "name": "Portsmouth",
+    "lat": 50.799,
+    "lon": -1.0913,
+    "importance": 5
+  },
+  {
+    "name": "Sutton",
+    "lat": 51.35,
+    "lon": -0.2,
+    "importance": 5
+  },
+  {
+    "name": "Le Havre",
+    "lat": 49.4935,
+    "lon": 0.1079,
+    "importance": 5
+  },
+  {
+    "name": "Cergy-Pontoise",
+    "lat": 49.0389,
+    "lon": 2.0781,
+    "importance": 5
+  },
+  {
+    "name": "Crawley",
+    "lat": 51.113,
+    "lon": -0.1831,
+    "importance": 5
+  },
+  {
+    "name": "Ipswich",
+    "lat": 52.0592,
+    "lon": 1.1555,
+    "importance": 5
+  },
+  {
+    "name": "Croydon",
+    "lat": 51.3833,
+    "lon": -0.1,
+    "importance": 4
+  },
+  {
+    "name": "Ilford",
+    "lat": 51.5577,
+    "lon": 0.0728,
+    "importance": 4
+  },
+  {
+    "name": "Slough",
+    "lat": 51.5095,
+    "lon": -0.5954,
+    "importance": 4
+  },
+  {
+    "name": "Peterborough",
+    "lat": 52.5736,
+    "lon": -0.2478,
+    "importance": 4
+  },
+  {
+    "name": "Enfield Town",
+    "lat": 51.6515,
+    "lon": -0.085,
+    "importance": 4
+  },
+  {
+    "name": "Harrow",
+    "lat": 51.5784,
+    "lon": -0.3321,
+    "importance": 4
+  },
+  {
+    "name": "Cambridge",
+    "lat": 52.2,
+    "lon": 0.1167,
+    "importance": 4
+  },
+  {
+    "name": "Basildon",
+    "lat": 51.5684,
+    "lon": 0.4578,
+    "importance": 4
+  },
+  {
+    "name": "Amiens",
+    "lat": 49.9,
+    "lon": 2.3,
+    "importance": 4
+  },
+  {
+    "name": "Hastings",
+    "lat": 50.8557,
+    "lon": 0.5801,
+    "importance": 4
+  },
+  {
+    "name": "High Wycombe",
+    "lat": 51.6291,
+    "lon": -0.7493,
+    "importance": 4
+  },
+  {
+    "name": "Tottenham",
+    "lat": 51.6037,
+    "lon": -0.0679,
+    "importance": 4
+  },
+  {
+    "name": "Watford",
+    "lat": 51.6553,
+    "lon": -0.396,
+    "importance": 4
+  },
+  {
+    "name": "Saint Peters",
+    "lat": 51.3667,
+    "lon": 1.4167,
+    "importance": 4
+  },
+  {
+    "name": "Colchester",
+    "lat": 51.8892,
+    "lon": 0.9042,
+    "importance": 4
+  },
+  {
+    "name": "Brugge",
+    "lat": 51.2089,
+    "lon": 3.2242,
+    "importance": 4
+  },
+  {
+    "name": "Eastbourne",
+    "lat": 50.7687,
+    "lon": 0.2845,
+    "importance": 4
+  },
+  {
+    "name": "Rouen",
+    "lat": 49.4431,
+    "lon": 1.0993,
+    "importance": 4
+  },
+  {
+    "name": "Chelmsford",
+    "lat": 51.7358,
+    "lon": 0.4696,
+    "importance": 4
+  },
+  {
+    "name": "Caen",
+    "lat": 49.1859,
+    "lon": -0.3591,
+    "importance": 4
+  },
+  {
+    "name": "Walthamstow",
+    "lat": 51.5907,
+    "lon": -0.0208,
+    "importance": 4
+  },
+  {
+    "name": "Dagenham",
+    "lat": 51.55,
+    "lon": 0.1667,
+    "importance": 4
+  },
+  {
+    "name": "Basingstoke",
+    "lat": 51.2625,
+    "lon": -1.0871,
+    "importance": 4
+  },
+  {
+    "name": "Maidstone",
+    "lat": 51.2667,
+    "lon": 0.5167,
+    "importance": 4
+  },
+  {
+    "name": "Bedford",
+    "lat": 52.1346,
+    "lon": -0.4663,
+    "importance": 4
+  },
+  {
+    "name": "Woking",
+    "lat": 51.319,
+    "lon": -0.5589,
+    "importance": 4
+  },
+  {
+    "name": "Gillingham",
+    "lat": 51.3891,
+    "lon": 0.5486,
+    "importance": 4
+  },
+  {
+    "name": "Becontree",
+    "lat": 51.5529,
+    "lon": 0.129,
+    "importance": 4
+  },
+  {
+    "name": "Roubaix",
+    "lat": 50.6942,
+    "lon": 3.1746,
+    "importance": 4
+  },
+  {
+    "name": "Tourcoing",
+    "lat": 50.7239,
+    "lon": 3.1612,
+    "importance": 4
+  },
+  {
+    "name": "Worthing",
+    "lat": 50.818,
+    "lon": -0.3754,
+    "importance": 4
+  },
+  {
+    "name": "Romford",
+    "lat": 51.5752,
+    "lon": 0.1858,
+    "importance": 4
+  },
+  {
+    "name": "Harlow",
+    "lat": 51.7766,
+    "lon": 0.1116,
+    "importance": 4
+  },
+  {
+    "name": "Stevenage",
+    "lat": 51.9022,
+    "lon": -0.2026,
+    "importance": 4
+  },
+  {
+    "name": "Wembley",
+    "lat": 51.5524,
+    "lon": -0.2969,
+    "importance": 4
+  },
+  {
+    "name": "Grays",
+    "lat": 51.4757,
+    "lon": 0.3252,
+    "importance": 4
+  },
+  {
+    "name": "Fulham",
+    "lat": 51.4803,
+    "lon": -0.1993,
+    "importance": 4
+  },
+  {
+    "name": "Hemel Hempstead",
+    "lat": 51.7537,
+    "lon": -0.4497,
+    "importance": 4
+  },
+  {
+    "name": "St Albans",
+    "lat": 51.75,
+    "lon": -0.3333,
+    "importance": 4
+  },
+  {
+    "name": "Edmonton",
+    "lat": 51.6256,
+    "lon": -0.058,
+    "importance": 4
+  },
+  {
+    "name": "Beckenham",
+    "lat": 51.4088,
+    "lon": -0.0253,
+    "importance": 4
+  },
+  {
+    "name": "Putney",
+    "lat": 51.4607,
+    "lon": -0.2181,
+    "importance": 4
+  },
+  {
+    "name": "Bracknell",
+    "lat": 51.4136,
+    "lon": -0.7505,
+    "importance": 4
+  },
+  {
+    "name": "Battersea",
+    "lat": 51.4748,
+    "lon": -0.1555,
+    "importance": 4
+  },
+  {
+    "name": "Chatham",
+    "lat": 51.3789,
+    "lon": 0.5279,
+    "importance": 4
+  },
+  {
+    "name": "Hove",
+    "lat": 50.8309,
+    "lon": -0.1672,
+    "importance": 4
+  },
+  {
+    "name": "Aylesbury",
+    "lat": 51.8167,
+    "lon": -0.8146,
+    "importance": 4
+  },
+  {
+    "name": "Calais",
+    "lat": 50.9519,
+    "lon": 1.8563,
+    "importance": 4
+  },
+  {
+    "name": "Kortrijk",
+    "lat": 50.828,
+    "lon": 3.2649,
+    "importance": 4
+  },
+  {
+    "name": "Canary Wharf",
+    "lat": 51.5052,
+    "lon": -0.0209,
+    "importance": 4
+  },
+  {
+    "name": "Purley",
+    "lat": 51.3368,
+    "lon": -0.112,
+    "importance": 4
+  },
+  {
+    "name": "Guildford",
+    "lat": 51.2354,
+    "lon": -0.5743,
+    "importance": 4
+  },
+  {
+    "name": "Peckham",
+    "lat": 51.474,
+    "lon": -0.0697,
+    "importance": 4
+  },
+  {
+    "name": "Dunkerque",
+    "lat": 51.0344,
+    "lon": 2.3768,
+    "importance": 4
+  },
+  {
+    "name": "Lowestoft",
+    "lat": 52.4752,
+    "lon": 1.7517,
+    "importance": 4
+  },
+  {
+    "name": "Gosport",
+    "lat": 50.7951,
+    "lon": -1.129,
+    "importance": 4
+  },
+  {
+    "name": "Maidenhead",
+    "lat": 51.5228,
+    "lon": -0.7199,
+    "importance": 4
+  },
+  {
+    "name": "Uxbridge",
+    "lat": 51.5489,
+    "lon": -0.4821,
+    "importance": 4
+  },
+  {
+    "name": "Southall",
+    "lat": 51.509,
+    "lon": -0.3713,
+    "importance": 4
+  },
+  {
+    "name": "Tournai",
+    "lat": 50.6071,
+    "lon": 3.3893,
+    "importance": 4
+  },
+  {
+    "name": "Ostend",
+    "lat": 51.2155,
+    "lon": 2.927,
+    "importance": 4
+  },
+  {
+    "name": "Royal Tunbridge Wells",
+    "lat": 51.1332,
+    "lon": 0.2626,
+    "importance": 4
+  },
+  {
+    "name": "Wimbledon",
+    "lat": 51.4221,
+    "lon": -0.2081,
+    "importance": 4
+  },
+  {
+    "name": "Stamford Hill",
+    "lat": 51.5687,
+    "lon": -0.0733,
+    "importance": 4
+  },
+  {
+    "name": "Folkestone",
+    "lat": 51.0817,
+    "lon": 1.1673,
+    "importance": 4
+  },
+  {
+    "name": "Brixton",
+    "lat": 51.4659,
+    "lon": -0.1065,
+    "importance": 4
+  },
+  {
+    "name": "Hounslow",
+    "lat": 51.4684,
+    "lon": -0.3609,
+    "importance": 4
+  },
+  {
+    "name": "Chingford",
+    "lat": 51.6303,
+    "lon": 0.0005,
+    "importance": 4
+  },
+  {
+    "name": "Finchley",
+    "lat": 51.601,
+    "lon": -0.1952,
+    "importance": 4
+  },
+  {
+    "name": "Cricklewood",
+    "lat": 51.5567,
+    "lon": -0.2155,
+    "importance": 4
+  },
+  {
+    "name": "Waterlooville",
+    "lat": 50.8807,
+    "lon": -1.0304,
+    "importance": 4
+  },
+  {
+    "name": "Bognor Regis",
+    "lat": 50.7821,
+    "lon": -0.6798,
+    "importance": 4
+  },
+  {
+    "name": "Kettering",
+    "lat": 52.3984,
+    "lon": -0.7257,
+    "importance": 4
+  },
+  {
+    "name": "Mitcham",
+    "lat": 51.4032,
+    "lon": -0.1683,
+    "importance": 4
+  },
+  {
+    "name": "Ashford",
+    "lat": 51.1465,
+    "lon": 0.8738,
+    "importance": 4
+  },
+  {
+    "name": "Villeneuve-d'Ascq",
+    "lat": 50.6167,
+    "lon": 3.1666,
+    "importance": 4
+  },
+  {
+    "name": "Aldershot",
+    "lat": 51.2483,
+    "lon": -0.7639,
+    "importance": 4
+  },
+  {
+    "name": "Barking",
+    "lat": 51.5333,
+    "lon": 0.0833,
+    "importance": 4
+  },
+  {
+    "name": "Margate",
+    "lat": 51.3813,
+    "lon": 1.3862,
+    "importance": 4
+  },
+  {
+    "name": "Chelsea",
+    "lat": 51.4875,
+    "lon": -0.1694,
+    "importance": 4
+  },
+  {
+    "name": "Welwyn Garden City",
+    "lat": 51.8017,
+    "lon": -0.2069,
+    "importance": 3
+  },
+  {
+    "name": "Farnborough",
+    "lat": 51.2942,
+    "lon": -0.7557,
+    "importance": 3
+  },
+  {
+    "name": "Littlehampton",
+    "lat": 50.8114,
+    "lon": -0.5408,
+    "importance": 3
+  },
+  {
+    "name": "Streatham",
+    "lat": 51.429,
+    "lon": -0.1318,
+    "importance": 3
+  },
+  {
+    "name": "Sarcelles",
+    "lat": 48.9974,
+    "lon": 2.3782,
+    "importance": 3
+  },
+  {
+    "name": "Evreux",
+    "lat": 49.0241,
+    "lon": 1.1508,
+    "importance": 3
+  },
+  {
+    "name": "Cergy",
+    "lat": 49.0365,
+    "lon": 2.0761,
+    "importance": 3
+  },
+  {
+    "name": "Cheshunt",
+    "lat": 51.7002,
+    "lon": -0.0303,
+    "importance": 3
+  },
+  {
+    "name": "Corby",
+    "lat": 52.4964,
+    "lon": -0.6894,
+    "importance": 3
+  },
+  {
+    "name": "Dartford",
+    "lat": 51.4466,
+    "lon": 0.2142,
+    "importance": 3
+  },
+  {
+    "name": "Roeselare",
+    "lat": 50.9465,
+    "lon": 3.1227,
+    "importance": 3
+  },
+  {
+    "name": "Saint-Quentin",
+    "lat": 49.8489,
+    "lon": 3.2876,
+    "importance": 3
+  },
+  {
+    "name": "Canterbury",
+    "lat": 51.279,
+    "lon": 1.0799,
+    "importance": 3
+  },
+  {
+    "name": "South Croydon",
+    "lat": 51.3622,
+    "lon": -0.0942,
+    "importance": 3
+  },
+  {
+    "name": "Leytonstone",
+    "lat": 51.5686,
+    "lon": 0.0077,
+    "importance": 3
+  },
+  {
+    "name": "Gravesend",
+    "lat": 51.4421,
+    "lon": 0.3711,
+    "importance": 3
+  },
+  {
+    "name": "Meaux",
+    "lat": 48.9601,
+    "lon": 2.8788,
+    "importance": 3
+  },
+  {
+    "name": "Acton",
+    "lat": 51.509,
+    "lon": -0.2762,
+    "importance": 3
+  },
+  {
+    "name": "Braintree",
+    "lat": 51.8782,
+    "lon": 0.5529,
+    "importance": 3
+  },
+  {
+    "name": "Beauvais",
+    "lat": 49.4333,
+    "lon": 2.0833,
+    "importance": 3
+  },
+  {
+    "name": "Brentwood",
+    "lat": 51.6213,
+    "lon": 0.3056,
+    "importance": 3
+  },
+  {
+    "name": "Esher",
+    "lat": 51.3697,
+    "lon": -0.3669,
+    "importance": 3
+  },
+  {
+    "name": "Reigate",
+    "lat": 51.2374,
+    "lon": -0.2058,
+    "importance": 3
+  },
+  {
+    "name": "Mouscron",
+    "lat": 50.745,
+    "lon": 3.2064,
+    "importance": 3
+  },
+  {
+    "name": "Dunstable",
+    "lat": 51.8857,
+    "lon": -0.5229,
+    "importance": 3
+  },
+  {
+    "name": "Redhill",
+    "lat": 51.2405,
+    "lon": -0.1704,
+    "importance": 3
+  },
+  {
+    "name": "Horsham",
+    "lat": 51.0631,
+    "lon": -0.3276,
+    "importance": 3
+  },
+  {
+    "name": "Staines",
+    "lat": 51.4309,
+    "lon": -0.5061,
+    "importance": 3
+  },
+  {
+    "name": "Wellingborough",
+    "lat": 52.3027,
+    "lon": -0.6945,
+    "importance": 3
+  },
+  {
+    "name": "Clacton-on-Sea",
+    "lat": 51.7897,
+    "lon": 1.156,
+    "importance": 3
+  },
+  {
+    "name": "Bletchley",
+    "lat": 51.9933,
+    "lon": -0.7347,
+    "importance": 3
+  },
+  {
+    "name": "Hayes",
+    "lat": 51.5158,
+    "lon": -0.4234,
+    "importance": 3
+  },
+  {
+    "name": "Eltham",
+    "lat": 51.4506,
+    "lon": 0.0522,
+    "importance": 3
+  },
+  {
+    "name": "Sittingbourne",
+    "lat": 51.3413,
+    "lon": 0.7328,
+    "importance": 3
+  },
+  {
+    "name": "South Benfleet",
+    "lat": 51.553,
+    "lon": 0.5596,
+    "importance": 3
+  },
+  {
+    "name": "Morden",
+    "lat": 51.3982,
+    "lon": -0.1984,
+    "importance": 3
+  },
+  {
+    "name": "Arras",
+    "lat": 50.293,
+    "lon": 2.7819,
+    "importance": 3
+  },
+  {
+    "name": "Boulogne-sur-Mer",
+    "lat": 50.7249,
+    "lon": 1.6137,
+    "importance": 3
+  },
+  {
+    "name": "Douai",
+    "lat": 50.3707,
+    "lon": 3.0792,
+    "importance": 3
+  },
+  {
+    "name": "Middelburg",
+    "lat": 51.5,
+    "lon": 3.6139,
+    "importance": 3
+  },
+  {
+    "name": "Banstead",
+    "lat": 51.3223,
+    "lon": -0.2069,
+    "importance": 3
+  },
+  {
+    "name": "Epinay-sur-Seine",
+    "lat": 48.9535,
+    "lon": 2.3151,
+    "importance": 3
+  },
+  {
+    "name": "Havant",
+    "lat": 50.8567,
+    "lon": -0.9856,
+    "importance": 3
+  },
+  {
+    "name": "Carshalton",
+    "lat": 51.3683,
+    "lon": -0.1676,
+    "importance": 3
+  },
+  {
+    "name": "Vlissingen",
+    "lat": 51.4425,
+    "lon": 3.5736,
+    "importance": 3
+  },
+  {
+    "name": "Catford",
+    "lat": 51.4449,
+    "lon": -0.0204,
+    "importance": 3
+  },
+  {
+    "name": "Valenciennes",
+    "lat": 50.3591,
+    "lon": 3.5251,
+    "importance": 3
+  },
+  {
+    "name": "Willesden",
+    "lat": 51.5333,
+    "lon": -0.2333,
+    "importance": 3
+  },
+  {
+    "name": "Mantes-la-Jolie",
+    "lat": 48.9905,
+    "lon": 1.7167,
+    "importance": 3
+  },
+  {
+    "name": "Compiegne",
+    "lat": 49.4179,
+    "lon": 2.8261,
+    "importance": 3
+  },
+  {
+    "name": "Leatherhead",
+    "lat": 51.2965,
+    "lon": -0.3338,
+    "importance": 3
+  },
+  {
+    "name": "Letchworth Garden City",
+    "lat": 51.9794,
+    "lon": -0.2266,
+    "importance": 3
+  },
+  {
+    "name": "Wattrelos",
+    "lat": 50.7012,
+    "lon": 3.2181,
+    "importance": 3
+  },
+  {
+    "name": "Bury St Edmunds",
+    "lat": 52.2463,
+    "lon": 0.7111,
+    "importance": 3
+  },
+  {
+    "name": "Welling",
+    "lat": 51.4625,
+    "lon": 0.1076,
+    "importance": 3
+  },
+  {
+    "name": "Dover",
+    "lat": 51.126,
+    "lon": 1.3126,
+    "importance": 3
+  },
+  {
+    "name": "Hatfield",
+    "lat": 51.7634,
+    "lon": -0.2242,
+    "importance": 3
+  },
+  {
+    "name": "Holloway",
+    "lat": 51.5524,
+    "lon": -0.125,
+    "importance": 3
+  },
+  {
+    "name": "Wokingham",
+    "lat": 51.4112,
+    "lon": -0.8357,
+    "importance": 3
+  },
+  {
+    "name": "Bexhill-on-Sea",
+    "lat": 50.8502,
+    "lon": 0.4709,
+    "importance": 3
+  },
+  {
+    "name": "Ewell",
+    "lat": 51.3495,
+    "lon": -0.2494,
+    "importance": 3
+  },
+  {
+    "name": "Garges-les-Gonesse",
+    "lat": 48.9679,
+    "lon": 2.3978,
+    "importance": 3
+  },
+  {
+    "name": "Shepherds Bush",
+    "lat": 51.505,
+    "lon": -0.2211,
+    "importance": 3
+  },
+  {
+    "name": "Fleet",
+    "lat": 51.2833,
+    "lon": -0.8333,
+    "importance": 3
+  },
+  {
+    "name": "Tonbridge",
+    "lat": 51.1953,
+    "lon": 0.2736,
+    "importance": 3
+  },
+  {
+    "name": "Marcq-en-Baroeul",
+    "lat": 50.6667,
+    "lon": 3.0833,
+    "importance": 3
+  },
+  {
+    "name": "Ramsgate",
+    "lat": 51.3357,
+    "lon": 1.418,
+    "importance": 3
+  },
+  {
+    "name": "Lens",
+    "lat": 50.433,
+    "lon": 2.8279,
+    "importance": 3
+  },
+  {
+    "name": "Canvey Island",
+    "lat": 51.522,
+    "lon": 0.5809,
+    "importance": 3
+  },
+  {
+    "name": "Surbiton",
+    "lat": 51.3915,
+    "lon": -0.2983,
+    "importance": 3
+  },
+  {
+    "name": "Greenford",
+    "lat": 51.5287,
+    "lon": -0.3551,
+    "importance": 3
+  },
+  {
+    "name": "Bishops Stortford",
+    "lat": 51.8711,
+    "lon": 0.1587,
+    "importance": 3
+  },
+  {
+    "name": "Rushden",
+    "lat": 52.2893,
+    "lon": -0.6018,
+    "importance": 3
+  },
+  {
+    "name": "Leighton Buzzard",
+    "lat": 51.9172,
+    "lon": -0.658,
+    "importance": 3
+  },
+  {
+    "name": "Villepinte",
+    "lat": 48.962,
+    "lon": 2.5325,
+    "importance": 3
+  },
+  {
+    "name": "Heston",
+    "lat": 51.4836,
+    "lon": -0.3758,
+    "importance": 3
+  },
+  {
+    "name": "Farnham",
+    "lat": 51.2144,
+    "lon": -0.8005,
+    "importance": 3
+  },
+  {
+    "name": "Stratford",
+    "lat": 51.5333,
+    "lon": 0.0,
+    "importance": 3
+  },
+  {
+    "name": "Herne Bay",
+    "lat": 51.373,
+    "lon": 1.1286,
+    "importance": 3
+  },
+  {
+    "name": "Cambrai",
+    "lat": 50.176,
+    "lon": 3.2347,
+    "importance": 3
+  },
+  {
+    "name": "Conflans-Sainte-Honorine",
+    "lat": 49.0016,
+    "lon": 2.0969,
+    "importance": 3
+  },
+  {
+    "name": "Billericay",
+    "lat": 51.6287,
+    "lon": 0.4196,
+    "importance": 3
+  },
+  {
+    "name": "Hitchin",
+    "lat": 51.9492,
+    "lon": -0.285,
+    "importance": 3
+  },
+  {
+    "name": "Waregem",
+    "lat": 50.889,
+    "lon": 3.4276,
+    "importance": 3
+  },
+  {
+    "name": "Dieppe",
+    "lat": 49.9216,
+    "lon": 1.0777,
+    "importance": 3
+  },
+  {
+    "name": "Tremblay-en-France",
+    "lat": 48.9496,
+    "lon": 2.5684,
+    "importance": 3
+  },
+  {
+    "name": "Hoddesdon",
+    "lat": 51.7615,
+    "lon": -0.0114,
+    "importance": 3
+  },
+  {
+    "name": "Ieper",
+    "lat": 50.8511,
+    "lon": 2.8857,
+    "importance": 3
+  },
+  {
+    "name": "Lievin",
+    "lat": 50.4198,
+    "lon": 2.7807,
+    "importance": 3
+  },
+  {
+    "name": "Chiswick",
+    "lat": 51.4927,
+    "lon": -0.258,
+    "importance": 3
+  },
+  {
+    "name": "Franconville",
+    "lat": 48.9833,
+    "lon": 2.2333,
+    "importance": 3
+  },
+  {
+    "name": "Bicester",
+    "lat": 51.9,
+    "lon": -1.1536,
+    "importance": 3
+  },
+  {
+    "name": "Haywards Heath",
+    "lat": 50.9977,
+    "lon": -0.1031,
+    "importance": 3
+  },
+  {
+    "name": "Knokke-Heist",
+    "lat": 51.35,
+    "lon": 3.2667,
+    "importance": 3
+  },
+  {
+    "name": "Wigston Magna",
+    "lat": 52.5813,
+    "lon": -1.0925,
+    "importance": 3
+  },
+  {
+    "name": "Strood",
+    "lat": 51.3932,
+    "lon": 0.4771,
+    "importance": 3
+  },
+  {
+    "name": "Windsor",
+    "lat": 51.4833,
+    "lon": -0.6,
+    "importance": 3
+  },
+  {
+    "name": "Wickford",
+    "lat": 51.611,
+    "lon": 0.5233,
+    "importance": 3
+  },
+  {
+    "name": "Stains",
+    "lat": 48.95,
+    "lon": 2.3833,
+    "importance": 3
+  },
+  {
+    "name": "Borehamwood",
+    "lat": 51.6547,
+    "lon": -0.2776,
+    "importance": 3
+  },
+  {
+    "name": "Rayleigh",
+    "lat": 51.5857,
+    "lon": 0.6046,
+    "importance": 3
+  },
+  {
+    "name": "Les Mureaux",
+    "lat": 48.9917,
+    "lon": 1.9097,
+    "importance": 3
+  },
+  {
+    "name": "Sint-Amandsberg",
+    "lat": 51.0595,
+    "lon": 3.7494,
+    "importance": 3
+  },
+  {
+    "name": "Lower Earley",
+    "lat": 51.4271,
+    "lon": -0.9198,
+    "importance": 3
+  },
+  {
+    "name": "Menen",
+    "lat": 50.7972,
+    "lon": 3.1225,
+    "importance": 3
+  },
+  {
+    "name": "Oudenaarde",
+    "lat": 50.8517,
+    "lon": 3.6089,
+    "importance": 3
+  },
+  {
+    "name": "Creil",
+    "lat": 49.2567,
+    "lon": 2.4848,
+    "importance": 3
+  },
+  {
+    "name": "Thamesmead",
+    "lat": 51.5037,
+    "lon": 0.1198,
+    "importance": 3
+  },
+  {
+    "name": "Chichester",
+    "lat": 50.8367,
+    "lon": -0.78,
+    "importance": 3
+  },
+  {
+    "name": "Evergem",
+    "lat": 51.1131,
+    "lon": 3.7098,
+    "importance": 3
+  },
+  {
+    "name": "Bethune",
+    "lat": 50.5296,
+    "lon": 2.64,
+    "importance": 3
+  },
+  {
+    "name": "Epsom",
+    "lat": 51.3305,
+    "lon": -0.2701,
+    "importance": 3
+  },
+  {
+    "name": "Soissons",
+    "lat": 49.3817,
+    "lon": 3.3236,
+    "importance": 3
+  },
+  {
+    "name": "Ruislip",
+    "lat": 51.5734,
+    "lon": -0.4234,
+    "importance": 3
+  },
+  {
+    "name": "Wevelgem",
+    "lat": 50.8,
+    "lon": 3.1667,
+    "importance": 3
+  },
+  {
+    "name": "Saint Neots",
+    "lat": 52.2167,
+    "lon": -0.2667,
+    "importance": 3
+  },
+  {
+    "name": "Canning Town",
+    "lat": 51.5136,
+    "lon": 0.0195,
+    "importance": 3
+  },
+  {
+    "name": "Burgess Hill",
+    "lat": 50.9584,
+    "lon": -0.1329,
+    "importance": 3
+  },
+  {
+    "name": "Sotteville-les-Rouen",
+    "lat": 49.4097,
+    "lon": 1.09,
+    "importance": 3
+  },
+  {
+    "name": "Greenwich",
+    "lat": 51.4778,
+    "lon": -0.0118,
+    "importance": 3
+  },
+  {
+    "name": "Deal",
+    "lat": 51.2232,
+    "lon": 1.4028,
+    "importance": 2
+  },
+  {
+    "name": "Pontoise",
+    "lat": 49.05,
+    "lon": 2.1,
+    "importance": 2
+  },
+  {
+    "name": "Harpenden",
+    "lat": 51.8168,
+    "lon": -0.3571,
+    "importance": 2
+  },
+  {
+    "name": "Whitstable",
+    "lat": 51.3607,
+    "lon": 1.0257,
+    "importance": 2
+  },
+  {
+    "name": "Camberley",
+    "lat": 51.337,
+    "lon": -0.7426,
+    "importance": 2
+  },
+  {
+    "name": "Goussainville",
+    "lat": 49.0137,
+    "lon": 2.4659,
+    "importance": 2
+  },
+  {
+    "name": "Barnet",
+    "lat": 51.65,
+    "lon": -0.2,
+    "importance": 2
+  },
+  {
+    "name": "Lomme",
+    "lat": 50.6436,
+    "lon": 2.9872,
+    "importance": 2
+  },
+  {
+    "name": "Deinze",
+    "lat": 50.9817,
+    "lon": 3.531,
+    "importance": 2
+  },
+  {
+    "name": "Egham",
+    "lat": 51.4316,
+    "lon": -0.5524,
+    "importance": 2
+  },
+  {
+    "name": "Sevenoaks",
+    "lat": 51.2727,
+    "lon": 0.1888,
+    "importance": 2
+  },
+  {
+    "name": "Felixstowe",
+    "lat": 51.9637,
+    "lon": 1.3511,
+    "importance": 2
+  },
+  {
+    "name": "Kilburn",
+    "lat": 51.553,
+    "lon": -0.1916,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Etienne-du-Rouvray",
+    "lat": 49.3779,
+    "lon": 1.1047,
+    "importance": 2
+  },
+  {
+    "name": "Stanford-le-Hope",
+    "lat": 51.5227,
+    "lon": 0.4342,
+    "importance": 2
+  },
+  {
+    "name": "Laon",
+    "lat": 49.5631,
+    "lon": 3.6271,
+    "importance": 2
+  },
+  {
+    "name": "Rochester",
+    "lat": 51.3876,
+    "lon": 0.5055,
+    "importance": 2
+  },
+  {
+    "name": "Lambersart",
+    "lat": 50.65,
+    "lon": 3.0333,
+    "importance": 2
+  },
+  {
+    "name": "Wood Green",
+    "lat": 51.6,
+    "lon": -0.1167,
+    "importance": 2
+  },
+  {
+    "name": "Ermont",
+    "lat": 48.99,
+    "lon": 2.258,
+    "importance": 2
+  },
+  {
+    "name": "Muswell Hill",
+    "lat": 51.5905,
+    "lon": -0.1421,
+    "importance": 2
+  },
+  {
+    "name": "Terneuzen",
+    "lat": 51.3358,
+    "lon": 3.8278,
+    "importance": 2
+  },
+  {
+    "name": "Pierrefitte-sur-Seine",
+    "lat": 48.9669,
+    "lon": 2.361,
+    "importance": 2
+  },
+  {
+    "name": "Sunbury-on-Thames",
+    "lat": 51.4042,
+    "lon": -0.4182,
+    "importance": 2
+  },
+  {
+    "name": "Bow",
+    "lat": 51.5261,
+    "lon": -0.0167,
+    "importance": 2
+  },
+  {
+    "name": "Taverny",
+    "lat": 49.0254,
+    "lon": 2.2169,
+    "importance": 2
+  },
+  {
+    "name": "Haverhill",
+    "lat": 52.0823,
+    "lon": 0.4389,
+    "importance": 2
+  },
+  {
+    "name": "Villiers-le-Bel",
+    "lat": 49.0087,
+    "lon": 2.3982,
+    "importance": 2
+  },
+  {
+    "name": "Sannois",
+    "lat": 48.9667,
+    "lon": 2.25,
+    "importance": 2
+  },
+  {
+    "name": "Gonesse",
+    "lat": 48.9869,
+    "lon": 2.4489,
+    "importance": 2
+  },
+  {
+    "name": "Ath",
+    "lat": 50.6294,
+    "lon": 3.778,
+    "importance": 2
+  },
+  {
+    "name": "Highbury",
+    "lat": 51.55,
+    "lon": -0.1,
+    "importance": 2
+  },
+  {
+    "name": "Armentieres",
+    "lat": 50.6857,
+    "lon": 2.8821,
+    "importance": 2
+  },
+  {
+    "name": "East Grinstead",
+    "lat": 51.1238,
+    "lon": -0.0061,
+    "importance": 2
+  },
+  {
+    "name": "Le Grand-Quevilly",
+    "lat": 49.4008,
+    "lon": 1.0458,
+    "importance": 2
+  },
+  {
+    "name": "Abbeville",
+    "lat": 50.1052,
+    "lon": 1.8355,
+    "importance": 2
+  },
+  {
+    "name": "Izegem",
+    "lat": 50.914,
+    "lon": 3.2138,
+    "importance": 2
+  },
+  {
+    "name": "Camden Town",
+    "lat": 51.5406,
+    "lon": -0.1433,
+    "importance": 2
+  },
+  {
+    "name": "Ryde",
+    "lat": 50.73,
+    "lon": -1.1621,
+    "importance": 2
+  },
+  {
+    "name": "Vernon",
+    "lat": 49.0929,
+    "lon": 1.4633,
+    "importance": 2
+  },
+  {
+    "name": "Northolt",
+    "lat": 51.5485,
+    "lon": -0.3678,
+    "importance": 2
+  },
+  {
+    "name": "Harelbeke",
+    "lat": 50.8534,
+    "lon": 3.3093,
+    "importance": 2
+  },
+  {
+    "name": "Hertford",
+    "lat": 51.7959,
+    "lon": -0.0785,
+    "importance": 2
+  },
+  {
+    "name": "Crowthorne",
+    "lat": 51.3703,
+    "lon": -0.7922,
+    "importance": 2
+  },
+  {
+    "name": "Coulsdon",
+    "lat": 51.32,
+    "lon": -0.1409,
+    "importance": 2
+  },
+  {
+    "name": "Hornchurch",
+    "lat": 51.5568,
+    "lon": 0.2166,
+    "importance": 2
+  },
+  {
+    "name": "Henin-Beaumont",
+    "lat": 50.4136,
+    "lon": 2.9649,
+    "importance": 2
+  },
+  {
+    "name": "Witham",
+    "lat": 51.8001,
+    "lon": 0.6404,
+    "importance": 2
+  },
+  {
+    "name": "Coudekerque-Branche",
+    "lat": 51.0229,
+    "lon": 2.3936,
+    "importance": 2
+  },
+  {
+    "name": "Herblay-sur-Seine",
+    "lat": 48.9899,
+    "lon": 2.1699,
+    "importance": 2
+  },
+  {
+    "name": "Blackheath",
+    "lat": 51.4647,
+    "lon": 0.0079,
+    "importance": 2
+  },
+  {
+    "name": "Pitsea",
+    "lat": 51.5639,
+    "lon": 0.5086,
+    "importance": 2
+  },
+  {
+    "name": "Chalk Farm",
+    "lat": 51.5431,
+    "lon": -0.1499,
+    "importance": 2
+  },
+  {
+    "name": "Thetford",
+    "lat": 52.4167,
+    "lon": 0.75,
+    "importance": 2
+  },
+  {
+    "name": "Bruay-la-Buissiere",
+    "lat": 50.4833,
+    "lon": 2.55,
+    "importance": 2
+  },
+  {
+    "name": "Lisieux",
+    "lat": 49.1466,
+    "lon": 0.2293,
+    "importance": 2
+  },
+  {
+    "name": "Zottegem",
+    "lat": 50.8695,
+    "lon": 3.8105,
+    "importance": 2
+  },
+  {
+    "name": "Feltham",
+    "lat": 51.4462,
+    "lon": -0.4139,
+    "importance": 2
+  },
+  {
+    "name": "Herouville-Saint-Clair",
+    "lat": 49.2109,
+    "lon": -0.3065,
+    "importance": 2
+  },
+  {
+    "name": "Ronse",
+    "lat": 50.7457,
+    "lon": 3.6005,
+    "importance": 2
+  },
+  {
+    "name": "Eaubonne",
+    "lat": 48.9971,
+    "lon": 2.2825,
+    "importance": 2
+  },
+  {
+    "name": "Huntingdon",
+    "lat": 52.3305,
+    "lon": -0.1865,
+    "importance": 2
+  },
+  {
+    "name": "Daventry",
+    "lat": 52.2569,
+    "lon": -1.1607,
+    "importance": 2
+  },
+  {
+    "name": "New Malden",
+    "lat": 51.4006,
+    "lon": -0.2617,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Pol-sur-Mer",
+    "lat": 51.0312,
+    "lon": 2.3398,
+    "importance": 2
+  },
+  {
+    "name": "La Madeleine",
+    "lat": 50.646,
+    "lon": 3.0758,
+    "importance": 2
+  },
+  {
+    "name": "Hanworth",
+    "lat": 51.4333,
+    "lon": -0.3833,
+    "importance": 2
+  },
+  {
+    "name": "Wondelgem",
+    "lat": 51.087,
+    "lon": 3.7091,
+    "importance": 2
+  },
+  {
+    "name": "Zwevegem",
+    "lat": 50.8127,
+    "lon": 3.3385,
+    "importance": 2
+  },
+  {
+    "name": "Hazebrouck",
+    "lat": 50.7237,
+    "lon": 2.5373,
+    "importance": 2
+  },
+  {
+    "name": "Broadstairs",
+    "lat": 51.3584,
+    "lon": 1.4419,
+    "importance": 2
+  },
+  {
+    "name": "Grande-Synthe",
+    "lat": 51.0154,
+    "lon": 2.2997,
+    "importance": 2
+  },
+  {
+    "name": "Mont-Saint-Aignan",
+    "lat": 49.4631,
+    "lon": 1.0936,
+    "importance": 2
+  },
+  {
+    "name": "Mons-en-Baroeul",
+    "lat": 50.6333,
+    "lon": 3.1167,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Ouen-l'Aumone",
+    "lat": 49.0435,
+    "lon": 2.1213,
+    "importance": 2
+  },
+  {
+    "name": "Market Harborough",
+    "lat": 52.4776,
+    "lon": -0.9205,
+    "importance": 2
+  },
+  {
+    "name": "Walton-on-Thames",
+    "lat": 51.3868,
+    "lon": -0.4132,
+    "importance": 2
+  },
+  {
+    "name": "Woodford Green",
+    "lat": 51.6094,
+    "lon": 0.0233,
+    "importance": 2
+  },
+  {
+    "name": "Maisons-Laffitte",
+    "lat": 48.9526,
+    "lon": 2.1452,
+    "importance": 2
+  },
+  {
+    "name": "Le Petit-Quevilly",
+    "lat": 49.4134,
+    "lon": 1.0615,
+    "importance": 2
+  },
+  {
+    "name": "Godalming",
+    "lat": 51.1858,
+    "lon": -0.6149,
+    "importance": 2
+  },
+  {
+    "name": "Potters Bar",
+    "lat": 51.6935,
+    "lon": -0.1784,
+    "importance": 2
+  },
+  {
+    "name": "Seaford",
+    "lat": 50.7714,
+    "lon": 0.1027,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Ghislain",
+    "lat": 50.4482,
+    "lon": 3.8189,
+    "importance": 2
+  },
+  {
+    "name": "Borssele",
+    "lat": 51.4233,
+    "lon": 3.7347,
+    "importance": 2
+  },
+  {
+    "name": "Sudbury",
+    "lat": 52.0389,
+    "lon": 0.7312,
+    "importance": 2
+  },
+  {
+    "name": "Loos",
+    "lat": 50.6098,
+    "lon": 3.0187,
+    "importance": 2
+  },
+  {
+    "name": "Maldegem",
+    "lat": 51.2074,
+    "lon": 3.4451,
+    "importance": 2
+  },
+  {
+    "name": "Fecamp",
+    "lat": 49.7579,
+    "lon": 0.3746,
+    "importance": 2
+  },
+  {
+    "name": "Berkhamsted",
+    "lat": 51.7604,
+    "lon": -0.5653,
+    "importance": 2
+  },
+  {
+    "name": "Cormeilles-en-Parisis",
+    "lat": 48.9711,
+    "lon": 2.2049,
+    "importance": 2
+  },
+  {
+    "name": "Zedelgem",
+    "lat": 51.1424,
+    "lon": 3.1368,
+    "importance": 2
+  },
+  {
+    "name": "Koksijde",
+    "lat": 51.1164,
+    "lon": 2.6377,
+    "importance": 2
+  },
+  {
+    "name": "Swanley",
+    "lat": 51.3972,
+    "lon": 0.1732,
+    "importance": 2
+  },
+  {
+    "name": "Rottingdean",
+    "lat": 50.8098,
+    "lon": -0.0594,
+    "importance": 2
+  },
+  {
+    "name": "Amersham",
+    "lat": 51.6667,
+    "lon": -0.6167,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Lo",
+    "lat": 49.1162,
+    "lon": -1.0903,
+    "importance": 2
+  },
+  {
+    "name": "Acheres",
+    "lat": 48.9612,
+    "lon": 2.0688,
+    "importance": 2
+  },
+  {
+    "name": "Hadley Wood",
+    "lat": 51.6667,
+    "lon": -0.1698,
+    "importance": 2
+  },
+  {
+    "name": "Deuil-la-Barre",
+    "lat": 48.9767,
+    "lon": 2.3272,
+    "importance": 2
+  },
+  {
+    "name": "Oostkamp",
+    "lat": 51.1543,
+    "lon": 3.2313,
+    "importance": 2
+  },
+  {
+    "name": "Richmond",
+    "lat": 51.4617,
+    "lon": -0.3063,
+    "importance": 2
+  },
+  {
+    "name": "Maldon",
+    "lat": 51.7311,
+    "lon": 0.6746,
+    "importance": 2
+  },
+  {
+    "name": "Denain",
+    "lat": 50.3293,
+    "lon": 3.3943,
+    "importance": 2
+  },
+  {
+    "name": "Croix",
+    "lat": 50.6785,
+    "lon": 3.1493,
+    "importance": 2
+  },
+  {
+    "name": "Horley",
+    "lat": 51.1742,
+    "lon": -0.1592,
+    "importance": 2
+  },
+  {
+    "name": "Barnes",
+    "lat": 51.4735,
+    "lon": -0.2484,
+    "importance": 2
+  },
+  {
+    "name": "Montmorency",
+    "lat": 48.9883,
+    "lon": 2.3434,
+    "importance": 2
+  },
+  {
+    "name": "March",
+    "lat": 52.5513,
+    "lon": 0.0883,
+    "importance": 2
+  },
+  {
+    "name": "Stowmarket",
+    "lat": 52.1889,
+    "lon": 0.9977,
+    "importance": 2
+  },
+  {
+    "name": "Notting Hill",
+    "lat": 51.5115,
+    "lon": -0.2059,
+    "importance": 2
+  },
+  {
+    "name": "Bordon",
+    "lat": 51.1136,
+    "lon": -0.8625,
+    "importance": 2
+  },
+  {
+    "name": "Caterham",
+    "lat": 51.2823,
+    "lon": -0.0789,
+    "importance": 2
+  },
+  {
+    "name": "Wallington",
+    "lat": 51.364,
+    "lon": -0.1537,
+    "importance": 2
+  },
+  {
+    "name": "Sandhurst",
+    "lat": 51.3468,
+    "lon": -0.7865,
+    "importance": 2
+  },
+  {
+    "name": "Harwich",
+    "lat": 51.9419,
+    "lon": 1.2844,
+    "importance": 2
+  },
+  {
+    "name": "Pimlico",
+    "lat": 51.489,
+    "lon": -0.137,
+    "importance": 2
+  },
+  {
+    "name": "Vaureal",
+    "lat": 49.0333,
+    "lon": 2.0333,
+    "importance": 2
+  },
+  {
+    "name": "Chesham",
+    "lat": 51.7,
+    "lon": -0.6,
+    "importance": 2
+  },
+  {
+    "name": "Gerrards Cross",
+    "lat": 51.5861,
+    "lon": -0.5554,
+    "importance": 2
+  },
+  {
+    "name": "Crowborough",
+    "lat": 51.061,
+    "lon": 0.1634,
+    "importance": 1
+  },
+  {
+    "name": "Isleworth",
+    "lat": 51.4752,
+    "lon": -0.3425,
+    "importance": 1
+  },
+  {
+    "name": "Newmarket",
+    "lat": 52.2447,
+    "lon": 0.4042,
+    "importance": 1
+  },
+  {
+    "name": "Yateley",
+    "lat": 51.343,
+    "lon": -0.8298,
+    "importance": 1
+  },
+  {
+    "name": "Halluin",
+    "lat": 50.7863,
+    "lon": 3.1261,
+    "importance": 1
+  },
+  {
+    "name": "Sandown",
+    "lat": 50.6516,
+    "lon": -1.161,
+    "importance": 1
+  },
+  {
+    "name": "Chalfont Saint Peter",
+    "lat": 51.6088,
+    "lon": -0.5562,
+    "importance": 1
+  },
+  {
+    "name": "Boussu",
+    "lat": 50.4342,
+    "lon": 3.7944,
+    "importance": 1
+  },
+  {
+    "name": "Ampthill",
+    "lat": 52.0269,
+    "lon": -0.4957,
+    "importance": 1
+  },
+  {
+    "name": "Portslade",
+    "lat": 50.8429,
+    "lon": -0.2161,
+    "importance": 1
+  },
+  {
+    "name": "Chislehurst",
+    "lat": 51.4171,
+    "lon": 0.0686,
+    "importance": 1
+  },
+  {
+    "name": "Kempston Hardwick",
+    "lat": 52.0896,
+    "lon": -0.4991,
+    "importance": 1
+  },
+  {
+    "name": "Hailsham",
+    "lat": 50.8622,
+    "lon": 0.2577,
+    "importance": 1
+  },
+  {
+    "name": "Mantes-la-Ville",
+    "lat": 48.9737,
+    "lon": 1.7025,
+    "importance": 1
+  },
+  {
+    "name": "Kempston",
+    "lat": 52.116,
+    "lon": -0.5004,
+    "importance": 1
+  },
+  {
+    "name": "Faversham",
+    "lat": 51.3148,
+    "lon": 0.8886,
+    "importance": 1
+  },
+  {
+    "name": "Assebroek",
+    "lat": 51.1937,
+    "lon": 3.2623,
+    "importance": 1
+  },
+  {
+    "name": "Saint-Gratien",
+    "lat": 48.9735,
+    "lon": 2.2873,
+    "importance": 1
+  },
+  {
+    "name": "Hem",
+    "lat": 50.6526,
+    "lon": 3.1868,
+    "importance": 1
+  },
+  {
+    "name": "Lochristi",
+    "lat": 51.0964,
+    "lon": 3.8319,
+    "importance": 1
+  },
+  {
+    "name": "Nogent-sur-Oise",
+    "lat": 49.2716,
+    "lon": 2.4707,
+    "importance": 1
+  },
+  {
+    "name": "Soho",
+    "lat": 51.5144,
+    "lon": -0.1353,
+    "importance": 1
+  },
+  {
+    "name": "Poperinge",
+    "lat": 50.8539,
+    "lon": 2.7266,
+    "importance": 1
+  },
+  {
+    "name": "Weybridge",
+    "lat": 51.3718,
+    "lon": -0.4597,
+    "importance": 1
+  },
+  {
+    "name": "Blackwall",
+    "lat": 51.5097,
+    "lon": -0.0016,
+    "importance": 1
+  },
+  {
+    "name": "South Ockendon",
+    "lat": 51.508,
+    "lon": 0.2833,
+    "importance": 1
+  },
+  {
+    "name": "Chessington",
+    "lat": 51.3624,
+    "lon": -0.3043,
+    "importance": 1
+  },
+  {
+    "name": "Sint-Andries",
+    "lat": 51.197,
+    "lon": 3.1789,
+    "importance": 1
+  },
+  {
+    "name": "Wasquehal",
+    "lat": 50.6704,
+    "lon": 3.1338,
+    "importance": 1
+  },
+  {
+    "name": "Tielt",
+    "lat": 50.9993,
+    "lon": 3.3271,
+    "importance": 1
+  },
+  {
+    "name": "Louviers",
+    "lat": 49.2167,
+    "lon": 1.1667,
+    "importance": 1
+  },
+  {
+    "name": "Shoreham-by-Sea",
+    "lat": 50.8341,
+    "lon": -0.2743,
+    "importance": 1
+  },
+  {
+    "name": "Senlis",
+    "lat": 49.2072,
+    "lon": 2.5866,
+    "importance": 1
+  },
+  {
+    "name": "Pinner",
+    "lat": 51.5938,
+    "lon": -0.3822,
+    "importance": 1
+  },
+  {
+    "name": "Eeklo",
+    "lat": 51.187,
+    "lon": 3.5565,
+    "importance": 1
+  },
+  {
+    "name": "Ely",
+    "lat": 52.3996,
+    "lon": 0.262,
+    "importance": 1
+  },
+  {
+    "name": "Jouy-le-Moutier",
+    "lat": 49.0107,
+    "lon": 2.0403,
+    "importance": 1
+  },
+  {
+    "name": "Hook",
+    "lat": 51.368,
+    "lon": -0.3065,
+    "importance": 1
+  },
+  {
+    "name": "Torhout",
+    "lat": 51.0656,
+    "lon": 3.1008,
+    "importance": 1
+  },
+  {
+    "name": "Golders Green",
+    "lat": 51.5763,
+    "lon": -0.2003,
+    "importance": 1
+  },
+  {
+    "name": "Aalter",
+    "lat": 51.0902,
+    "lon": 3.4469,
+    "importance": 1
+  },
+  {
+    "name": "Emsworth",
+    "lat": 50.8478,
+    "lon": -0.937,
+    "importance": 1
+  },
+  {
+    "name": "Lancing",
+    "lat": 50.8288,
+    "lon": -0.3225,
+    "importance": 1
+  },
+  {
+    "name": "Peacehaven",
+    "lat": 50.7927,
+    "lon": -0.0065,
+    "importance": 1
+  },
+  {
+    "name": "West Molesey",
+    "lat": 51.3999,
+    "lon": -0.38,
+    "importance": 1
+  },
+  {
+    "name": "East Molesey",
+    "lat": 51.3987,
+    "lon": -0.3492,
+    "importance": 1
+  },
+  {
+    "name": "Mitry-Mory",
+    "lat": 48.9833,
+    "lon": 2.6167,
+    "importance": 1
+  },
+  {
+    "name": "Carvin",
+    "lat": 50.4924,
+    "lon": 2.9581,
+    "importance": 1
+  },
+  {
+    "name": "Limay",
+    "lat": 48.9955,
+    "lon": 1.7408,
+    "importance": 1
+  },
+  {
+    "name": "Southsea",
+    "lat": 50.7835,
+    "lon": -1.0907,
+    "importance": 1
+  },
+  {
+    "name": "Wealdstone",
+    "lat": 51.5998,
+    "lon": -0.3371,
+    "importance": 1
+  },
+  {
+    "name": "Avion",
+    "lat": 50.4104,
+    "lon": 2.8305,
+    "importance": 1
+  },
+  {
+    "name": "Uckfield",
+    "lat": 50.9695,
+    "lon": 0.0959,
+    "importance": 1
+  },
+  {
+    "name": "Ronchin",
+    "lat": 50.5988,
+    "lon": 3.0906,
+    "importance": 1
+  },
+  {
+    "name": "Hadleigh",
+    "lat": 51.5527,
+    "lon": 0.6098,
+    "importance": 1
+  },
+  {
+    "name": "North Watford",
+    "lat": 51.6807,
+    "lon": -0.3945,
+    "importance": 1
+  },
+  {
+    "name": "Marlow",
+    "lat": 51.5693,
+    "lon": -0.7742,
+    "importance": 1
+  },
+  {
+    "name": "Saint-Omer",
+    "lat": 50.7483,
+    "lon": 2.2609,
+    "importance": 1
+  },
+  {
+    "name": "East Barnet",
+    "lat": 51.6467,
+    "lon": -0.161,
+    "importance": 1
+  },
+  {
+    "name": "Waltham Abbey",
+    "lat": 51.687,
+    "lon": -0.0042,
+    "importance": 1
+  }
+]
