@@ -18,6 +18,18 @@ export enum UnitSystem {
 export type SettingsStoreData = {
   unitSystem: UnitSystem;
   map: {
+    layerVisibility?: {
+      prettyMap?: boolean;
+      dcsMap?: boolean;
+      mgrsGrid?: boolean;
+      citiesLabel?: boolean;
+      statics?: boolean;
+      combatZones?: boolean;
+      groundUnits?: boolean;
+      customGeometry?: boolean;
+      missionPoints?: boolean;
+      aircrafts?: boolean;
+    };
     showTrackIcons?: boolean;
     showTrackLabels?: boolean;
     trackTrailLength?: number;
@@ -38,6 +50,18 @@ function defaultSettings(): SettingsStoreData {
   return {
     unitSystem: UnitSystem.IMPERIAL,
     map: {
+      layerVisibility: {
+        prettyMap: true,
+        dcsMap: true,
+        mgrsGrid: true,
+        citiesLabel: true,
+        statics: true,
+        combatZones: true,
+        groundUnits: true,
+        customGeometry: true,
+        missionPoints: true,
+        aircrafts: true,
+      },
       showTrackIcons: true,
       showTrackLabels: true,
       trackTrailLength: 9,

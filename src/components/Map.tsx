@@ -110,6 +110,97 @@ type CityLabelEntry = {
   lon: number;
   importance: number;
 };
+const ENABLE_LOCAL_JSON_CITIES = false;
+
+const NGA_REST_CITIES_LAYER_ID = "nga-rest-cities";
+const NGA_CITY_REST_URL =
+  "https://geonames.nga.mil/geon-ags/rest/services/RESEARCH/GIS_OUTPUT/MapServer/0/query";
+
+function buildNgaRestCitiesUrl(bounds: {
+  minLon: number;
+  minLat: number;
+  maxLon: number;
+  maxLat: number;
+}, zoom: number): string {
+  const desigCodes = getNgaDesignationCodesForZoom(zoom);
+  const encodedCodes = desigCodes.map((code) => `'${code}'`).join(",");
+  const params = new URLSearchParams({
+    where: `fc='P' AND name_rank=1 AND desig_cd IN (${encodedCodes})`,
+    geometry: `${bounds.minLon},${bounds.minLat},${bounds.maxLon},${bounds.maxLat}`,
+    geometryType: "esriGeometryEnvelope",
+    inSR: "4326",
+    spatialRel: "esriSpatialRelIntersects",
+    outFields: "full_name,desig_cd,display",
+    returnGeometry: "true",
+    resultRecordCount: `${getNgaCityRenderLimitForZoom(zoom)}`,
+    f: "geojson",
+  });
+  return `${NGA_CITY_REST_URL}?${params.toString()}`;
+}
+
+function getNgaDesignationCodesForZoom(zoom: number): string[] {
+  if (zoom < 6) return ["PPLC"];
+  if (zoom < 9.6) return ["PPLC", "PPLA"];
+  if (zoom < 11) return ["PPLC", "PPLA", "PPLA2"];
+  if (zoom < 12.6) return ["PPLC", "PPLA", "PPLA2", "PPLA3"];
+  if (zoom < 13.6) return ["PPLC", "PPLA", "PPLA2", "PPLA3", "PPLA4"];
+  return ["PPLC", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPL"];
+}
+
+function getNgaCityRenderLimitForZoom(zoom: number): number {
+  if (zoom < 6) return 90;
+  if (zoom < 9.6) return 150;
+  if (zoom < 11) return 260;
+  if (zoom < 12.6) return 420;
+  if (zoom < 13.6) return 560;
+  return 900;
+}
+
+function getNgaCityImportance(desigCode: string | undefined): number {
+  if (desigCode === "PPLC") return 6;
+  if (desigCode === "PPLA") return 5;
+  if (desigCode === "PPLA2") return 4;
+  if (desigCode === "PPLA3") return 3;
+  if (desigCode === "PPLA4") return 2;
+  return 1;
+}
+
+function buildExternalCityLabel(
+  name: string,
+  lon: number,
+  lat: number,
+  zoom: number,
+  importance: number
+): maptalks.Label {
+  const baseSize = Math.max(10, Math.min(15, Math.round(zoom + 0.5)));
+  const textSize = baseSize + Math.min(3, Math.max(0, importance - 3));
+  const zoomOpacity = getMapCitiesOpacity(zoom);
+  const textOpacity = Math.min(0.98, 0.62 + importance * 0.06);
+  return new maptalks.Label(name, [lon, lat], {
+    draggable: false,
+    editable: false,
+    interactive: false,
+    boxStyle: {
+      padding: [1, 2],
+      horizontalAlignment: "center",
+      verticalAlignment: "middle",
+      symbol: {
+        markerType: "square",
+        markerFill: "black",
+        markerFillOpacity: 0.22 * zoomOpacity,
+        markerLineOpacity: 0,
+      },
+    },
+    textSymbol: {
+      textFaceName: FONT_FAMILY,
+      textFill: "#fde68a",
+      textSize,
+      textHaloFill: "#000000",
+      textHaloRadius: 1.1,
+      textOpacity,
+    },
+  });
+}
 
 function getMapCityMinImportance(zoom: number): number {
   if (zoom < 10.5) return 5;
@@ -398,7 +489,13 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		forceRenderOnZooming: true,
 		forceRenderOnMoving: true,
 		visible : true
-      }),  
+      }),
+      new maptalks.VectorLayer(NGA_REST_CITIES_LAYER_ID, [], {
+        hitDetect: false,
+        forceRenderOnZooming: true,
+        forceRenderOnMoving: true,
+        visible: true,
+      }),
  
         new maptalks.VectorLayer("mgrs-grid", [], {
           hitDetect: false,
@@ -563,6 +660,59 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 
   useEffect(() => {
     if (!map.current) return;
+    const layerVisibility = settings.map?.layerVisibility ?? {};
+    const setVisible = (layerId: string, visible: boolean) => {
+      const layer = map.current!.getLayer(layerId);
+      if (!layer) return;
+      if (visible) layer.show();
+      else layer.hide();
+    };
+    const setGroupVisible = (layerIds: string[], key: keyof NonNullable<typeof layerVisibility>, fallback: boolean) => {
+      const visible = layerVisibility[key] ?? fallback;
+      for (const layerId of layerIds) {
+        setVisible(layerId, visible);
+      }
+    };
+
+    const prettyVisible = layerVisibility.prettyMap ?? true;
+    const dcsVisible = layerVisibility.dcsMap ?? true;
+    setVisible("pretty", prettyVisible);
+    setVisible("DCSMap", dcsVisible);
+    setVisible("base", !prettyVisible && !dcsVisible);
+
+    setGroupVisible(["mgrs-grid"], "mgrsGrid", true);
+    setGroupVisible([NGA_REST_CITIES_LAYER_ID], "citiesLabel", true);
+    setGroupVisible(["airports", "farp-name", "farp-icon"], "statics", true);
+    setGroupVisible(
+      ["combat-zones", "combat-zones-blue", "combat-zones-red"],
+      "combatZones",
+      true
+    );
+    setGroupVisible(
+      ["ground-units", "ground-units-blue", "ground-units-red"],
+      "groundUnits",
+      true
+    );
+    setGroupVisible(
+      ["custom-geometry", "custom-geometry-zones"],
+      "customGeometry",
+      true
+    );
+    setGroupVisible(["quest", "quest-pin"], "missionPoints", true);
+    setGroupVisible(
+      [
+        "track-icons",
+        "track-trails",
+        "track-vv",
+        "track-name",
+        "track-altitude",
+        "track-speed",
+        "track-verticalvelo",
+      ],
+      "aircrafts",
+      true
+    );
+
     if (settings.map.trackTrailLength === 0) {
       map.current!.getLayer("track-trails").hide();
     } else {
@@ -603,6 +753,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   }, [map, settings]);
 
   useEffect(() => {
+    if (!ENABLE_LOCAL_JSON_CITIES) return;
     if (!map.current) return;
     const mapRef = map.current;
     const citiesLayer = mapRef.getLayer("map-cities") as
@@ -686,6 +837,106 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       mapRef.off("zoomend", renderCaucasusCities);
     };
   }, [mapInitTick, dcsMap.name]);
+
+  useEffect(() => {
+    if (!map.current) return;
+    const mapRef = map.current;
+    const layer = mapRef.getLayer(NGA_REST_CITIES_LAYER_ID) as
+      | maptalks.VectorLayer
+      | undefined;
+    if (!layer) return;
+
+    let abortController: AbortController | null = null;
+
+    const renderNgaRestCities = async () => {
+      if (!layer.isVisible()) {
+        layer.clear();
+        return;
+      }
+      const extent = mapRef.getExtent();
+      if (!extent) return;
+      const zoom = mapRef.getZoom();
+      if (zoom < 6) {
+        layer.clear();
+        return;
+      }
+
+      const bounds = {
+        minLon: extent.xmin,
+        minLat: extent.ymin,
+        maxLon: extent.xmax,
+        maxLat: extent.ymax,
+      };
+      const queryUrl = buildNgaRestCitiesUrl(bounds, zoom);
+
+      if (abortController) abortController.abort();
+      abortController = new AbortController();
+      try {
+        const response = await fetch(queryUrl, { signal: abortController.signal });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!Array.isArray(data?.features)) return;
+        const labelEntries: Array<{
+          label: maptalks.Label;
+          importance: number;
+          displayRank: number;
+        }> = [];
+        for (const feature of data.features) {
+          const cityName = feature?.properties?.full_name;
+          const desigCode = feature?.properties?.desig_cd as string | undefined;
+          const displayRaw = feature?.properties?.display;
+          const coords = feature?.geometry?.coordinates;
+          if (
+            typeof cityName !== "string" ||
+            !Array.isArray(coords) ||
+            coords.length < 2
+          ) {
+            continue;
+          }
+          const lon = Number(coords[0]);
+          const lat = Number(coords[1]);
+          if (Number.isNaN(lon) || Number.isNaN(lat)) continue;
+          const importance = getNgaCityImportance(desigCode);
+          const displayRank = Number.parseInt(String(displayRaw ?? "99"), 10);
+          labelEntries.push({
+            label: buildExternalCityLabel(cityName, lon, lat, zoom, importance),
+            importance,
+            displayRank: Number.isNaN(displayRank) ? 99 : displayRank,
+          });
+        }
+        labelEntries.sort((a, b) => {
+          if (b.importance !== a.importance) return b.importance - a.importance;
+          return a.displayRank - b.displayRank;
+        });
+        const labels = labelEntries
+          .slice(0, getNgaCityRenderLimitForZoom(zoom))
+          .map((entry) => entry.label);
+        layer.clear();
+        if (labels.length > 0) {
+          layer.addGeometry(labels);
+        }
+      } catch (error: any) {
+        if (error?.name !== "AbortError") {
+          // Ignore transient network failures for optional external layers.
+          layer.clear();
+        }
+      }
+    };
+
+    renderNgaRestCities();
+    mapRef.on("moveend", renderNgaRestCities);
+    mapRef.on("zoomend", renderNgaRestCities);
+    const onLayerShow = () => {
+      void renderNgaRestCities();
+    };
+    layer.on("show", onLayerShow);
+    return () => {
+      if (abortController) abortController.abort();
+      mapRef.off("moveend", renderNgaRestCities);
+      mapRef.off("zoomend", renderNgaRestCities);
+      layer.off("show", onLayerShow);
+    };
+  }, [mapInitTick]);
 
   // Configure airports
   useEffect(() => {
