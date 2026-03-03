@@ -25,10 +25,11 @@ export function convertRawAirBaseData(
   return (Object.values(airBaseData) as Array<RawAirbaseData>)
     .map(
       (it) => {
+        const runways = Array.isArray(it.runways) ? it.runways : [];
         return {
           name: it.callsign,
           position: it.point,
-          runways: it.runways.map((rw) => {
+          runways: runways.map((rw) => {
             return {
               heading: Math.round(rw.course),
             };

@@ -1,0 +1,4802 @@
+[
+  {
+    "name": "London",
+    "lat": 51.5085,
+    "lon": -0.1257,
+    "importance": 5
+  },
+  {
+    "name": "Berlin",
+    "lat": 52.5244,
+    "lon": 13.4105,
+    "importance": 5
+  },
+  {
+    "name": "Paris",
+    "lat": 48.8534,
+    "lon": 2.3488,
+    "importance": 5
+  },
+  {
+    "name": "Hamburg",
+    "lat": 53.5507,
+    "lon": 9.993,
+    "importance": 5
+  },
+  {
+    "name": "Vienna",
+    "lat": 48.2085,
+    "lon": 16.3721,
+    "importance": 5
+  },
+  {
+    "name": "Milan",
+    "lat": 45.4643,
+    "lon": 9.1895,
+    "importance": 5
+  },
+  {
+    "name": "Munich",
+    "lat": 48.1374,
+    "lon": 11.5755,
+    "importance": 5
+  },
+  {
+    "name": "Prague",
+    "lat": 50.088,
+    "lon": 14.4208,
+    "importance": 5
+  },
+  {
+    "name": "Birmingham",
+    "lat": 52.4814,
+    "lon": -1.8998,
+    "importance": 5
+  },
+  {
+    "name": "Copenhagen",
+    "lat": 55.6759,
+    "lon": 12.5655,
+    "importance": 5
+  },
+  {
+    "name": "Brussels",
+    "lat": 50.8505,
+    "lon": 4.3488,
+    "importance": 5
+  },
+  {
+    "name": "Koeln",
+    "lat": 50.9333,
+    "lon": 6.95,
+    "importance": 5
+  },
+  {
+    "name": "Rotterdam",
+    "lat": 51.9225,
+    "lon": 4.4792,
+    "importance": 5
+  },
+  {
+    "name": "Turin",
+    "lat": 45.0705,
+    "lon": 7.6868,
+    "importance": 5
+  },
+  {
+    "name": "Amsterdam",
+    "lat": 52.374,
+    "lon": 4.8897,
+    "importance": 5
+  },
+  {
+    "name": "Wroclaw",
+    "lat": 51.1029,
+    "lon": 17.0301,
+    "importance": 5
+  },
+  {
+    "name": "Zagreb",
+    "lat": 45.8144,
+    "lon": 15.978,
+    "importance": 5
+  },
+  {
+    "name": "Frankfurt am Main",
+    "lat": 50.1155,
+    "lon": 8.6842,
+    "importance": 5
+  },
+  {
+    "name": "Stuttgart",
+    "lat": 48.7823,
+    "lon": 9.177,
+    "importance": 5
+  },
+  {
+    "name": "Duesseldorf",
+    "lat": 51.2217,
+    "lon": 6.7762,
+    "importance": 5
+  },
+  {
+    "name": "Essen",
+    "lat": 51.4566,
+    "lon": 7.0123,
+    "importance": 5
+  },
+  {
+    "name": "Dortmund",
+    "lat": 51.5149,
+    "lon": 7.466,
+    "importance": 5
+  },
+  {
+    "name": "Manchester",
+    "lat": 53.4809,
+    "lon": -2.2374,
+    "importance": 5
+  },
+  {
+    "name": "Sheffield",
+    "lat": 53.383,
+    "lon": -1.4659,
+    "importance": 5
+  },
+  {
+    "name": "Dresden",
+    "lat": 51.0509,
+    "lon": 13.7383,
+    "importance": 5
+  },
+  {
+    "name": "Bremen",
+    "lat": 53.0758,
+    "lon": 8.8072,
+    "importance": 5
+  },
+  {
+    "name": "Leeds",
+    "lat": 53.7965,
+    "lon": -1.5478,
+    "importance": 5
+  },
+  {
+    "name": "Poznan",
+    "lat": 52.4069,
+    "lon": 16.9299,
+    "importance": 5
+  },
+  {
+    "name": "Antwerpen",
+    "lat": 51.2205,
+    "lon": 4.4003,
+    "importance": 5
+  },
+  {
+    "name": "Lyon",
+    "lat": 45.7491,
+    "lon": 4.8479,
+    "importance": 5
+  },
+  {
+    "name": "Nuernberg",
+    "lat": 49.4542,
+    "lon": 11.0775,
+    "importance": 4
+  },
+  {
+    "name": "Hannover",
+    "lat": 52.3705,
+    "lon": 9.7332,
+    "importance": 4
+  },
+  {
+    "name": "Leipzig",
+    "lat": 51.3396,
+    "lon": 12.3713,
+    "importance": 4
+  },
+  {
+    "name": "Duisburg",
+    "lat": 51.4325,
+    "lon": 6.7652,
+    "importance": 4
+  },
+  {
+    "name": "The Hague",
+    "lat": 52.0767,
+    "lon": 4.2986,
+    "importance": 4
+  },
+  {
+    "name": "Bratislava",
+    "lat": 48.1482,
+    "lon": 17.1067,
+    "importance": 4
+  },
+  {
+    "name": "Zuerich",
+    "lat": 47.3667,
+    "lon": 8.55,
+    "importance": 4
+  },
+  {
+    "name": "Wandsbek",
+    "lat": 53.5833,
+    "lon": 10.0831,
+    "importance": 4
+  },
+  {
+    "name": "Szczecin",
+    "lat": 53.4289,
+    "lon": 14.553,
+    "importance": 4
+  },
+  {
+    "name": "Bochum",
+    "lat": 51.4817,
+    "lon": 7.2165,
+    "importance": 4
+  },
+  {
+    "name": "Brno",
+    "lat": 49.1952,
+    "lon": 16.608,
+    "importance": 4
+  },
+  {
+    "name": "Utrecht",
+    "lat": 52.0908,
+    "lon": 5.1222,
+    "importance": 4
+  },
+  {
+    "name": "Leicester",
+    "lat": 52.6386,
+    "lon": -1.1317,
+    "importance": 4
+  },
+  {
+    "name": "Bradford",
+    "lat": 53.7939,
+    "lon": -1.7521,
+    "importance": 4
+  },
+  {
+    "name": "Malmoe",
+    "lat": 55.6059,
+    "lon": 13.0007,
+    "importance": 4
+  },
+  {
+    "name": "Wuppertal",
+    "lat": 51.2563,
+    "lon": 7.1482,
+    "importance": 4
+  },
+  {
+    "name": "Coventry",
+    "lat": 52.4066,
+    "lon": -1.5122,
+    "importance": 4
+  },
+  {
+    "name": "Bielefeld",
+    "lat": 52.0333,
+    "lon": 8.5333,
+    "importance": 4
+  },
+  {
+    "name": "Bonn",
+    "lat": 50.7344,
+    "lon": 7.0955,
+    "importance": 4
+  },
+  {
+    "name": "Bydgoszcz",
+    "lat": 53.1235,
+    "lon": 18.0076,
+    "importance": 4
+  },
+  {
+    "name": "Brent",
+    "lat": 51.5531,
+    "lon": -0.3023,
+    "importance": 4
+  },
+  {
+    "name": "Nantes",
+    "lat": 47.2172,
+    "lon": -1.5534,
+    "importance": 4
+  },
+  {
+    "name": "Nottingham",
+    "lat": 52.9536,
+    "lon": -1.1505,
+    "importance": 4
+  },
+  {
+    "name": "Islington",
+    "lat": 51.5362,
+    "lon": -0.103,
+    "importance": 4
+  },
+  {
+    "name": "Marne La Vallee",
+    "lat": 48.8358,
+    "lon": 2.6424,
+    "importance": 4
+  },
+  {
+    "name": "Reading",
+    "lat": 51.4562,
+    "lon": -0.9711,
+    "importance": 4
+  },
+  {
+    "name": "Hamburg-Nord",
+    "lat": 53.5894,
+    "lon": 9.984,
+    "importance": 4
+  },
+  {
+    "name": "Kingston upon Hull",
+    "lat": 53.7446,
+    "lon": -0.3352,
+    "importance": 4
+  },
+  {
+    "name": "Mannheim",
+    "lat": 49.4891,
+    "lon": 8.4669,
+    "importance": 4
+  },
+  {
+    "name": "Graz",
+    "lat": 47.0673,
+    "lon": 15.442,
+    "importance": 4
+  },
+  {
+    "name": "Hamburg-Mitte",
+    "lat": 53.55,
+    "lon": 10.0167,
+    "importance": 4
+  },
+  {
+    "name": "Newcastle upon Tyne",
+    "lat": 54.9733,
+    "lon": -1.614,
+    "importance": 4
+  },
+  {
+    "name": "Southend-on-Sea",
+    "lat": 51.5378,
+    "lon": 0.7143,
+    "importance": 4
+  },
+  {
+    "name": "Marienthal",
+    "lat": 53.5667,
+    "lon": 10.0833,
+    "importance": 4
+  },
+  {
+    "name": "Arhus",
+    "lat": 56.1567,
+    "lon": 10.2108,
+    "importance": 4
+  },
+  {
+    "name": "Karlsruhe",
+    "lat": 49.0094,
+    "lon": 8.4044,
+    "importance": 4
+  },
+  {
+    "name": "Ostrava",
+    "lat": 49.8347,
+    "lon": 18.282,
+    "importance": 4
+  },
+  {
+    "name": "Wiesbaden",
+    "lat": 50.086,
+    "lon": 8.2444,
+    "importance": 4
+  },
+  {
+    "name": "Brighton",
+    "lat": 50.8284,
+    "lon": -0.1395,
+    "importance": 4
+  },
+  {
+    "name": "Strasbourg",
+    "lat": 48.5839,
+    "lon": 7.7455,
+    "importance": 4
+  },
+  {
+    "name": "Ljubljana",
+    "lat": 46.0511,
+    "lon": 14.5051,
+    "importance": 4
+  },
+  {
+    "name": "Derby",
+    "lat": 52.9228,
+    "lon": -1.4766,
+    "importance": 4
+  },
+  {
+    "name": "Muenster",
+    "lat": 51.9624,
+    "lon": 7.6257,
+    "importance": 4
+  },
+  {
+    "name": "Gelsenkirchen",
+    "lat": 51.5051,
+    "lon": 7.0965,
+    "importance": 4
+  },
+  {
+    "name": "Southampton",
+    "lat": 50.904,
+    "lon": -1.4043,
+    "importance": 4
+  },
+  {
+    "name": "Eimsbuettel",
+    "lat": 53.5742,
+    "lon": 9.9568,
+    "importance": 4
+  },
+  {
+    "name": "Aachen",
+    "lat": 50.7766,
+    "lon": 6.0834,
+    "importance": 4
+  },
+  {
+    "name": "Gent",
+    "lat": 51.05,
+    "lon": 3.7167,
+    "importance": 4
+  },
+  {
+    "name": "Wolverhampton",
+    "lat": 52.5855,
+    "lon": -2.123,
+    "importance": 4
+  },
+  {
+    "name": "Moenchengladbach",
+    "lat": 51.1854,
+    "lon": 6.4417,
+    "importance": 4
+  },
+  {
+    "name": "Augsburg",
+    "lat": 48.3715,
+    "lon": 10.8985,
+    "importance": 4
+  },
+  {
+    "name": "Stoke-on-Trent",
+    "lat": 53.0042,
+    "lon": -2.1854,
+    "importance": 4
+  },
+  {
+    "name": "Verona",
+    "lat": 45.4385,
+    "lon": 10.9938,
+    "importance": 4
+  },
+  {
+    "name": "Milton Keynes",
+    "lat": 52.0417,
+    "lon": -0.7558,
+    "importance": 4
+  },
+  {
+    "name": "Altona",
+    "lat": 53.55,
+    "lon": 9.9333,
+    "importance": 4
+  },
+  {
+    "name": "City of Westminster",
+    "lat": 51.4975,
+    "lon": -0.1357,
+    "importance": 4
+  },
+  {
+    "name": "Chemnitz",
+    "lat": 50.8357,
+    "lon": 12.9292,
+    "importance": 4
+  },
+  {
+    "name": "Kiel",
+    "lat": 54.3213,
+    "lon": 10.1349,
+    "importance": 4
+  },
+  {
+    "name": "Northampton",
+    "lat": 52.25,
+    "lon": -0.8833,
+    "importance": 4
+  },
+  {
+    "name": "Groningen",
+    "lat": 53.2192,
+    "lon": 6.5667,
+    "importance": 4
+  },
+  {
+    "name": "Braunschweig",
+    "lat": 52.2659,
+    "lon": 10.5267,
+    "importance": 4
+  },
+  {
+    "name": "Lille",
+    "lat": 50.6339,
+    "lon": 3.0551,
+    "importance": 4
+  },
+  {
+    "name": "Krefeld",
+    "lat": 51.3364,
+    "lon": 6.5538,
+    "importance": 4
+  },
+  {
+    "name": "Halle (Saale)",
+    "lat": 51.4816,
+    "lon": 11.9795,
+    "importance": 4
+  },
+  {
+    "name": "Oldham",
+    "lat": 53.5405,
+    "lon": -2.1183,
+    "importance": 4
+  },
+  {
+    "name": "Magdeburg",
+    "lat": 52.1313,
+    "lon": 11.6319,
+    "importance": 4
+  },
+  {
+    "name": "Eindhoven",
+    "lat": 51.4408,
+    "lon": 5.4778,
+    "importance": 4
+  },
+  {
+    "name": "Bexley",
+    "lat": 51.4416,
+    "lon": 0.1487,
+    "importance": 4
+  },
+  {
+    "name": "Rennes",
+    "lat": 48.1111,
+    "lon": -1.6743,
+    "importance": 4
+  },
+  {
+    "name": "Neue Neustadt",
+    "lat": 52.15,
+    "lon": 11.6333,
+    "importance": 4
+  },
+  {
+    "name": "Luton",
+    "lat": 51.8797,
+    "lon": -0.4175,
+    "importance": 4
+  },
+  {
+    "name": "Tilburg",
+    "lat": 51.5555,
+    "lon": 5.0913,
+    "importance": 4
+  },
+  {
+    "name": "Oberhausen",
+    "lat": 51.4781,
+    "lon": 6.8625,
+    "importance": 4
+  },
+  {
+    "name": "Mainz",
+    "lat": 49.9819,
+    "lon": 8.2801,
+    "importance": 4
+  },
+  {
+    "name": "Freiburg",
+    "lat": 47.9959,
+    "lon": 7.8522,
+    "importance": 4
+  },
+  {
+    "name": "Archway",
+    "lat": 51.5673,
+    "lon": -0.1341,
+    "importance": 4
+  },
+  {
+    "name": "Erfurt",
+    "lat": 50.9773,
+    "lon": 11.0354,
+    "importance": 4
+  },
+  {
+    "name": "Luebeck",
+    "lat": 53.8689,
+    "lon": 10.6873,
+    "importance": 4
+  },
+  {
+    "name": "Portsmouth",
+    "lat": 50.799,
+    "lon": -1.0913,
+    "importance": 4
+  },
+  {
+    "name": "Linz",
+    "lat": 48.3064,
+    "lon": 14.2861,
+    "importance": 4
+  },
+  {
+    "name": "Trieste",
+    "lat": 45.6495,
+    "lon": 13.7768,
+    "importance": 4
+  },
+  {
+    "name": "Padova",
+    "lat": 45.408,
+    "lon": 11.8859,
+    "importance": 4
+  },
+  {
+    "name": "Favoriten",
+    "lat": 48.1612,
+    "lon": 16.3823,
+    "importance": 4
+  },
+  {
+    "name": "Geneve",
+    "lat": 46.2022,
+    "lon": 6.1457,
+    "importance": 4
+  },
+  {
+    "name": "Swindon",
+    "lat": 51.558,
+    "lon": -1.7812,
+    "importance": 4
+  },
+  {
+    "name": "Brescia",
+    "lat": 45.5356,
+    "lon": 10.2147,
+    "importance": 4
+  },
+  {
+    "name": "Charleroi",
+    "lat": 50.4114,
+    "lon": 4.4445,
+    "importance": 4
+  },
+  {
+    "name": "Dudley",
+    "lat": 52.5,
+    "lon": -2.0833,
+    "importance": 4
+  },
+  {
+    "name": "Hagen",
+    "lat": 51.3608,
+    "lon": 7.4717,
+    "importance": 4
+  },
+  {
+    "name": "Rostock",
+    "lat": 54.0887,
+    "lon": 12.1405,
+    "importance": 4
+  },
+  {
+    "name": "Reims",
+    "lat": 49.2653,
+    "lon": 4.0285,
+    "importance": 4
+  },
+  {
+    "name": "Liege",
+    "lat": 50.6337,
+    "lon": 5.5675,
+    "importance": 4
+  },
+  {
+    "name": "Kassel",
+    "lat": 51.3167,
+    "lon": 9.5,
+    "importance": 4
+  },
+  {
+    "name": "Sutton",
+    "lat": 51.35,
+    "lon": -0.2,
+    "importance": 4
+  },
+  {
+    "name": "Donaustadt",
+    "lat": 48.2333,
+    "lon": 16.46,
+    "importance": 4
+  },
+  {
+    "name": "Le Havre",
+    "lat": 49.4935,
+    "lon": 0.1079,
+    "importance": 4
+  },
+  {
+    "name": "Breda",
+    "lat": 51.5866,
+    "lon": 4.776,
+    "importance": 4
+  },
+  {
+    "name": "Cergy-Pontoise",
+    "lat": 49.0389,
+    "lon": 2.0781,
+    "importance": 4
+  },
+  {
+    "name": "Quarto Oggiaro",
+    "lat": 45.5131,
+    "lon": 9.1434,
+    "importance": 4
+  },
+  {
+    "name": "Potsdam",
+    "lat": 52.3989,
+    "lon": 13.0657,
+    "importance": 4
+  },
+  {
+    "name": "Odense",
+    "lat": 55.3959,
+    "lon": 10.3883,
+    "importance": 4
+  },
+  {
+    "name": "Crawley",
+    "lat": 51.113,
+    "lon": -0.1831,
+    "importance": 4
+  },
+  {
+    "name": "Saarbruecken",
+    "lat": 49.2326,
+    "lon": 7.0098,
+    "importance": 4
+  },
+  {
+    "name": "Hamm",
+    "lat": 51.6803,
+    "lon": 7.8209,
+    "importance": 4
+  },
+  {
+    "name": "Ipswich",
+    "lat": 52.0592,
+    "lon": 1.1555,
+    "importance": 4
+  },
+  {
+    "name": "Paris 13e Arrondissement",
+    "lat": 48.8262,
+    "lon": 2.3599,
+    "importance": 4
+  },
+  {
+    "name": "Basel",
+    "lat": 47.5584,
+    "lon": 7.5733,
+    "importance": 4
+  },
+  {
+    "name": "Nijmegen",
+    "lat": 51.8425,
+    "lon": 5.8528,
+    "importance": 4
+  },
+  {
+    "name": "Almere Stad",
+    "lat": 52.3702,
+    "lon": 5.2141,
+    "importance": 4
+  },
+  {
+    "name": "Saint-Etienne",
+    "lat": 45.4339,
+    "lon": 4.39,
+    "importance": 4
+  },
+  {
+    "name": "Croydon",
+    "lat": 51.3833,
+    "lon": -0.1,
+    "importance": 4
+  },
+  {
+    "name": "Walsall",
+    "lat": 52.5853,
+    "lon": -1.984,
+    "importance": 4
+  },
+  {
+    "name": "Herne",
+    "lat": 51.5388,
+    "lon": 7.2257,
+    "importance": 4
+  },
+  {
+    "name": "Mansfield",
+    "lat": 53.1333,
+    "lon": -1.2,
+    "importance": 4
+  },
+  {
+    "name": "Muelheim",
+    "lat": 51.4322,
+    "lon": 6.8797,
+    "importance": 4
+  },
+  {
+    "name": "Sunderland",
+    "lat": 54.9046,
+    "lon": -1.3822,
+    "importance": 4
+  },
+  {
+    "name": "Harburg",
+    "lat": 53.4606,
+    "lon": 9.9839,
+    "importance": 4
+  },
+  {
+    "name": "Pilsen",
+    "lat": 49.7475,
+    "lon": 13.3776,
+    "importance": 4
+  },
+  {
+    "name": "Angers",
+    "lat": 47.4716,
+    "lon": -0.552,
+    "importance": 4
+  },
+  {
+    "name": "Ilford",
+    "lat": 51.5577,
+    "lon": 0.0728,
+    "importance": 4
+  },
+  {
+    "name": "Osnabrueck",
+    "lat": 52.2726,
+    "lon": 8.0498,
+    "importance": 4
+  },
+  {
+    "name": "Slough",
+    "lat": 51.5095,
+    "lon": -0.5954,
+    "importance": 4
+  },
+  {
+    "name": "Neukoelln",
+    "lat": 52.4772,
+    "lon": 13.4313,
+    "importance": 4
+  },
+  {
+    "name": "Solingen",
+    "lat": 51.1734,
+    "lon": 7.0845,
+    "importance": 4
+  },
+  {
+    "name": "Bournemouth",
+    "lat": 50.7205,
+    "lon": -1.8795,
+    "importance": 4
+  },
+  {
+    "name": "Peterborough",
+    "lat": 52.5736,
+    "lon": -0.2478,
+    "importance": 4
+  },
+  {
+    "name": "Ludwigshafen am Rhein",
+    "lat": 49.4812,
+    "lon": 8.4464,
+    "importance": 4
+  },
+  {
+    "name": "Floridsdorf",
+    "lat": 48.25,
+    "lon": 16.4,
+    "importance": 4
+  },
+  {
+    "name": "Leverkusen",
+    "lat": 51.0303,
+    "lon": 6.9843,
+    "importance": 4
+  },
+  {
+    "name": "Haarlem",
+    "lat": 52.3808,
+    "lon": 4.6368,
+    "importance": 4
+  },
+  {
+    "name": "Arnhem",
+    "lat": 51.98,
+    "lon": 5.9111,
+    "importance": 4
+  },
+  {
+    "name": "Oxford",
+    "lat": 51.7522,
+    "lon": -1.256,
+    "importance": 4
+  },
+  {
+    "name": "'s-Hertogenbosch",
+    "lat": 51.6992,
+    "lon": 5.3042,
+    "importance": 4
+  },
+  {
+    "name": "Anderlecht",
+    "lat": 50.8362,
+    "lon": 4.3145,
+    "importance": 4
+  },
+  {
+    "name": "Dijon",
+    "lat": 47.3134,
+    "lon": 5.0139,
+    "importance": 4
+  },
+  {
+    "name": "Oldenburg",
+    "lat": 53.1404,
+    "lon": 8.2148,
+    "importance": 4
+  },
+  {
+    "name": "Grenoble",
+    "lat": 45.1787,
+    "lon": 5.7148,
+    "importance": 4
+  },
+  {
+    "name": "Salzburg",
+    "lat": 47.7994,
+    "lon": 13.044,
+    "importance": 4
+  },
+  {
+    "name": "Enfield Town",
+    "lat": 51.6515,
+    "lon": -0.085,
+    "importance": 4
+  },
+  {
+    "name": "York",
+    "lat": 53.9576,
+    "lon": -1.0827,
+    "importance": 4
+  },
+  {
+    "name": "Telford",
+    "lat": 52.6766,
+    "lon": -2.4493,
+    "importance": 4
+  },
+  {
+    "name": "Enschede",
+    "lat": 52.2183,
+    "lon": 6.8958,
+    "importance": 4
+  },
+  {
+    "name": "Kreuzberg",
+    "lat": 52.4997,
+    "lon": 13.4034,
+    "importance": 4
+  },
+  {
+    "name": "Neuss",
+    "lat": 51.1981,
+    "lon": 6.685,
+    "importance": 4
+  },
+  {
+    "name": "Poole",
+    "lat": 50.7143,
+    "lon": -1.9846,
+    "importance": 4
+  },
+  {
+    "name": "Burnley",
+    "lat": 53.8,
+    "lon": -2.2333,
+    "importance": 4
+  },
+  {
+    "name": "Harrow",
+    "lat": 51.5784,
+    "lon": -0.3321,
+    "importance": 4
+  },
+  {
+    "name": "Huddersfield",
+    "lat": 53.649,
+    "lon": -1.7842,
+    "importance": 4
+  },
+  {
+    "name": "Prenzlauer Berg Bezirk",
+    "lat": 52.5388,
+    "lon": 13.4244,
+    "importance": 4
+  },
+  {
+    "name": "Clermont-Ferrand",
+    "lat": 45.7797,
+    "lon": 3.0868,
+    "importance": 4
+  },
+  {
+    "name": "Mestre",
+    "lat": 45.4917,
+    "lon": 12.2454,
+    "importance": 3
+  },
+  {
+    "name": "Saint-Quentin-en-Yvelines",
+    "lat": 48.7719,
+    "lon": 2.0189,
+    "importance": 3
+  },
+  {
+    "name": "Blackburn",
+    "lat": 53.75,
+    "lon": -2.4833,
+    "importance": 3
+  },
+  {
+    "name": "Cambridge",
+    "lat": 52.2,
+    "lon": 0.1167,
+    "importance": 3
+  },
+  {
+    "name": "Pecs",
+    "lat": 46.0762,
+    "lon": 18.2281,
+    "importance": 3
+  },
+  {
+    "name": "Basildon",
+    "lat": 51.5684,
+    "lon": 0.4578,
+    "importance": 3
+  },
+  {
+    "name": "Le Mans",
+    "lat": 48.0021,
+    "lon": 0.2025,
+    "importance": 3
+  },
+  {
+    "name": "Paris 11e Arrondissement",
+    "lat": 48.8583,
+    "lon": 2.3795,
+    "importance": 3
+  },
+  {
+    "name": "Heidelberg",
+    "lat": 49.4077,
+    "lon": 8.6908,
+    "importance": 3
+  },
+  {
+    "name": "Norwich",
+    "lat": 52.6278,
+    "lon": 1.2983,
+    "importance": 3
+  },
+  {
+    "name": "Amiens",
+    "lat": 49.9,
+    "lon": 2.3,
+    "importance": 3
+  },
+  {
+    "name": "Middlesbrough",
+    "lat": 54.5762,
+    "lon": -1.2348,
+    "importance": 3
+  },
+  {
+    "name": "Paderborn",
+    "lat": 51.7191,
+    "lon": 8.7544,
+    "importance": 3
+  },
+  {
+    "name": "Tours",
+    "lat": 47.3948,
+    "lon": 0.704,
+    "importance": 3
+  },
+  {
+    "name": "Bolton",
+    "lat": 53.5833,
+    "lon": -2.4333,
+    "importance": 3
+  },
+  {
+    "name": "Limoges",
+    "lat": 45.8336,
+    "lon": 1.2476,
+    "importance": 3
+  },
+  {
+    "name": "Darmstadt",
+    "lat": 49.8717,
+    "lon": 8.6503,
+    "importance": 3
+  },
+  {
+    "name": "Paris 12e Arrondissement",
+    "lat": 48.8352,
+    "lon": 2.435,
+    "importance": 3
+  },
+  {
+    "name": "Zaanstad",
+    "lat": 52.4531,
+    "lon": 4.8136,
+    "importance": 3
+  },
+  {
+    "name": "Amersfoort",
+    "lat": 52.155,
+    "lon": 5.3875,
+    "importance": 3
+  },
+  {
+    "name": "Lausanne",
+    "lat": 46.516,
+    "lon": 6.6328,
+    "importance": 3
+  },
+  {
+    "name": "Stockport",
+    "lat": 53.4098,
+    "lon": -2.1576,
+    "importance": 3
+  },
+  {
+    "name": "Apeldoorn",
+    "lat": 52.21,
+    "lon": 5.9694,
+    "importance": 3
+  },
+  {
+    "name": "West Bromwich",
+    "lat": 52.5187,
+    "lon": -1.9945,
+    "importance": 3
+  },
+  {
+    "name": "Wuerzburg",
+    "lat": 49.7939,
+    "lon": 9.9512,
+    "importance": 3
+  },
+  {
+    "name": "Hastings",
+    "lat": 50.8557,
+    "lon": 0.5801,
+    "importance": 3
+  },
+  {
+    "name": "High Wycombe",
+    "lat": 51.6291,
+    "lon": -0.7493,
+    "importance": 3
+  },
+  {
+    "name": "Schaerbeek",
+    "lat": 50.8693,
+    "lon": 4.3774,
+    "importance": 3
+  },
+  {
+    "name": "Hoofddorp",
+    "lat": 52.3025,
+    "lon": 4.6889,
+    "importance": 3
+  },
+  {
+    "name": "Innsbruck",
+    "lat": 47.2627,
+    "lon": 11.3945,
+    "importance": 3
+  },
+  {
+    "name": "Gloucester",
+    "lat": 51.8657,
+    "lon": -2.2431,
+    "importance": 3
+  },
+  {
+    "name": "Villeurbanne",
+    "lat": 45.766,
+    "lon": 4.8795,
+    "importance": 3
+  },
+  {
+    "name": "Tottenham",
+    "lat": 51.6037,
+    "lon": -0.0679,
+    "importance": 3
+  },
+  {
+    "name": "Zwolle",
+    "lat": 52.5125,
+    "lon": 6.0944,
+    "importance": 3
+  },
+  {
+    "name": "Salford",
+    "lat": 53.4877,
+    "lon": -2.2904,
+    "importance": 3
+  },
+  {
+    "name": "Newcastle under Lyme",
+    "lat": 53.0,
+    "lon": -2.2333,
+    "importance": 3
+  },
+  {
+    "name": "Charlottenburg",
+    "lat": 52.5167,
+    "lon": 13.2833,
+    "importance": 3
+  },
+  {
+    "name": "Gyor",
+    "lat": 47.6833,
+    "lon": 17.6351,
+    "importance": 3
+  },
+  {
+    "name": "Regensburg",
+    "lat": 49.0151,
+    "lon": 12.1016,
+    "importance": 3
+  },
+  {
+    "name": "Besancon",
+    "lat": 47.2488,
+    "lon": 6.0182,
+    "importance": 3
+  },
+  {
+    "name": "Opole",
+    "lat": 50.6712,
+    "lon": 17.926,
+    "importance": 3
+  },
+  {
+    "name": "Walbrzych",
+    "lat": 50.7714,
+    "lon": 16.2843,
+    "importance": 3
+  },
+  {
+    "name": "Solihull",
+    "lat": 52.4143,
+    "lon": -1.7809,
+    "importance": 3
+  },
+  {
+    "name": "Watford",
+    "lat": 51.6553,
+    "lon": -0.396,
+    "importance": 3
+  },
+  {
+    "name": "Saint Peters",
+    "lat": 51.3667,
+    "lon": 1.4167,
+    "importance": 3
+  },
+  {
+    "name": "Leeuwarden",
+    "lat": 53.2027,
+    "lon": 5.8097,
+    "importance": 3
+  },
+  {
+    "name": "Monza",
+    "lat": 45.58,
+    "lon": 9.2725,
+    "importance": 3
+  },
+  {
+    "name": "Metz",
+    "lat": 49.1191,
+    "lon": 6.1727,
+    "importance": 3
+  },
+  {
+    "name": "Wolfsburg",
+    "lat": 52.4245,
+    "lon": 10.7815,
+    "importance": 3
+  },
+  {
+    "name": "Schoeneberg",
+    "lat": 52.498,
+    "lon": 13.3443,
+    "importance": 3
+  },
+  {
+    "name": "Recklinghausen",
+    "lat": 51.6138,
+    "lon": 7.1974,
+    "importance": 3
+  },
+  {
+    "name": "Maastricht",
+    "lat": 50.8483,
+    "lon": 5.6889,
+    "importance": 3
+  },
+  {
+    "name": "Burton upon Trent",
+    "lat": 52.8073,
+    "lon": -1.6426,
+    "importance": 3
+  },
+  {
+    "name": "Goettingen",
+    "lat": 51.5344,
+    "lon": 9.9323,
+    "importance": 3
+  },
+  {
+    "name": "Colchester",
+    "lat": 51.8892,
+    "lon": 0.9042,
+    "importance": 3
+  },
+  {
+    "name": "Bern",
+    "lat": 46.9481,
+    "lon": 7.4474,
+    "importance": 3
+  },
+  {
+    "name": "Bergamo",
+    "lat": 45.696,
+    "lon": 9.6672,
+    "importance": 3
+  },
+  {
+    "name": "Heilbronn",
+    "lat": 49.1399,
+    "lon": 9.2205,
+    "importance": 3
+  },
+  {
+    "name": "Trento",
+    "lat": 46.0679,
+    "lon": 11.1211,
+    "importance": 3
+  },
+  {
+    "name": "Ingolstadt",
+    "lat": 48.7651,
+    "lon": 11.4237,
+    "importance": 3
+  },
+  {
+    "name": "Ulm",
+    "lat": 48.3984,
+    "lon": 9.9916,
+    "importance": 3
+  },
+  {
+    "name": "Bottrop",
+    "lat": 51.5239,
+    "lon": 6.9285,
+    "importance": 3
+  },
+  {
+    "name": "Leiden",
+    "lat": 52.1583,
+    "lon": 4.4931,
+    "importance": 3
+  },
+  {
+    "name": "Bergedorf",
+    "lat": 53.4846,
+    "lon": 10.229,
+    "importance": 3
+  },
+  {
+    "name": "Pforzheim",
+    "lat": 48.8844,
+    "lon": 8.6989,
+    "importance": 3
+  },
+  {
+    "name": "Dordrecht",
+    "lat": 51.81,
+    "lon": 4.6736,
+    "importance": 3
+  },
+  {
+    "name": "Offenbach",
+    "lat": 50.1006,
+    "lon": 8.7665,
+    "importance": 3
+  },
+  {
+    "name": "Brugge",
+    "lat": 51.2089,
+    "lon": 3.2242,
+    "importance": 3
+  },
+  {
+    "name": "Zielona Gora",
+    "lat": 51.9355,
+    "lon": 15.5064,
+    "importance": 3
+  },
+  {
+    "name": "Eastbourne",
+    "lat": 50.7687,
+    "lon": 0.2845,
+    "importance": 3
+  },
+  {
+    "name": "Friedrichshain Bezirk",
+    "lat": 52.5156,
+    "lon": 13.4548,
+    "importance": 3
+  },
+  {
+    "name": "Rotherham",
+    "lat": 53.4301,
+    "lon": -1.3568,
+    "importance": 3
+  },
+  {
+    "name": "Remscheid",
+    "lat": 51.1798,
+    "lon": 7.1925,
+    "importance": 3
+  },
+  {
+    "name": "Cheltenham",
+    "lat": 51.9001,
+    "lon": -2.0797,
+    "importance": 3
+  },
+  {
+    "name": "Orleans",
+    "lat": 47.9025,
+    "lon": 1.9041,
+    "importance": 3
+  },
+  {
+    "name": "Rouen",
+    "lat": 49.4431,
+    "lon": 1.0993,
+    "importance": 3
+  },
+  {
+    "name": "Zoetermeer",
+    "lat": 52.0575,
+    "lon": 4.4931,
+    "importance": 3
+  },
+  {
+    "name": "Gorzow Wielkopolski",
+    "lat": 52.7337,
+    "lon": 15.225,
+    "importance": 3
+  },
+  {
+    "name": "Doncaster",
+    "lat": 53.5228,
+    "lon": -1.1312,
+    "importance": 3
+  },
+  {
+    "name": "Bremerhaven",
+    "lat": 53.5536,
+    "lon": 8.5755,
+    "importance": 3
+  },
+  {
+    "name": "Nippes",
+    "lat": 50.9654,
+    "lon": 6.9531,
+    "importance": 3
+  },
+  {
+    "name": "Porz am Rhein",
+    "lat": 50.8864,
+    "lon": 7.0583,
+    "importance": 3
+  },
+  {
+    "name": "Chesterfield",
+    "lat": 53.25,
+    "lon": -1.4167,
+    "importance": 3
+  },
+  {
+    "name": "Reutlingen",
+    "lat": 48.4914,
+    "lon": 9.2043,
+    "importance": 3
+  },
+  {
+    "name": "Petrzalka",
+    "lat": 48.1233,
+    "lon": 17.1287,
+    "importance": 3
+  },
+  {
+    "name": "Furth",
+    "lat": 49.4759,
+    "lon": 10.9886,
+    "importance": 3
+  },
+  {
+    "name": "Vicenza",
+    "lat": 45.5467,
+    "lon": 11.5475,
+    "importance": 3
+  },
+  {
+    "name": "Winterthur",
+    "lat": 47.5056,
+    "lon": 8.7241,
+    "importance": 3
+  },
+  {
+    "name": "Chelmsford",
+    "lat": 51.7358,
+    "lon": 0.4696,
+    "importance": 3
+  },
+  {
+    "name": "Marzahn",
+    "lat": 52.5453,
+    "lon": 13.5698,
+    "importance": 3
+  },
+  {
+    "name": "Mulhouse",
+    "lat": 47.752,
+    "lon": 7.3287,
+    "importance": 3
+  },
+  {
+    "name": "Montreuil",
+    "lat": 48.8642,
+    "lon": 2.4432,
+    "importance": 3
+  },
+  {
+    "name": "Namur",
+    "lat": 50.4669,
+    "lon": 4.8675,
+    "importance": 3
+  },
+  {
+    "name": "Caen",
+    "lat": 49.1859,
+    "lon": -0.3591,
+    "importance": 3
+  },
+  {
+    "name": "Rodenkirchen",
+    "lat": 50.8933,
+    "lon": 6.9948,
+    "importance": 3
+  },
+  {
+    "name": "Wakefield",
+    "lat": 53.6833,
+    "lon": -1.4977,
+    "importance": 3
+  },
+  {
+    "name": "Walthamstow",
+    "lat": 51.5907,
+    "lon": -0.0208,
+    "importance": 3
+  },
+  {
+    "name": "Boulogne-Billancourt",
+    "lat": 48.8355,
+    "lon": 2.2413,
+    "importance": 3
+  },
+  {
+    "name": "Kalisz",
+    "lat": 51.7611,
+    "lon": 18.091,
+    "importance": 3
+  },
+  {
+    "name": "Dagenham",
+    "lat": 51.55,
+    "lon": 0.1667,
+    "importance": 3
+  },
+  {
+    "name": "Rijeka",
+    "lat": 45.3267,
+    "lon": 14.4424,
+    "importance": 3
+  },
+  {
+    "name": "Basingstoke",
+    "lat": 51.2625,
+    "lon": -1.0871,
+    "importance": 3
+  },
+  {
+    "name": "Maidstone",
+    "lat": 51.2667,
+    "lon": 0.5167,
+    "importance": 3
+  },
+  {
+    "name": "Koszalin",
+    "lat": 54.1944,
+    "lon": 16.1722,
+    "importance": 3
+  },
+  {
+    "name": "Bolzano",
+    "lat": 46.4907,
+    "lon": 11.3398,
+    "importance": 3
+  },
+  {
+    "name": "Koblenz",
+    "lat": 50.3536,
+    "lon": 7.5788,
+    "importance": 3
+  },
+  {
+    "name": "Siegen",
+    "lat": 50.8748,
+    "lon": 8.0243,
+    "importance": 3
+  },
+  {
+    "name": "Sutton Coldfield",
+    "lat": 52.5667,
+    "lon": -1.8167,
+    "importance": 3
+  },
+  {
+    "name": "Bedford",
+    "lat": 52.1346,
+    "lon": -0.4663,
+    "importance": 3
+  },
+  {
+    "name": "Bergisch Gladbach",
+    "lat": 50.9856,
+    "lon": 7.133,
+    "importance": 3
+  },
+  {
+    "name": "Legnica",
+    "lat": 51.2101,
+    "lon": 16.1619,
+    "importance": 3
+  },
+  {
+    "name": "Nancy",
+    "lat": 48.6844,
+    "lon": 6.185,
+    "importance": 3
+  },
+  {
+    "name": "Jena",
+    "lat": 50.9288,
+    "lon": 11.5899,
+    "importance": 3
+  },
+  {
+    "name": "Gera",
+    "lat": 50.8803,
+    "lon": 12.0819,
+    "importance": 3
+  },
+  {
+    "name": "Ottakring",
+    "lat": 48.2167,
+    "lon": 16.3,
+    "importance": 3
+  },
+  {
+    "name": "Helsingborg",
+    "lat": 56.0467,
+    "lon": 12.6944,
+    "importance": 3
+  },
+  {
+    "name": "Woking",
+    "lat": 51.319,
+    "lon": -0.5589,
+    "importance": 3
+  },
+  {
+    "name": "Salzgitter",
+    "lat": 52.157,
+    "lon": 10.4154,
+    "importance": 3
+  },
+  {
+    "name": "Lincoln",
+    "lat": 53.2268,
+    "lon": -0.5379,
+    "importance": 3
+  },
+  {
+    "name": "Piacenza",
+    "lat": 45.0524,
+    "lon": 9.6934,
+    "importance": 3
+  },
+  {
+    "name": "Moers",
+    "lat": 51.4534,
+    "lon": 6.6326,
+    "importance": 3
+  },
+  {
+    "name": "Hildesheim",
+    "lat": 52.1508,
+    "lon": 9.9511,
+    "importance": 3
+  },
+  {
+    "name": "Liberec",
+    "lat": 50.7671,
+    "lon": 15.0562,
+    "importance": 3
+  },
+  {
+    "name": "Lyon 03",
+    "lat": 45.7612,
+    "lon": 4.8518,
+    "importance": 3
+  },
+  {
+    "name": "Erlangen",
+    "lat": 49.591,
+    "lon": 11.0078,
+    "importance": 3
+  },
+  {
+    "name": "Mitte",
+    "lat": 52.52,
+    "lon": 13.4049,
+    "importance": 3
+  },
+  {
+    "name": "Venlo",
+    "lat": 51.37,
+    "lon": 6.1681,
+    "importance": 3
+  },
+  {
+    "name": "Novara",
+    "lat": 45.4469,
+    "lon": 8.6212,
+    "importance": 3
+  },
+  {
+    "name": "Wilmersdorf",
+    "lat": 52.4833,
+    "lon": 13.3167,
+    "importance": 3
+  },
+  {
+    "name": "Worcester",
+    "lat": 52.1893,
+    "lon": -2.22,
+    "importance": 3
+  },
+  {
+    "name": "Szekesfehervar",
+    "lat": 47.19,
+    "lon": 18.4103,
+    "importance": 3
+  },
+  {
+    "name": "Bath",
+    "lat": 51.3751,
+    "lon": -2.3617,
+    "importance": 3
+  },
+  {
+    "name": "Argenteuil",
+    "lat": 48.9479,
+    "lon": 2.2474,
+    "importance": 3
+  },
+  {
+    "name": "Simmering",
+    "lat": 48.1833,
+    "lon": 16.4333,
+    "importance": 3
+  },
+  {
+    "name": "Witten",
+    "lat": 51.4436,
+    "lon": 7.3526,
+    "importance": 3
+  },
+  {
+    "name": "Gillingham",
+    "lat": 51.3891,
+    "lon": 0.5486,
+    "importance": 3
+  },
+  {
+    "name": "Leuven",
+    "lat": 50.8796,
+    "lon": 4.7009,
+    "importance": 3
+  },
+  {
+    "name": "Klagenfurt am Woerthersee",
+    "lat": 46.6247,
+    "lon": 14.3053,
+    "importance": 3
+  },
+  {
+    "name": "Udine",
+    "lat": 46.0693,
+    "lon": 13.2371,
+    "importance": 3
+  },
+  {
+    "name": "Trier",
+    "lat": 49.7557,
+    "lon": 6.6394,
+    "importance": 3
+  },
+  {
+    "name": "Becontree",
+    "lat": 51.5529,
+    "lon": 0.129,
+    "importance": 3
+  },
+  {
+    "name": "Roubaix",
+    "lat": 50.6942,
+    "lon": 3.1746,
+    "importance": 3
+  },
+  {
+    "name": "Olomouc",
+    "lat": 49.5955,
+    "lon": 17.2518,
+    "importance": 3
+  },
+  {
+    "name": "Tourcoing",
+    "lat": 50.7239,
+    "lon": 3.1612,
+    "importance": 3
+  },
+  {
+    "name": "Worthing",
+    "lat": 50.818,
+    "lon": -0.3754,
+    "importance": 3
+  },
+  {
+    "name": "Srodmiescie",
+    "lat": 51.1132,
+    "lon": 17.0815,
+    "importance": 3
+  },
+  {
+    "name": "Zwickau",
+    "lat": 50.7272,
+    "lon": 12.4884,
+    "importance": 3
+  },
+  {
+    "name": "Kaiserslautern",
+    "lat": 49.443,
+    "lon": 7.7716,
+    "importance": 3
+  },
+  {
+    "name": "Slupsk",
+    "lat": 54.4641,
+    "lon": 17.0287,
+    "importance": 3
+  },
+  {
+    "name": "Landstrasse",
+    "lat": 48.2019,
+    "lon": 16.3879,
+    "importance": 3
+  },
+  {
+    "name": "Penzing",
+    "lat": 48.2,
+    "lon": 16.2667,
+    "importance": 3
+  },
+  {
+    "name": "Iserlohn",
+    "lat": 51.3755,
+    "lon": 7.7028,
+    "importance": 3
+  },
+  {
+    "name": "Meidling",
+    "lat": 48.1667,
+    "lon": 16.3333,
+    "importance": 3
+  },
+  {
+    "name": "Rochdale",
+    "lat": 53.6177,
+    "lon": -2.1552,
+    "importance": 3
+  },
+  {
+    "name": "Deventer",
+    "lat": 52.255,
+    "lon": 6.1639,
+    "importance": 3
+  },
+  {
+    "name": "Molenbeek-Saint-Jean",
+    "lat": 50.8499,
+    "lon": 4.3125,
+    "importance": 3
+  },
+  {
+    "name": "Schwerin",
+    "lat": 53.6294,
+    "lon": 11.4132,
+    "importance": 3
+  },
+  {
+    "name": "Maribor",
+    "lat": 46.5558,
+    "lon": 15.6459,
+    "importance": 3
+  },
+  {
+    "name": "Guetersloh",
+    "lat": 51.9069,
+    "lon": 8.3785,
+    "importance": 3
+  },
+  {
+    "name": "Saint-Denis",
+    "lat": 48.9356,
+    "lon": 2.3539,
+    "importance": 3
+  },
+  {
+    "name": "Psie Pole",
+    "lat": 51.1459,
+    "lon": 17.0352,
+    "importance": 3
+  },
+  {
+    "name": "Mons",
+    "lat": 50.4541,
+    "lon": 3.9523,
+    "importance": 3
+  },
+  {
+    "name": "Royal Leamington Spa",
+    "lat": 52.2852,
+    "lon": -1.52,
+    "importance": 3
+  },
+  {
+    "name": "Delft",
+    "lat": 52.0067,
+    "lon": 4.3556,
+    "importance": 3
+  },
+  {
+    "name": "Frederiksberg",
+    "lat": 55.6794,
+    "lon": 12.5346,
+    "importance": 3
+  },
+  {
+    "name": "Romford",
+    "lat": 51.5752,
+    "lon": 0.1858,
+    "importance": 3
+  },
+  {
+    "name": "Alkmaar",
+    "lat": 52.6317,
+    "lon": 4.7486,
+    "importance": 3
+  },
+  {
+    "name": "Harlow",
+    "lat": 51.7766,
+    "lon": 0.1116,
+    "importance": 3
+  },
+  {
+    "name": "Gesundbrunnen",
+    "lat": 52.5504,
+    "lon": 13.3914,
+    "importance": 3
+  },
+  {
+    "name": "Dueren",
+    "lat": 50.8043,
+    "lon": 6.493,
+    "importance": 3
+  },
+  {
+    "name": "Ceske Budejovice",
+    "lat": 48.9745,
+    "lon": 14.4743,
+    "importance": 3
+  },
+  {
+    "name": "Heerlen",
+    "lat": 50.8837,
+    "lon": 5.9815,
+    "importance": 3
+  },
+  {
+    "name": "Nuneaton",
+    "lat": 52.5232,
+    "lon": -1.4652,
+    "importance": 3
+  },
+  {
+    "name": "High Peak",
+    "lat": 53.368,
+    "lon": -1.8454,
+    "importance": 3
+  },
+  {
+    "name": "Rahlstedt",
+    "lat": 53.6019,
+    "lon": 10.1567,
+    "importance": 3
+  },
+  {
+    "name": "Esslingen",
+    "lat": 48.7396,
+    "lon": 9.3047,
+    "importance": 3
+  },
+  {
+    "name": "Darlington",
+    "lat": 54.5243,
+    "lon": -1.5504,
+    "importance": 3
+  },
+  {
+    "name": "Ratingen",
+    "lat": 51.2972,
+    "lon": 6.8493,
+    "importance": 3
+  },
+  {
+    "name": "Marl",
+    "lat": 51.6567,
+    "lon": 7.0904,
+    "importance": 3
+  },
+  {
+    "name": "Luenen",
+    "lat": 51.6163,
+    "lon": 7.5287,
+    "importance": 3
+  },
+  {
+    "name": "Hradec Kralove",
+    "lat": 50.2092,
+    "lon": 15.8328,
+    "importance": 3
+  },
+  {
+    "name": "Usti nad Labem",
+    "lat": 50.6607,
+    "lon": 14.0323,
+    "importance": 3
+  },
+  {
+    "name": "Stevenage",
+    "lat": 51.9022,
+    "lon": -0.2026,
+    "importance": 3
+  },
+  {
+    "name": "Wembley",
+    "lat": 51.5524,
+    "lon": -0.2969,
+    "importance": 3
+  },
+  {
+    "name": "Grays",
+    "lat": 51.4757,
+    "lon": 0.3252,
+    "importance": 3
+  },
+  {
+    "name": "Harrogate",
+    "lat": 53.9908,
+    "lon": -1.5373,
+    "importance": 3
+  },
+  {
+    "name": "Hartlepool",
+    "lat": 54.6855,
+    "lon": -1.2103,
+    "importance": 3
+  },
+  {
+    "name": "Hanau am Main",
+    "lat": 50.1342,
+    "lon": 8.9142,
+    "importance": 3
+  },
+  {
+    "name": "Pardubice",
+    "lat": 50.0408,
+    "lon": 15.7766,
+    "importance": 3
+  },
+  {
+    "name": "Velbert",
+    "lat": 51.3354,
+    "lon": 7.0435,
+    "importance": 3
+  },
+  {
+    "name": "Ludwigsburg",
+    "lat": 48.8973,
+    "lon": 9.1916,
+    "importance": 3
+  },
+  {
+    "name": "Lund",
+    "lat": 55.7058,
+    "lon": 13.1932,
+    "importance": 3
+  },
+  {
+    "name": "Fulham",
+    "lat": 51.4803,
+    "lon": -0.1993,
+    "importance": 3
+  },
+  {
+    "name": "Brigittenau",
+    "lat": 48.2428,
+    "lon": 16.3755,
+    "importance": 3
+  },
+  {
+    "name": "Asnieres-sur-Seine",
+    "lat": 48.9167,
+    "lon": 2.2833,
+    "importance": 3
+  },
+  {
+    "name": "Nanterre",
+    "lat": 48.892,
+    "lon": 2.2067,
+    "importance": 3
+  },
+  {
+    "name": "Brno stred",
+    "lat": 49.1934,
+    "lon": 16.6071,
+    "importance": 3
+  },
+  {
+    "name": "Ixelles",
+    "lat": 50.8333,
+    "lon": 4.3667,
+    "importance": 3
+  },
+  {
+    "name": "Nitra",
+    "lat": 48.3076,
+    "lon": 18.0845,
+    "importance": 3
+  },
+  {
+    "name": "Lyon 08",
+    "lat": 45.7363,
+    "lon": 4.8687,
+    "importance": 3
+  },
+  {
+    "name": "Grimsby",
+    "lat": 53.5654,
+    "lon": -0.0755,
+    "importance": 3
+  },
+  {
+    "name": "Cannock",
+    "lat": 52.6904,
+    "lon": -2.0309,
+    "importance": 3
+  },
+  {
+    "name": "Poitiers",
+    "lat": 46.5826,
+    "lon": 0.3435,
+    "importance": 3
+  },
+  {
+    "name": "Lichterfelde",
+    "lat": 52.4333,
+    "lon": 13.3076,
+    "importance": 3
+  },
+  {
+    "name": "Flensburg",
+    "lat": 54.788,
+    "lon": 9.4372,
+    "importance": 3
+  },
+  {
+    "name": "Treviso",
+    "lat": 45.6667,
+    "lon": 12.2416,
+    "importance": 3
+  },
+  {
+    "name": "Hemel Hempstead",
+    "lat": 51.7537,
+    "lon": -0.4497,
+    "importance": 3
+  },
+  {
+    "name": "Versailles",
+    "lat": 48.8036,
+    "lon": 2.1342,
+    "importance": 3
+  },
+  {
+    "name": "Wedding",
+    "lat": 52.5473,
+    "lon": 13.3559,
+    "importance": 3
+  },
+  {
+    "name": "Courbevoie",
+    "lat": 48.8967,
+    "lon": 2.2567,
+    "importance": 3
+  },
+  {
+    "name": "Creteil",
+    "lat": 48.7927,
+    "lon": 2.4657,
+    "importance": 3
+  },
+  {
+    "name": "Amsterdam-Zuidoost",
+    "lat": 52.3075,
+    "lon": 4.9722,
+    "importance": 3
+  },
+  {
+    "name": "Como",
+    "lat": 45.8082,
+    "lon": 9.0832,
+    "importance": 3
+  },
+  {
+    "name": "Cottbus",
+    "lat": 51.7577,
+    "lon": 14.3289,
+    "importance": 3
+  },
+  {
+    "name": "St Albans",
+    "lat": 51.75,
+    "lon": -0.3333,
+    "importance": 3
+  },
+  {
+    "name": "Wilhelmshaven",
+    "lat": 53.5476,
+    "lon": 8.1039,
+    "importance": 3
+  },
+  {
+    "name": "Redditch",
+    "lat": 52.3065,
+    "lon": -1.9457,
+    "importance": 3
+  },
+  {
+    "name": "Hellersdorf",
+    "lat": 52.5332,
+    "lon": 13.6088,
+    "importance": 3
+  },
+  {
+    "name": "Reinickendorf",
+    "lat": 52.5639,
+    "lon": 13.3355,
+    "importance": 3
+  },
+  {
+    "name": "South Shields",
+    "lat": 54.9986,
+    "lon": -1.4323,
+    "importance": 3
+  },
+  {
+    "name": "Hilversum",
+    "lat": 52.2233,
+    "lon": 5.1764,
+    "importance": 3
+  },
+  {
+    "name": "Paris 10e Arrondissement",
+    "lat": 48.8767,
+    "lon": 2.359,
+    "importance": 3
+  },
+  {
+    "name": "Tuebingen",
+    "lat": 48.5227,
+    "lon": 9.0522,
+    "importance": 3
+  },
+  {
+    "name": "Busto Arsizio",
+    "lat": 45.6113,
+    "lon": 8.8491,
+    "importance": 3
+  },
+  {
+    "name": "Uccle",
+    "lat": 50.8023,
+    "lon": 4.3394,
+    "importance": 3
+  },
+  {
+    "name": "Minden",
+    "lat": 52.2895,
+    "lon": 8.9146,
+    "importance": 3
+  },
+  {
+    "name": "Havirov",
+    "lat": 49.7798,
+    "lon": 18.4369,
+    "importance": 3
+  },
+  {
+    "name": "Halifax",
+    "lat": 53.7167,
+    "lon": -1.85,
+    "importance": 3
+  },
+  {
+    "name": "Lyon 07",
+    "lat": 45.7452,
+    "lon": 4.842,
+    "importance": 3
+  },
+  {
+    "name": "Hengelo",
+    "lat": 52.2658,
+    "lon": 6.7931,
+    "importance": 3
+  },
+  {
+    "name": "Colombes",
+    "lat": 48.9188,
+    "lon": 2.254,
+    "importance": 3
+  },
+  {
+    "name": "Edmonton",
+    "lat": 51.6256,
+    "lon": -0.058,
+    "importance": 3
+  },
+  {
+    "name": "Beckenham",
+    "lat": 51.4088,
+    "lon": -0.0253,
+    "importance": 3
+  },
+  {
+    "name": "Tamworth",
+    "lat": 52.634,
+    "lon": -1.6959,
+    "importance": 3
+  },
+  {
+    "name": "Sesto San Giovanni",
+    "lat": 45.5333,
+    "lon": 9.2258,
+    "importance": 3
+  },
+  {
+    "name": "Villingen-Schwenningen",
+    "lat": 48.0623,
+    "lon": 8.4936,
+    "importance": 3
+  },
+  {
+    "name": "Luzern",
+    "lat": 47.0505,
+    "lon": 8.3064,
+    "importance": 3
+  },
+  {
+    "name": "Scunthorpe",
+    "lat": 53.5791,
+    "lon": -0.6544,
+    "importance": 3
+  },
+  {
+    "name": "Konstanz",
+    "lat": 47.6603,
+    "lon": 9.1758,
+    "importance": 3
+  },
+  {
+    "name": "Konin",
+    "lat": 52.2234,
+    "lon": 18.2512,
+    "importance": 3
+  },
+  {
+    "name": "Worms",
+    "lat": 49.6328,
+    "lon": 8.3592,
+    "importance": 2
+  },
+  {
+    "name": "Moabit",
+    "lat": 52.5264,
+    "lon": 13.339,
+    "importance": 2
+  },
+  {
+    "name": "Vitry-sur-Seine",
+    "lat": 48.7872,
+    "lon": 2.4033,
+    "importance": 2
+  },
+  {
+    "name": "Aulnay-sous-Bois",
+    "lat": 48.9381,
+    "lon": 2.494,
+    "importance": 2
+  },
+  {
+    "name": "Varese",
+    "lat": 45.8206,
+    "lon": 8.8251,
+    "importance": 2
+  },
+  {
+    "name": "Neumuenster",
+    "lat": 54.074,
+    "lon": 9.9846,
+    "importance": 2
+  },
+  {
+    "name": "Purmerend",
+    "lat": 52.505,
+    "lon": 4.9597,
+    "importance": 2
+  },
+  {
+    "name": "Dorsten",
+    "lat": 51.6617,
+    "lon": 6.9651,
+    "importance": 2
+  },
+  {
+    "name": "Stockton-on-Tees",
+    "lat": 54.5685,
+    "lon": -1.3187,
+    "importance": 2
+  },
+  {
+    "name": "Lelystad",
+    "lat": 52.5083,
+    "lon": 5.475,
+    "importance": 2
+  },
+  {
+    "name": "Amstelveen",
+    "lat": 52.3008,
+    "lon": 4.8639,
+    "importance": 2
+  },
+  {
+    "name": "Luedenscheid",
+    "lat": 51.2198,
+    "lon": 7.6273,
+    "importance": 2
+  },
+  {
+    "name": "Marburg an der Lahn",
+    "lat": 50.809,
+    "lon": 8.7707,
+    "importance": 2
+  },
+  {
+    "name": "Deurne",
+    "lat": 51.2213,
+    "lon": 4.466,
+    "importance": 2
+  },
+  {
+    "name": "Rheinhausen",
+    "lat": 51.4006,
+    "lon": 6.7119,
+    "importance": 2
+  },
+  {
+    "name": "Szombathely",
+    "lat": 47.2309,
+    "lon": 16.6215,
+    "importance": 2
+  },
+  {
+    "name": "Castrop-Rauxel",
+    "lat": 51.5566,
+    "lon": 7.3116,
+    "importance": 2
+  },
+  {
+    "name": "Roosendaal",
+    "lat": 51.5308,
+    "lon": 4.4653,
+    "importance": 2
+  },
+  {
+    "name": "Hasselt",
+    "lat": 50.9311,
+    "lon": 5.3378,
+    "importance": 2
+  },
+  {
+    "name": "Gateshead",
+    "lat": 54.9621,
+    "lon": -1.6017,
+    "importance": 2
+  },
+  {
+    "name": "Inowroclaw",
+    "lat": 52.7989,
+    "lon": 18.2639,
+    "importance": 2
+  },
+  {
+    "name": "Bogenhausen",
+    "lat": 48.1522,
+    "lon": 11.6159,
+    "importance": 2
+  },
+  {
+    "name": "Aalst",
+    "lat": 50.936,
+    "lon": 4.0355,
+    "importance": 2
+  },
+  {
+    "name": "Lubin",
+    "lat": 51.4009,
+    "lon": 16.2015,
+    "importance": 2
+  },
+  {
+    "name": "Mechelen",
+    "lat": 51.0257,
+    "lon": 4.4776,
+    "importance": 2
+  },
+  {
+    "name": "Jelenia Gora",
+    "lat": 50.8997,
+    "lon": 15.729,
+    "importance": 2
+  },
+  {
+    "name": "Putney",
+    "lat": 51.4607,
+    "lon": -0.2181,
+    "importance": 2
+  },
+  {
+    "name": "Gladbeck",
+    "lat": 51.5708,
+    "lon": 6.9859,
+    "importance": 2
+  },
+  {
+    "name": "La Rochelle",
+    "lat": 46.1631,
+    "lon": -1.1522,
+    "importance": 2
+  },
+  {
+    "name": "Champigny-sur-Marne",
+    "lat": 48.8164,
+    "lon": 2.4937,
+    "importance": 2
+  },
+  {
+    "name": "Luxembourg",
+    "lat": 49.6098,
+    "lon": 6.1327,
+    "importance": 2
+  },
+  {
+    "name": "La Louviere",
+    "lat": 50.4866,
+    "lon": 4.1879,
+    "importance": 2
+  },
+  {
+    "name": "Rueil-Malmaison",
+    "lat": 48.8765,
+    "lon": 2.1897,
+    "importance": 2
+  },
+  {
+    "name": "Arnsberg",
+    "lat": 51.3833,
+    "lon": 8.0833,
+    "importance": 2
+  },
+  {
+    "name": "Rheine",
+    "lat": 52.2851,
+    "lon": 7.4405,
+    "importance": 2
+  },
+  {
+    "name": "Oss",
+    "lat": 51.765,
+    "lon": 5.5181,
+    "importance": 2
+  },
+  {
+    "name": "Fuenfhaus",
+    "lat": 48.196,
+    "lon": 16.3183,
+    "importance": 2
+  },
+  {
+    "name": "Viersen",
+    "lat": 51.2544,
+    "lon": 6.3944,
+    "importance": 2
+  },
+  {
+    "name": "Bracknell",
+    "lat": 51.4136,
+    "lon": -0.7505,
+    "importance": 2
+  },
+  {
+    "name": "Cinisello Balsamo",
+    "lat": 45.5582,
+    "lon": 9.2149,
+    "importance": 2
+  },
+  {
+    "name": "Delmenhorst",
+    "lat": 53.0511,
+    "lon": 8.6309,
+    "importance": 2
+  },
+  {
+    "name": "Sankt Gallen",
+    "lat": 47.4239,
+    "lon": 9.3748,
+    "importance": 2
+  },
+  {
+    "name": "Battersea",
+    "lat": 51.4748,
+    "lon": -0.1555,
+    "importance": 2
+  },
+  {
+    "name": "Gare",
+    "lat": 48.8334,
+    "lon": 2.3751,
+    "importance": 2
+  },
+  {
+    "name": "Crewe",
+    "lat": 53.0979,
+    "lon": -2.4416,
+    "importance": 2
+  },
+  {
+    "name": "Pila",
+    "lat": 53.1514,
+    "lon": 16.7378,
+    "importance": 2
+  },
+  {
+    "name": "Chatham",
+    "lat": 51.3789,
+    "lon": 0.5279,
+    "importance": 2
+  },
+  {
+    "name": "Schiedam",
+    "lat": 51.9192,
+    "lon": 4.3889,
+    "importance": 2
+  },
+  {
+    "name": "Doebling",
+    "lat": 48.25,
+    "lon": 16.3333,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Maur-des-Fosses",
+    "lat": 48.794,
+    "lon": 2.4932,
+    "importance": 2
+  },
+  {
+    "name": "Hove",
+    "lat": 50.8309,
+    "lon": -0.1672,
+    "importance": 2
+  },
+  {
+    "name": "Bayreuth",
+    "lat": 49.9478,
+    "lon": 11.5789,
+    "importance": 2
+  },
+  {
+    "name": "Spijkenisse",
+    "lat": 51.845,
+    "lon": 4.3292,
+    "importance": 2
+  },
+  {
+    "name": "Troisdorf",
+    "lat": 50.809,
+    "lon": 7.1497,
+    "importance": 2
+  },
+  {
+    "name": "Aylesbury",
+    "lat": 51.8167,
+    "lon": -0.8146,
+    "importance": 2
+  },
+  {
+    "name": "Helmond",
+    "lat": 51.4817,
+    "lon": 5.6611,
+    "importance": 2
+  },
+  {
+    "name": "Calais",
+    "lat": 50.9519,
+    "lon": 1.8563,
+    "importance": 2
+  },
+  {
+    "name": "Giessen",
+    "lat": 50.5873,
+    "lon": 8.6755,
+    "importance": 2
+  },
+  {
+    "name": "Bocholt",
+    "lat": 51.8388,
+    "lon": 6.6153,
+    "importance": 2
+  },
+  {
+    "name": "Kortrijk",
+    "lat": 50.828,
+    "lon": 3.2649,
+    "importance": 2
+  },
+  {
+    "name": "Vlaardingen",
+    "lat": 51.9125,
+    "lon": 4.3417,
+    "importance": 2
+  },
+  {
+    "name": "Detmold",
+    "lat": 51.9385,
+    "lon": 8.8732,
+    "importance": 2
+  },
+  {
+    "name": "Canary Wharf",
+    "lat": 51.5052,
+    "lon": -0.0209,
+    "importance": 2
+  },
+  {
+    "name": "Rugby",
+    "lat": 52.3709,
+    "lon": -1.2642,
+    "importance": 2
+  },
+  {
+    "name": "Zlin",
+    "lat": 49.2264,
+    "lon": 17.6706,
+    "importance": 2
+  },
+  {
+    "name": "Ostrow Wielkopolski",
+    "lat": 51.655,
+    "lon": 17.8069,
+    "importance": 2
+  },
+  {
+    "name": "Almelo",
+    "lat": 52.3567,
+    "lon": 6.6625,
+    "importance": 2
+  },
+  {
+    "name": "Steglitz Bezirk",
+    "lat": 52.4561,
+    "lon": 13.332,
+    "importance": 2
+  },
+  {
+    "name": "Purley",
+    "lat": 51.3368,
+    "lon": -0.112,
+    "importance": 2
+  },
+  {
+    "name": "Gouda",
+    "lat": 52.0167,
+    "lon": 4.7083,
+    "importance": 2
+  },
+  {
+    "name": "Guildford",
+    "lat": 51.2354,
+    "lon": -0.5743,
+    "importance": 2
+  },
+  {
+    "name": "Zaandam",
+    "lat": 52.4385,
+    "lon": 4.8264,
+    "importance": 2
+  },
+  {
+    "name": "Esbjerg",
+    "lat": 55.4703,
+    "lon": 8.4519,
+    "importance": 2
+  },
+  {
+    "name": "Peckham",
+    "lat": 51.474,
+    "lon": -0.0697,
+    "importance": 2
+  },
+  {
+    "name": "Barnsley",
+    "lat": 53.55,
+    "lon": -1.4833,
+    "importance": 2
+  },
+  {
+    "name": "Norderstedt",
+    "lat": 53.7018,
+    "lon": 9.9933,
+    "importance": 2
+  },
+  {
+    "name": "Dunkerque",
+    "lat": 51.0344,
+    "lon": 2.3768,
+    "importance": 2
+  },
+  {
+    "name": "Lueneburg",
+    "lat": 53.2512,
+    "lon": 10.4155,
+    "importance": 2
+  },
+  {
+    "name": "Stargard",
+    "lat": 53.3367,
+    "lon": 15.0499,
+    "importance": 2
+  },
+  {
+    "name": "Cremona",
+    "lat": 45.1332,
+    "lon": 10.0213,
+    "importance": 2
+  },
+  {
+    "name": "Billstedt",
+    "lat": 53.55,
+    "lon": 10.1333,
+    "importance": 2
+  },
+  {
+    "name": "Celle",
+    "lat": 52.6226,
+    "lon": 10.0805,
+    "importance": 2
+  },
+  {
+    "name": "Lowestoft",
+    "lat": 52.4752,
+    "lon": 1.7517,
+    "importance": 2
+  },
+  {
+    "name": "Aubervilliers",
+    "lat": 48.9167,
+    "lon": 2.3833,
+    "importance": 2
+  },
+  {
+    "name": "Gosport",
+    "lat": 50.7951,
+    "lon": -1.129,
+    "importance": 2
+  },
+  {
+    "name": "Dinslaken",
+    "lat": 51.5623,
+    "lon": 6.7434,
+    "importance": 2
+  },
+  {
+    "name": "Maidenhead",
+    "lat": 51.5228,
+    "lon": -0.7199,
+    "importance": 2
+  },
+  {
+    "name": "Gniezno",
+    "lat": 52.5348,
+    "lon": 17.5826,
+    "importance": 2
+  },
+  {
+    "name": "Alphen aan den Rijn",
+    "lat": 52.1292,
+    "lon": 4.6555,
+    "importance": 2
+  },
+  {
+    "name": "Stafford",
+    "lat": 52.8052,
+    "lon": -2.1164,
+    "importance": 2
+  },
+  {
+    "name": "Bamberg",
+    "lat": 49.8987,
+    "lon": 10.9007,
+    "importance": 2
+  },
+  {
+    "name": "Uxbridge",
+    "lat": 51.5489,
+    "lon": -0.4821,
+    "importance": 2
+  },
+  {
+    "name": "Southall",
+    "lat": 51.509,
+    "lon": -0.3713,
+    "importance": 2
+  },
+  {
+    "name": "Fordon",
+    "lat": 53.1482,
+    "lon": 18.1704,
+    "importance": 2
+  },
+  {
+    "name": "Kladno",
+    "lat": 50.1473,
+    "lon": 14.1029,
+    "importance": 2
+  },
+  {
+    "name": "Tournai",
+    "lat": 50.6071,
+    "lon": 3.3893,
+    "importance": 2
+  },
+  {
+    "name": "Ostend",
+    "lat": 51.2155,
+    "lon": 2.927,
+    "importance": 2
+  },
+  {
+    "name": "Sint-Niklaas",
+    "lat": 51.1651,
+    "lon": 4.1437,
+    "importance": 2
+  },
+  {
+    "name": "Royal Tunbridge Wells",
+    "lat": 51.1332,
+    "lon": 0.2626,
+    "importance": 2
+  },
+  {
+    "name": "Hoorn",
+    "lat": 52.6425,
+    "lon": 5.0597,
+    "importance": 2
+  },
+  {
+    "name": "Assen",
+    "lat": 52.9967,
+    "lon": 6.5625,
+    "importance": 2
+  },
+  {
+    "name": "Aschaffenburg",
+    "lat": 49.977,
+    "lon": 9.1521,
+    "importance": 2
+  },
+  {
+    "name": "Wimbledon",
+    "lat": 51.4221,
+    "lon": -0.2081,
+    "importance": 2
+  },
+  {
+    "name": "Neubrandenburg",
+    "lat": 53.5573,
+    "lon": 13.261,
+    "importance": 2
+  },
+  {
+    "name": "Stamford Hill",
+    "lat": 51.5687,
+    "lon": -0.0733,
+    "importance": 2
+  },
+  {
+    "name": "Bourges",
+    "lat": 47.0833,
+    "lon": 2.4,
+    "importance": 2
+  },
+  {
+    "name": "Velsen-Zuid",
+    "lat": 52.46,
+    "lon": 4.65,
+    "importance": 2
+  },
+  {
+    "name": "Dessau",
+    "lat": 51.8386,
+    "lon": 12.2455,
+    "importance": 2
+  },
+  {
+    "name": "Ede",
+    "lat": 52.0333,
+    "lon": 5.6583,
+    "importance": 2
+  },
+  {
+    "name": "Rossendale",
+    "lat": 53.6846,
+    "lon": -2.2769,
+    "importance": 2
+  },
+  {
+    "name": "Lippstadt",
+    "lat": 51.6737,
+    "lon": 8.3448,
+    "importance": 2
+  },
+  {
+    "name": "Koepenick",
+    "lat": 52.4455,
+    "lon": 13.5746,
+    "importance": 2
+  },
+  {
+    "name": "Aalen",
+    "lat": 48.8378,
+    "lon": 10.0933,
+    "importance": 2
+  },
+  {
+    "name": "Saint-Nazaire",
+    "lat": 47.2751,
+    "lon": -2.2179,
+    "importance": 2
+  },
+  {
+    "name": "Neuwied",
+    "lat": 50.4336,
+    "lon": 7.4706,
+    "importance": 2
+  },
+  {
+    "name": "Unna",
+    "lat": 51.538,
+    "lon": 7.6897,
+    "importance": 2
+  },
+  {
+    "name": "Karlskrona",
+    "lat": 56.1616,
+    "lon": 15.5866,
+    "importance": 2
+  },
+  {
+    "name": "Folkestone",
+    "lat": 51.0817,
+    "lon": 1.1673,
+    "importance": 2
+  },
+  {
+    "name": "Plauen",
+    "lat": 50.4973,
+    "lon": 12.1378,
+    "importance": 2
+  },
+  {
+    "name": "Brixton",
+    "lat": 51.4659,
+    "lon": -0.1065,
+    "importance": 2
+  },
+  {
+    "name": "Hounslow",
+    "lat": 51.4684,
+    "lon": -0.3609,
+    "importance": 2
+  },
+  {
+    "name": "Bergen op Zoom",
+    "lat": 51.495,
+    "lon": 4.2917,
+    "importance": 2
+  },
+  {
+    "name": "Chingford",
+    "lat": 51.6303,
+    "lon": 0.0005,
+    "importance": 2
+  },
+  {
+    "name": "Tatabanya",
+    "lat": 47.5925,
+    "lon": 18.381,
+    "importance": 2
+  },
+  {
+    "name": "Finchley",
+    "lat": 51.601,
+    "lon": -0.1952,
+    "importance": 2
+  },
+  {
+    "name": "Pavia",
+    "lat": 45.1921,
+    "lon": 9.1592,
+    "importance": 2
+  },
+  {
+    "name": "Kedzierzyn-Kozle",
+    "lat": 50.3498,
+    "lon": 18.2261,
+    "importance": 2
+  },
+  {
+    "name": "Colmar",
+    "lat": 48.0808,
+    "lon": 7.3558,
+    "importance": 2
+  },
+  {
+    "name": "Glogow",
+    "lat": 51.6636,
+    "lon": 16.0845,
+    "importance": 2
+  },
+  {
+    "name": "Pankow",
+    "lat": 52.5693,
+    "lon": 13.4019,
+    "importance": 2
+  },
+  {
+    "name": "Herten",
+    "lat": 51.5964,
+    "lon": 7.1439,
+    "importance": 2
+  },
+  {
+    "name": "Loughborough",
+    "lat": 52.7667,
+    "lon": -1.2,
+    "importance": 2
+  },
+  {
+    "name": "Capelle aan den IJssel",
+    "lat": 51.9292,
+    "lon": 4.5778,
+    "importance": 2
+  },
+  {
+    "name": "Cricklewood",
+    "lat": 51.5567,
+    "lon": -0.2155,
+    "importance": 2
+  },
+  {
+    "name": "Herford",
+    "lat": 52.1146,
+    "lon": 8.6734,
+    "importance": 2
+  },
+  {
+    "name": "Grevenbroich",
+    "lat": 51.091,
+    "lon": 6.5827,
+    "importance": 2
+  },
+  {
+    "name": "Weimar",
+    "lat": 50.9803,
+    "lon": 11.329,
+    "importance": 2
+  },
+  {
+    "name": "Waterlooville",
+    "lat": 50.8807,
+    "lon": -1.0304,
+    "importance": 2
+  },
+  {
+    "name": "Maison Blanche",
+    "lat": 48.8259,
+    "lon": 2.3508,
+    "importance": 2
+  },
+  {
+    "name": "Kaposvar",
+    "lat": 46.3667,
+    "lon": 17.8,
+    "importance": 2
+  },
+  {
+    "name": "Kerpen",
+    "lat": 50.8699,
+    "lon": 6.6969,
+    "importance": 2
+  },
+  {
+    "name": "Macclesfield",
+    "lat": 53.2602,
+    "lon": -2.1256,
+    "importance": 2
+  },
+  {
+    "name": "Bognor Regis",
+    "lat": 50.7821,
+    "lon": -0.6798,
+    "importance": 2
+  },
+  {
+    "name": "Fulda",
+    "lat": 50.5516,
+    "lon": 9.6752,
+    "importance": 2
+  },
+  {
+    "name": "Kettering",
+    "lat": 52.3984,
+    "lon": -0.7257,
+    "importance": 2
+  },
+  {
+    "name": "Genk",
+    "lat": 50.965,
+    "lon": 5.5008,
+    "importance": 2
+  },
+  {
+    "name": "Dormagen",
+    "lat": 51.0968,
+    "lon": 6.8317,
+    "importance": 2
+  },
+  {
+    "name": "Leszno",
+    "lat": 51.8403,
+    "lon": 16.5749,
+    "importance": 2
+  },
+  {
+    "name": "Bergheim",
+    "lat": 50.9557,
+    "lon": 6.6399,
+    "importance": 2
+  },
+  {
+    "name": "Most",
+    "lat": 50.503,
+    "lon": 13.6362,
+    "importance": 2
+  },
+  {
+    "name": "Great Yarmouth",
+    "lat": 52.6083,
+    "lon": 1.7305,
+    "importance": 2
+  },
+  {
+    "name": "Mitcham",
+    "lat": 51.4032,
+    "lon": -0.1683,
+    "importance": 2
+  },
+  {
+    "name": "Garbsen",
+    "lat": 52.4137,
+    "lon": 9.5899,
+    "importance": 2
+  },
+  {
+    "name": "Lugano",
+    "lat": 46.0101,
+    "lon": 8.96,
+    "importance": 2
+  },
+  {
+    "name": "Trnava",
+    "lat": 48.3777,
+    "lon": 17.586,
+    "importance": 2
+  },
+  {
+    "name": "Randers",
+    "lat": 56.4607,
+    "lon": 10.0364,
+    "importance": 2
+  },
+  {
+    "name": "Ashford",
+    "lat": 51.1465,
+    "lon": 0.8738,
+    "importance": 2
+  },
+  {
+    "name": "Drancy",
+    "lat": 48.9258,
+    "lon": 2.4453,
+    "importance": 2
+  },
+  {
+    "name": "Noisy-le-Grand",
+    "lat": 48.8498,
+    "lon": 2.5627,
+    "importance": 2
+  },
+  {
+    "name": "Villeneuve-d'Ascq",
+    "lat": 50.6167,
+    "lon": 3.1666,
+    "importance": 2
+  },
+  {
+    "name": "Sopron",
+    "lat": 47.685,
+    "lon": 16.5905,
+    "importance": 2
+  },
+  {
+    "name": "Levallois-Perret",
+    "lat": 48.8939,
+    "lon": 2.2886,
+    "importance": 2
+  },
+  {
+    "name": "Picpus",
+    "lat": 48.8426,
+    "lon": 2.4001,
+    "importance": 2
+  },
+  {
+    "name": "Zalaegerszeg",
+    "lat": 46.837,
+    "lon": 16.844,
+    "importance": 2
+  },
+  {
+    "name": "Tempelhof",
+    "lat": 52.4667,
+    "lon": 13.4,
+    "importance": 2
+  },
+  {
+    "name": "Scarborough",
+    "lat": 54.2797,
+    "lon": -0.4044,
+    "importance": 2
+  },
+  {
+    "name": "Wesel",
+    "lat": 51.6669,
+    "lon": 6.6204,
+    "importance": 2
+  },
+  {
+    "name": "Chambery",
+    "lat": 45.5663,
+    "lon": 5.9208,
+    "importance": 2
+  },
+  {
+    "name": "Kolding",
+    "lat": 55.4904,
+    "lon": 9.4722,
+    "importance": 2
+  },
+  {
+    "name": "Nieuwegein",
+    "lat": 52.0292,
+    "lon": 5.0806,
+    "importance": 2
+  },
+  {
+    "name": "Issy-les-Moulineaux",
+    "lat": 48.821,
+    "lon": 2.2772,
+    "importance": 2
+  },
+  {
+    "name": "Kempten (Allgaeu)",
+    "lat": 47.7267,
+    "lon": 10.3139,
+    "importance": 2
+  },
+  {
+    "name": "Aldershot",
+    "lat": 51.2483,
+    "lon": -0.7639,
+    "importance": 2
+  },
+  {
+    "name": "Sindelfingen",
+    "lat": 48.7,
+    "lon": 9.0167,
+    "importance": 2
+  },
+  {
+    "name": "Neuilly-sur-Seine",
+    "lat": 48.8846,
+    "lon": 2.2696,
+    "importance": 2
+  },
+  {
+    "name": "Veenendaal",
+    "lat": 52.0286,
+    "lon": 5.5589,
+    "importance": 2
+  },
+  {
+    "name": "Schwaebisch Gmuend",
+    "lat": 48.7995,
+    "lon": 9.7981,
+    "importance": 2
+  },
+  {
+    "name": "Horsens",
+    "lat": 55.8607,
+    "lon": 9.8503,
+    "importance": 2
+  },
+  {
+    "name": "Bury",
+    "lat": 53.6,
+    "lon": -2.3,
+    "importance": 2
+  },
+  {
+    "name": "Barking",
+    "lat": 51.5333,
+    "lon": 0.0833,
+    "importance": 2
+  },
+  {
+    "name": "Zeist",
+    "lat": 52.09,
+    "lon": 5.2333,
+    "importance": 2
+  },
+  {
+    "name": "Troyes",
+    "lat": 48.3007,
+    "lon": 4.0852,
+    "importance": 2
+  },
+  {
+    "name": "Stodulky",
+    "lat": 50.05,
+    "lon": 14.3167,
+    "importance": 2
+  },
+  {
+    "name": "Seraing",
+    "lat": 50.5836,
+    "lon": 5.5011,
+    "importance": 2
+  },
+  {
+    "name": "Castleford",
+    "lat": 53.7259,
+    "lon": -1.3626,
+    "importance": 2
+  },
+  {
+    "name": "Landshut",
+    "lat": 48.5296,
+    "lon": 12.1618,
+    "importance": 2
+  },
+  {
+    "name": "Swidnica",
+    "lat": 50.8438,
+    "lon": 16.4886,
+    "importance": 2
+  },
+  {
+    "name": "Opava",
+    "lat": 49.9387,
+    "lon": 17.9026,
+    "importance": 2
+  },
+  {
+    "name": "Vejle",
+    "lat": 55.7093,
+    "lon": 9.5357,
+    "importance": 2
+  },
+  {
+    "name": "Rosenheim",
+    "lat": 47.8564,
+    "lon": 12.1225,
+    "importance": 2
+  },
+  {
+    "name": "Stroud",
+    "lat": 51.75,
+    "lon": -2.2,
+    "importance": 2
+  },
+  {
+    "name": "Margate",
+    "lat": 51.3813,
+    "lon": 1.3862,
+    "importance": 2
+  },
+  {
+    "name": "Chelsea",
+    "lat": 51.4875,
+    "lon": -0.1694,
+    "importance": 2
+  },
+  {
+    "name": "Welwyn Garden City",
+    "lat": 51.8017,
+    "lon": -0.2069,
+    "importance": 2
+  },
+  {
+    "name": "Farnborough",
+    "lat": 51.2942,
+    "lon": -0.7557,
+    "importance": 2
+  },
+  {
+    "name": "Antony",
+    "lat": 48.7533,
+    "lon": 2.2967,
+    "importance": 2
+  },
+  {
+    "name": "Brandenburg an der Havel",
+    "lat": 52.4167,
+    "lon": 12.55,
+    "importance": 2
+  },
+  {
+    "name": "Ruesselsheim am Main",
+    "lat": 49.9896,
+    "lon": 8.4225,
+    "importance": 2
+  },
+  {
+    "name": "Den Helder",
+    "lat": 52.9599,
+    "lon": 4.7593,
+    "importance": 2
+  },
+  {
+    "name": "Berlin Koepenick",
+    "lat": 52.4425,
+    "lon": 13.5823,
+    "importance": 2
+  },
+  {
+    "name": "Frydek-Mistek",
+    "lat": 49.6833,
+    "lon": 18.35,
+    "importance": 2
+  },
+  {
+    "name": "La Roche-sur-Yon",
+    "lat": 46.6697,
+    "lon": -1.4276,
+    "importance": 2
+  },
+  {
+    "name": "Offenburg",
+    "lat": 48.4738,
+    "lon": 7.945,
+    "importance": 2
+  },
+  {
+    "name": "Langenfeld",
+    "lat": 51.1082,
+    "lon": 6.9483,
+    "importance": 2
+  },
+  {
+    "name": "Stralsund",
+    "lat": 54.3091,
+    "lon": 13.0818,
+    "importance": 2
+  },
+  {
+    "name": "Villach",
+    "lat": 46.6103,
+    "lon": 13.8558,
+    "importance": 2
+  },
+  {
+    "name": "Littlehampton",
+    "lat": 50.8114,
+    "lon": -0.5408,
+    "importance": 2
+  },
+  {
+    "name": "Hameln",
+    "lat": 52.104,
+    "lon": 9.3562,
+    "importance": 2
+  },
+  {
+    "name": "Raciborz",
+    "lat": 50.0919,
+    "lon": 18.2193,
+    "importance": 2
+  },
+  {
+    "name": "Friedrichshafen",
+    "lat": 47.6569,
+    "lon": 9.4755,
+    "importance": 2
+  },
+  {
+    "name": "Trencin",
+    "lat": 48.8945,
+    "lon": 18.0444,
+    "importance": 2
+  },
+  {
+    "name": "Zizkov",
+    "lat": 50.0833,
+    "lon": 14.45,
+    "importance": 2
+  },
+  {
+    "name": "Streatham",
+    "lat": 51.429,
+    "lon": -0.1318,
+    "importance": 2
+  },
+  {
+    "name": "Goeppingen",
+    "lat": 48.7035,
+    "lon": 9.6521,
+    "importance": 2
+  },
+  {
+    "name": "Sarcelles",
+    "lat": 48.9974,
+    "lon": 2.3782,
+    "importance": 2
+  },
+  {
+    "name": "Vigevano",
+    "lat": 45.3141,
+    "lon": 8.8544,
+    "importance": 2
+  },
+  {
+    "name": "Hardenberg",
+    "lat": 52.5758,
+    "lon": 6.6194,
+    "importance": 2
+  },
+  {
+    "name": "Ivry-sur-Seine",
+    "lat": 48.8157,
+    "lon": 2.3849,
+    "importance": 2
+  },
+  {
+    "name": "Evreux",
+    "lat": 49.0241,
+    "lon": 1.1508,
+    "importance": 2
+  },
+  {
+    "name": "Goerlitz",
+    "lat": 51.1552,
+    "lon": 14.9885,
+    "importance": 2
+  },
+  {
+    "name": "Weymouth",
+    "lat": 50.6145,
+    "lon": -2.4599,
+    "importance": 2
+  },
+  {
+    "name": "Legnano",
+    "lat": 45.5979,
+    "lon": 8.9151,
+    "importance": 2
+  },
+  {
+    "name": "Venissieux",
+    "lat": 45.6971,
+    "lon": 4.8859,
+    "importance": 2
+  },
+  {
+    "name": "Cergy",
+    "lat": 49.0365,
+    "lon": 2.0761,
+    "importance": 2
+  },
+  {
+    "name": "Hernals",
+    "lat": 48.2254,
+    "lon": 16.3087,
+    "importance": 2
+  },
+  {
+    "name": "Clichy",
+    "lat": 48.9002,
+    "lon": 2.3095,
+    "importance": 2
+  },
+  {
+    "name": "Fareham",
+    "lat": 50.8516,
+    "lon": -1.1793,
+    "importance": 2
+  },
+  {
+    "name": "Morley",
+    "lat": 53.7401,
+    "lon": -1.5988,
+    "importance": 2
+  },
+  {
+    "name": "Cheshunt",
+    "lat": 51.7002,
+    "lon": -0.0303,
+    "importance": 2
+  },
+  {
+    "name": "Kidderminster",
+    "lat": 52.3882,
+    "lon": -2.25,
+    "importance": 2
+  },
+  {
+    "name": "Frankfurt (Oder)",
+    "lat": 52.3471,
+    "lon": 14.5506,
+    "importance": 1
+  },
+  {
+    "name": "Emmen",
+    "lat": 52.7792,
+    "lon": 6.9069,
+    "importance": 1
+  },
+  {
+    "name": "Veszprem",
+    "lat": 47.0933,
+    "lon": 17.9115,
+    "importance": 1
+  },
+  {
+    "name": "Neu-Hohenschoenhausen",
+    "lat": 52.5668,
+    "lon": 13.5125,
+    "importance": 1
+  },
+  {
+    "name": "Hattingen",
+    "lat": 51.3989,
+    "lon": 7.1856,
+    "importance": 1
+  },
+  {
+    "name": "Corby",
+    "lat": 52.4964,
+    "lon": -0.6894,
+    "importance": 1
+  },
+  {
+    "name": "Dartford",
+    "lat": 51.4466,
+    "lon": 0.2142,
+    "importance": 1
+  },
+  {
+    "name": "Dewsbury",
+    "lat": 53.6908,
+    "lon": -1.6291,
+    "importance": 1
+  },
+  {
+    "name": "Woluwe-Saint-Lambert",
+    "lat": 50.8439,
+    "lon": 4.4291,
+    "importance": 1
+  },
+  {
+    "name": "Hilden",
+    "lat": 51.1682,
+    "lon": 6.9309,
+    "importance": 1
+  },
+  {
+    "name": "Winterhude",
+    "lat": 53.5937,
+    "lon": 10.0112,
+    "importance": 1
+  },
+  {
+    "name": "Stolberg",
+    "lat": 50.7737,
+    "lon": 6.226,
+    "importance": 1
+  },
+  {
+    "name": "Stourbridge",
+    "lat": 52.4561,
+    "lon": -2.1432,
+    "importance": 1
+  },
+  {
+    "name": "Forest",
+    "lat": 50.8168,
+    "lon": 4.3277,
+    "importance": 1
+  },
+  {
+    "name": "Sankt Augustin",
+    "lat": 50.7754,
+    "lon": 7.197,
+    "importance": 1
+  },
+  {
+    "name": "Roeselare",
+    "lat": 50.9465,
+    "lon": 3.1227,
+    "importance": 1
+  },
+  {
+    "name": "Eschweiler",
+    "lat": 50.8185,
+    "lon": 6.2718,
+    "importance": 1
+  },
+  {
+    "name": "Sale",
+    "lat": 53.4252,
+    "lon": -2.3244,
+    "importance": 1
+  },
+  {
+    "name": "Baden-Baden",
+    "lat": 48.7606,
+    "lon": 8.2398,
+    "importance": 1
+  },
+  {
+    "name": "Friedrichsfelde",
+    "lat": 52.5057,
+    "lon": 13.5081,
+    "importance": 1
+  },
+  {
+    "name": "Saint-Quentin",
+    "lat": 49.8489,
+    "lon": 3.2876,
+    "importance": 1
+  },
+  {
+    "name": "Sesvete",
+    "lat": 45.8311,
+    "lon": 16.1164,
+    "importance": 1
+  },
+  {
+    "name": "Ahlen",
+    "lat": 51.7634,
+    "lon": 7.8887,
+    "importance": 1
+  },
+  {
+    "name": "Halesowen",
+    "lat": 52.4486,
+    "lon": -2.0494,
+    "importance": 1
+  },
+  {
+    "name": "Canterbury",
+    "lat": 51.279,
+    "lon": 1.0799,
+    "importance": 1
+  },
+  {
+    "name": "South Croydon",
+    "lat": 51.3622,
+    "lon": -0.0942,
+    "importance": 1
+  },
+  {
+    "name": "Biel/Bienne",
+    "lat": 47.1371,
+    "lon": 7.2461,
+    "importance": 1
+  },
+  {
+    "name": "Bad Salzuflen",
+    "lat": 52.0862,
+    "lon": 8.7443,
+    "importance": 1
+  },
+  {
+    "name": "Euskirchen",
+    "lat": 50.6606,
+    "lon": 6.7872,
+    "importance": 1
+  },
+  {
+    "name": "Meerbusch",
+    "lat": 51.2527,
+    "lon": 6.6881,
+    "importance": 1
+  },
+  {
+    "name": "Pozzo Strada",
+    "lat": 45.0684,
+    "lon": 7.625,
+    "importance": 1
+  },
+  {
+    "name": "Wolfenbuettel",
+    "lat": 52.1644,
+    "lon": 10.541,
+    "importance": 1
+  },
+  {
+    "name": "Leytonstone",
+    "lat": 51.5686,
+    "lon": 0.0077,
+    "importance": 1
+  },
+  {
+    "name": "Huerth",
+    "lat": 50.8708,
+    "lon": 6.8676,
+    "importance": 1
+  },
+  {
+    "name": "Niort",
+    "lat": 46.3231,
+    "lon": -0.4588,
+    "importance": 1
+  },
+  {
+    "name": "Belfort",
+    "lat": 47.6422,
+    "lon": 6.8539,
+    "importance": 1
+  },
+  {
+    "name": "Margareten",
+    "lat": 48.1855,
+    "lon": 16.3537,
+    "importance": 1
+  },
+  {
+    "name": "Zehlendorf",
+    "lat": 52.4333,
+    "lon": 13.25,
+    "importance": 1
+  },
+  {
+    "name": "Hietzing",
+    "lat": 48.1862,
+    "lon": 16.2965,
+    "importance": 1
+  },
+  {
+    "name": "Gravesend",
+    "lat": 51.4421,
+    "lon": 0.3711,
+    "importance": 1
+  },
+  {
+    "name": "Zuerich (Kreis 11)",
+    "lat": 47.4233,
+    "lon": 8.5217,
+    "importance": 1
+  },
+  {
+    "name": "Eastleigh",
+    "lat": 50.9667,
+    "lon": -1.35,
+    "importance": 1
+  },
+  {
+    "name": "Schweinfurt",
+    "lat": 50.0494,
+    "lon": 10.2218,
+    "importance": 1
+  },
+  {
+    "name": "Neustadt an der Weinstrasse",
+    "lat": 49.3501,
+    "lon": 8.1389,
+    "importance": 1
+  },
+  {
+    "name": "Sartrouville",
+    "lat": 48.9482,
+    "lon": 2.1917,
+    "importance": 1
+  },
+  {
+    "name": "Maisons-Alfort",
+    "lat": 48.8117,
+    "lon": 2.4394,
+    "importance": 1
+  },
+  {
+    "name": "Meaux",
+    "lat": 48.9601,
+    "lon": 2.8788,
+    "importance": 1
+  },
+  {
+    "name": "Pulheim",
+    "lat": 50.9997,
+    "lon": 6.8063,
+    "importance": 1
+  },
+  {
+    "name": "Acton",
+    "lat": 51.509,
+    "lon": -0.2762,
+    "importance": 1
+  },
+  {
+    "name": "Blois",
+    "lat": 47.5943,
+    "lon": 1.3291,
+    "importance": 1
+  },
+  {
+    "name": "Hvidovre",
+    "lat": 55.643,
+    "lon": 12.4771,
+    "importance": 1
+  },
+  {
+    "name": "Washington",
+    "lat": 54.9,
+    "lon": -1.5167,
+    "importance": 1
+  },
+  {
+    "name": "Braintree",
+    "lat": 51.8782,
+    "lon": 0.5529,
+    "importance": 1
+  },
+  {
+    "name": "Brive-la-Gaillarde",
+    "lat": 45.1589,
+    "lon": 1.5333,
+    "importance": 1
+  },
+  {
+    "name": "Klinteby Frihed",
+    "lat": 55.197,
+    "lon": 11.596,
+    "importance": 1
+  },
+  {
+    "name": "Avedore",
+    "lat": 55.6272,
+    "lon": 12.4564,
+    "importance": 1
+  },
+  {
+    "name": "Beauvais",
+    "lat": 49.4333,
+    "lon": 2.0833,
+    "importance": 1
+  },
+  {
+    "name": "Chateauroux",
+    "lat": 46.8125,
+    "lon": 1.6936,
+    "importance": 1
+  },
+  {
+    "name": "Cholet",
+    "lat": 47.0589,
+    "lon": -0.8797,
+    "importance": 1
+  },
+  {
+    "name": "Gummersbach",
+    "lat": 51.0261,
+    "lon": 7.5647,
+    "importance": 1
+  },
+  {
+    "name": "Oosterhout",
+    "lat": 51.645,
+    "lon": 4.8597,
+    "importance": 1
+  },
+  {
+    "name": "Wilhelmsburg",
+    "lat": 53.4997,
+    "lon": 10.0128,
+    "importance": 1
+  },
+  {
+    "name": "Waiblingen",
+    "lat": 48.8324,
+    "lon": 9.3164,
+    "importance": 1
+  },
+  {
+    "name": "Pantin",
+    "lat": 48.8944,
+    "lon": 2.4093,
+    "importance": 1
+  },
+  {
+    "name": "Lyon 06",
+    "lat": 45.7679,
+    "lon": 4.8506,
+    "importance": 1
+  },
+  {
+    "name": "Verviers",
+    "lat": 50.5891,
+    "lon": 5.8624,
+    "importance": 1
+  },
+  {
+    "name": "Nordhorn",
+    "lat": 52.4308,
+    "lon": 7.0683,
+    "importance": 1
+  },
+  {
+    "name": "Mariendorf",
+    "lat": 52.4378,
+    "lon": 13.3811,
+    "importance": 1
+  },
+  {
+    "name": "Universitats- und Hansestadt Greifswald",
+    "lat": 54.0891,
+    "lon": 13.4024,
+    "importance": 1
+  },
+  {
+    "name": "Cuxhaven",
+    "lat": 53.8683,
+    "lon": 8.699,
+    "importance": 1
+  },
+  {
+    "name": "Wetzlar",
+    "lat": 50.5611,
+    "lon": 8.5049,
+    "importance": 1
+  },
+  {
+    "name": "Brentwood",
+    "lat": 51.6213,
+    "lon": 0.3056,
+    "importance": 1
+  },
+  {
+    "name": "Jette",
+    "lat": 50.8731,
+    "lon": 4.3342,
+    "importance": 1
+  },
+  {
+    "name": "Menden",
+    "lat": 51.4434,
+    "lon": 7.7782,
+    "importance": 1
+  },
+  {
+    "name": "Charleville-Mezieres",
+    "lat": 49.7685,
+    "lon": 4.7249,
+    "importance": 1
+  },
+  {
+    "name": "Esher",
+    "lat": 51.3697,
+    "lon": -0.3669,
+    "importance": 1
+  },
+  {
+    "name": "Bergkamen",
+    "lat": 51.6163,
+    "lon": 7.6445,
+    "importance": 1
+  },
+  {
+    "name": "Reigate",
+    "lat": 51.2374,
+    "lon": -0.2058,
+    "importance": 1
+  },
+  {
+    "name": "Lichtenrade",
+    "lat": 52.3984,
+    "lon": 13.4064,
+    "importance": 1
+  },
+  {
+    "name": "Fontenay-sous-Bois",
+    "lat": 48.8544,
+    "lon": 2.4827,
+    "importance": 1
+  },
+  {
+    "name": "Mouscron",
+    "lat": 50.745,
+    "lon": 3.2064,
+    "importance": 1
+  },
+  {
+    "name": "Lyon 09",
+    "lat": 45.7726,
+    "lon": 4.8033,
+    "importance": 1
+  },
+  {
+    "name": "Dunstable",
+    "lat": 51.8857,
+    "lon": -0.5229,
+    "importance": 1
+  },
+  {
+    "name": "Roskilde",
+    "lat": 55.6415,
+    "lon": 12.0803,
+    "importance": 1
+  },
+  {
+    "name": "Evry",
+    "lat": 48.6328,
+    "lon": 2.4405,
+    "importance": 1
+  },
+  {
+    "name": "Bad Homburg vor der Hoehe",
+    "lat": 50.2268,
+    "lon": 8.6182,
+    "importance": 1
+  },
+  {
+    "name": "Willich",
+    "lat": 51.2637,
+    "lon": 6.5473,
+    "importance": 1
+  },
+  {
+    "name": "Redhill",
+    "lat": 51.2405,
+    "lon": -0.1704,
+    "importance": 1
+  },
+  {
+    "name": "Emden",
+    "lat": 53.3659,
+    "lon": 7.2085,
+    "importance": 1
+  },
+  {
+    "name": "Horsham",
+    "lat": 51.0631,
+    "lon": -0.3276,
+    "importance": 1
+  },
+  {
+    "name": "Waehring",
+    "lat": 48.2261,
+    "lon": 16.3448,
+    "importance": 1
+  },
+  {
+    "name": "Clamart",
+    "lat": 48.803,
+    "lon": 2.2669,
+    "importance": 1
+  },
+  {
+    "name": "Neu-Ulm",
+    "lat": 48.3928,
+    "lon": 10.0111,
+    "importance": 1
+  },
+  {
+    "name": "Lingen",
+    "lat": 52.5214,
+    "lon": 7.3185,
+    "importance": 1
+  },
+  {
+    "name": "Venice",
+    "lat": 45.4371,
+    "lon": 12.3326,
+    "importance": 1
+  },
+  {
+    "name": "Chalons-en-Champagne",
+    "lat": 48.9539,
+    "lon": 4.3672,
+    "importance": 1
+  },
+  {
+    "name": "Erftstadt",
+    "lat": 50.8148,
+    "lon": 6.7939,
+    "importance": 1
+  },
+  {
+    "name": "Neubrueck",
+    "lat": 51.1343,
+    "lon": 6.6386,
+    "importance": 1
+  },
+  {
+    "name": "Staines",
+    "lat": 51.4309,
+    "lon": -0.5061,
+    "importance": 1
+  },
+  {
+    "name": "Teplice",
+    "lat": 50.6404,
+    "lon": 13.8245,
+    "importance": 1
+  },
+  {
+    "name": "Batley",
+    "lat": 53.7029,
+    "lon": -1.6337,
+    "importance": 1
+  },
+  {
+    "name": "Aspern",
+    "lat": 48.2181,
+    "lon": 16.4831,
+    "importance": 1
+  },
+  {
+    "name": "Saint-Malo",
+    "lat": 48.6474,
+    "lon": -2.0088,
+    "importance": 1
+  },
+  {
+    "name": "Ibbenbueren",
+    "lat": 52.2796,
+    "lon": 7.7146,
+    "importance": 1
+  },
+  {
+    "name": "Wellingborough",
+    "lat": 52.3027,
+    "lon": -0.6945,
+    "importance": 1
+  },
+  {
+    "name": "Herning",
+    "lat": 56.1362,
+    "lon": 8.9766,
+    "importance": 1
+  },
+  {
+    "name": "Passau",
+    "lat": 48.5665,
+    "lon": 13.4312,
+    "importance": 1
+  },
+  {
+    "name": "Clacton-on-Sea",
+    "lat": 51.7897,
+    "lon": 1.156,
+    "importance": 1
+  },
+  {
+    "name": "Laval",
+    "lat": 48.0725,
+    "lon": -0.7702,
+    "importance": 1
+  },
+  {
+    "name": "Langenhagen",
+    "lat": 52.4476,
+    "lon": 9.7374,
+    "importance": 1
+  },
+  {
+    "name": "Gallarate",
+    "lat": 45.6602,
+    "lon": 8.7916,
+    "importance": 1
+  },
+  {
+    "name": "Schwerte",
+    "lat": 51.4439,
+    "lon": 7.5675,
+    "importance": 1
+  },
+  {
+    "name": "Barriera di Milano",
+    "lat": 45.0923,
+    "lon": 7.694,
+    "importance": 1
+  },
+  {
+    "name": "Speyer",
+    "lat": 49.3208,
+    "lon": 8.4311,
+    "importance": 1
+  },
+  {
+    "name": "Rovigo",
+    "lat": 45.0698,
+    "lon": 11.7902,
+    "importance": 1
+  },
+  {
+    "name": "Saint-Gilles",
+    "lat": 50.8276,
+    "lon": 4.3439,
+    "importance": 1
+  },
+  {
+    "name": "Bletchley",
+    "lat": 51.9933,
+    "lon": -0.7347,
+    "importance": 1
+  },
+  {
+    "name": "Keighley",
+    "lat": 53.8679,
+    "lon": -1.9066,
+    "importance": 1
+  },
+  {
+    "name": "Jihlava",
+    "lat": 49.3961,
+    "lon": 15.5912,
+    "importance": 1
+  },
+  {
+    "name": "Alt-Hohenschoenhausen",
+    "lat": 52.5461,
+    "lon": 13.5013,
+    "importance": 1
+  },
+  {
+    "name": "Heidenheim an der Brenz",
+    "lat": 48.678,
+    "lon": 10.1516,
+    "importance": 1
+  },
+  {
+    "name": "Chodov",
+    "lat": 50.0367,
+    "lon": 14.5044,
+    "importance": 1
+  },
+  {
+    "name": "Treptow",
+    "lat": 52.4938,
+    "lon": 13.4447,
+    "importance": 1
+  },
+  {
+    "name": "Hayes",
+    "lat": 51.5158,
+    "lon": -0.4234,
+    "importance": 1
+  },
+  {
+    "name": "Barriera di Lanzo",
+    "lat": 45.1098,
+    "lon": 7.6513,
+    "importance": 1
+  },
+  {
+    "name": "Peine",
+    "lat": 52.3193,
+    "lon": 10.2352,
+    "importance": 1
+  },
+  {
+    "name": "Doetinchem",
+    "lat": 51.965,
+    "lon": 6.2889,
+    "importance": 1
+  },
+  {
+    "name": "Pordenone",
+    "lat": 45.9569,
+    "lon": 12.6605,
+    "importance": 1
+  },
+  {
+    "name": "Neunkirchen",
+    "lat": 49.3445,
+    "lon": 7.1805,
+    "importance": 1
+  },
+  {
+    "name": "Kerkrade",
+    "lat": 50.8658,
+    "lon": 6.0625,
+    "importance": 1
+  },
+  {
+    "name": "Silkeborg",
+    "lat": 56.1697,
+    "lon": 9.5451,
+    "importance": 1
+  },
+  {
+    "name": "Lyon 05",
+    "lat": 45.7611,
+    "lon": 4.8268,
+    "importance": 1
+  },
+  {
+    "name": "Wodzislaw Slaski",
+    "lat": 50.0038,
+    "lon": 18.472,
+    "importance": 1
+  },
+  {
+    "name": "Bad Oeynhausen",
+    "lat": 52.207,
+    "lon": 8.8036,
+    "importance": 1
+  },
+  {
+    "name": "Angouleme",
+    "lat": 45.65,
+    "lon": 0.1535,
+    "importance": 1
+  },
+  {
+    "name": "Dornbirn",
+    "lat": 47.4143,
+    "lon": 9.7419,
+    "importance": 1
+  },
+  {
+    "name": "Hof",
+    "lat": 50.313,
+    "lon": 11.9126,
+    "importance": 1
+  },
+  {
+    "name": "Annecy",
+    "lat": 45.9088,
+    "lon": 6.1257,
+    "importance": 1
+  },
+  {
+    "name": "Bromsgrove",
+    "lat": 52.3357,
+    "lon": -2.0598,
+    "importance": 1
+  },
+  {
+    "name": "Kleve",
+    "lat": 51.7883,
+    "lon": 6.1387,
+    "importance": 1
+  },
+  {
+    "name": "Kampen",
+    "lat": 52.555,
+    "lon": 5.9111,
+    "importance": 1
+  },
+  {
+    "name": "Eltham",
+    "lat": 51.4506,
+    "lon": 0.0522,
+    "importance": 1
+  },
+  {
+    "name": "Sittingbourne",
+    "lat": 51.3413,
+    "lon": 0.7328,
+    "importance": 1
+  },
+  {
+    "name": "Ravensburg",
+    "lat": 47.782,
+    "lon": 9.6106,
+    "importance": 1
+  },
+  {
+    "name": "South Benfleet",
+    "lat": 51.553,
+    "lon": 0.5596,
+    "importance": 1
+  },
+  {
+    "name": "Kralovske Vinohrady",
+    "lat": 50.0744,
+    "lon": 14.4437,
+    "importance": 1
+  },
+  {
+    "name": "Frechen",
+    "lat": 50.9149,
+    "lon": 6.8118,
+    "importance": 1
+  },
+  {
+    "name": "Elmshorn",
+    "lat": 53.7491,
+    "lon": 9.6618,
+    "importance": 1
+  },
+  {
+    "name": "Weert",
+    "lat": 51.2517,
+    "lon": 5.7069,
+    "importance": 1
+  },
+  {
+    "name": "Banbury",
+    "lat": 52.0632,
+    "lon": -1.3422,
+    "importance": 1
+  }
+]

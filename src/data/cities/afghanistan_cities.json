@@ -1,0 +1,836 @@
+[
+  {
+    "name": "Quetta",
+    "lat": 30.1841,
+    "lon": 67.0014,
+    "importance": 5
+  },
+  {
+    "name": "Herat",
+    "lat": 34.3482,
+    "lon": 62.1997,
+    "importance": 5
+  },
+  {
+    "name": "Kandahar",
+    "lat": 31.6133,
+    "lon": 65.7101,
+    "importance": 5
+  },
+  {
+    "name": "Zabol",
+    "lat": 31.0306,
+    "lon": 61.4949,
+    "importance": 5
+  },
+  {
+    "name": "Balkh",
+    "lat": 36.7563,
+    "lon": 66.8972,
+    "importance": 5
+  },
+  {
+    "name": "Chaman",
+    "lat": 30.9177,
+    "lon": 66.4526,
+    "importance": 5
+  },
+  {
+    "name": "Maymana",
+    "lat": 35.9214,
+    "lon": 64.7836,
+    "importance": 5
+  },
+  {
+    "name": "Kot Malik Barkhurdar",
+    "lat": 30.2038,
+    "lon": 66.9872,
+    "importance": 5
+  },
+  {
+    "name": "Bazar-e Yakawlang",
+    "lat": 34.7353,
+    "lon": 66.9738,
+    "importance": 5
+  },
+  {
+    "name": "Shibirghan",
+    "lat": 36.6676,
+    "lon": 65.7529,
+    "importance": 5
+  },
+  {
+    "name": "Sar-e Pul",
+    "lat": 36.2154,
+    "lon": 65.9325,
+    "importance": 5
+  },
+  {
+    "name": "Zaranj",
+    "lat": 30.9596,
+    "lon": 61.8604,
+    "importance": 5
+  },
+  {
+    "name": "Sarakhs",
+    "lat": 36.5449,
+    "lon": 61.1577,
+    "importance": 5
+  },
+  {
+    "name": "Lashkar Gah",
+    "lat": 31.5938,
+    "lon": 64.3716,
+    "importance": 5
+  },
+  {
+    "name": "Gereshk",
+    "lat": 31.8209,
+    "lon": 64.57,
+    "importance": 5
+  },
+  {
+    "name": "Farah",
+    "lat": 32.3745,
+    "lon": 62.1164,
+    "importance": 5
+  },
+  {
+    "name": "Andkhoy",
+    "lat": 36.9529,
+    "lon": 65.1238,
+    "importance": 5
+  },
+  {
+    "name": "Sarahs",
+    "lat": 36.5238,
+    "lon": 61.2148,
+    "importance": 5
+  },
+  {
+    "name": "Nili",
+    "lat": 33.7218,
+    "lon": 66.1302,
+    "importance": 5
+  },
+  {
+    "name": "Ghormach",
+    "lat": 35.7306,
+    "lon": 63.7826,
+    "importance": 5
+  },
+  {
+    "name": "Shindand",
+    "lat": 33.3029,
+    "lon": 62.1474,
+    "importance": 4
+  },
+  {
+    "name": "Mastung",
+    "lat": 29.7997,
+    "lon": 66.8455,
+    "importance": 4
+  },
+  {
+    "name": "Khan Neshin",
+    "lat": 30.5488,
+    "lon": 63.7888,
+    "importance": 4
+  },
+  {
+    "name": "Pishin",
+    "lat": 30.5818,
+    "lon": 66.9941,
+    "importance": 4
+  },
+  {
+    "name": "Eslam Qaleh",
+    "lat": 34.6667,
+    "lon": 61.0667,
+    "importance": 4
+  },
+  {
+    "name": "Karukh",
+    "lat": 34.4811,
+    "lon": 62.5863,
+    "importance": 4
+  },
+  {
+    "name": "Kushk",
+    "lat": 33.2957,
+    "lon": 61.9522,
+    "importance": 4
+  },
+  {
+    "name": "Shahrak",
+    "lat": 34.1074,
+    "lon": 64.3052,
+    "importance": 4
+  },
+  {
+    "name": "Sang-e Charak",
+    "lat": 35.8497,
+    "lon": 66.4369,
+    "importance": 4
+  },
+  {
+    "name": "Khash",
+    "lat": 31.5292,
+    "lon": 62.7906,
+    "importance": 4
+  },
+  {
+    "name": "Fayroz Koh",
+    "lat": 34.5195,
+    "lon": 65.2509,
+    "importance": 4
+  },
+  {
+    "name": "Zehak",
+    "lat": 30.894,
+    "lon": 61.6804,
+    "importance": 4
+  },
+  {
+    "name": "Mirabad",
+    "lat": 30.4362,
+    "lon": 61.8383,
+    "importance": 4
+  },
+  {
+    "name": "Sangin",
+    "lat": 32.0727,
+    "lon": 64.8359,
+    "importance": 4
+  },
+  {
+    "name": "Panjab",
+    "lat": 34.3879,
+    "lon": 67.0233,
+    "importance": 4
+  },
+  {
+    "name": "Uruzgan",
+    "lat": 32.9278,
+    "lon": 66.6325,
+    "importance": 4
+  },
+  {
+    "name": "Chiras",
+    "lat": 35.4167,
+    "lon": 65.9823,
+    "importance": 4
+  },
+  {
+    "name": "Qarah Bagh",
+    "lat": 34.9402,
+    "lon": 61.7759,
+    "importance": 4
+  },
+  {
+    "name": "Qalat",
+    "lat": 32.1058,
+    "lon": 66.9083,
+    "importance": 4
+  },
+  {
+    "name": "Kuhsan",
+    "lat": 34.6539,
+    "lon": 61.1978,
+    "importance": 4
+  },
+  {
+    "name": "Tukzar",
+    "lat": 35.9483,
+    "lon": 66.4213,
+    "importance": 4
+  },
+  {
+    "name": "Chahar Burj",
+    "lat": 34.2448,
+    "lon": 62.1917,
+    "importance": 4
+  },
+  {
+    "name": "Larkird",
+    "lat": 35.4894,
+    "lon": 66.6641,
+    "importance": 4
+  },
+  {
+    "name": "Rudbar",
+    "lat": 30.15,
+    "lon": 62.6,
+    "importance": 4
+  },
+  {
+    "name": "Zindah Jan",
+    "lat": 34.3426,
+    "lon": 61.7467,
+    "importance": 4
+  },
+  {
+    "name": "Anar Darah",
+    "lat": 32.7587,
+    "lon": 61.654,
+    "importance": 4
+  },
+  {
+    "name": "Tarinkot",
+    "lat": 32.63,
+    "lon": 65.8781,
+    "importance": 4
+  },
+  {
+    "name": "Darzab",
+    "lat": 35.9774,
+    "lon": 65.3783,
+    "importance": 4
+  },
+  {
+    "name": "'Alaqahdari Dishu",
+    "lat": 30.4321,
+    "lon": 63.298,
+    "importance": 4
+  },
+  {
+    "name": "Tagaw-Bay",
+    "lat": 35.6994,
+    "lon": 66.0616,
+    "importance": 4
+  },
+  {
+    "name": "Markaz-e Hukumat-e Darweshan",
+    "lat": 31.1323,
+    "lon": 64.1934,
+    "importance": 4
+  },
+  {
+    "name": "Qala i Naw",
+    "lat": 34.9873,
+    "lon": 63.1289,
+    "importance": 4
+  },
+  {
+    "name": "Qarchi Gak",
+    "lat": 37.04,
+    "lon": 66.7889,
+    "importance": 4
+  },
+  {
+    "name": "Qal'ah-ye Shahr",
+    "lat": 35.5473,
+    "lon": 65.5676,
+    "importance": 4
+  },
+  {
+    "name": "Tir Pul",
+    "lat": 34.5943,
+    "lon": 61.2689,
+    "importance": 4
+  },
+  {
+    "name": "Takhta-Bazar",
+    "lat": 35.9561,
+    "lon": 62.9184,
+    "importance": 4
+  },
+  {
+    "name": "Serhetabat",
+    "lat": 35.2799,
+    "lon": 62.3438,
+    "importance": 4
+  },
+  {
+    "name": "Mazad",
+    "lat": 31.5458,
+    "lon": 62.7348,
+    "importance": 4
+  },
+  {
+    "name": "Kohak",
+    "lat": 30.8273,
+    "lon": 61.7576,
+    "importance": 4
+  },
+  {
+    "name": "Garakoel",
+    "lat": 36.8476,
+    "lon": 62.4773,
+    "importance": 4
+  },
+  {
+    "name": "Razay Balochi",
+    "lat": 31.464,
+    "lon": 62.6996,
+    "importance": 4
+  },
+  {
+    "name": "Lab-Sar",
+    "lat": 36.0263,
+    "lon": 66.838,
+    "importance": 4
+  },
+  {
+    "name": "Arghestan",
+    "lat": 31.5598,
+    "lon": 66.4893,
+    "importance": 4
+  },
+  {
+    "name": "Lash",
+    "lat": 35.3782,
+    "lon": 64.7746,
+    "importance": 4
+  },
+  {
+    "name": "Aq Kupruk",
+    "lat": 36.0835,
+    "lon": 66.8403,
+    "importance": 4
+  },
+  {
+    "name": "Ziarat-e Shah Maqsud",
+    "lat": 31.9848,
+    "lon": 65.4736,
+    "importance": 4
+  },
+  {
+    "name": "Zamto Kelay",
+    "lat": 32.3726,
+    "lon": 66.1771,
+    "importance": 4
+  },
+  {
+    "name": "Washer",
+    "lat": 32.2512,
+    "lon": 63.8555,
+    "importance": 4
+  },
+  {
+    "name": "Tulak",
+    "lat": 33.9751,
+    "lon": 63.7287,
+    "importance": 4
+  },
+  {
+    "name": "Titan",
+    "lat": 33.6903,
+    "lon": 63.8636,
+    "importance": 4
+  },
+  {
+    "name": "Taywarah",
+    "lat": 33.5212,
+    "lon": 64.4212,
+    "importance": 4
+  },
+  {
+    "name": "Markaz-e Hukumat-e Sultan-e Bakwah",
+    "lat": 32.2414,
+    "lon": 62.9494,
+    "importance": 4
+  },
+  {
+    "name": "Spin Boldak",
+    "lat": 31.0057,
+    "lon": 66.4,
+    "importance": 4
+  },
+  {
+    "name": "Sozmah Qal'ah",
+    "lat": 36.0992,
+    "lon": 66.2082,
+    "importance": 4
+  },
+  {
+    "name": "Shahr-e Safa",
+    "lat": 31.8035,
+    "lon": 66.3238,
+    "importance": 4
+  },
+  {
+    "name": "Sayad",
+    "lat": 36.1353,
+    "lon": 65.8297,
+    "importance": 4
+  },
+  {
+    "name": "Sayagaz",
+    "lat": 32.5652,
+    "lon": 67.0332,
+    "importance": 4
+  },
+  {
+    "name": "Sar-e Tayghan",
+    "lat": 33.51,
+    "lon": 65.6763,
+    "importance": 4
+  },
+  {
+    "name": "Sar Chakan",
+    "lat": 35.7018,
+    "lon": 65.2305,
+    "importance": 4
+  },
+  {
+    "name": "Sang Atesh",
+    "lat": 35.248,
+    "lon": 63.0044,
+    "importance": 4
+  },
+  {
+    "name": "Rabat-e Sangi-ye Pa'in",
+    "lat": 34.7995,
+    "lon": 62.1392,
+    "importance": 4
+  },
+  {
+    "name": "Qurghan",
+    "lat": 36.9194,
+    "lon": 65.0649,
+    "importance": 4
+  },
+  {
+    "name": "Quchanghi",
+    "lat": 34.0618,
+    "lon": 66.278,
+    "importance": 4
+  },
+  {
+    "name": "Qaisar",
+    "lat": 35.6875,
+    "lon": 64.2932,
+    "importance": 4
+  },
+  {
+    "name": "Qal'ah-ye Kuhnah",
+    "lat": 32.6159,
+    "lon": 63.6668,
+    "importance": 4
+  },
+  {
+    "name": "Qadis",
+    "lat": 34.8085,
+    "lon": 63.43,
+    "importance": 4
+  },
+  {
+    "name": "Pasnay",
+    "lat": 35.7666,
+    "lon": 65.7649,
+    "importance": 4
+  },
+  {
+    "name": "Pashmul",
+    "lat": 31.5572,
+    "lon": 65.4343,
+    "importance": 4
+  },
+  {
+    "name": "Pasaband",
+    "lat": 33.6896,
+    "lon": 64.8531,
+    "importance": 4
+  },
+  {
+    "name": "Obeh",
+    "lat": 34.3697,
+    "lon": 63.1764,
+    "importance": 4
+  },
+  {
+    "name": "Now Zad",
+    "lat": 32.4031,
+    "lon": 64.4696,
+    "importance": 4
+  },
+  {
+    "name": "Nayak",
+    "lat": 34.7341,
+    "lon": 66.9529,
+    "importance": 4
+  },
+  {
+    "name": "Hukumat-e Nad 'Ali",
+    "lat": 31.6429,
+    "lon": 64.2398,
+    "importance": 4
+  },
+  {
+    "name": "Musa Qal'ah",
+    "lat": 32.4457,
+    "lon": 64.7449,
+    "importance": 4
+  },
+  {
+    "name": "Bala Murghab",
+    "lat": 35.5841,
+    "lon": 63.3289,
+    "importance": 4
+  },
+  {
+    "name": "Mizan 'Alaqahdari",
+    "lat": 32.1763,
+    "lon": 66.5127,
+    "importance": 4
+  },
+  {
+    "name": "Mingajik",
+    "lat": 37.0279,
+    "lon": 66.1282,
+    "importance": 4
+  },
+  {
+    "name": "Mardian",
+    "lat": 36.9925,
+    "lon": 66.2965,
+    "importance": 4
+  },
+  {
+    "name": "Lash-e Juwayn",
+    "lat": 31.7138,
+    "lon": 61.6227,
+    "importance": 4
+  },
+  {
+    "name": "La'l",
+    "lat": 34.5014,
+    "lon": 66.28,
+    "importance": 4
+  },
+  {
+    "name": "Kushk-e Kuhnah",
+    "lat": 34.8711,
+    "lon": 62.5476,
+    "importance": 3
+  },
+  {
+    "name": "Khwajah Du Koh",
+    "lat": 36.8288,
+    "lon": 65.6243,
+    "importance": 3
+  },
+  {
+    "name": "Khugyani",
+    "lat": 31.5627,
+    "lon": 66.5814,
+    "importance": 3
+  },
+  {
+    "name": "Chahar Bagh",
+    "lat": 37.0011,
+    "lon": 65.2239,
+    "importance": 3
+  },
+  {
+    "name": "Khanaqah",
+    "lat": 36.8628,
+    "lon": 66.1666,
+    "importance": 3
+  },
+  {
+    "name": "Kishk-e Nakhud",
+    "lat": 31.6252,
+    "lon": 65.0551,
+    "importance": 3
+  },
+  {
+    "name": "Kajran",
+    "lat": 33.2036,
+    "lon": 65.4731,
+    "importance": 3
+  },
+  {
+    "name": "Jawand",
+    "lat": 35.0636,
+    "lon": 64.1492,
+    "importance": 3
+  },
+  {
+    "name": "Guzarah",
+    "lat": 34.2122,
+    "lon": 62.2124,
+    "importance": 3
+  },
+  {
+    "name": "Ghoriyan",
+    "lat": 34.3448,
+    "lon": 61.4932,
+    "importance": 3
+  },
+  {
+    "name": "Faizabad",
+    "lat": 36.8209,
+    "lon": 66.4592,
+    "importance": 3
+  },
+  {
+    "name": "Fayzabad",
+    "lat": 36.2911,
+    "lon": 64.8622,
+    "importance": 3
+  },
+  {
+    "name": "Qal'ah-ye Farsi",
+    "lat": 33.7853,
+    "lon": 63.2473,
+    "importance": 3
+  },
+  {
+    "name": "Injil",
+    "lat": 34.3016,
+    "lon": 62.2465,
+    "importance": 3
+  },
+  {
+    "name": "Dowlatyar",
+    "lat": 34.5513,
+    "lon": 65.793,
+    "importance": 3
+  },
+  {
+    "name": "Dowlatabad",
+    "lat": 36.9882,
+    "lon": 66.8207,
+    "importance": 3
+  },
+  {
+    "name": "Du Qal'ah",
+    "lat": 32.1424,
+    "lon": 61.4469,
+    "importance": 3
+  },
+  {
+    "name": "De Narkhel Kelay",
+    "lat": 32.432,
+    "lon": 65.6348,
+    "importance": 3
+  },
+  {
+    "name": "Dehdadi",
+    "lat": 36.6632,
+    "lon": 66.9934,
+    "importance": 3
+  },
+  {
+    "name": "Dasht-e Qal'ah",
+    "lat": 33.0298,
+    "lon": 63.8395,
+    "importance": 3
+  },
+  {
+    "name": "Chisht-e Sharif",
+    "lat": 34.3473,
+    "lon": 63.7397,
+    "importance": 3
+  },
+  {
+    "name": "Chinar",
+    "lat": 32.0158,
+    "lon": 65.1072,
+    "importance": 3
+  },
+  {
+    "name": "Chimtal",
+    "lat": 36.6782,
+    "lon": 66.8033,
+    "importance": 3
+  },
+  {
+    "name": "Bal Chiragh",
+    "lat": 35.8403,
+    "lon": 65.2309,
+    "importance": 3
+  },
+  {
+    "name": "Aqchah",
+    "lat": 36.905,
+    "lon": 66.1834,
+    "importance": 3
+  },
+  {
+    "name": "Amanzi",
+    "lat": 30.2114,
+    "lon": 66.0477,
+    "importance": 3
+  },
+  {
+    "name": "'Alaqahdari-ye Almar",
+    "lat": 35.8462,
+    "lon": 64.5307,
+    "importance": 3
+  },
+  {
+    "name": "Adraskan",
+    "lat": 33.6457,
+    "lon": 62.2696,
+    "importance": 3
+  },
+  {
+    "name": "Ab-e Kamari",
+    "lat": 35.088,
+    "lon": 63.0678,
+    "importance": 3
+  },
+  {
+    "name": "Khadir",
+    "lat": 33.9223,
+    "lon": 65.934,
+    "importance": 3
+  },
+  {
+    "name": "Kushkak",
+    "lat": 32.2899,
+    "lon": 61.5219,
+    "importance": 3
+  },
+  {
+    "name": "Chowney",
+    "lat": 33.3828,
+    "lon": 66.2723,
+    "importance": 3
+  },
+  {
+    "name": "Baba Sahib",
+    "lat": 31.6614,
+    "lon": 65.661,
+    "importance": 3
+  },
+  {
+    "name": "Du Lainah",
+    "lat": 34.156,
+    "lon": 64.7857,
+    "importance": 3
+  },
+  {
+    "name": "Qaram Qol",
+    "lat": 36.8301,
+    "lon": 65.043,
+    "importance": 3
+  },
+  {
+    "name": "Mohammadabad",
+    "lat": 30.8855,
+    "lon": 61.463,
+    "importance": 3
+  },
+  {
+    "name": "Dust Mohammad Khan",
+    "lat": 31.1447,
+    "lon": 61.7925,
+    "importance": 3
+  },
+  {
+    "name": "Adimi",
+    "lat": 31.1114,
+    "lon": 61.4119,
+    "importance": 3
+  },
+  {
+    "name": "Qila Abdullah",
+    "lat": 30.728,
+    "lon": 66.6612,
+    "importance": 3
+  }
+]

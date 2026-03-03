@@ -13,17 +13,39 @@ import {
   estimatedSpeed,
   trackStore,
 } from "../stores/TrackStore";
+import { settingsStore } from "../stores/SettingsStore";
 import { Entity } from "../types/entity";
 import DrawConsoleTab from "./DrawConsoleTab";
 import QuestConsoleTab from "./QuestConsoleTab";
 
 function WatchTab({ map }: { map: maptalks.Map }) {
   const [selectedButton, setSelectedButton] = useState<
-    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "CaucasusBorder-On" | "CaucasusBorder-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off"
+    null | "PrettyMap-On" | "PrettyMap-Off" | "CaucasusMap-On" | "CaucasusMap-Off" | "MgrsGrid-On" | "MgrsGrid-Off" | "Statics-On" | "Statics-Off" | "Combatzones-On" | "Combatzones-Off" | "Groundunits-On" | "Groundunits-Off" | "Customgeo-On" | "Customgeo-Off" | "Missionpoints-On" | "Missionpoints-Off" | "Aircrafts-On" | "Aircrafts-Off" | "DCSMap-On" | "DCSMap-Off" | "GeoLabelsFocus-On" | "GeoLabelsFocus-Off" | "NgaRestCities-On" | "NgaRestCities-Off"
   >(null);
   const is_connected = serverStore((state) => state?.server?.player_is_connected);
   const view_aircraft_when_in_flight = serverStore((state) => state?.server?.view_aircraft_when_in_flight);
   const dcs_map = serverStore((state) => state?.server?.dcs_map);
+  const prettyMapBrightness = settingsStore((state) => state.map?.prettyMapBrightness ?? 1);
+  const prettyMapOpacity = settingsStore((state) => state.map?.prettyMapOpacity ?? 0.8);
+  const dcsMapBrightness = settingsStore((state) => state.map?.dcsMapBrightness ?? 1.2);
+  const dcsMapOpacity = settingsStore((state) => state.map?.dcsMapOpacity ?? 1);
+  const mgrsGridBrightness = settingsStore((state) => state.map?.mgrsGridBrightness ?? 1);
+  const mgrsGridOpacity = settingsStore((state) => state.map?.mgrsGridOpacity ?? 1);
+  const showOnlySelectedGeometryLabels = settingsStore(
+    (state) => state.map?.showOnlySelectedGeometryLabels ?? false
+  );
+  const setLayerSelection = (key: string, value: boolean) => {
+    settingsStore.setState((state) => ({
+      ...state,
+      map: {
+        ...state.map,
+        layerVisibility: {
+          ...(state.map?.layerVisibility ?? {}),
+          [key]: value,
+        },
+      },
+    }));
+  };
   return (
     <div className="p-2">
 		<table>
@@ -33,7 +55,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("pretty")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("pretty")!.hide(); map.getLayer("base")!.show(); setSelectedButton("PrettyMap-Off")}}
+									onClick={() => {map.getLayer("pretty")!.hide(); map.getLayer("base")!.show(); setLayerSelection("prettyMap", false); setSelectedButton("PrettyMap-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -41,7 +63,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("pretty")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("pretty")!.show(); map.getLayer("base")!.hide(); setSelectedButton("PrettyMap-On")}}
+								onClick={() => {map.getLayer("pretty")!.show(); map.getLayer("base")!.hide(); setLayerSelection("prettyMap", true); setSelectedButton("PrettyMap-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -49,7 +71,55 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					Pretty Map
+					<div className="relative w-full pr-36">
+						<span className="whitespace-nowrap">Pretty Map</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
+							<input
+									title={`Brightness ${prettyMapBrightness.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={prettyMapBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											prettyMapBrightness: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${prettyMapOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={prettyMapOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											prettyMapOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+						</div>
+					</div>
 				</td>
 			</tr>
 			{dcs_map && 
@@ -59,7 +129,12 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("DCSMap")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("DCSMap")!.hide(); map.getLayer("base")!.show(); setSelectedButton("DCSMap-Off")}}
+									onClick={() => {
+                    map.getLayer("DCSMap")!.hide();
+                    map.getLayer("base")!.show();
+                    setLayerSelection("dcsMap", false);
+                    setSelectedButton("DCSMap-Off");
+                  }}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -67,7 +142,13 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("DCSMap")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("DCSMap")!.show(); map.getLayer("base")!.hide(); map.getLayer("CaucasusMap")!.hide(); setSelectedButton("DCSMap-On")}}
+								onClick={() => {
+                    map.getLayer("DCSMap")!.show();
+                    map.getLayer("base")!.hide();
+                    map.getLayer("CaucasusMap")!.hide();
+                    setLayerSelection("dcsMap", true);
+                    setSelectedButton("DCSMap-On");
+                  }}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -75,42 +156,65 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					DCS Map
+					<div className="relative w-full pr-36">
+						<span className="whitespace-nowrap">DCS Map</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
+							<input
+									title={`Brightness ${dcsMapBrightness.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={dcsMapBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											dcsMapBrightness: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${dcsMapOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={dcsMapOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											dcsMapOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+						</div>
+					</div>
 				</td>
 			</tr>
 			}
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
-						{map.getLayer("CaucasusBorder")!.isVisible() === true && (
-								<button 
-									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("CaucasusBorder")!.hide(); setSelectedButton("CaucasusBorder-Off")}}
-								>
-									<BiShow className="inline-block w-4 h-4" />
-								</button>
-						)}
-						{!map.getLayer("CaucasusBorder")!.isVisible() && (
-							<button 
-								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("CaucasusBorder")!.show(); setSelectedButton("CaucasusBorder-On")}}
-							>
-								<BiHide className="inline-block w-4 h-4" />
-							</button>
-						)}
-					</div>
-				</td>
-				<td>
-					DCS Caucasus Borders
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div className="my-2 flex flex-col gap-1">
 						{map.getLayer("mgrs-grid")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("mgrs-grid")!.hide(); setSelectedButton("MgrsGrid-Off")}}
+									onClick={() => {map.getLayer("mgrs-grid")!.hide(); setLayerSelection("mgrsGrid", false); setSelectedButton("MgrsGrid-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -118,7 +222,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("mgrs-grid")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("mgrs-grid")!.show(); setSelectedButton("MgrsGrid-On")}}
+								onClick={() => {map.getLayer("mgrs-grid")!.show(); setLayerSelection("mgrsGrid", true); setSelectedButton("MgrsGrid-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -126,7 +230,89 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 					</div>
 				</td>
 				<td>
-					MGRS grid
+					<div className="relative w-full pr-36">
+						<span className="whitespace-nowrap">MGRS Grid</span>
+						<div className="absolute right-2 top-1/2 flex h-8 w-28 -translate-y-1/2 flex-col justify-center gap-0.5">
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">B</span>
+							<input
+									title={`Brightness ${mgrsGridBrightness.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0.5}
+								max={2}
+								step={0.05}
+								value={mgrsGridBrightness}
+								onChange={(e) => {
+									const value = Math.max(0.5, Math.min(2, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											mgrsGridBrightness: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+							<div className="flex items-center gap-1 leading-none">
+								<span className="w-2 text-[10px] text-gray-700">O</span>
+							<input
+									title={`Opacity ${mgrsGridOpacity.toFixed(2)}`}
+								className="h-2 w-20"
+								type="range"
+								min={0}
+								max={1}
+								step={0.05}
+								value={mgrsGridOpacity}
+								onChange={(e) => {
+									const value = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											mgrsGridOpacity: value,
+										},
+									}));
+								}}
+							/>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{map.getLayer("nga-rest-cities")!.isVisible() === true && (
+								<button 
+									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+									onClick={() => {
+                    map.getLayer("nga-rest-cities")!.hide();
+                    (map.getLayer("nga-rest-cities") as maptalks.VectorLayer | undefined)?.clear();
+                    setLayerSelection("citiesLabel", false);
+                    setSelectedButton("NgaRestCities-Off");
+                  }}
+								>
+									<BiShow className="inline-block w-4 h-4" />
+								</button>
+						)}
+						{!map.getLayer("nga-rest-cities")!.isVisible() && (
+							<button 
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {
+                    map.getLayer("nga-rest-cities")!.show();
+                    setLayerSelection("citiesLabel", true);
+                    setSelectedButton("NgaRestCities-On");
+                  }}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Cities Label
 				</td>
 			</tr>
 			<tr>
@@ -135,7 +321,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("airports")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("airports")!.hide(); map.getLayer("farp-name")!.hide(); map.getLayer("farp-icon")!.hide(); setSelectedButton("Statics-Off")}}
+									onClick={() => {map.getLayer("airports")!.hide(); map.getLayer("farp-name")!.hide(); map.getLayer("farp-icon")!.hide(); setLayerSelection("statics", false); setSelectedButton("Statics-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -143,7 +329,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("airports")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("airports")!.show(); map.getLayer("farp-name")!.show(); map.getLayer("farp-icon")!.show(); setSelectedButton("Statics-On")}}
+								onClick={() => {map.getLayer("airports")!.show(); map.getLayer("farp-name")!.show(); map.getLayer("farp-icon")!.show(); setLayerSelection("statics", true); setSelectedButton("Statics-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -160,7 +346,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("combat-zones")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("combat-zones")!.hide(); map.getLayer("combat-zones-blue")!.hide(); map.getLayer("combat-zones-red")!.hide(); setSelectedButton("Combatzones-Off")}}
+									onClick={() => {map.getLayer("combat-zones")!.hide(); map.getLayer("combat-zones-blue")!.hide(); map.getLayer("combat-zones-red")!.hide(); setLayerSelection("combatZones", false); setSelectedButton("Combatzones-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -168,7 +354,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("combat-zones")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("combat-zones")!.show(); map.getLayer("combat-zones-blue")!.show(); map.getLayer("combat-zones-red")!.show(); setSelectedButton("Combatzones-On")}}
+								onClick={() => {map.getLayer("combat-zones")!.show(); map.getLayer("combat-zones-blue")!.show(); map.getLayer("combat-zones-red")!.show(); setLayerSelection("combatZones", true); setSelectedButton("Combatzones-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -185,7 +371,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("ground-units")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("ground-units")!.hide(); map.getLayer("ground-units-blue")!.hide(); map.getLayer("ground-units-red")!.hide(); setSelectedButton("Groundunits-Off")}}
+									onClick={() => {map.getLayer("ground-units")!.hide(); map.getLayer("ground-units-blue")!.hide(); map.getLayer("ground-units-red")!.hide(); setLayerSelection("groundUnits", false); setSelectedButton("Groundunits-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -193,7 +379,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("ground-units")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("ground-units")!.show(); map.getLayer("ground-units-blue")!.show(); map.getLayer("ground-units-red")!.show(); setSelectedButton("Groundunits-On")}}
+								onClick={() => {map.getLayer("ground-units")!.show(); map.getLayer("ground-units-blue")!.show(); map.getLayer("ground-units-red")!.show(); setLayerSelection("groundUnits", true); setSelectedButton("Groundunits-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -210,7 +396,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{map.getLayer("custom-geometry")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("custom-geometry")!.hide(); setSelectedButton("Customgeo-Off")}}
+									onClick={() => {map.getLayer("custom-geometry")!.hide(); map.getLayer("custom-geometry-zones")!.hide(); setLayerSelection("customGeometry", false); setSelectedButton("Customgeo-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -218,7 +404,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{!map.getLayer("custom-geometry")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("custom-geometry")!.show(); setSelectedButton("Customgeo-On")}}
+								onClick={() => {map.getLayer("custom-geometry")!.show(); map.getLayer("custom-geometry-zones")!.show(); setLayerSelection("customGeometry", true); setSelectedButton("Customgeo-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -232,10 +418,78 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 			<tr>
 				<td>
 					<div className="my-2 flex flex-col gap-1">
+						{!showOnlySelectedGeometryLabels && (
+							<button
+								className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											showOnlySelectedGeometryLabels: true,
+										},
+									}));
+									setSelectedButton("GeoLabelsFocus-On");
+								}}
+							>
+								<BiShow className="inline-block w-4 h-4" />
+							</button>
+						)}
+						{showOnlySelectedGeometryLabels && (
+							<button
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {
+									settingsStore.setState((state) => ({
+										...state,
+										map: {
+											...state.map,
+											showOnlySelectedGeometryLabels: false,
+										},
+									}));
+									setSelectedButton("GeoLabelsFocus-Off");
+								}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Labels : all objects
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
+						{map.getLayer("quest")!.isVisible() === true && (
+								<button 
+									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+									onClick={() => {map.getLayer("quest")!.hide(); map.getLayer("quest-pin")!.hide(); setLayerSelection("missionPoints", false); setSelectedButton("Missionpoints-Off")}}
+								>
+									<BiShow className="inline-block w-4 h-4" />
+								</button>
+						)}
+						{!map.getLayer("quest")!.isVisible() && (
+							<button 
+								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
+								onClick={() => {map.getLayer("quest")!.show(); map.getLayer("quest-pin")!.show(); setLayerSelection("missionPoints", true); setSelectedButton("Missionpoints-On")}}
+							>
+								<BiHide className="inline-block w-4 h-4" />
+							</button>
+						)}
+					</div>
+				</td>
+				<td>
+					Mission points
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div className="my-2 flex flex-col gap-1">
 						{map.getLayer("track-icons")!.isVisible() === true && (
 								<button 
 									className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-									onClick={() => {map.getLayer("track-icons")!.hide(); map.getLayer("track-trails")!.hide(); map.getLayer("track-vv")!.hide(); map.getLayer("track-name")!.hide(); map.getLayer("track-altitude")!.hide(); map.getLayer("track-speed")!.hide(); map.getLayer("track-verticalvelo")!.hide(); setSelectedButton("Aircrafts-Off")}}
+									onClick={() => {map.getLayer("track-icons")!.hide(); map.getLayer("track-trails")!.hide(); map.getLayer("track-vv")!.hide(); map.getLayer("track-name")!.hide(); map.getLayer("track-altitude")!.hide(); map.getLayer("track-speed")!.hide(); map.getLayer("track-verticalvelo")!.hide(); setLayerSelection("aircrafts", false); setSelectedButton("Aircrafts-Off")}}
 								>
 									<BiShow className="inline-block w-4 h-4" />
 								</button>
@@ -243,7 +497,7 @@ function WatchTab({ map }: { map: maptalks.Map }) {
 						{(view_aircraft_when_in_flight || !is_connected) && !map.getLayer("track-icons")!.isVisible() && (
 							<button 
 								className="border bg-grey-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"
-								onClick={() => {map.getLayer("track-icons")!.show(); map.getLayer("track-trails")!.show(); map.getLayer("track-vv")!.show(); map.getLayer("track-name")!.show(); map.getLayer("track-altitude")!.show(); map.getLayer("track-speed")!.show(); map.getLayer("track-verticalvelo")!.show(); setSelectedButton("Aircrafts-On")}}
+								onClick={() => {map.getLayer("track-icons")!.show(); map.getLayer("track-trails")!.show(); map.getLayer("track-vv")!.show(); map.getLayer("track-name")!.show(); map.getLayer("track-altitude")!.show(); map.getLayer("track-speed")!.show(); map.getLayer("track-verticalvelo")!.show(); setLayerSelection("aircrafts", true); setSelectedButton("Aircrafts-On")}}
 							>
 								<BiHide className="inline-block w-4 h-4" />
 							</button>
@@ -354,13 +608,13 @@ export function Console({
   setScratchPadOpen: (value: boolean) => void;
   map: maptalks.Map;
 }) {
-  type ConsoleTab = null | "search" | "watch" | "draw" | "mission";
+  type ConsoleTab = null | "search" | "watch" | "draw" | "quest";
   const [selectedTab, setSelectedTab] = useState<ConsoleTab>(null);
   const [renderedTab, setRenderedTab] = useState<ConsoleTab>(null);
   const [tabPhase, setTabPhase] = useState<"idle" | "leaving" | "entering">("idle");
   const tabTransitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const TAB_ANIMATION_MS = 180;
-  const [collapsed, setCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const isAuthenticated = !!serverStore((state) => state?.server?.discord_id);
   const discord_name = serverStore((state) => state?.server?.discord_name);
   const avatar = serverStore((state) => state?.server?.avatar);
@@ -376,7 +630,7 @@ export function Console({
     try {
       await fetch("/api/logout", { method: "POST" });
     } catch (_err) {
-      // Ignore network errors; we still clear local cookie.
+      // Ignore network errors and still clear local cookie.
     }
     document.cookie = "session_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     window.location.reload();
@@ -388,9 +642,7 @@ export function Console({
       tabTransitionTimerRef.current = null;
     }
 
-    if (selectedTab === renderedTab) {
-      return;
-    }
+    if (selectedTab === renderedTab) return;
 
     if (renderedTab === null && selectedTab !== null) {
       setRenderedTab(selectedTab);
@@ -399,9 +651,7 @@ export function Console({
       return;
     }
 
-    if (renderedTab === null && selectedTab === null) {
-      return;
-    }
+    if (renderedTab === null && selectedTab === null) return;
 
     // Old tab leaves, then the new one enters.
     setTabPhase("leaving");
@@ -426,18 +676,22 @@ export function Console({
 
   return (
     <div className="m-2 absolute right-0 top-0 z-40">
-	  <div
-		className="relative transition-transform duration-300 ease-in-out"
-		style={{ transform: collapsed ? "translateX(236px)" : "translateX(0)" }}
-	  >
-	  <button
-		title={collapsed ? "Show menu" : "Hide menu"}
-		onClick={() => setCollapsed(!collapsed)}
-		className="absolute left-[-16px] top-0 h-full w-4 bg-gray-200 border border-gray-500 rounded-l-sm shadow flex items-center justify-center"
-	  >
-		{collapsed ? <BiChevronLeft className="w-4 h-4" /> : <BiChevronRight className="w-4 h-4" />}
-	  </button>
-    <div className="flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm w-60">
+      <div
+        className="relative transition-transform duration-300 ease-in-out"
+        style={{ transform: isCollapsed ? "translateX(236px)" : "translateX(0)" }}
+      >
+        <button
+          title={isCollapsed ? "Show menu" : "Hide menu"}
+          onClick={() => setIsCollapsed((value) => !value)}
+          className="absolute left-[-16px] top-0 h-full w-4 bg-gray-200 border border-gray-500 rounded-l-sm shadow flex items-center justify-center"
+        >
+          {isCollapsed ? (
+            <BiChevronLeft className="w-4 h-4" />
+          ) : (
+            <BiChevronRight className="w-4 h-4" />
+          )}
+        </button>
+        <div className="flex flex-col bg-gray-200 border border-gray-500 shadow select-none rounded-sm w-60">
 	  <div className="p-2 flex flex-row gap-2 align-middle ml-auto">
 			{is_editor && (<div>{editor_mode_on ? (<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:false}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-green-300 border-green-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>) : 
 													(<button title="Editor mode" onClick={() => {updateServerStore({editor_mode_on:true}); updateGeometryStore({testUpdateStore:Math.random()})}} className="border bg-grey-300 border-grey-600 p-1 rounded-sm shadow-sm flex flex-row items-center"><BiSolidCctv className="inline-block w-4 h-4" /></button>)}
@@ -491,10 +745,10 @@ export function Console({
         <div>
           <button
             title="Missions"
-            onClick={() => isAuthenticated && setSelectedTab("mission")}
+            onClick={() => isAuthenticated && setSelectedTab("quest")}
             className={classNames(
               "border bg-blue-100 border-blue-300 p-1 rounded-sm shadow-sm flex flex-row items-center",
-              { "bg-blue-200": selectedTab === "mission", "opacity-40 cursor-not-allowed": !isAuthenticated }
+              { "bg-blue-200": selectedTab === "quest", "opacity-40 cursor-not-allowed": !isAuthenticated }
             )}
           >
             <BiSolidMap className="inline-block w-4 h-4" />
@@ -555,13 +809,13 @@ export function Console({
           >
             {renderedTab === "search" && <SearchTab map={map} />}
             {renderedTab === "watch" && <WatchTab map={map} />}
-	        {renderedTab === "mission" && <QuestConsoleTab map={map} />}
+	        {renderedTab === "quest" && <QuestConsoleTab map={map} />}
             {renderedTab === "draw" && <DrawConsoleTab map={map} />}
           </div>
         )}
       </div>
+        </div>
+      </div>
     </div>
-	</div>
-	</div>
   );
 }

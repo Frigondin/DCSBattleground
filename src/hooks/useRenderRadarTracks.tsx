@@ -1,7 +1,7 @@
 import Immutable from "immutable";
 import * as maptalks from "maptalks";
 import ms from "milsymbol";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import GroundUnitData from "../data/units/ground.json";
 import {
   Server,
@@ -68,12 +68,46 @@ const syncVisibility = (geo: maptalks.Geometry, value: boolean) => {
   }
 };
 
+const setPointCoordinatesIfChanged = (
+  geo: maptalks.Geometry,
+  lon: number,
+  lat: number
+) => {
+  const current: any = (geo as any).getCoordinates?.();
+  if (current && current.x === lon && current.y === lat) {
+    return;
+  }
+  (geo as any).setCoordinates([lon, lat]);
+};
+
+const setLineCoordinatesIfChanged = (
+  geo: maptalks.LineString,
+  coords: [[number, number], [number, number]]
+) => {
+  const current: any = geo.getCoordinates?.();
+  const nextA = coords[0];
+  const nextB = coords[1];
+  if (
+    current &&
+    current[0] &&
+    current[1] &&
+    current[0].x === nextA[0] &&
+    current[0].y === nextA[1] &&
+    current[1].x === nextB[0] &&
+    current[1].y === nextB[1]
+  ) {
+    return;
+  }
+  geo.setCoordinates(coords);
+};
+
 
 export default function useRenderRadarTracks(map: maptalks.Map | null, selectedEntityId: number | null) {
   const radarTracks = trackStore((state) => state.tracks.entrySeq().toArray());
   const triggeredEntityIds = alertStore((state) =>
     state.triggeredEntities.keySeq().toSet()
   );
+  const lastAlertSymbolKeyRef = useRef<Map<string, string>>(new Map());
 
   useEffect(() => {
 	if (!map) return;
@@ -211,7 +245,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
           return false;
         });
       } else {
-        iconGeo.setCoordinates([entity.longitude, entity.latitude]);
+        setPointCoordinatesIfChanged(iconGeo, entity.longitude, entity.latitude);
         syncVisibility(iconGeo, trackVisible);
       }
 	
@@ -291,7 +325,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
           });
         }
 
-        nameGeo.setCoordinates([entity.longitude, entity.latitude]);
+        setPointCoordinatesIfChanged(nameGeo, entity.longitude, entity.latitude);
         syncVisibility(nameGeo, trackVisible);
       }
 
@@ -328,7 +362,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
             .toString()
             .padStart(3, "0")}`
         );
-        altGeo.setCoordinates([entity.longitude, entity.latitude]);
+        setPointCoordinatesIfChanged(altGeo, entity.longitude, entity.latitude);
         syncVisibility(altGeo, trackVisible);
       }
 
@@ -360,7 +394,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
         speedLayer.addGeometry(speedLabel);
       } else {
         (speedGeo.setContent as any)(`${Math.round(estimatedSpeed(track))}`);
-        speedGeo.setCoordinates([entity.longitude, entity.latitude]);
+        setPointCoordinatesIfChanged(speedGeo, entity.longitude, entity.latitude);
 
         syncVisibility(speedGeo, trackVisible);
       }
@@ -395,7 +429,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
         (vertGeo.setContent as any)(
           `${Math.round(estimatedAltitudeRate(track))}`
         );
-        vertGeo.setCoordinates([entity.longitude, entity.latitude]);
+        setPointCoordinatesIfChanged(vertGeo, entity.longitude, entity.latitude);
         syncVisibility(vertGeo, trackVisible);
       }
 
@@ -420,7 +454,11 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
           trackOptions &&
           (trackOptions.threatRadius || trackOptions.profileThreatRadius);
         if (threatRadius) {
-          threatCircle.setCoordinates([entity.longitude, entity.latitude]);
+          setPointCoordinatesIfChanged(
+            threatCircle,
+            entity.longitude,
+            entity.latitude
+          );
           threatCircle.setRadius(threatRadius * 1852);
           trackVisible ? threatCircle.show() : threatCircle.hide();
         } else {
@@ -450,7 +488,11 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
           (trackOptions.warningRadius || trackOptions.profileWarningRadius);
         syncVisibility(warningCircle, (warningRadius && trackVisible) || false);
         if (warningRadius) {
-          warningCircle.setCoordinates([entity.longitude, entity.latitude]);
+          setPointCoordinatesIfChanged(
+            warningCircle,
+            entity.longitude,
+            entity.latitude
+          );
           warningCircle.setRadius(warningRadius * 1852);
         }
       }
@@ -504,17 +546,16 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
             const trackPoint = track[index];
             const trackPointGeo = trackPointGeos[index];
             syncVisibility(trackPointGeo, true);
-            trackPointGeo.setCoordinates([
-              trackPoint.position[1],
-              trackPoint.position[0],
-            ]);
+            const trackLon = trackPoint.position[1];
+            const trackLat = trackPoint.position[0];
+            setPointCoordinatesIfChanged(trackPointGeo, trackLon, trackLat);
 
             let color = "white";
             if (trackVisible) {
               color = entity.coalition !== "Allies" ? "#17c2f6" : "#ff8080";
             }
 
-            trackPointGeo.setSymbol({
+            const nextSymbol = {
               markerType: "square",
               markerFill: color,
               markerLineColor: "black",
@@ -525,7 +566,15 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
               markerDx: 0,
               markerDy: 0,
               markerFillOpacity: (100 - index * 10) / 100,
-            });
+            };
+            const currentSymbol: any = trackPointGeo.getSymbol?.();
+            if (
+              !currentSymbol ||
+              currentSymbol.markerFill !== nextSymbol.markerFill ||
+              currentSymbol.markerFillOpacity !== nextSymbol.markerFillOpacity
+            ) {
+              trackPointGeo.setSymbol(nextSymbol);
+            }
           }
         }
       }
@@ -567,7 +616,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
             )
           );
         } else {
-          geo.setCoordinates([
+          setLineCoordinatesIfChanged(geo, [
             [track[0].position[1], track[0].position[0]],
             [dirArrowEnd[1], dirArrowEnd[0]],
           ]);
@@ -587,6 +636,11 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
     ) as maptalks.VectorLayer;
     for (const geo of alertLayer.getGeometries()) {
       const [entityId, typeName] = ((geo as any)._id as string).split("-");
+      const isSelected = !!selectedEntityId && parseInt(entityId) === selectedEntityId;
+      const symbolKey = `${entityId}-${typeName}-${isSelected ? "selected" : "default"}`;
+      if (lastAlertSymbolKeyRef.current.get((geo as any)._id) === symbolKey) {
+        continue;
+      }
       if (selectedEntityId && parseInt(entityId) === selectedEntityId) {
         if (typeName === "threat") {
           geo.setSymbol({
@@ -616,6 +670,7 @@ export default function useRenderRadarTracks(map: maptalks.Map | null, selectedE
           });
         }
       }
+      lastAlertSymbolKeyRef.current.set((geo as any)._id, symbolKey);
     }
   }, [radarTracks, selectedEntityId]);
 

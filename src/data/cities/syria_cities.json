@@ -1,0 +1,4814 @@
+[
+  {
+    "name": "Cairo",
+    "lat": 30.0626,
+    "lon": 31.2497,
+    "importance": 5
+  },
+  {
+    "name": "Giza",
+    "lat": 30.0094,
+    "lon": 31.2086,
+    "importance": 5
+  },
+  {
+    "name": "Gaziantep",
+    "lat": 37.0594,
+    "lon": 37.3825,
+    "importance": 5
+  },
+  {
+    "name": "Aleppo",
+    "lat": 36.2012,
+    "lon": 37.1612,
+    "importance": 5
+  },
+  {
+    "name": "Beirut",
+    "lat": 33.8933,
+    "lon": 35.5016,
+    "importance": 5
+  },
+  {
+    "name": "Adana",
+    "lat": 36.9862,
+    "lon": 35.3253,
+    "importance": 5
+  },
+  {
+    "name": "Damascus",
+    "lat": 33.5102,
+    "lon": 36.2913,
+    "importance": 5
+  },
+  {
+    "name": "Antalya",
+    "lat": 36.9081,
+    "lon": 30.6956,
+    "importance": 5
+  },
+  {
+    "name": "Amman",
+    "lat": 31.9552,
+    "lon": 35.945,
+    "importance": 5
+  },
+  {
+    "name": "Ra’s Bayrūt",
+    "lat": 33.9,
+    "lon": 35.4833,
+    "importance": 5
+  },
+  {
+    "name": "Shubrā al Khaymah",
+    "lat": 30.1251,
+    "lon": 31.2505,
+    "importance": 5
+  },
+  {
+    "name": "Jerusalem",
+    "lat": 31.769,
+    "lon": 35.2163,
+    "importance": 4
+  },
+  {
+    "name": "Zarqa",
+    "lat": 32.0727,
+    "lon": 36.088,
+    "importance": 4
+  },
+  {
+    "name": "Port Said",
+    "lat": 31.2653,
+    "lon": 32.3019,
+    "importance": 4
+  },
+  {
+    "name": "Homs",
+    "lat": 34.724,
+    "lon": 36.7256,
+    "importance": 4
+  },
+  {
+    "name": "Latakia",
+    "lat": 35.5312,
+    "lon": 35.7909,
+    "importance": 4
+  },
+  {
+    "name": "Suez",
+    "lat": 29.9737,
+    "lon": 32.5263,
+    "importance": 4
+  },
+  {
+    "name": "Madīnat an Naşr",
+    "lat": 30.0667,
+    "lon": 31.3,
+    "importance": 4
+  },
+  {
+    "name": "Al Mansurah",
+    "lat": 31.0364,
+    "lon": 31.3807,
+    "importance": 4
+  },
+  {
+    "name": "Al Maḩallah al Kubrá",
+    "lat": 30.9706,
+    "lon": 31.1669,
+    "importance": 4
+  },
+  {
+    "name": "Tanta",
+    "lat": 30.7885,
+    "lon": 31.0019,
+    "importance": 4
+  },
+  {
+    "name": "Irbid",
+    "lat": 32.5556,
+    "lon": 35.85,
+    "importance": 4
+  },
+  {
+    "name": "Mersin",
+    "lat": 36.812,
+    "lon": 34.6389,
+    "importance": 4
+  },
+  {
+    "name": "Ar Raqqah",
+    "lat": 35.9528,
+    "lon": 39.0079,
+    "importance": 4
+  },
+  {
+    "name": "Al Fayyum",
+    "lat": 29.31,
+    "lon": 30.8418,
+    "importance": 4
+  },
+  {
+    "name": "Al Khuşūş",
+    "lat": 30.1529,
+    "lon": 31.315,
+    "importance": 4
+  },
+  {
+    "name": "Ḩamāh",
+    "lat": 35.1318,
+    "lon": 36.7578,
+    "importance": 4
+  },
+  {
+    "name": "Ţarţūs",
+    "lat": 34.889,
+    "lon": 35.8866,
+    "importance": 4
+  },
+  {
+    "name": "Muratpaşa",
+    "lat": 36.8916,
+    "lon": 30.765,
+    "importance": 4
+  },
+  {
+    "name": "Şanlıurfa",
+    "lat": 37.1671,
+    "lon": 38.7939,
+    "importance": 4
+  },
+  {
+    "name": "Tel Aviv",
+    "lat": 32.0809,
+    "lon": 34.7806,
+    "importance": 4
+  },
+  {
+    "name": "Zagazig",
+    "lat": 30.5877,
+    "lon": 31.502,
+    "importance": 4
+  },
+  {
+    "name": "Ismailia",
+    "lat": 30.6043,
+    "lon": 32.2722,
+    "importance": 4
+  },
+  {
+    "name": "East Jerusalem",
+    "lat": 31.7834,
+    "lon": 35.2339,
+    "importance": 4
+  },
+  {
+    "name": "Gaza",
+    "lat": 31.5016,
+    "lon": 34.4667,
+    "importance": 4
+  },
+  {
+    "name": "West Jerusalem",
+    "lat": 31.782,
+    "lon": 35.2196,
+    "importance": 4
+  },
+  {
+    "name": "Kahramanmaraş",
+    "lat": 37.5847,
+    "lon": 36.9264,
+    "importance": 4
+  },
+  {
+    "name": "6th of October City",
+    "lat": 29.8167,
+    "lon": 31.05,
+    "importance": 4
+  },
+  {
+    "name": "Alanya",
+    "lat": 36.5438,
+    "lon": 31.9998,
+    "importance": 4
+  },
+  {
+    "name": "Tarsus",
+    "lat": 36.9177,
+    "lon": 34.8928,
+    "importance": 4
+  },
+  {
+    "name": "Ḩadā’iq al Qubbah",
+    "lat": 30.0884,
+    "lon": 31.2835,
+    "importance": 4
+  },
+  {
+    "name": "New Cairo",
+    "lat": 30.03,
+    "lon": 31.47,
+    "importance": 4
+  },
+  {
+    "name": "Al Qāhirah al Jadīdah",
+    "lat": 30.0421,
+    "lon": 31.4445,
+    "importance": 4
+  },
+  {
+    "name": "Damietta",
+    "lat": 31.4165,
+    "lon": 31.8133,
+    "importance": 4
+  },
+  {
+    "name": "Haifa",
+    "lat": 32.813,
+    "lon": 34.9993,
+    "importance": 3
+  },
+  {
+    "name": "Banī Suwayf",
+    "lat": 29.0744,
+    "lon": 31.0979,
+    "importance": 3
+  },
+  {
+    "name": "Deir ez-Zor",
+    "lat": 35.3359,
+    "lon": 40.1408,
+    "importance": 3
+  },
+  {
+    "name": "Russeifa",
+    "lat": 32.0178,
+    "lon": 36.0464,
+    "importance": 3
+  },
+  {
+    "name": "Shibīn al Kawm",
+    "lat": 30.5526,
+    "lon": 31.009,
+    "importance": 3
+  },
+  {
+    "name": "Rishon LeTsiyyon",
+    "lat": 31.971,
+    "lon": 34.7894,
+    "importance": 3
+  },
+  {
+    "name": "Petaẖ Tiqva",
+    "lat": 32.0871,
+    "lon": 34.8875,
+    "importance": 3
+  },
+  {
+    "name": "İskenderun",
+    "lat": 36.5872,
+    "lon": 36.1735,
+    "importance": 3
+  },
+  {
+    "name": "Ḩayy Khildā",
+    "lat": 31.992,
+    "lon": 35.84,
+    "importance": 3
+  },
+  {
+    "name": "Al ‘Āshir min Ramaḑān",
+    "lat": 30.2964,
+    "lon": 31.7463,
+    "importance": 3
+  },
+  {
+    "name": "Ḩalwān",
+    "lat": 29.8414,
+    "lon": 31.3008,
+    "importance": 3
+  },
+  {
+    "name": "Tripoli",
+    "lat": 34.4335,
+    "lon": 35.8441,
+    "importance": 3
+  },
+  {
+    "name": "Netanya",
+    "lat": 32.3329,
+    "lon": 34.8599,
+    "importance": 3
+  },
+  {
+    "name": "Ashdod",
+    "lat": 31.7921,
+    "lon": 34.6497,
+    "importance": 3
+  },
+  {
+    "name": "Bnei Brak",
+    "lat": 32.0807,
+    "lon": 34.8338,
+    "importance": 3
+  },
+  {
+    "name": "Antakya",
+    "lat": 36.2066,
+    "lon": 36.1572,
+    "importance": 3
+  },
+  {
+    "name": "Osmaniye",
+    "lat": 37.0742,
+    "lon": 36.2478,
+    "importance": 3
+  },
+  {
+    "name": "Nicosia",
+    "lat": 35.1728,
+    "lon": 33.354,
+    "importance": 3
+  },
+  {
+    "name": "Arīsh",
+    "lat": 31.1316,
+    "lon": 33.7984,
+    "importance": 3
+  },
+  {
+    "name": "H̱olon",
+    "lat": 32.0103,
+    "lon": 34.7792,
+    "importance": 3
+  },
+  {
+    "name": "Kafr ash Shaykh",
+    "lat": 31.1117,
+    "lon": 30.9399,
+    "importance": 3
+  },
+  {
+    "name": "Beersheba",
+    "lat": 31.2518,
+    "lon": 34.7913,
+    "importance": 3
+  },
+  {
+    "name": "Khuraybat as Sūq",
+    "lat": 31.8791,
+    "lon": 35.921,
+    "importance": 3
+  },
+  {
+    "name": "Bilbeis",
+    "lat": 30.4204,
+    "lon": 31.5622,
+    "importance": 3
+  },
+  {
+    "name": "Banhā",
+    "lat": 30.4598,
+    "lon": 31.1842,
+    "importance": 3
+  },
+  {
+    "name": "Wādī as Sīr",
+    "lat": 31.9545,
+    "lon": 35.8183,
+    "importance": 3
+  },
+  {
+    "name": "Karaman",
+    "lat": 37.1811,
+    "lon": 33.215,
+    "importance": 3
+  },
+  {
+    "name": "Khān Yūnis",
+    "lat": 31.3402,
+    "lon": 34.3063,
+    "importance": 3
+  },
+  {
+    "name": "Ramat Gan",
+    "lat": 32.0823,
+    "lon": 34.8107,
+    "importance": 3
+  },
+  {
+    "name": "Jabālyā",
+    "lat": 31.5272,
+    "lon": 34.4835,
+    "importance": 3
+  },
+  {
+    "name": "Sidon",
+    "lat": 33.5575,
+    "lon": 35.3715,
+    "importance": 3
+  },
+  {
+    "name": "Al Maţarīyah",
+    "lat": 31.1829,
+    "lon": 32.0311,
+    "importance": 3
+  },
+  {
+    "name": "Hebron",
+    "lat": 31.5294,
+    "lon": 35.0938,
+    "importance": 3
+  },
+  {
+    "name": "Qalyub",
+    "lat": 30.1792,
+    "lon": 31.2056,
+    "importance": 3
+  },
+  {
+    "name": "Ar Ramthā",
+    "lat": 32.5587,
+    "lon": 36.0082,
+    "importance": 3
+  },
+  {
+    "name": "Al Ḩawāmidīyah",
+    "lat": 29.9,
+    "lon": 31.25,
+    "importance": 3
+  },
+  {
+    "name": "Abū Kabīr",
+    "lat": 30.7251,
+    "lon": 31.6715,
+    "importance": 3
+  },
+  {
+    "name": "Viranşehir",
+    "lat": 37.2235,
+    "lon": 39.7552,
+    "importance": 3
+  },
+  {
+    "name": "Limassol",
+    "lat": 34.6841,
+    "lon": 33.0379,
+    "importance": 3
+  },
+  {
+    "name": "Mīt Ghamr",
+    "lat": 30.7152,
+    "lon": 31.2592,
+    "importance": 3
+  },
+  {
+    "name": "Ṣuwayliḥ",
+    "lat": 32.0221,
+    "lon": 35.8439,
+    "importance": 3
+  },
+  {
+    "name": "Reẖovot",
+    "lat": 31.8942,
+    "lon": 34.812,
+    "importance": 3
+  },
+  {
+    "name": "Ashkelon",
+    "lat": 31.6693,
+    "lon": 34.5715,
+    "importance": 3
+  },
+  {
+    "name": "Al-'Ubūr",
+    "lat": 30.2289,
+    "lon": 31.4815,
+    "importance": 3
+  },
+  {
+    "name": "Kirdāsah",
+    "lat": 30.031,
+    "lon": 31.1111,
+    "importance": 3
+  },
+  {
+    "name": "Bilqās",
+    "lat": 31.2145,
+    "lon": 31.358,
+    "importance": 3
+  },
+  {
+    "name": "Būsh",
+    "lat": 29.1482,
+    "lon": 31.1273,
+    "importance": 3
+  },
+  {
+    "name": "Tyre",
+    "lat": 33.2733,
+    "lon": 35.1939,
+    "importance": 3
+  },
+  {
+    "name": "Sinnūris",
+    "lat": 29.4135,
+    "lon": 30.8658,
+    "importance": 3
+  },
+  {
+    "name": "Al Bāb",
+    "lat": 36.3705,
+    "lon": 37.5157,
+    "importance": 3
+  },
+  {
+    "name": "Nablus",
+    "lat": 32.2211,
+    "lon": 35.2544,
+    "importance": 3
+  },
+  {
+    "name": "Aley",
+    "lat": 33.8053,
+    "lon": 35.6,
+    "importance": 3
+  },
+  {
+    "name": "Bat Yam",
+    "lat": 32.0238,
+    "lon": 34.7518,
+    "importance": 3
+  },
+  {
+    "name": "Idlib",
+    "lat": 35.9306,
+    "lon": 36.6339,
+    "importance": 3
+  },
+  {
+    "name": "Sakakah",
+    "lat": 29.9697,
+    "lon": 40.2064,
+    "importance": 3
+  },
+  {
+    "name": "Al Manzalah",
+    "lat": 31.1582,
+    "lon": 31.936,
+    "importance": 3
+  },
+  {
+    "name": "Rafaḩ",
+    "lat": 31.2972,
+    "lon": 34.2436,
+    "importance": 3
+  },
+  {
+    "name": "Munūf",
+    "lat": 30.466,
+    "lon": 30.932,
+    "importance": 3
+  },
+  {
+    "name": "‘Ajlūn",
+    "lat": 32.3333,
+    "lon": 35.7528,
+    "importance": 3
+  },
+  {
+    "name": "Bet Shemesh",
+    "lat": 31.7307,
+    "lon": 34.9929,
+    "importance": 3
+  },
+  {
+    "name": "Ashmūn",
+    "lat": 30.2974,
+    "lon": 30.9764,
+    "importance": 3
+  },
+  {
+    "name": "As Sinbillāwayn",
+    "lat": 30.8825,
+    "lon": 31.4627,
+    "importance": 3
+  },
+  {
+    "name": "Samandağ",
+    "lat": 36.0801,
+    "lon": 35.976,
+    "importance": 3
+  },
+  {
+    "name": "Nabatîyé et Tahta",
+    "lat": 33.3789,
+    "lon": 35.4839,
+    "importance": 3
+  },
+  {
+    "name": "Maghāghah",
+    "lat": 28.6478,
+    "lon": 30.841,
+    "importance": 3
+  },
+  {
+    "name": "Fāqūs",
+    "lat": 30.7282,
+    "lon": 31.797,
+    "importance": 3
+  },
+  {
+    "name": "Banī Mazār",
+    "lat": 28.4946,
+    "lon": 30.8053,
+    "importance": 3
+  },
+  {
+    "name": "Al Fashn",
+    "lat": 28.8231,
+    "lon": 30.899,
+    "importance": 3
+  },
+  {
+    "name": "Ţalkhā",
+    "lat": 31.0539,
+    "lon": 31.3779,
+    "importance": 3
+  },
+  {
+    "name": "Dūmā",
+    "lat": 33.5718,
+    "lon": 36.4027,
+    "importance": 3
+  },
+  {
+    "name": "Zefta",
+    "lat": 30.7142,
+    "lon": 31.2443,
+    "importance": 3
+  },
+  {
+    "name": "Kilis",
+    "lat": 36.7161,
+    "lon": 37.115,
+    "importance": 3
+  },
+  {
+    "name": "Kfar Saba",
+    "lat": 32.175,
+    "lon": 34.9069,
+    "importance": 3
+  },
+  {
+    "name": "Arsuz",
+    "lat": 36.413,
+    "lon": 35.8903,
+    "importance": 3
+  },
+  {
+    "name": "As Salţ",
+    "lat": 32.0392,
+    "lon": 35.7272,
+    "importance": 3
+  },
+  {
+    "name": "Qurayyat",
+    "lat": 31.3318,
+    "lon": 37.3428,
+    "importance": 3
+  },
+  {
+    "name": "Suruç",
+    "lat": 36.9761,
+    "lon": 38.4253,
+    "importance": 3
+  },
+  {
+    "name": "Dikirnis",
+    "lat": 31.089,
+    "lon": 31.5948,
+    "importance": 3
+  },
+  {
+    "name": "Jaffa",
+    "lat": 32.0504,
+    "lon": 34.7522,
+    "importance": 3
+  },
+  {
+    "name": "Al Jammālīyah",
+    "lat": 31.1806,
+    "lon": 31.865,
+    "importance": 2
+  },
+  {
+    "name": "Manbij",
+    "lat": 36.5281,
+    "lon": 37.9549,
+    "importance": 2
+  },
+  {
+    "name": "Minyā al Qamḩ",
+    "lat": 30.5155,
+    "lon": 31.3463,
+    "importance": 2
+  },
+  {
+    "name": "Manavgat",
+    "lat": 36.7867,
+    "lon": 31.4409,
+    "importance": 2
+  },
+  {
+    "name": "Habboûch",
+    "lat": 33.4073,
+    "lon": 35.4817,
+    "importance": 2
+  },
+  {
+    "name": "Dar‘ā",
+    "lat": 32.6189,
+    "lon": 36.1021,
+    "importance": 2
+  },
+  {
+    "name": "Herzliya",
+    "lat": 32.1663,
+    "lon": 34.8254,
+    "importance": 2
+  },
+  {
+    "name": "Hadera",
+    "lat": 32.4419,
+    "lon": 34.9039,
+    "importance": 2
+  },
+  {
+    "name": "Jounieh",
+    "lat": 33.9808,
+    "lon": 35.6178,
+    "importance": 2
+  },
+  {
+    "name": "Ceyhan",
+    "lat": 37.0247,
+    "lon": 35.8175,
+    "importance": 2
+  },
+  {
+    "name": "Ash-Shaykh Zāyid",
+    "lat": 30.02,
+    "lon": 31.0,
+    "importance": 2
+  },
+  {
+    "name": "Aqaba",
+    "lat": 29.5267,
+    "lon": 35.0078,
+    "importance": 2
+  },
+  {
+    "name": "As Salamīyah",
+    "lat": 35.0113,
+    "lon": 37.0532,
+    "importance": 2
+  },
+  {
+    "name": "Bibā",
+    "lat": 28.9241,
+    "lon": 30.9854,
+    "importance": 2
+  },
+  {
+    "name": "Al Qurayn",
+    "lat": 30.6162,
+    "lon": 31.7351,
+    "importance": 2
+  },
+  {
+    "name": "Awsīm",
+    "lat": 30.123,
+    "lon": 31.1357,
+    "importance": 2
+  },
+  {
+    "name": "Modi‘in Makkabbim Re‘ut",
+    "lat": 31.8939,
+    "lon": 35.015,
+    "importance": 2
+  },
+  {
+    "name": "Ereğli",
+    "lat": 37.5133,
+    "lon": 34.0467,
+    "importance": 2
+  },
+  {
+    "name": "El Shorouk",
+    "lat": 30.1381,
+    "lon": 31.6156,
+    "importance": 2
+  },
+  {
+    "name": "Al Badrashayn",
+    "lat": 29.85,
+    "lon": 31.2667,
+    "importance": 2
+  },
+  {
+    "name": "Biyalā",
+    "lat": 31.1742,
+    "lon": 31.2218,
+    "importance": 2
+  },
+  {
+    "name": "Kozan",
+    "lat": 37.4552,
+    "lon": 35.8157,
+    "importance": 2
+  },
+  {
+    "name": "Samannūd",
+    "lat": 30.9616,
+    "lon": 31.2407,
+    "importance": 2
+  },
+  {
+    "name": "Al-Tabqa",
+    "lat": 35.8376,
+    "lon": 38.5483,
+    "importance": 2
+  },
+  {
+    "name": "Abū an Numrus",
+    "lat": 29.95,
+    "lon": 31.2,
+    "importance": 2
+  },
+  {
+    "name": "Ibshawāy",
+    "lat": 29.359,
+    "lon": 30.6806,
+    "importance": 2
+  },
+  {
+    "name": "Rukban",
+    "lat": 33.3141,
+    "lon": 38.7034,
+    "importance": 2
+  },
+  {
+    "name": "Al Qanāţir al Khayrīyah",
+    "lat": 30.1933,
+    "lon": 31.137,
+    "importance": 2
+  },
+  {
+    "name": "Kafr az Zayyāt",
+    "lat": 30.8248,
+    "lon": 30.818,
+    "importance": 2
+  },
+  {
+    "name": "Marj Al Hamam",
+    "lat": 31.9027,
+    "lon": 35.8464,
+    "importance": 2
+  },
+  {
+    "name": "Minyat an Naşr",
+    "lat": 31.1262,
+    "lon": 31.6431,
+    "importance": 2
+  },
+  {
+    "name": "Mādabā",
+    "lat": 31.716,
+    "lon": 35.7939,
+    "importance": 2
+  },
+  {
+    "name": "Nizip",
+    "lat": 37.0097,
+    "lon": 37.7942,
+    "importance": 2
+  },
+  {
+    "name": "Al Khānkah",
+    "lat": 30.2103,
+    "lon": 31.3681,
+    "importance": 2
+  },
+  {
+    "name": "Diyarb Najm",
+    "lat": 30.7544,
+    "lon": 31.4402,
+    "importance": 2
+  },
+  {
+    "name": "Sirs al Layyānah",
+    "lat": 30.4428,
+    "lon": 30.9698,
+    "importance": 2
+  },
+  {
+    "name": "Zahlé",
+    "lat": 33.8468,
+    "lon": 35.902,
+    "importance": 2
+  },
+  {
+    "name": "Ītāy al Bārūd",
+    "lat": 30.887,
+    "lon": 30.6672,
+    "importance": 2
+  },
+  {
+    "name": "Nazareth",
+    "lat": 32.7009,
+    "lon": 35.2972,
+    "importance": 2
+  },
+  {
+    "name": "Lod",
+    "lat": 31.9467,
+    "lon": 34.8903,
+    "importance": 2
+  },
+  {
+    "name": "Modiin Ilit",
+    "lat": 31.9322,
+    "lon": 35.0442,
+    "importance": 2
+  },
+  {
+    "name": "Ramla",
+    "lat": 31.9262,
+    "lon": 34.8635,
+    "importance": 2
+  },
+  {
+    "name": "Shirbīn",
+    "lat": 31.1969,
+    "lon": 31.5243,
+    "importance": 2
+  },
+  {
+    "name": "Ash Shuhadā’",
+    "lat": 30.5968,
+    "lon": 30.8993,
+    "importance": 2
+  },
+  {
+    "name": "Mashtūl as Sūq",
+    "lat": 30.3606,
+    "lon": 31.3776,
+    "importance": 2
+  },
+  {
+    "name": "Ra'anana",
+    "lat": 32.1836,
+    "lon": 34.8739,
+    "importance": 2
+  },
+  {
+    "name": "Silifke",
+    "lat": 36.3778,
+    "lon": 33.9344,
+    "importance": 2
+  },
+  {
+    "name": "Basyūn",
+    "lat": 30.9398,
+    "lon": 30.8134,
+    "importance": 2
+  },
+  {
+    "name": "Hihyā",
+    "lat": 30.6713,
+    "lon": 31.588,
+    "importance": 2
+  },
+  {
+    "name": "Iţsā",
+    "lat": 29.2376,
+    "lon": 30.7894,
+    "importance": 2
+  },
+  {
+    "name": "Shibīn al Qanāţir",
+    "lat": 30.3127,
+    "lon": 31.3202,
+    "importance": 2
+  },
+  {
+    "name": "Belek",
+    "lat": 36.8631,
+    "lon": 31.0654,
+    "importance": 2
+  },
+  {
+    "name": "Ţāmiyah",
+    "lat": 29.4764,
+    "lon": 30.9612,
+    "importance": 2
+  },
+  {
+    "name": "Rosh Ha‘Ayin",
+    "lat": 32.0956,
+    "lon": 34.9566,
+    "importance": 2
+  },
+  {
+    "name": "Talā",
+    "lat": 30.6798,
+    "lon": 30.9436,
+    "importance": 2
+  },
+  {
+    "name": "Larnaca",
+    "lat": 34.9221,
+    "lon": 33.6279,
+    "importance": 2
+  },
+  {
+    "name": "Dārayyā",
+    "lat": 33.4584,
+    "lon": 36.2326,
+    "importance": 2
+  },
+  {
+    "name": "Al Qanāyāt",
+    "lat": 30.6193,
+    "lon": 31.4616,
+    "importance": 2
+  },
+  {
+    "name": "Kadirli",
+    "lat": 37.3739,
+    "lon": 36.0961,
+    "importance": 2
+  },
+  {
+    "name": "Stróvolos",
+    "lat": 35.1487,
+    "lon": 33.3338,
+    "importance": 2
+  },
+  {
+    "name": "I‘zāz",
+    "lat": 36.5866,
+    "lon": 37.0463,
+    "importance": 2
+  },
+  {
+    "name": "Ţurayf",
+    "lat": 31.672,
+    "lon": 38.663,
+    "importance": 2
+  },
+  {
+    "name": "Jablah",
+    "lat": 35.3621,
+    "lon": 35.9276,
+    "importance": 2
+  },
+  {
+    "name": "Quwaysinā",
+    "lat": 30.5648,
+    "lon": 31.1578,
+    "importance": 2
+  },
+  {
+    "name": "Sumusţā al Waqf",
+    "lat": 28.921,
+    "lon": 30.8537,
+    "importance": 2
+  },
+  {
+    "name": "Ihnāsīyah",
+    "lat": 29.0928,
+    "lon": 31.0204,
+    "importance": 2
+  },
+  {
+    "name": "As Safīrah",
+    "lat": 36.077,
+    "lon": 37.3725,
+    "importance": 2
+  },
+  {
+    "name": "Hod HaSharon",
+    "lat": 32.1593,
+    "lon": 34.8932,
+    "importance": 2
+  },
+  {
+    "name": "Al Bājūr",
+    "lat": 30.4305,
+    "lon": 31.0368,
+    "importance": 2
+  },
+  {
+    "name": "Kiryat Gat",
+    "lat": 31.61,
+    "lon": 34.7642,
+    "importance": 2
+  },
+  {
+    "name": "Aş Şaff",
+    "lat": 29.5647,
+    "lon": 31.2811,
+    "importance": 2
+  },
+  {
+    "name": "Kırıkhan",
+    "lat": 36.4994,
+    "lon": 36.3576,
+    "importance": 2
+  },
+  {
+    "name": "Givatayim",
+    "lat": 32.0722,
+    "lon": 34.8125,
+    "importance": 2
+  },
+  {
+    "name": "Al Burj",
+    "lat": 31.5823,
+    "lon": 30.9809,
+    "importance": 2
+  },
+  {
+    "name": "Dayr al Balaḩ",
+    "lat": 31.4183,
+    "lon": 34.3493,
+    "importance": 2
+  },
+  {
+    "name": "Aş Şāliḩīyah al Jadīdah",
+    "lat": 30.6315,
+    "lon": 31.9393,
+    "importance": 2
+  },
+  {
+    "name": "Nabarūh",
+    "lat": 31.0975,
+    "lon": 31.3031,
+    "importance": 2
+  },
+  {
+    "name": "As-Suwayda",
+    "lat": 32.709,
+    "lon": 36.5695,
+    "importance": 2
+  },
+  {
+    "name": "Qiryat Ata",
+    "lat": 32.8115,
+    "lon": 35.1132,
+    "importance": 2
+  },
+  {
+    "name": "Al Ḩāmūl",
+    "lat": 31.3115,
+    "lon": 31.1477,
+    "importance": 2
+  },
+  {
+    "name": "Nahariyya",
+    "lat": 33.0089,
+    "lon": 35.0981,
+    "importance": 2
+  },
+  {
+    "name": "Al Wāsiţah",
+    "lat": 29.3378,
+    "lon": 31.2056,
+    "importance": 2
+  },
+  {
+    "name": "Anamur",
+    "lat": 36.0751,
+    "lon": 32.8369,
+    "importance": 2
+  },
+  {
+    "name": "Mafraq",
+    "lat": 32.3429,
+    "lon": 36.208,
+    "importance": 2
+  },
+  {
+    "name": "Reyhanlı",
+    "lat": 36.2679,
+    "lon": 36.5675,
+    "importance": 2
+  },
+  {
+    "name": "Bayt Lāhyā",
+    "lat": 31.5464,
+    "lon": 34.4951,
+    "importance": 2
+  },
+  {
+    "name": "Battir",
+    "lat": 31.7,
+    "lon": 35.1167,
+    "importance": 2
+  },
+  {
+    "name": "Dörtyol",
+    "lat": 36.8392,
+    "lon": 36.2302,
+    "importance": 2
+  },
+  {
+    "name": "Umm el Faḥm",
+    "lat": 32.5172,
+    "lon": 35.1535,
+    "importance": 2
+  },
+  {
+    "name": "Kawm Ḩamādah",
+    "lat": 30.7613,
+    "lon": 30.6997,
+    "importance": 2
+  },
+  {
+    "name": "At Tall",
+    "lat": 33.6103,
+    "lon": 36.3107,
+    "importance": 2
+  },
+  {
+    "name": "Dumyāţ al Jadīdah",
+    "lat": 31.4348,
+    "lon": 31.6751,
+    "importance": 2
+  },
+  {
+    "name": "Al Ibrāhīmīyah",
+    "lat": 30.7188,
+    "lon": 31.563,
+    "importance": 2
+  },
+  {
+    "name": "Ar Rastan",
+    "lat": 34.9267,
+    "lon": 36.7324,
+    "importance": 2
+  },
+  {
+    "name": "Ţūkh",
+    "lat": 30.3549,
+    "lon": 31.201,
+    "importance": 2
+  },
+  {
+    "name": "Eilat",
+    "lat": 29.5581,
+    "lon": 34.9482,
+    "importance": 2
+  },
+  {
+    "name": "Būlāq Abū al ‘Ilā",
+    "lat": 30.0604,
+    "lon": 31.2315,
+    "importance": 2
+  },
+  {
+    "name": "Acre",
+    "lat": 32.9281,
+    "lon": 35.0765,
+    "importance": 2
+  },
+  {
+    "name": "Balţīm",
+    "lat": 31.5558,
+    "lon": 31.0892,
+    "importance": 2
+  },
+  {
+    "name": "Kabbasin",
+    "lat": 36.4327,
+    "lon": 37.5686,
+    "importance": 2
+  },
+  {
+    "name": "Seydişehir",
+    "lat": 37.4193,
+    "lon": 31.8453,
+    "importance": 2
+  },
+  {
+    "name": "Tadmur",
+    "lat": 34.5624,
+    "lon": 38.284,
+    "importance": 2
+  },
+  {
+    "name": "Az̧ Z̧ulayl",
+    "lat": 32.1208,
+    "lon": 36.2801,
+    "importance": 2
+  },
+  {
+    "name": "Birkat as Sab‘",
+    "lat": 30.6291,
+    "lon": 31.0824,
+    "importance": 2
+  },
+  {
+    "name": "Al Ḩusaynīyah",
+    "lat": 30.8616,
+    "lon": 31.9181,
+    "importance": 2
+  },
+  {
+    "name": "Ness Ziona",
+    "lat": 31.9293,
+    "lon": 34.7987,
+    "importance": 2
+  },
+  {
+    "name": "Ma'an",
+    "lat": 30.1962,
+    "lon": 35.7341,
+    "importance": 2
+  },
+  {
+    "name": "Ghazieh",
+    "lat": 33.5175,
+    "lon": 35.3689,
+    "importance": 2
+  },
+  {
+    "name": "‘Ayn al ‘Arab",
+    "lat": 36.8909,
+    "lon": 38.3535,
+    "importance": 2
+  },
+  {
+    "name": "Mut",
+    "lat": 36.6439,
+    "lon": 33.4389,
+    "importance": 2
+  },
+  {
+    "name": "An Nabk",
+    "lat": 34.024,
+    "lon": 36.7285,
+    "importance": 2
+  },
+  {
+    "name": "Khān Shaykhūn",
+    "lat": 35.4421,
+    "lon": 36.651,
+    "importance": 2
+  },
+  {
+    "name": "El‘ad",
+    "lat": 32.0498,
+    "lon": 34.9538,
+    "importance": 2
+  },
+  {
+    "name": "‘Afrīn",
+    "lat": 36.5119,
+    "lon": 36.8695,
+    "importance": 2
+  },
+  {
+    "name": "Qillīn",
+    "lat": 31.0475,
+    "lon": 30.8549,
+    "importance": 2
+  },
+  {
+    "name": "Mīt Salsīl",
+    "lat": 31.1676,
+    "lon": 31.8012,
+    "importance": 2
+  },
+  {
+    "name": "Yavné",
+    "lat": 31.8781,
+    "lon": 34.7398,
+    "importance": 2
+  },
+  {
+    "name": "Ramat HaSharon",
+    "lat": 32.1461,
+    "lon": 34.8394,
+    "importance": 2
+  },
+  {
+    "name": "Kafr al Baţţīkh",
+    "lat": 31.404,
+    "lon": 31.7378,
+    "importance": 2
+  },
+  {
+    "name": "Aga",
+    "lat": 30.9416,
+    "lon": 31.2904,
+    "importance": 2
+  },
+  {
+    "name": "Zaafarana",
+    "lat": 29.1101,
+    "lon": 32.6601,
+    "importance": 2
+  },
+  {
+    "name": "At Tall al Kabīr",
+    "lat": 30.5432,
+    "lon": 31.785,
+    "importance": 2
+  },
+  {
+    "name": "Al Jubayhah",
+    "lat": 32.0107,
+    "lon": 35.898,
+    "importance": 2
+  },
+  {
+    "name": "Erdemli",
+    "lat": 36.605,
+    "lon": 34.3084,
+    "importance": 2
+  },
+  {
+    "name": "Karmi’el",
+    "lat": 32.9171,
+    "lon": 35.305,
+    "importance": 2
+  },
+  {
+    "name": "As Sanţah",
+    "lat": 30.7461,
+    "lon": 31.1296,
+    "importance": 2
+  },
+  {
+    "name": "Al ‘Ayyāţ",
+    "lat": 29.6197,
+    "lon": 31.2575,
+    "importance": 2
+  },
+  {
+    "name": "Çumra",
+    "lat": 37.5732,
+    "lon": 32.7745,
+    "importance": 2
+  },
+  {
+    "name": "Kafranbel",
+    "lat": 35.6138,
+    "lon": 36.5645,
+    "importance": 2
+  },
+  {
+    "name": "Aş Şalāḩāt",
+    "lat": 31.0021,
+    "lon": 31.6263,
+    "importance": 2
+  },
+  {
+    "name": "Al ‘Ayn as Sukhnah",
+    "lat": 29.589,
+    "lon": 32.336,
+    "importance": 2
+  },
+  {
+    "name": "Ain Sukhna",
+    "lat": 29.6002,
+    "lon": 32.3167,
+    "importance": 2
+  },
+  {
+    "name": "Kireçocağı",
+    "lat": 37.05,
+    "lon": 35.2333,
+    "importance": 2
+  },
+  {
+    "name": "Afula",
+    "lat": 32.6091,
+    "lon": 35.2892,
+    "importance": 2
+  },
+  {
+    "name": "Kafr al Kurdī",
+    "lat": 31.1684,
+    "lon": 31.7655,
+    "importance": 2
+  },
+  {
+    "name": "Pardés H̱anna Karkur",
+    "lat": 32.4741,
+    "lon": 34.9778,
+    "importance": 2
+  },
+  {
+    "name": "Tiberias",
+    "lat": 32.7922,
+    "lon": 35.5312,
+    "importance": 2
+  },
+  {
+    "name": "Sīdī Sālim",
+    "lat": 31.2713,
+    "lon": 30.7862,
+    "importance": 2
+  },
+  {
+    "name": "Kafr Şaqr",
+    "lat": 30.7934,
+    "lon": 31.6258,
+    "importance": 2
+  },
+  {
+    "name": "Beyşehir",
+    "lat": 37.6773,
+    "lon": 31.7246,
+    "importance": 2
+  },
+  {
+    "name": "Birecik",
+    "lat": 37.0258,
+    "lon": 37.9784,
+    "importance": 2
+  },
+  {
+    "name": "Rafaḩ",
+    "lat": 31.282,
+    "lon": 34.2387,
+    "importance": 2
+  },
+  {
+    "name": "Ţūlkarm",
+    "lat": 32.3116,
+    "lon": 35.0269,
+    "importance": 2
+  },
+  {
+    "name": "Eṭ Ṭaiyiba",
+    "lat": 32.2662,
+    "lon": 35.0089,
+    "importance": 2
+  },
+  {
+    "name": "Qiryat Bialik",
+    "lat": 32.8275,
+    "lon": 35.0858,
+    "importance": 2
+  },
+  {
+    "name": "Ramallah",
+    "lat": 31.8996,
+    "lon": 35.2042,
+    "importance": 2
+  },
+  {
+    "name": "Netivot",
+    "lat": 31.423,
+    "lon": 34.5891,
+    "importance": 2
+  },
+  {
+    "name": "Naẕerat ‘Illit",
+    "lat": 32.7082,
+    "lon": 35.3247,
+    "importance": 2
+  },
+  {
+    "name": "Fāraskūr",
+    "lat": 31.3298,
+    "lon": 31.7151,
+    "importance": 2
+  },
+  {
+    "name": "Qiryat Motsqin",
+    "lat": 32.8371,
+    "lon": 35.0776,
+    "importance": 2
+  },
+  {
+    "name": "Qalqīlyah",
+    "lat": 32.1897,
+    "lon": 34.9706,
+    "importance": 2
+  },
+  {
+    "name": "Abū Ḩammād",
+    "lat": 30.5377,
+    "lon": 31.6788,
+    "importance": 2
+  },
+  {
+    "name": "Famagusta",
+    "lat": 35.1249,
+    "lon": 33.9413,
+    "importance": 2
+  },
+  {
+    "name": "‘Irbīn",
+    "lat": 33.5372,
+    "lon": 36.3663,
+    "importance": 2
+  },
+  {
+    "name": "Shefar‘am",
+    "lat": 32.8058,
+    "lon": 35.169,
+    "importance": 2
+  },
+  {
+    "name": "Besni",
+    "lat": 37.6928,
+    "lon": 37.8611,
+    "importance": 2
+  },
+  {
+    "name": "Yaţţā",
+    "lat": 31.4459,
+    "lon": 35.0944,
+    "importance": 2
+  },
+  {
+    "name": "Shubrākhīt",
+    "lat": 31.028,
+    "lon": 30.7149,
+    "importance": 2
+  },
+  {
+    "name": "Al Quşayr",
+    "lat": 34.5078,
+    "lon": 36.5803,
+    "importance": 2
+  },
+  {
+    "name": "Turaif",
+    "lat": 31.6725,
+    "lon": 38.6637,
+    "importance": 2
+  },
+  {
+    "name": "Yabrūd",
+    "lat": 33.9692,
+    "lon": 36.6573,
+    "importance": 2
+  },
+  {
+    "name": "Saḩāb",
+    "lat": 31.8703,
+    "lon": 36.0048,
+    "importance": 2
+  },
+  {
+    "name": "Ţubarjal",
+    "lat": 30.4999,
+    "lon": 38.216,
+    "importance": 2
+  },
+  {
+    "name": "Káto Lakatámeia",
+    "lat": 35.1176,
+    "lon": 33.3254,
+    "importance": 2
+  },
+  {
+    "name": "Kiryat Ono",
+    "lat": 32.0612,
+    "lon": 34.8562,
+    "importance": 2
+  },
+  {
+    "name": "Qiryat Yam",
+    "lat": 32.8497,
+    "lon": 35.0697,
+    "importance": 2
+  },
+  {
+    "name": "Jisr ash Shughūr",
+    "lat": 35.8142,
+    "lon": 36.3198,
+    "importance": 2
+  },
+  {
+    "name": "Bāniyās",
+    "lat": 35.1819,
+    "lon": 35.9487,
+    "importance": 2
+  },
+  {
+    "name": "Tallbīsah",
+    "lat": 34.8407,
+    "lon": 36.7309,
+    "importance": 2
+  },
+  {
+    "name": "Ma‘ale Adummim",
+    "lat": 31.7774,
+    "lon": 35.2987,
+    "importance": 2
+  },
+  {
+    "name": "Al Bīrah",
+    "lat": 31.91,
+    "lon": 35.2165,
+    "importance": 2
+  },
+  {
+    "name": "‘Izbat al Burj",
+    "lat": 31.5084,
+    "lon": 31.8411,
+    "importance": 2
+  },
+  {
+    "name": "Bayt Ḩānūn",
+    "lat": 31.5353,
+    "lon": 34.5358,
+    "importance": 2
+  },
+  {
+    "name": "Ḩarastā",
+    "lat": 33.5587,
+    "lon": 36.3651,
+    "importance": 2
+  },
+  {
+    "name": "Sumusţā as Sulţānī",
+    "lat": 28.9167,
+    "lon": 30.85,
+    "importance": 2
+  },
+  {
+    "name": "Serik",
+    "lat": 36.9175,
+    "lon": 31.1046,
+    "importance": 2
+  },
+  {
+    "name": "Or Yehuda",
+    "lat": 32.0292,
+    "lon": 34.8579,
+    "importance": 2
+  },
+  {
+    "name": "Qahā",
+    "lat": 30.2801,
+    "lon": 31.2053,
+    "importance": 2
+  },
+  {
+    "name": "Dimona",
+    "lat": 31.0708,
+    "lon": 35.0327,
+    "importance": 2
+  },
+  {
+    "name": "Al Qunayţirah",
+    "lat": 33.126,
+    "lon": 35.8246,
+    "importance": 2
+  },
+  {
+    "name": "An Nuşayrāt",
+    "lat": 31.4486,
+    "lon": 34.3925,
+    "importance": 2
+  },
+  {
+    "name": "Safed",
+    "lat": 32.9646,
+    "lon": 35.496,
+    "importance": 2
+  },
+  {
+    "name": "Old City",
+    "lat": 31.7767,
+    "lon": 35.2342,
+    "importance": 2
+  },
+  {
+    "name": "Paphos",
+    "lat": 34.7768,
+    "lon": 32.4245,
+    "importance": 2
+  },
+  {
+    "name": "Fāyīd",
+    "lat": 30.3126,
+    "lon": 32.3094,
+    "importance": 2
+  },
+  {
+    "name": "Al Burayj",
+    "lat": 31.4394,
+    "lon": 34.4031,
+    "importance": 2
+  },
+  {
+    "name": "Janīn",
+    "lat": 32.4594,
+    "lon": 35.3009,
+    "importance": 2
+  },
+  {
+    "name": "Tādif",
+    "lat": 36.3481,
+    "lon": 37.5309,
+    "importance": 2
+  },
+  {
+    "name": "Ofaqim",
+    "lat": 31.3141,
+    "lon": 34.6202,
+    "importance": 2
+  },
+  {
+    "name": "Saraqib",
+    "lat": 35.8645,
+    "lon": 36.8059,
+    "importance": 2
+  },
+  {
+    "name": "Badr",
+    "lat": 30.136,
+    "lon": 31.715,
+    "importance": 2
+  },
+  {
+    "name": "Awlād Şaqr",
+    "lat": 30.9306,
+    "lon": 31.6986,
+    "importance": 2
+  },
+  {
+    "name": "Abu Suweir-el-Mahatta",
+    "lat": 30.5698,
+    "lon": 32.1146,
+    "importance": 2
+  },
+  {
+    "name": "Ḩayy al Quwaysimah",
+    "lat": 31.9104,
+    "lon": 35.9498,
+    "importance": 2
+  },
+  {
+    "name": "Jayrūd",
+    "lat": 33.8071,
+    "lon": 36.7386,
+    "importance": 2
+  },
+  {
+    "name": "Banī Suwayf al Jadīdah",
+    "lat": 29.033,
+    "lon": 31.1141,
+    "importance": 2
+  },
+  {
+    "name": "Maşyāf",
+    "lat": 35.0653,
+    "lon": 36.3406,
+    "importance": 2
+  },
+  {
+    "name": "Ma‘arratmişrīn",
+    "lat": 36.0115,
+    "lon": 36.6718,
+    "importance": 2
+  },
+  {
+    "name": "Akçakale",
+    "lat": 36.7111,
+    "lon": 38.9475,
+    "importance": 2
+  },
+  {
+    "name": "Quţūr",
+    "lat": 30.9722,
+    "lon": 30.9561,
+    "importance": 2
+  },
+  {
+    "name": "Maḩallat Damanah",
+    "lat": 31.0729,
+    "lon": 31.495,
+    "importance": 2
+  },
+  {
+    "name": "İmamoğlu",
+    "lat": 37.2651,
+    "lon": 35.6572,
+    "importance": 2
+  },
+  {
+    "name": "Al Qanţarah",
+    "lat": 30.8571,
+    "lon": 32.3118,
+    "importance": 2
+  },
+  {
+    "name": "Al Qaryatayn",
+    "lat": 34.2296,
+    "lon": 37.2407,
+    "importance": 2
+  },
+  {
+    "name": "Sakhnīn",
+    "lat": 32.8642,
+    "lon": 35.2971,
+    "importance": 2
+  },
+  {
+    "name": "Salqīn",
+    "lat": 36.1386,
+    "lon": 36.4524,
+    "importance": 2
+  },
+  {
+    "name": "Ceylanpınar",
+    "lat": 36.8472,
+    "lon": 40.05,
+    "importance": 2
+  },
+  {
+    "name": "Banī Suhaylā",
+    "lat": 31.3434,
+    "lon": 34.3234,
+    "importance": 2
+  },
+  {
+    "name": "Ţafas",
+    "lat": 32.7371,
+    "lon": 36.0665,
+    "importance": 2
+  },
+  {
+    "name": "Ar-Rawḍah",
+    "lat": 31.3234,
+    "lon": 31.7612,
+    "importance": 2
+  },
+  {
+    "name": "Şān al Ḩajar al Qiblīyah",
+    "lat": 30.9748,
+    "lon": 31.8723,
+    "importance": 2
+  },
+  {
+    "name": "Kafr Shukr",
+    "lat": 30.5497,
+    "lon": 31.2444,
+    "importance": 2
+  },
+  {
+    "name": "Baalbek",
+    "lat": 34.0058,
+    "lon": 36.2181,
+    "importance": 2
+  },
+  {
+    "name": "Gedera",
+    "lat": 31.8146,
+    "lon": 34.78,
+    "importance": 2
+  },
+  {
+    "name": "Şūrān",
+    "lat": 35.2919,
+    "lon": 36.7485,
+    "importance": 2
+  },
+  {
+    "name": "Binnish",
+    "lat": 35.9566,
+    "lon": 36.7138,
+    "importance": 2
+  },
+  {
+    "name": "Jāsim",
+    "lat": 32.9913,
+    "lon": 36.0609,
+    "importance": 2
+  },
+  {
+    "name": "Burj Islām",
+    "lat": 35.674,
+    "lon": 35.8026,
+    "importance": 2
+  },
+  {
+    "name": "Bāqa el Gharbīya",
+    "lat": 32.4181,
+    "lon": 35.0431,
+    "importance": 1
+  },
+  {
+    "name": "Tallkalakh",
+    "lat": 34.6684,
+    "lon": 36.26,
+    "importance": 1
+  },
+  {
+    "name": "Az Zabadānī",
+    "lat": 33.7249,
+    "lon": 36.1005,
+    "importance": 1
+  },
+  {
+    "name": "Yehud-Monosson",
+    "lat": 32.0284,
+    "lon": 34.8796,
+    "importance": 1
+  },
+  {
+    "name": "As Sarw",
+    "lat": 31.2387,
+    "lon": 31.6538,
+    "importance": 1
+  },
+  {
+    "name": "Ţayyibat al Imām",
+    "lat": 35.2659,
+    "lon": 36.7122,
+    "importance": 1
+  },
+  {
+    "name": "New Bani Sewif City",
+    "lat": 29.0356,
+    "lon": 31.1179,
+    "importance": 1
+  },
+  {
+    "name": "Inkhil",
+    "lat": 33.0181,
+    "lon": 36.1283,
+    "importance": 1
+  },
+  {
+    "name": "Bethlehem",
+    "lat": 31.7049,
+    "lon": 35.2038,
+    "importance": 1
+  },
+  {
+    "name": "Dayr Ḩāfir",
+    "lat": 36.1569,
+    "lon": 37.7078,
+    "importance": 1
+  },
+  {
+    "name": "Oba",
+    "lat": 36.5501,
+    "lon": 32.0596,
+    "importance": 1
+  },
+  {
+    "name": "Giv'at Shmuel",
+    "lat": 32.0782,
+    "lon": 34.8486,
+    "importance": 1
+  },
+  {
+    "name": "Bozyazı",
+    "lat": 36.1082,
+    "lon": 32.9611,
+    "importance": 1
+  },
+  {
+    "name": "Sīdī Ghāzī",
+    "lat": 31.2111,
+    "lon": 31.0512,
+    "importance": 1
+  },
+  {
+    "name": "Badr",
+    "lat": 30.575,
+    "lon": 30.7111,
+    "importance": 1
+  },
+  {
+    "name": "Arad",
+    "lat": 31.2588,
+    "lon": 35.2128,
+    "importance": 1
+  },
+  {
+    "name": "Tirat Karmel",
+    "lat": 32.7602,
+    "lon": 34.9718,
+    "importance": 1
+  },
+  {
+    "name": "Şāfītā",
+    "lat": 34.821,
+    "lon": 36.1177,
+    "importance": 1
+  },
+  {
+    "name": "Be’er Ya‘aqov",
+    "lat": 31.9386,
+    "lon": 34.8375,
+    "importance": 1
+  },
+  {
+    "name": "Sderot",
+    "lat": 31.525,
+    "lon": 34.5969,
+    "importance": 1
+  },
+  {
+    "name": "Az̧ Z̧āhirīyah",
+    "lat": 31.4097,
+    "lon": 34.9733,
+    "importance": 1
+  },
+  {
+    "name": "Hıdırbey",
+    "lat": 36.208,
+    "lon": 36.1279,
+    "importance": 1
+  },
+  {
+    "name": "Jarash",
+    "lat": 32.2808,
+    "lon": 35.8993,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Ḩanīnā",
+    "lat": 31.83,
+    "lon": 35.2254,
+    "importance": 1
+  },
+  {
+    "name": "Az Zarqā",
+    "lat": 31.2086,
+    "lon": 31.6353,
+    "importance": 1
+  },
+  {
+    "name": "Aţfīḩ",
+    "lat": 29.4075,
+    "lon": 31.2525,
+    "importance": 1
+  },
+  {
+    "name": "Ash Shaykh Zuwayd",
+    "lat": 31.2163,
+    "lon": 34.1107,
+    "importance": 1
+  },
+  {
+    "name": "Kyrenia",
+    "lat": 35.3363,
+    "lon": 33.3173,
+    "importance": 1
+  },
+  {
+    "name": "Eṭ Ṭīra",
+    "lat": 32.2341,
+    "lon": 34.9502,
+    "importance": 1
+  },
+  {
+    "name": "Bi’r al ‘Abd",
+    "lat": 31.0189,
+    "lon": 33.0098,
+    "importance": 1
+  },
+  {
+    "name": "Erzin",
+    "lat": 36.9535,
+    "lon": 36.1984,
+    "importance": 1
+  },
+  {
+    "name": "Al ‘Idwah",
+    "lat": 28.6992,
+    "lon": 30.7673,
+    "importance": 1
+  },
+  {
+    "name": "Shaykh Miskīn",
+    "lat": 32.8267,
+    "lon": 36.1605,
+    "importance": 1
+  },
+  {
+    "name": "Tamra",
+    "lat": 32.853,
+    "lon": 35.1987,
+    "importance": 1
+  },
+  {
+    "name": "Aş Şanamayn",
+    "lat": 33.0719,
+    "lon": 36.1832,
+    "importance": 1
+  },
+  {
+    "name": "Migdal Ha‘Emeq",
+    "lat": 32.676,
+    "lon": 35.2399,
+    "importance": 1
+  },
+  {
+    "name": "Tall Rif‘at",
+    "lat": 36.4723,
+    "lon": 37.0947,
+    "importance": 1
+  },
+  {
+    "name": "Ḩaql",
+    "lat": 29.2863,
+    "lon": 34.9469,
+    "importance": 1
+  },
+  {
+    "name": "Yehud",
+    "lat": 32.0332,
+    "lon": 34.8909,
+    "importance": 1
+  },
+  {
+    "name": "‘Aţārūt",
+    "lat": 31.8667,
+    "lon": 35.2167,
+    "importance": 1
+  },
+  {
+    "name": "Batabo",
+    "lat": 36.1345,
+    "lon": 36.7398,
+    "importance": 1
+  },
+  {
+    "name": "Nubl",
+    "lat": 36.3787,
+    "lon": 36.9929,
+    "importance": 1
+  },
+  {
+    "name": "Aţ Ţafīlah",
+    "lat": 30.8375,
+    "lon": 35.6044,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat Mal’akhi",
+    "lat": 31.7289,
+    "lon": 34.7463,
+    "importance": 1
+  },
+  {
+    "name": "Surif City",
+    "lat": 31.6508,
+    "lon": 35.0644,
+    "importance": 1
+  },
+  {
+    "name": "Ganei Tikva",
+    "lat": 32.0597,
+    "lon": 34.8732,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat HaYovel",
+    "lat": 31.7667,
+    "lon": 35.1667,
+    "importance": 1
+  },
+  {
+    "name": "Daliyat al Karmel",
+    "lat": 32.6938,
+    "lon": 35.0469,
+    "importance": 1
+  },
+  {
+    "name": "Jarābulus",
+    "lat": 36.8175,
+    "lon": 38.0111,
+    "importance": 1
+  },
+  {
+    "name": "En Nâqoûra",
+    "lat": 33.1181,
+    "lon": 35.1397,
+    "importance": 1
+  },
+  {
+    "name": "‘Ar‘ara",
+    "lat": 32.4955,
+    "lon": 35.0941,
+    "importance": 1
+  },
+  {
+    "name": "Ar Rām wa Ḑāḩiyat al Barīd",
+    "lat": 31.8495,
+    "lon": 35.2342,
+    "importance": 1
+  },
+  {
+    "name": "Kfar Yona",
+    "lat": 32.3167,
+    "lon": 34.9351,
+    "importance": 1
+  },
+  {
+    "name": "Al Qaşşāşīn",
+    "lat": 30.5641,
+    "lon": 31.9339,
+    "importance": 1
+  },
+  {
+    "name": "Ar Riyāḑ",
+    "lat": 31.2419,
+    "lon": 30.945,
+    "importance": 1
+  },
+  {
+    "name": "Mahmutlar",
+    "lat": 36.4946,
+    "lon": 32.0909,
+    "importance": 1
+  },
+  {
+    "name": "Nesher",
+    "lat": 32.7662,
+    "lon": 35.0442,
+    "importance": 1
+  },
+  {
+    "name": "Mórfou",
+    "lat": 35.1987,
+    "lon": 32.9934,
+    "importance": 1
+  },
+  {
+    "name": "Mevasseret Tsiyyon",
+    "lat": 31.8019,
+    "lon": 35.1507,
+    "importance": 1
+  },
+  {
+    "name": "Gan Yavne",
+    "lat": 31.7874,
+    "lon": 34.7066,
+    "importance": 1
+  },
+  {
+    "name": "Pazarcık",
+    "lat": 37.4868,
+    "lon": 37.2996,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Qāsim",
+    "lat": 32.1141,
+    "lon": 34.9762,
+    "importance": 1
+  },
+  {
+    "name": "Yoqne‘am ‘Illit",
+    "lat": 32.6538,
+    "lon": 35.1038,
+    "importance": 1
+  },
+  {
+    "name": "Al Ḩirāk",
+    "lat": 32.7495,
+    "lon": 36.3058,
+    "importance": 1
+  },
+  {
+    "name": "Al Kiswah",
+    "lat": 33.3581,
+    "lon": 36.2419,
+    "importance": 1
+  },
+  {
+    "name": "Ḩalfāyā",
+    "lat": 35.2601,
+    "lon": 36.6058,
+    "importance": 1
+  },
+  {
+    "name": "Káto Polemídia",
+    "lat": 34.6972,
+    "lon": 32.9932,
+    "importance": 1
+  },
+  {
+    "name": "Zikhron Ya‘aqov",
+    "lat": 32.5665,
+    "lon": 34.9563,
+    "importance": 1
+  },
+  {
+    "name": "Maghār",
+    "lat": 32.8898,
+    "lon": 35.407,
+    "importance": 1
+  },
+  {
+    "name": "Aradíppou",
+    "lat": 34.9478,
+    "lon": 33.5881,
+    "importance": 1
+  },
+  {
+    "name": "‘Izrā",
+    "lat": 31.1589,
+    "lon": 35.6928,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Kannā",
+    "lat": 32.7466,
+    "lon": 35.3424,
+    "importance": 1
+  },
+  {
+    "name": "Qīr Moāv",
+    "lat": 31.1825,
+    "lon": 35.7,
+    "importance": 1
+  },
+  {
+    "name": "Munsha‘at Abū ‘Umar",
+    "lat": 30.9071,
+    "lon": 32.0234,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat Shmona",
+    "lat": 33.2073,
+    "lon": 35.5721,
+    "importance": 1
+  },
+  {
+    "name": "Kadima Zoran",
+    "lat": 32.2778,
+    "lon": 34.9194,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Takhārīm",
+    "lat": 36.1168,
+    "lon": 36.5152,
+    "importance": 1
+  },
+  {
+    "name": "Ar Ruţbah",
+    "lat": 33.0372,
+    "lon": 40.2859,
+    "importance": 1
+  },
+  {
+    "name": "El Hermel",
+    "lat": 34.3942,
+    "lon": 36.3847,
+    "importance": 1
+  },
+  {
+    "name": "Ad Dānā",
+    "lat": 36.2125,
+    "lon": 36.77,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Zaytā",
+    "lat": 35.3743,
+    "lon": 36.6033,
+    "importance": 1
+  },
+  {
+    "name": "maalot Tarshīhā",
+    "lat": 33.0167,
+    "lon": 35.2667,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Lāhā",
+    "lat": 34.8947,
+    "lon": 36.4958,
+    "importance": 1
+  },
+  {
+    "name": "Karak City",
+    "lat": 31.1637,
+    "lon": 35.762,
+    "importance": 1
+  },
+  {
+    "name": "H̱ura",
+    "lat": 31.3008,
+    "lon": 34.9361,
+    "importance": 1
+  },
+  {
+    "name": "Aglantziá",
+    "lat": 35.1542,
+    "lon": 33.3964,
+    "importance": 1
+  },
+  {
+    "name": "Bozova",
+    "lat": 37.3625,
+    "lon": 38.5267,
+    "importance": 1
+  },
+  {
+    "name": "Cikcilli",
+    "lat": 36.554,
+    "lon": 32.0296,
+    "importance": 1
+  },
+  {
+    "name": "Judeida Makr",
+    "lat": 32.9282,
+    "lon": 35.157,
+    "importance": 1
+  },
+  {
+    "name": "Kuseifa",
+    "lat": 31.2453,
+    "lon": 35.0931,
+    "importance": 1
+  },
+  {
+    "name": "Ḩalḩūl",
+    "lat": 31.5803,
+    "lon": 35.1018,
+    "importance": 1
+  },
+  {
+    "name": "Dūrā",
+    "lat": 31.5078,
+    "lon": 35.0293,
+    "importance": 1
+  },
+  {
+    "name": "Byblos",
+    "lat": 34.1211,
+    "lon": 35.6481,
+    "importance": 1
+  },
+  {
+    "name": "Shoham",
+    "lat": 31.9987,
+    "lon": 34.9456,
+    "importance": 1
+  },
+  {
+    "name": "Qārah",
+    "lat": 34.1556,
+    "lon": 36.7428,
+    "importance": 1
+  },
+  {
+    "name": "Ariel",
+    "lat": 32.1065,
+    "lon": 35.1845,
+    "importance": 1
+  },
+  {
+    "name": "Égkomi",
+    "lat": 35.1627,
+    "lon": 33.8832,
+    "importance": 1
+  },
+  {
+    "name": "Mīt Abū Ghālib",
+    "lat": 31.2884,
+    "lon": 31.6772,
+    "importance": 1
+  },
+  {
+    "name": "Timayy al Imdīd",
+    "lat": 30.9438,
+    "lon": 31.5293,
+    "importance": 1
+  },
+  {
+    "name": "Protaras",
+    "lat": 35.0125,
+    "lon": 34.0583,
+    "importance": 1
+  },
+  {
+    "name": "Tel Sheva‘",
+    "lat": 31.2486,
+    "lon": 34.8601,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Mandā",
+    "lat": 32.8103,
+    "lon": 35.2601,
+    "importance": 1
+  },
+  {
+    "name": "Belen",
+    "lat": 36.4887,
+    "lon": 36.1949,
+    "importance": 1
+  },
+  {
+    "name": "Hadim",
+    "lat": 36.9878,
+    "lon": 32.4567,
+    "importance": 1
+  },
+  {
+    "name": "Judita",
+    "lat": 32.4079,
+    "lon": 35.708,
+    "importance": 1
+  },
+  {
+    "name": "Bsharri",
+    "lat": 34.2508,
+    "lon": 36.0106,
+    "importance": 1
+  },
+  {
+    "name": "Banī Na‘īm",
+    "lat": 31.5159,
+    "lon": 35.1642,
+    "importance": 1
+  },
+  {
+    "name": "Jericho",
+    "lat": 31.8667,
+    "lon": 35.45,
+    "importance": 1
+  },
+  {
+    "name": "Rahat",
+    "lat": 31.3955,
+    "lon": 34.757,
+    "importance": 1
+  },
+  {
+    "name": "Al Qarārah",
+    "lat": 31.3739,
+    "lon": 34.3409,
+    "importance": 1
+  },
+  {
+    "name": "As Samū‘",
+    "lat": 31.3967,
+    "lon": 35.0661,
+    "importance": 1
+  },
+  {
+    "name": "Manshīyat al Qanāţir",
+    "lat": 30.1848,
+    "lon": 31.1065,
+    "importance": 1
+  },
+  {
+    "name": "Qabāţīyah",
+    "lat": 32.4104,
+    "lon": 35.2809,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Qari‘",
+    "lat": 32.5067,
+    "lon": 35.0539,
+    "importance": 1
+  },
+  {
+    "name": "Or Akiva",
+    "lat": 32.5064,
+    "lon": 34.9209,
+    "importance": 1
+  },
+  {
+    "name": "Al Fuḩayş",
+    "lat": 32.0047,
+    "lon": 35.7809,
+    "importance": 1
+  },
+  {
+    "name": "Yāfā",
+    "lat": 32.6892,
+    "lon": 35.2783,
+    "importance": 1
+  },
+  {
+    "name": "Idhnā",
+    "lat": 31.5587,
+    "lon": 34.9744,
+    "importance": 1
+  },
+  {
+    "name": "Qaţanā",
+    "lat": 33.4376,
+    "lon": 36.0789,
+    "importance": 1
+  },
+  {
+    "name": "Narlıca",
+    "lat": 36.2353,
+    "lon": 36.2146,
+    "importance": 1
+  },
+  {
+    "name": "Aydūn",
+    "lat": 32.5053,
+    "lon": 35.8581,
+    "importance": 1
+  },
+  {
+    "name": "Gazipaşa",
+    "lat": 36.2694,
+    "lon": 32.3179,
+    "importance": 1
+  },
+  {
+    "name": "Umm as Summāq",
+    "lat": 31.8854,
+    "lon": 35.8543,
+    "importance": 1
+  },
+  {
+    "name": "‘Abasān al Kabīrah",
+    "lat": 31.3191,
+    "lon": 34.34,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat Tiv‘on",
+    "lat": 32.7162,
+    "lon": 35.1249,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Sa‘d",
+    "lat": 31.3557,
+    "lon": 31.6848,
+    "importance": 1
+  },
+  {
+    "name": "Konaklı",
+    "lat": 36.5925,
+    "lon": 31.8954,
+    "importance": 1
+  },
+  {
+    "name": "Kurayyimah",
+    "lat": 32.2764,
+    "lon": 35.5994,
+    "importance": 1
+  },
+  {
+    "name": "Sa‘īr",
+    "lat": 31.5785,
+    "lon": 35.1402,
+    "importance": 1
+  },
+  {
+    "name": "Māḩiş",
+    "lat": 31.9865,
+    "lon": 35.7699,
+    "importance": 1
+  },
+  {
+    "name": "‘Ar‘ara BaNegev",
+    "lat": 31.1605,
+    "lon": 35.0227,
+    "importance": 1
+  },
+  {
+    "name": "‘Anjarah",
+    "lat": 32.3067,
+    "lon": 35.7544,
+    "importance": 1
+  },
+  {
+    "name": "Maharda",
+    "lat": 35.2479,
+    "lon": 36.5725,
+    "importance": 1
+  },
+  {
+    "name": "Denizciler",
+    "lat": 36.6411,
+    "lon": 36.2142,
+    "importance": 1
+  },
+  {
+    "name": "Al ‘Ayzarīyah",
+    "lat": 31.7708,
+    "lon": 35.2692,
+    "importance": 1
+  },
+  {
+    "name": "Germasógeia",
+    "lat": 34.7207,
+    "lon": 33.0845,
+    "importance": 1
+  },
+  {
+    "name": "Yirkā",
+    "lat": 32.9543,
+    "lon": 35.212,
+    "importance": 1
+  },
+  {
+    "name": "Balāţah",
+    "lat": 32.2121,
+    "lon": 35.2856,
+    "importance": 1
+  },
+  {
+    "name": "Hilvan",
+    "lat": 37.5869,
+    "lon": 38.955,
+    "importance": 1
+  },
+  {
+    "name": "Ermenek",
+    "lat": 36.6404,
+    "lon": 32.8918,
+    "importance": 1
+  },
+  {
+    "name": "Qalansuwa",
+    "lat": 32.2849,
+    "lon": 34.9811,
+    "importance": 1
+  },
+  {
+    "name": "Bet She’an",
+    "lat": 32.4973,
+    "lon": 35.4963,
+    "importance": 1
+  },
+  {
+    "name": "Serinyol",
+    "lat": 36.3614,
+    "lon": 36.2136,
+    "importance": 1
+  },
+  {
+    "name": "Az Zuwāydah",
+    "lat": 31.4395,
+    "lon": 34.3805,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Jālā",
+    "lat": 31.7155,
+    "lon": 35.1879,
+    "importance": 1
+  },
+  {
+    "name": "Al Yāmūn",
+    "lat": 32.4856,
+    "lon": 35.2301,
+    "importance": 1
+  },
+  {
+    "name": "Al Quţayfah",
+    "lat": 33.7385,
+    "lon": 36.6007,
+    "importance": 1
+  },
+  {
+    "name": "Binyamina",
+    "lat": 32.5232,
+    "lon": 34.945,
+    "importance": 1
+  },
+  {
+    "name": "Binyamina-Giv'at Ada",
+    "lat": 32.5182,
+    "lon": 34.954,
+    "importance": 1
+  },
+  {
+    "name": "Er Reina",
+    "lat": 32.7234,
+    "lon": 35.3162,
+    "importance": 1
+  },
+  {
+    "name": "Ţūbās",
+    "lat": 32.3209,
+    "lon": 35.3699,
+    "importance": 1
+  },
+  {
+    "name": "Giv`at H̱ananya",
+    "lat": 31.7667,
+    "lon": 35.2333,
+    "importance": 1
+  },
+  {
+    "name": "Majd el Kurūm",
+    "lat": 32.9219,
+    "lon": 35.2557,
+    "importance": 1
+  },
+  {
+    "name": "Kestel",
+    "lat": 36.5086,
+    "lon": 32.0828,
+    "importance": 1
+  },
+  {
+    "name": "Safi",
+    "lat": 31.0361,
+    "lon": 35.4654,
+    "importance": 1
+  },
+  {
+    "name": "Taşucu",
+    "lat": 36.3214,
+    "lon": 33.8817,
+    "importance": 1
+  },
+  {
+    "name": "Pérgamos",
+    "lat": 35.0417,
+    "lon": 33.7083,
+    "importance": 1
+  },
+  {
+    "name": "Shokat as-Sufi",
+    "lat": 31.2586,
+    "lon": 34.2824,
+    "importance": 1
+  },
+  {
+    "name": "Jisr ez Zarqā",
+    "lat": 32.5368,
+    "lon": 34.9127,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Sāḩūr",
+    "lat": 31.7009,
+    "lon": 35.2263,
+    "importance": 1
+  },
+  {
+    "name": "Mazkeret Batya",
+    "lat": 31.8536,
+    "lon": 34.8465,
+    "importance": 1
+  },
+  {
+    "name": "Maale Iron",
+    "lat": 32.5538,
+    "lon": 35.1841,
+    "importance": 1
+  },
+  {
+    "name": "Al Azraq ash Shamālī",
+    "lat": 31.8821,
+    "lon": 36.8302,
+    "importance": 1
+  },
+  {
+    "name": "Iksāl",
+    "lat": 32.6816,
+    "lon": 35.3237,
+    "importance": 1
+  },
+  {
+    "name": "Shahbā",
+    "lat": 32.8524,
+    "lon": 36.6285,
+    "importance": 1
+  },
+  {
+    "name": "Aţ Ţurrah",
+    "lat": 32.6398,
+    "lon": 35.9894,
+    "importance": 1
+  },
+  {
+    "name": "Mūrak",
+    "lat": 35.3762,
+    "lon": 36.6897,
+    "importance": 1
+  },
+  {
+    "name": "Tarqūmyā",
+    "lat": 31.5755,
+    "lon": 35.0122,
+    "importance": 1
+  },
+  {
+    "name": "Abū Sinān",
+    "lat": 32.9589,
+    "lon": 35.1715,
+    "importance": 1
+  },
+  {
+    "name": "Kābūl",
+    "lat": 32.8686,
+    "lon": 35.2117,
+    "importance": 1
+  },
+  {
+    "name": "Laqiyya",
+    "lat": 31.3185,
+    "lon": 34.8589,
+    "importance": 1
+  },
+  {
+    "name": "Wādī Mūsá",
+    "lat": 30.321,
+    "lon": 35.4789,
+    "importance": 1
+  },
+  {
+    "name": "Izra‘",
+    "lat": 32.8671,
+    "lon": 36.2507,
+    "importance": 1
+  },
+  {
+    "name": "Even Yehuda",
+    "lat": 32.2696,
+    "lon": 34.8876,
+    "importance": 1
+  },
+  {
+    "name": "Jindayris",
+    "lat": 36.395,
+    "lon": 36.6889,
+    "importance": 1
+  },
+  {
+    "name": "Harran",
+    "lat": 36.86,
+    "lon": 39.0314,
+    "importance": 1
+  },
+  {
+    "name": "Ya‘bad",
+    "lat": 32.4457,
+    "lon": 35.1682,
+    "importance": 1
+  },
+  {
+    "name": "‘Ein Māhil",
+    "lat": 32.723,
+    "lon": 35.353,
+    "importance": 1
+  },
+  {
+    "name": "I‘billīn",
+    "lat": 32.8223,
+    "lon": 35.1927,
+    "importance": 1
+  },
+  {
+    "name": "El Fureidīs",
+    "lat": 32.5981,
+    "lon": 34.9515,
+    "importance": 1
+  },
+  {
+    "name": "Tel Mond",
+    "lat": 32.2499,
+    "lon": 34.9174,
+    "importance": 1
+  },
+  {
+    "name": "Bahçe",
+    "lat": 37.1972,
+    "lon": 36.5766,
+    "importance": 1
+  },
+  {
+    "name": "Naḥf",
+    "lat": 32.9344,
+    "lon": 35.3168,
+    "importance": 1
+  },
+  {
+    "name": "Wādī al Jawz",
+    "lat": 31.7899,
+    "lon": 35.2366,
+    "importance": 1
+  },
+  {
+    "name": "Azor",
+    "lat": 32.0243,
+    "lon": 34.8063,
+    "importance": 1
+  },
+  {
+    "name": "Sūf",
+    "lat": 32.3137,
+    "lon": 35.8371,
+    "importance": 1
+  },
+  {
+    "name": "Ágios Dométios",
+    "lat": 35.1735,
+    "lon": 33.3404,
+    "importance": 1
+  },
+  {
+    "name": "Şalākhid",
+    "lat": 32.8715,
+    "lon": 36.5728,
+    "importance": 1
+  },
+  {
+    "name": "Avsallar",
+    "lat": 36.6245,
+    "lon": 31.7694,
+    "importance": 1
+  },
+  {
+    "name": "Nurdağı",
+    "lat": 37.1682,
+    "lon": 36.7362,
+    "importance": 1
+  },
+  {
+    "name": "Baytūnyā",
+    "lat": 31.8966,
+    "lon": 35.1705,
+    "importance": 1
+  },
+  {
+    "name": "Rekhasim",
+    "lat": 32.7491,
+    "lon": 35.099,
+    "importance": 1
+  },
+  {
+    "name": "Aţ Ţayyibah",
+    "lat": 32.543,
+    "lon": 35.7176,
+    "importance": 1
+  },
+  {
+    "name": "Deir el Asad",
+    "lat": 32.936,
+    "lon": 35.27,
+    "importance": 1
+  },
+  {
+    "name": "‘Isfiyā",
+    "lat": 32.7184,
+    "lon": 35.0651,
+    "importance": 1
+  },
+  {
+    "name": "Gülnar",
+    "lat": 36.3415,
+    "lon": 33.3992,
+    "importance": 1
+  },
+  {
+    "name": "Dáli",
+    "lat": 35.0229,
+    "lon": 33.422,
+    "importance": 1
+  },
+  {
+    "name": "Varsak",
+    "lat": 36.9897,
+    "lon": 30.7159,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Ūmmar",
+    "lat": 31.6233,
+    "lon": 35.1045,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Buhum",
+    "lat": 35.0596,
+    "lon": 36.699,
+    "importance": 1
+  },
+  {
+    "name": "Jatt",
+    "lat": 32.3984,
+    "lon": 35.0393,
+    "importance": 1
+  },
+  {
+    "name": "Beit Jann",
+    "lat": 32.9646,
+    "lon": 35.3815,
+    "importance": 1
+  },
+  {
+    "name": "Qabbāsīn",
+    "lat": 36.3077,
+    "lon": 38.156,
+    "importance": 1
+  },
+  {
+    "name": "Sarıhamzalı",
+    "lat": 36.9775,
+    "lon": 35.2253,
+    "importance": 1
+  },
+  {
+    "name": "‘Anātā",
+    "lat": 31.8092,
+    "lon": 35.259,
+    "importance": 1
+  },
+  {
+    "name": "Ad Duraykīsh",
+    "lat": 34.8951,
+    "lon": 36.143,
+    "importance": 1
+  },
+  {
+    "name": "Taşkent",
+    "lat": 36.9243,
+    "lon": 32.4913,
+    "importance": 1
+  },
+  {
+    "name": "Paralímni",
+    "lat": 35.0395,
+    "lon": 33.9818,
+    "importance": 1
+  },
+  {
+    "name": "Givat Zeev",
+    "lat": 31.8615,
+    "lon": 35.1686,
+    "importance": 1
+  },
+  {
+    "name": "Abū Dīs",
+    "lat": 31.7621,
+    "lon": 35.2617,
+    "importance": 1
+  },
+  {
+    "name": "Tosmur",
+    "lat": 36.532,
+    "lon": 32.0529,
+    "importance": 1
+  },
+  {
+    "name": "Akseki",
+    "lat": 37.0486,
+    "lon": 31.79,
+    "importance": 1
+  },
+  {
+    "name": "Sakib",
+    "lat": 32.2843,
+    "lon": 35.8091,
+    "importance": 1
+  },
+  {
+    "name": "Oğuzeli",
+    "lat": 36.9657,
+    "lon": 37.5134,
+    "importance": 1
+  },
+  {
+    "name": "Ash Shajarah",
+    "lat": 32.6439,
+    "lon": 35.9417,
+    "importance": 1
+  },
+  {
+    "name": "Majdal Shams",
+    "lat": 33.2703,
+    "lon": 35.7716,
+    "importance": 1
+  },
+  {
+    "name": "Araban",
+    "lat": 37.4267,
+    "lon": 37.689,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat ‘Eqron",
+    "lat": 31.8612,
+    "lon": 34.8227,
+    "importance": 1
+  },
+  {
+    "name": "Salfīt",
+    "lat": 32.0837,
+    "lon": 35.1808,
+    "importance": 1
+  },
+  {
+    "name": "Sarafand",
+    "lat": 33.4495,
+    "lon": 35.2995,
+    "importance": 1
+  },
+  {
+    "name": "Pınarbaşı",
+    "lat": 36.7034,
+    "lon": 34.3627,
+    "importance": 1
+  },
+  {
+    "name": "Bozkır",
+    "lat": 37.1896,
+    "lon": 32.2474,
+    "importance": 1
+  },
+  {
+    "name": "Batroûn",
+    "lat": 34.2553,
+    "lon": 35.6581,
+    "importance": 1
+  },
+  {
+    "name": "Jāwā",
+    "lat": 31.8525,
+    "lon": 35.9393,
+    "importance": 1
+  },
+  {
+    "name": "Al ‘Ubaydīyah",
+    "lat": 31.717,
+    "lon": 35.2901,
+    "importance": 1
+  },
+  {
+    "name": "Şakhrah",
+    "lat": 32.3709,
+    "lon": 35.8427,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Fajjār",
+    "lat": 31.6244,
+    "lon": 35.1546,
+    "importance": 1
+  },
+  {
+    "name": "Shūkat aş Şūfī",
+    "lat": 31.26,
+    "lon": 34.2826,
+    "importance": 1
+  },
+  {
+    "name": "Pozantı",
+    "lat": 37.4278,
+    "lon": 34.8717,
+    "importance": 1
+  },
+  {
+    "name": "Side",
+    "lat": 36.7667,
+    "lon": 31.3889,
+    "importance": 1
+  },
+  {
+    "name": "Karacaören",
+    "lat": 37.4779,
+    "lon": 37.6823,
+    "importance": 1
+  },
+  {
+    "name": "Segev Shalom",
+    "lat": 31.1992,
+    "lon": 34.8396,
+    "importance": 1
+  },
+  {
+    "name": "Deir Ḥannā",
+    "lat": 32.862,
+    "lon": 35.3636,
+    "importance": 1
+  },
+  {
+    "name": "Yeroẖam",
+    "lat": 30.9882,
+    "lon": 34.9318,
+    "importance": 1
+  },
+  {
+    "name": "Akbez",
+    "lat": 36.8555,
+    "lon": 36.5179,
+    "importance": 1
+  },
+  {
+    "name": "Râs el-Barr",
+    "lat": 31.5103,
+    "lon": 31.8285,
+    "importance": 1
+  },
+  {
+    "name": "Jaljūlya",
+    "lat": 32.1547,
+    "lon": 34.9537,
+    "importance": 1
+  },
+  {
+    "name": "Kfar Yasif",
+    "lat": 32.9545,
+    "lon": 35.1623,
+    "importance": 1
+  },
+  {
+    "name": "Ţammūn",
+    "lat": 32.2835,
+    "lon": 35.3837,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Fūrīk",
+    "lat": 32.1769,
+    "lon": 35.3354,
+    "importance": 1
+  },
+  {
+    "name": "‘Attīl",
+    "lat": 32.3693,
+    "lon": 35.0719,
+    "importance": 1
+  },
+  {
+    "name": "Efrata",
+    "lat": 31.6531,
+    "lon": 35.1501,
+    "importance": 1
+  },
+  {
+    "name": "Dhekelia",
+    "lat": 34.9843,
+    "lon": 33.7338,
+    "importance": 1
+  },
+  {
+    "name": "Herzliya Pituah",
+    "lat": 32.1741,
+    "lon": 34.8028,
+    "importance": 1
+  },
+  {
+    "name": "Rehab",
+    "lat": 32.3234,
+    "lon": 36.0909,
+    "importance": 1
+  },
+  {
+    "name": "Qâna",
+    "lat": 33.2089,
+    "lon": 35.2994,
+    "importance": 1
+  },
+  {
+    "name": "Aajaltoûn",
+    "lat": 33.9653,
+    "lon": 35.6828,
+    "importance": 1
+  },
+  {
+    "name": "Ruwaished",
+    "lat": 32.5041,
+    "lon": 38.2011,
+    "importance": 1
+  },
+  {
+    "name": "Basma",
+    "lat": 32.529,
+    "lon": 35.1006,
+    "importance": 1
+  },
+  {
+    "name": "Hassa",
+    "lat": 36.7994,
+    "lon": 36.5178,
+    "importance": 1
+  },
+  {
+    "name": "‘Arrābah",
+    "lat": 32.4052,
+    "lon": 35.2019,
+    "importance": 1
+  },
+  {
+    "name": "Kadriye",
+    "lat": 36.8865,
+    "lon": 31.0061,
+    "importance": 1
+  },
+  {
+    "name": "Géri",
+    "lat": 35.1056,
+    "lon": 33.4198,
+    "importance": 1
+  },
+  {
+    "name": "Bu'ayna-Nujaydat",
+    "lat": 32.8097,
+    "lon": 35.3699,
+    "importance": 1
+  },
+  {
+    "name": "Ad Dawḩah",
+    "lat": 31.6995,
+    "lon": 35.1805,
+    "importance": 1
+  },
+  {
+    "name": "‘Ayn Jannā",
+    "lat": 32.3347,
+    "lon": 35.7637,
+    "importance": 1
+  },
+  {
+    "name": "Sīlat al Ḩārithīyah",
+    "lat": 32.5085,
+    "lon": 35.2275,
+    "importance": 1
+  },
+  {
+    "name": "Taffūḩ",
+    "lat": 31.5386,
+    "lon": 35.0497,
+    "importance": 1
+  },
+  {
+    "name": "Al Ghanţū",
+    "lat": 34.822,
+    "lon": 36.6961,
+    "importance": 1
+  },
+  {
+    "name": "Al Karāmah",
+    "lat": 31.9544,
+    "lon": 35.5803,
+    "importance": 1
+  },
+  {
+    "name": "Al Mazār al Janūbī",
+    "lat": 31.0672,
+    "lon": 35.6949,
+    "importance": 1
+  },
+  {
+    "name": "Samsat",
+    "lat": 37.5819,
+    "lon": 38.4742,
+    "importance": 1
+  },
+  {
+    "name": "H̱atsor HaGelilit",
+    "lat": 32.9805,
+    "lon": 35.5424,
+    "importance": 1
+  },
+  {
+    "name": "Karataş",
+    "lat": 36.582,
+    "lon": 35.3701,
+    "importance": 1
+  },
+  {
+    "name": "Dayr al Ghuşūn",
+    "lat": 32.3524,
+    "lon": 35.0769,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Ūlā",
+    "lat": 31.5962,
+    "lon": 35.0296,
+    "importance": 1
+  },
+  {
+    "name": "Çıplaklı",
+    "lat": 36.5627,
+    "lon": 32.0523,
+    "importance": 1
+  },
+  {
+    "name": "Mukharram al Fawqānī",
+    "lat": 34.8152,
+    "lon": 37.0868,
+    "importance": 1
+  },
+  {
+    "name": "Khuzā‘ah",
+    "lat": 31.3068,
+    "lon": 34.3611,
+    "importance": 1
+  },
+  {
+    "name": "Al Khaḑir",
+    "lat": 31.6941,
+    "lon": 35.1668,
+    "importance": 1
+  },
+  {
+    "name": "Baabda",
+    "lat": 33.8339,
+    "lon": 35.5442,
+    "importance": 1
+  },
+  {
+    "name": "Oranit",
+    "lat": 32.1317,
+    "lon": 34.9909,
+    "importance": 1
+  },
+  {
+    "name": "Şammā",
+    "lat": 32.571,
+    "lon": 35.6898,
+    "importance": 1
+  },
+  {
+    "name": "İbradı",
+    "lat": 37.0969,
+    "lon": 31.5992,
+    "importance": 1
+  },
+  {
+    "name": "Atlit",
+    "lat": 32.6889,
+    "lon": 34.9424,
+    "importance": 1
+  },
+  {
+    "name": "Aşağı Hisar",
+    "lat": 36.7824,
+    "lon": 31.448,
+    "importance": 1
+  },
+  {
+    "name": "Kisra - Sume'a",
+    "lat": 32.9726,
+    "lon": 35.2988,
+    "importance": 1
+  },
+  {
+    "name": "Kokhav Ya’ir",
+    "lat": 32.2262,
+    "lon": 35.0022,
+    "importance": 1
+  },
+  {
+    "name": "Andırın",
+    "lat": 37.5776,
+    "lon": 36.3549,
+    "importance": 1
+  },
+  {
+    "name": "Toprakkale",
+    "lat": 37.0686,
+    "lon": 36.1466,
+    "importance": 1
+  },
+  {
+    "name": "Baytā al Fawqā",
+    "lat": 32.1426,
+    "lon": 35.2877,
+    "importance": 1
+  },
+  {
+    "name": "Şuwayr",
+    "lat": 30.1171,
+    "lon": 40.3892,
+    "importance": 1
+  },
+  {
+    "name": "Qaffīn",
+    "lat": 32.4327,
+    "lon": 35.0827,
+    "importance": 1
+  },
+  {
+    "name": "Meitar",
+    "lat": 31.3273,
+    "lon": 34.9385,
+    "importance": 1
+  },
+  {
+    "name": "Jaba‘",
+    "lat": 32.3241,
+    "lon": 35.2213,
+    "importance": 1
+  },
+  {
+    "name": "Aydıncık",
+    "lat": 36.1437,
+    "lon": 33.3202,
+    "importance": 1
+  },
+  {
+    "name": "Bi’na",
+    "lat": 32.9307,
+    "lon": 35.2716,
+    "importance": 1
+  },
+  {
+    "name": "Sarıçam",
+    "lat": 37.1517,
+    "lon": 35.5077,
+    "importance": 1
+  },
+  {
+    "name": "‘Ilūṭ",
+    "lat": 32.7164,
+    "lon": 35.2594,
+    "importance": 1
+  },
+  {
+    "name": "Geroskipou",
+    "lat": 34.7609,
+    "lon": 32.4484,
+    "importance": 1
+  },
+  {
+    "name": "Yayladağı",
+    "lat": 35.9025,
+    "lon": 36.0627,
+    "importance": 1
+  },
+  {
+    "name": "Dabbūrīya",
+    "lat": 32.6926,
+    "lon": 35.3712,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Asad",
+    "lat": 32.598,
+    "lon": 35.7127,
+    "importance": 1
+  },
+  {
+    "name": "Atakent",
+    "lat": 36.4007,
+    "lon": 34.0579,
+    "importance": 1
+  },
+  {
+    "name": "Kokhav Ya‘aqov",
+    "lat": 31.881,
+    "lon": 35.2438,
+    "importance": 1
+  },
+  {
+    "name": "Dhannābah",
+    "lat": 32.3134,
+    "lon": 35.0414,
+    "importance": 1
+  },
+  {
+    "name": "Yavuzeli",
+    "lat": 37.3177,
+    "lon": 37.5682,
+    "importance": 1
+  },
+  {
+    "name": "Ash Shuyūkh",
+    "lat": 31.57,
+    "lon": 35.1561,
+    "importance": 1
+  },
+  {
+    "name": "Shaţḩah",
+    "lat": 35.5051,
+    "lon": 36.2438,
+    "importance": 1
+  },
+  {
+    "name": "Bidyā",
+    "lat": 32.1146,
+    "lon": 35.0803,
+    "importance": 1
+  },
+  {
+    "name": "Dahab",
+    "lat": 28.4821,
+    "lon": 34.495,
+    "importance": 1
+  },
+  {
+    "name": "Hrajel",
+    "lat": 34.0172,
+    "lon": 35.7924,
+    "importance": 1
+  },
+  {
+    "name": "Alfei Menasheh",
+    "lat": 32.1726,
+    "lon": 35.0118,
+    "importance": 1
+  },
+  {
+    "name": "Bayt ‘Awwā",
+    "lat": 31.5091,
+    "lon": 34.9494,
+    "importance": 1
+  },
+  {
+    "name": "Zarzir",
+    "lat": 32.7275,
+    "lon": 35.2138,
+    "importance": 1
+  },
+  {
+    "name": "Basmat Ṭab‘ūn",
+    "lat": 32.739,
+    "lon": 35.1572,
+    "importance": 1
+  },
+  {
+    "name": "Bu‘eina",
+    "lat": 32.8064,
+    "lon": 35.3649,
+    "importance": 1
+  },
+  {
+    "name": "Léfka",
+    "lat": 35.112,
+    "lon": 32.85,
+    "importance": 1
+  },
+  {
+    "name": "Konuklu",
+    "lat": 37.1263,
+    "lon": 38.8486,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Liqyā",
+    "lat": 31.8696,
+    "lon": 35.0654,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Yāfā",
+    "lat": 32.5225,
+    "lon": 35.7862,
+    "importance": 1
+  },
+  {
+    "name": "Ramat Yishay",
+    "lat": 32.7044,
+    "lon": 35.1707,
+    "importance": 1
+  },
+  {
+    "name": "Rama",
+    "lat": 32.9384,
+    "lon": 35.3675,
+    "importance": 1
+  },
+  {
+    "name": "‘Azzūn",
+    "lat": 32.175,
+    "lon": 35.0575,
+    "importance": 1
+  },
+  {
+    "name": "Qarne Shomeron",
+    "lat": 32.1667,
+    "lon": 35.0833,
+    "importance": 1
+  },
+  {
+    "name": "‘Aqrabā",
+    "lat": 32.1249,
+    "lon": 35.3455,
+    "importance": 1
+  },
+  {
+    "name": "Abū Ghaush",
+    "lat": 31.8059,
+    "lon": 35.1093,
+    "importance": 1
+  },
+  {
+    "name": "Aktoprak",
+    "lat": 37.1862,
+    "lon": 37.2858,
+    "importance": 1
+  },
+  {
+    "name": "H̱arish",
+    "lat": 32.461,
+    "lon": 35.0435,
+    "importance": 1
+  },
+  {
+    "name": "‘Omer",
+    "lat": 31.2649,
+    "lon": 34.8477,
+    "importance": 1
+  },
+  {
+    "name": "Sarıveliler",
+    "lat": 36.6976,
+    "lon": 32.6167,
+    "importance": 1
+  },
+  {
+    "name": "‘Aşīrah ash Shamālīyah",
+    "lat": 32.2512,
+    "lon": 35.2672,
+    "importance": 1
+  },
+  {
+    "name": "Al Quwayrah",
+    "lat": 29.8005,
+    "lon": 35.3116,
+    "importance": 1
+  },
+  {
+    "name": "Ýpsonas",
+    "lat": 34.688,
+    "lon": 32.9619,
+    "importance": 1
+  },
+  {
+    "name": "‘Ayy",
+    "lat": 31.1337,
+    "lon": 35.6437,
+    "importance": 1
+  },
+  {
+    "name": "Arpaçbahşiş",
+    "lat": 36.6455,
+    "lon": 34.3508,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Rā‘ī",
+    "lat": 32.374,
+    "lon": 35.1545,
+    "importance": 1
+  },
+  {
+    "name": "Qaţanah",
+    "lat": 31.8337,
+    "lon": 35.1189,
+    "importance": 1
+  },
+  {
+    "name": "Türkler",
+    "lat": 36.602,
+    "lon": 31.8207,
+    "importance": 1
+  },
+  {
+    "name": "Çolaklı",
+    "lat": 36.8374,
+    "lon": 31.3184,
+    "importance": 1
+  },
+  {
+    "name": "Buşayrā",
+    "lat": 30.7326,
+    "lon": 35.6094,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Sawm",
+    "lat": 32.6853,
+    "lon": 35.801,
+    "importance": 1
+  },
+  {
+    "name": "Katzrin",
+    "lat": 32.9919,
+    "lon": 35.6914,
+    "importance": 1
+  },
+  {
+    "name": "Bīr el Maksūr",
+    "lat": 32.7773,
+    "lon": 35.2207,
+    "importance": 1
+  },
+  {
+    "name": "‘Anabtā",
+    "lat": 32.3079,
+    "lon": 35.1169,
+    "importance": 1
+  },
+  {
+    "name": "Bet Dagan",
+    "lat": 32.0019,
+    "lon": 34.8298,
+    "importance": 1
+  },
+  {
+    "name": "Zemer",
+    "lat": 32.3666,
+    "lon": 35.0331,
+    "importance": 1
+  },
+  {
+    "name": "Ḩakamā",
+    "lat": 32.5935,
+    "lon": 35.8832,
+    "importance": 1
+  },
+  {
+    "name": "Qabalān",
+    "lat": 32.1018,
+    "lon": 35.2894,
+    "importance": 1
+  },
+  {
+    "name": "Silwād",
+    "lat": 31.9763,
+    "lon": 35.2613,
+    "importance": 1
+  },
+  {
+    "name": "Bnei Ayish",
+    "lat": 31.79,
+    "lon": 34.759,
+    "importance": 1
+  },
+  {
+    "name": "Kurttepe",
+    "lat": 37.0547,
+    "lon": 35.2757,
+    "importance": 1
+  },
+  {
+    "name": "Sha‘av",
+    "lat": 32.8894,
+    "lon": 35.2409,
+    "importance": 1
+  },
+  {
+    "name": "Tremseh",
+    "lat": 35.2718,
+    "lon": 36.504,
+    "importance": 1
+  },
+  {
+    "name": "Sāl",
+    "lat": 32.569,
+    "lon": 35.9119,
+    "importance": 1
+  },
+  {
+    "name": "Khārās",
+    "lat": 31.6148,
+    "lon": 35.0417,
+    "importance": 1
+  },
+  {
+    "name": "Atayurt",
+    "lat": 36.3836,
+    "lon": 34.0223,
+    "importance": 1
+  },
+  {
+    "name": "Dhromolaxia",
+    "lat": 34.8755,
+    "lon": 33.5868,
+    "importance": 1
+  },
+  {
+    "name": "Malkā",
+    "lat": 32.6765,
+    "lon": 35.7485,
+    "importance": 1
+  },
+  {
+    "name": "Maythalūn",
+    "lat": 32.348,
+    "lon": 35.2745,
+    "importance": 1
+  },
+  {
+    "name": "Aaïtanît",
+    "lat": 33.5614,
+    "lon": 35.6703,
+    "importance": 1
+  },
+  {
+    "name": "Narlı",
+    "lat": 37.3915,
+    "lon": 37.1361,
+    "importance": 1
+  },
+  {
+    "name": "Tūbā Zangarīya",
+    "lat": 32.9661,
+    "lon": 35.593,
+    "importance": 1
+  },
+  {
+    "name": "Dayr Dibwān",
+    "lat": 31.9111,
+    "lon": 35.2666,
+    "importance": 1
+  },
+  {
+    "name": "Karaisalı",
+    "lat": 37.2567,
+    "lon": 35.0589,
+    "importance": 1
+  },
+  {
+    "name": "‘Illār",
+    "lat": 32.3702,
+    "lon": 35.1071,
+    "importance": 1
+  },
+  {
+    "name": "Yanuah Jat",
+    "lat": 32.9798,
+    "lon": 35.2381,
+    "importance": 1
+  },
+  {
+    "name": "Yanuh-Jat",
+    "lat": 32.9851,
+    "lon": 35.2491,
+    "importance": 1
+  },
+  {
+    "name": "Kfar H̱abad",
+    "lat": 31.9879,
+    "lon": 34.8516,
+    "importance": 1
+  },
+  {
+    "name": "Alifakı",
+    "lat": 36.8831,
+    "lon": 34.995,
+    "importance": 1
+  },
+  {
+    "name": "Bal‘ā",
+    "lat": 32.3339,
+    "lon": 35.1116,
+    "importance": 1
+  },
+  {
+    "name": "Buq‘ātā",
+    "lat": 33.2011,
+    "lon": 35.7792,
+    "importance": 1
+  },
+  {
+    "name": "Shlomi",
+    "lat": 33.0719,
+    "lon": 35.1453,
+    "importance": 1
+  },
+  {
+    "name": "Kolossi",
+    "lat": 34.6686,
+    "lon": 32.9338,
+    "importance": 1
+  },
+  {
+    "name": "Jūlis",
+    "lat": 32.9427,
+    "lon": 35.1828,
+    "importance": 1
+  },
+  {
+    "name": "Al Mughrāqah",
+    "lat": 31.4659,
+    "lon": 34.4121,
+    "importance": 1
+  },
+  {
+    "name": "Chlórakas",
+    "lat": 34.7984,
+    "lon": 32.4065,
+    "importance": 1
+  },
+  {
+    "name": "Lehavim",
+    "lat": 31.3728,
+    "lon": 34.8162,
+    "importance": 1
+  },
+  {
+    "name": "Ḥurfeish",
+    "lat": 33.0171,
+    "lon": 35.3484,
+    "importance": 1
+  },
+  {
+    "name": "Sutaşı",
+    "lat": 36.0821,
+    "lon": 36.0063,
+    "importance": 1
+  },
+  {
+    "name": "Bīr Zayt",
+    "lat": 31.9696,
+    "lon": 35.1941,
+    "importance": 1
+  },
+  {
+    "name": "Afis",
+    "lat": 35.9069,
+    "lon": 36.8042,
+    "importance": 1
+  },
+  {
+    "name": "Kafr Abīl",
+    "lat": 32.4175,
+    "lon": 35.663,
+    "importance": 1
+  },
+  {
+    "name": "Hasanbeyli",
+    "lat": 37.1284,
+    "lon": 36.5461,
+    "importance": 1
+  },
+  {
+    "name": "Derýneia",
+    "lat": 35.0648,
+    "lon": 33.9608,
+    "importance": 1
+  },
+  {
+    "name": "Dayr Yūsuf",
+    "lat": 32.487,
+    "lon": 35.7963,
+    "importance": 1
+  },
+  {
+    "name": "Naḩḩālīn",
+    "lat": 31.6856,
+    "lon": 35.1208,
+    "importance": 1
+  },
+  {
+    "name": "Al Ḩamrā’",
+    "lat": 32.4402,
+    "lon": 36.1527,
+    "importance": 1
+  },
+  {
+    "name": "An Naşr",
+    "lat": 31.2814,
+    "lon": 34.3025,
+    "importance": 1
+  },
+  {
+    "name": "Za‘tarah",
+    "lat": 31.6736,
+    "lon": 35.2566,
+    "importance": 1
+  },
+  {
+    "name": "Dayr al ‘Aşāfīr",
+    "lat": 33.4659,
+    "lon": 36.4204,
+    "importance": 1
+  },
+  {
+    "name": "Saḩam al Kaffārāt",
+    "lat": 32.6985,
+    "lon": 35.7744,
+    "importance": 1
+  },
+  {
+    "name": "Biddū",
+    "lat": 31.8348,
+    "lon": 35.1495,
+    "importance": 1
+  },
+  {
+    "name": "Jammā‘īn",
+    "lat": 32.1316,
+    "lon": 35.204,
+    "importance": 1
+  },
+  {
+    "name": "Dayr Sāmit",
+    "lat": 31.5206,
+    "lon": 34.9744,
+    "importance": 1
+  },
+  {
+    "name": "Qiryat Ye‘arim",
+    "lat": 31.803,
+    "lon": 35.102,
+    "importance": 1
+  },
+  {
+    "name": "Yalıhüyük",
+    "lat": 37.3008,
+    "lon": 32.0855,
+    "importance": 1
+  },
+  {
+    "name": "Az Zaytūnīyah",
+    "lat": 31.954,
+    "lon": 35.1624,
+    "importance": 1
+  },
+  {
+    "name": "Raymūn",
+    "lat": 32.282,
+    "lon": 35.8278,
+    "importance": 1
+  },
+  {
+    "name": "Sīlat az̧ Z̧ahr",
+    "lat": 32.3193,
+    "lon": 35.1842,
+    "importance": 1
+  },
+  {
+    "name": "Tsur Itshak",
+    "lat": 32.2405,
+    "lon": 34.9979,
+    "importance": 1
+  },
+  {
+    "name": "Bet El‘azari",
+    "lat": 31.8443,
+    "lon": 34.8037,
+    "importance": 1
+  },
+  {
+    "name": "Beit El",
+    "lat": 31.9415,
+    "lon": 35.2224,
+    "importance": 1
+  },
+  {
+    "name": "Xylofágou",
+    "lat": 34.9774,
+    "lon": 33.8489,
+    "importance": 1
+  },
+  {
+    "name": "Shibli–Umm al-Ghanam",
+    "lat": 32.684,
+    "lon": 35.3962,
+    "importance": 1
+  },
+  {
+    "name": "Karakise",
+    "lat": 36.85,
+    "lon": 36.2167,
+    "importance": 1
+  },
+  {
+    "name": "Kargıcak",
+    "lat": 36.4782,
+    "lon": 32.1093,
+    "importance": 1
+  },
+  {
+    "name": "‘Abasān al Jadīdah",
+    "lat": 31.3416,
+    "lon": 34.3459,
+    "importance": 1
+  },
+  {
+    "name": "Ḩablah",
+    "lat": 32.1652,
+    "lon": 34.9775,
+    "importance": 1
+  },
+  {
+    "name": "Pardesiyya",
+    "lat": 32.3058,
+    "lon": 34.9091,
+    "importance": 1
+  },
+  {
+    "name": "Çeşmeli",
+    "lat": 36.686,
+    "lon": 34.4219,
+    "importance": 1
+  },
+  {
+    "name": "Ḩizmā",
+    "lat": 31.8334,
+    "lon": 35.2632,
+    "importance": 1
+  },
+  {
+    "name": "Buqei‘a",
+    "lat": 32.9775,
+    "lon": 35.3334,
+    "importance": 1
+  },
+  {
+    "name": "Mahmutlar",
+    "lat": 36.949,
+    "lon": 36.1923,
+    "importance": 1
+  },
+  {
+    "name": "Gündoğmuş",
+    "lat": 36.8134,
+    "lon": 31.9997,
+    "importance": 1
+  },
+  {
+    "name": "‘Eilabun",
+    "lat": 32.8369,
+    "lon": 35.4003,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Līd",
+    "lat": 32.2609,
+    "lon": 35.1317,
+    "importance": 1
+  },
+  {
+    "name": "Kocahasanlı",
+    "lat": 36.5842,
+    "lon": 34.2736,
+    "importance": 1
+  },
+  {
+    "name": "Bir Hadaj",
+    "lat": 31.0242,
+    "lon": 34.7086,
+    "importance": 1
+  },
+  {
+    "name": "Birqīn",
+    "lat": 32.4546,
+    "lon": 35.2608,
+    "importance": 1
+  },
+  {
+    "name": "Başyayla",
+    "lat": 36.7534,
+    "lon": 32.6802,
+    "importance": 1
+  },
+  {
+    "name": "Waqqāş",
+    "lat": 32.5421,
+    "lon": 35.6051,
+    "importance": 1
+  },
+  {
+    "name": "AlSayid Tribe",
+    "lat": 31.2825,
+    "lon": 34.9151,
+    "importance": 1
+  },
+  {
+    "name": "Bayt Kāḩil",
+    "lat": 31.5701,
+    "lon": 35.065,
+    "importance": 1
+  },
+  {
+    "name": "Kastal",
+    "lat": 36.2476,
+    "lon": 36.2409,
+    "importance": 1
+  },
+  {
+    "name": "Ḩuwwārah",
+    "lat": 32.1522,
+    "lon": 35.2567,
+    "importance": 1
+  },
+  {
+    "name": "Al Kittah",
+    "lat": 32.2769,
+    "lon": 35.8411,
+    "importance": 1
+  },
+  {
+    "name": "Ḩayy al Bunayyāt",
+    "lat": 31.896,
+    "lon": 35.8847,
+    "importance": 1
+  },
+  {
+    "name": "Huwara",
+    "lat": 32.1524,
+    "lon": 35.2566,
+    "importance": 1
+  },
+  {
+    "name": "‘Awartā",
+    "lat": 32.1611,
+    "lon": 35.2839,
+    "importance": 1
+  },
+  {
+    "name": "İnönü",
+    "lat": 37.3167,
+    "lon": 33.7667,
+    "importance": 1
+  },
+  {
+    "name": "Ḩātim",
+    "lat": 32.6449,
+    "lon": 35.7777,
+    "importance": 1
+  },
+  {
+    "name": "Ḩūsān",
+    "lat": 31.7093,
+    "lon": 35.1347,
+    "importance": 1
+  },
+  {
+    "name": "Geva Binyamin",
+    "lat": 31.8503,
+    "lon": 35.2741,
+    "importance": 1
+  },
+  {
+    "name": "Dayr Abū Ḑa‘īf",
+    "lat": 32.456,
+    "lon": 35.3616,
+    "importance": 1
+  },
+  {
+    "name": "Emba",
+    "lat": 34.807,
+    "lon": 32.4241,
+    "importance": 1
+  },
+  {
+    "name": "Ka‘abiyya",
+    "lat": 32.7499,
+    "lon": 35.1836,
+    "importance": 1
+  },
+  {
+    "name": "Tséri",
+    "lat": 35.0731,
+    "lon": 33.3234,
+    "importance": 1
+  },
+  {
+    "name": "Kharjā",
+    "lat": 32.6599,
+    "lon": 35.8878,
+    "importance": 1
+  },
+  {
+    "name": "Kfar Veradim",
+    "lat": 32.9939,
+    "lon": 35.2779,
+    "importance": 1
+  },
+  {
+    "name": "Al Fukhkhārī",
+    "lat": 31.2928,
+    "lon": 34.3306,
+    "importance": 1
+  },
+  {
+    "name": "Banī Zayd",
+    "lat": 32.0392,
+    "lon": 35.1032,
+    "importance": 1
+  },
+  {
+    "name": "Payallar",
+    "lat": 36.6016,
+    "lon": 31.8506,
+    "importance": 1
+  },
+  {
+    "name": "Ḩalāwah",
+    "lat": 32.3843,
+    "lon": 35.6617,
+    "importance": 1
+  },
+  {
+    "name": "Sinjil",
+    "lat": 32.0333,
+    "lon": 35.2655,
+    "importance": 1
+  },
+  {
+    "name": "Jannātah",
+    "lat": 31.6696,
+    "lon": 35.2196,
+    "importance": 1
+  },
+  {
+    "name": "Caesarea",
+    "lat": 32.5189,
+    "lon": 34.9046,
+    "importance": 1
+  },
+  {
+    "name": "Livádia",
+    "lat": 34.9552,
+    "lon": 33.6273,
+    "importance": 1
+  },
+  {
+    "name": "Şabḩā",
+    "lat": 32.327,
+    "lon": 36.5016,
+    "importance": 1
+  },
+  {
+    "name": "Bat H̱efer",
+    "lat": 32.3331,
+    "lon": 35.0127,
+    "importance": 1
+  },
+  {
+    "name": "Kitim",
+    "lat": 32.4383,
+    "lon": 35.8968,
+    "importance": 1
+  },
+  {
+    "name": "Şambayadı",
+    "lat": 37.0421,
+    "lon": 35.1994,
+    "importance": 1
+  },
+  {
+    "name": "Al Khinzīrah",
+    "lat": 31.0506,
+    "lon": 35.6061,
+    "importance": 1
+  },
+  {
+    "name": "Tibnah",
+    "lat": 32.4752,
+    "lon": 35.7306,
+    "importance": 1
+  },
+  {
+    "name": "Rizokárpaso",
+    "lat": 35.5972,
+    "lon": 34.3792,
+    "importance": 1
+  },
+  {
+    "name": "Lápithos",
+    "lat": 35.3382,
+    "lon": 33.1737,
+    "importance": 1
+  },
+  {
+    "name": "Mitzpe Ramon",
+    "lat": 30.6094,
+    "lon": 34.8011,
+    "importance": 1
+  },
+  {
+    "name": "Balīlā",
+    "lat": 32.3911,
+    "lon": 35.9383,
+    "importance": 1
+  },
+  {
+    "name": "Athíenou",
+    "lat": 35.0618,
+    "lon": 33.5417,
+    "importance": 1
+  },
+  {
+    "name": "Yenişarbademli",
+    "lat": 37.7078,
+    "lon": 31.3864,
+    "importance": 1
+  },
+  {
+    "name": "Karslı",
+    "lat": 37.059,
+    "lon": 35.299,
+    "importance": 1
+  },
+  {
+    "name": "Dursunlu",
+    "lat": 36.1674,
+    "lon": 36.1579,
+    "importance": 1
+  },
+  {
+    "name": "Kharbathā al Mişbāḩ",
+    "lat": 31.8855,
+    "lon": 35.0718,
+    "importance": 1
+  },
+  {
+    "name": "Bet Arye",
+    "lat": 32.0333,
+    "lon": 35.05,
+    "importance": 1
+  },
+  {
+    "name": "Kíti",
+    "lat": 34.849,
+    "lon": 33.5752,
+    "importance": 1
+  },
+  {
+    "name": "Doğankent",
+    "lat": 36.8443,
+    "lon": 35.344,
+    "importance": 1
+  },
+  {
+    "name": "Avsuyu",
+    "lat": 36.1936,
+    "lon": 36.3135,
+    "importance": 1
+  },
+  {
+    "name": "Qumaym",
+    "lat": 32.5717,
+    "lon": 35.7345,
+    "importance": 1
+  },
+  {
+    "name": "Derebucak",
+    "lat": 37.3918,
+    "lon": 31.5092,
+    "importance": 1
+  },
+  {
+    "name": "Banī Zayd ash Shārqīyah",
+    "lat": 32.0493,
+    "lon": 35.1659,
+    "importance": 1
+  },
+  {
+    "name": "Halba",
+    "lat": 34.5428,
+    "lon": 36.0797,
+    "importance": 1
+  }
+]

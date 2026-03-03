@@ -18,31 +18,95 @@ export enum UnitSystem {
 export type SettingsStoreData = {
   unitSystem: UnitSystem;
   map: {
+    layerVisibility?: {
+      prettyMap?: boolean;
+      dcsMap?: boolean;
+      mgrsGrid?: boolean;
+      citiesLabel?: boolean;
+      statics?: boolean;
+      combatZones?: boolean;
+      groundUnits?: boolean;
+      customGeometry?: boolean;
+      missionPoints?: boolean;
+      aircrafts?: boolean;
+    };
     showTrackIcons?: boolean;
     showTrackLabels?: boolean;
     trackTrailLength?: number;
     groundUnitMode?: GroundUnitMode;
+    prettyMapBrightness?: number;
+    prettyMapOpacity?: number;
+    dcsMapBrightness?: number;
+    dcsMapOpacity?: number;
+    mgrsGridBrightness?: number;
+    mgrsGridOpacity?: number;
+    showOnlySelectedGeometryLabels?: boolean;
   };
 };
 
-export const settingsStore = create<SettingsStoreData>(() => {
-  const localData = localStorage.getItem("settings");
-  if (localData) {
-    return JSON.parse(localData) as SettingsStoreData;
-  }
+const SETTINGS_STORAGE_KEY = "settings";
+
+function defaultSettings(): SettingsStoreData {
   return {
     unitSystem: UnitSystem.IMPERIAL,
     map: {
+      layerVisibility: {
+        prettyMap: true,
+        dcsMap: true,
+        mgrsGrid: true,
+        citiesLabel: true,
+        statics: true,
+        combatZones: true,
+        groundUnits: true,
+        customGeometry: true,
+        missionPoints: true,
+        aircrafts: true,
+      },
       showTrackIcons: true,
       showTrackLabels: true,
       trackTrailLength: 9,
       groundUnitMode: GroundUnitMode.ENEMY,
+      prettyMapBrightness: 1,
+      prettyMapOpacity: 0.8,
+      dcsMapBrightness: 1.2,
+      dcsMapOpacity: 1,
+      mgrsGridBrightness: 1,
+      mgrsGridOpacity: 1,
+      showOnlySelectedGeometryLabels: false,
     },
   };
-});
+}
+
+function readSettings(storageKey: string): SettingsStoreData | null {
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as SettingsStoreData;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function readAnyLegacyUserSettings(): SettingsStoreData | null {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !key.startsWith("settings:user:")) continue;
+    const parsed = readSettings(key);
+    if (parsed) return parsed;
+  }
+  return null;
+}
+
+const bootstrapSettings =
+  readSettings(SETTINGS_STORAGE_KEY) ||
+  readSettings("settings:guest") ||
+  readAnyLegacyUserSettings() ||
+  defaultSettings();
+
+export const settingsStore = create<SettingsStoreData>(() => bootstrapSettings);
 
 settingsStore.subscribe((state) => {
-  localStorage.setItem("settings", JSON.stringify(state));
+  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(state));
 });
 
 export function updateSettingsStore(value: Partial<SettingsStoreData>) {

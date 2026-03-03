@@ -7,17 +7,34 @@ import (
 	"image/color"
 	"image/png"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
-	"log"
 
 	"github.com/b1naryth1ef/sneaker"
 	"github.com/go-chi/chi/v5"
 )
 
 var transparentTilePNG = buildTransparentTilePNG()
+
+func secureJoinUnder(base, requested string) (string, bool) {
+	cleanRequested := strings.TrimPrefix(filepath.Clean(string(filepath.Separator)+requested), string(filepath.Separator))
+	target := filepath.Join(base, cleanRequested)
+
+	rel, err := filepath.Rel(base, target)
+	if err != nil {
+		return "", false
+	}
+
+	if rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) || filepath.IsAbs(rel) {
+		return "", false
+	}
+
+	return target, true
+}
 
 func buildTransparentTilePNG() []byte {
 	img := image.NewNRGBA(image.Rect(0, 0, 1, 1))
@@ -72,9 +89,8 @@ func (h *httpServer) serveEmbeddedStaticAssets(w http.ResponseWriter, r *http.Re
 	param := chi.URLParam(r, "*")
 
 	if h.config.AssetsPath != nil {
-		path := filepath.Join(*h.config.AssetsPath, param)
-		_, err := filepath.Rel(*h.config.AssetsPath, path)
-		if err != nil {
+		path, ok := secureJoinUnder(*h.config.AssetsPath, param)
+		if !ok {
 			http.Error(w, "Not Found", http.StatusNotFound)
 			return
 		}
@@ -104,17 +120,15 @@ func (h *httpServer) serveEmbeddedStaticAssets(w http.ResponseWriter, r *http.Re
 	}
 }
 
-
 // Serves static assets from the embedded filesystem
 func (h *httpServer) serveEmbeddedStaticAssetsExternal(w http.ResponseWriter, r *http.Request) {
 	param := chi.URLParam(r, "*")
 	//log.Printf(*h.config.AssetsPathExternal)
 	//log.Printf(param)
-	
+
 	if h.config.AssetsPathExternal != nil {
-		path := filepath.Join(*h.config.AssetsPathExternal, param)
-		_, err := filepath.Rel(*h.config.AssetsPathExternal, path)
-		if err != nil {
+		path, ok := secureJoinUnder(*h.config.AssetsPathExternal, param)
+		if !ok {
 			http.Error(w, "Not Found", http.StatusNotFound)
 			return
 		}
@@ -136,18 +150,15 @@ func (h *httpServer) serveEmbeddedStaticAssetsExternal(w http.ResponseWriter, r 
 	}
 }
 
-
-
 // DCSMaps embedded filesystem
 func (h *httpServer) serverDCSMaps(w http.ResponseWriter, r *http.Request) {
 	param := chi.URLParam(r, "*")
 	//log.Printf(*h.config.DCSMapsPathExternal)
 	//log.Printf(param)
-	
+
 	if h.config.DCSMapsPathExternal != nil {
-		path := filepath.Join(*h.config.DCSMapsPathExternal, param)
-		_, err := filepath.Rel(*h.config.DCSMapsPathExternal, path)
-		if err != nil {
+		path, ok := secureJoinUnder(*h.config.DCSMapsPathExternal, param)
+		if !ok {
 			http.Error(w, "Not Found", http.StatusNotFound)
 			return
 		}

@@ -90,14 +90,6 @@ function ServerConnectModal() {
 
 function ServerContainer({ serverName }: { serverName: string }) {
   const backendMaintenance = serverStore((state) => state.backendMaintenance);
-  const [refLat, refLng] = serverStore((state) => {
-    const globalObj = state.entities.get(0);
-    if (!globalObj) return [undefined, undefined];
-    return [
-      globalObj.properties.ReferenceLatitude as number | undefined,
-      globalObj.properties.ReferenceLongitude as number | undefined,
-    ];
-  });
 
   const {
     response,

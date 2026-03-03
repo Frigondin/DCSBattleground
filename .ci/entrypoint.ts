@@ -6,7 +6,7 @@ export async function build(
   ws: Workspace,
   { os, arch, version }: { os?: string; arch?: string; version?: string },
 ) {
-  pushStep("Build Sneaker UI");
+  pushStep("Build DCSBattleground UI");
   const yarnRes = await Docker.run(
     "yarn && yarn build",
     {
@@ -24,9 +24,9 @@ export async function build(
 
   await yarnRes.copy("dist/");
 
-  pushStep("Build Sneaker Binary");
+  pushStep("Build DCSBattleground Binary");
   const res = await Docker.run(
-    "mkdir /tmp/build && mv cmd dist server assets.go go.mod go.sum /tmp/build && cd /tmp/build && go build -o sneaker cmd/sneaker-server/main.go && mv sneaker /",
+    "mkdir /tmp/build && mv cmd dist server assets.go go.mod go.sum /tmp/build && cd /tmp/build && go build -o DCSBattleground cmd/dcsbg-server/main.go && mv DCSBattleground /",
     {
       image: `golang:1.17`,
       copy: ["cmd/**", "dist/**", "server/**", "assets.go", "go.mod", "go.sum"],
@@ -35,14 +35,14 @@ export async function build(
   );
 
   if (version !== undefined) {
-    await res.copy("/sneaker");
+    await res.copy("/DCSBattleground");
 
-    pushStep("Upload Sneaker Binary");
-    const uploadRes = await uploadArtifact("sneaker", {
-      name: `sneaker-${os}-${arch}-${version}`,
+    pushStep("Upload DCSBattleground Binary");
+    const uploadRes = await uploadArtifact("DCSBattleground", {
+      name: `DCSBattleground-${os}-${arch}-${version}`,
       published: true,
       labels: [
-        "sneaker",
+        "dcsbattleground",
         `arch:${arch}`,
         `os:${os}`,
         `version:${version}`,

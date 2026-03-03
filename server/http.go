@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,16 +12,18 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
+	"net/url"
 	"os"
+	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 	//session "github.com/stripe/stripe-go/v71/checkout/session"
 	"github.com/google/uuid"
-	"path/filepath"
-	"slices"
-	"strconv"
 
 	disgoauth "github.com/realTristan/disgoauth"
 )
@@ -28,8 +31,8 @@ import (
 type httpServer struct {
 	sync.Mutex
 
-	config   *Config
-	sessions map[string]*serverSession
+	config         *Config
+	sessions       map[string]*serverSession
 	elevationCache map[string]cachedElevation
 }
 
@@ -45,30 +48,30 @@ type geometry struct {
 	DiscordName string `json:"discordName"`
 	Avatar      string `json:"avatar"`
 	//Position 	[]float32	`json:"position"`
-	Points      [][]float32 `json:"points"`
-	PointNames  []string    `json:"pointNames"`
-	PointGroundFt []float32 `json:"pointGroundFt"`
-	PointGroundFtSet []bool `json:"pointGroundFtSet"`
-	Center      []float32   `json:"center"`
-	Radius      float32     `json:"radius"`
-	TypeSubmit  string      `json:"typeSubmit"`
-	PosMGRS     string      `json:"posMGRS"`
-	PosPoint    []float32   `json:"posPoint"`
-	Screenshot  []string    `json:"screenshot"`
-	Description []string    `json:"description"`
-	Side        string      `json:"side"`
-	Server      string      `json:"server"`
-	Task        interface{} `json:"task"`
-	TaskUpdated []Task      `json:"taskUpdated"`
-	Status      string      `json:"status"`
-	Clickable   bool        `json:"clickable"`
-	Hidden      bool        `json:"hidden"`
-	Color       string      `json:"color"`
-	SubType     string      `json:"subType"`
-	TimeStamp   string      `json:"timeStamp"`
-	Marker      string      `json:"marker"`
-	GroundFt    float32     `json:"groundFt"`
-	GroundFtSet bool        `json:"groundFtSet"`
+	Points           [][]float32 `json:"points"`
+	PointNames       []string    `json:"pointNames"`
+	PointGroundFt    []float32   `json:"pointGroundFt"`
+	PointGroundFtSet []bool      `json:"pointGroundFtSet"`
+	Center           []float32   `json:"center"`
+	Radius           float32     `json:"radius"`
+	TypeSubmit       string      `json:"typeSubmit"`
+	PosMGRS          string      `json:"posMGRS"`
+	PosPoint         []float32   `json:"posPoint"`
+	Screenshot       []string    `json:"screenshot"`
+	Description      []string    `json:"description"`
+	Side             string      `json:"side"`
+	Server           string      `json:"server"`
+	Task             interface{} `json:"task"`
+	TaskUpdated      []Task      `json:"taskUpdated"`
+	Status           string      `json:"status"`
+	Clickable        bool        `json:"clickable"`
+	Hidden           bool        `json:"hidden"`
+	Color            string      `json:"color"`
+	SubType          string      `json:"subType"`
+	TimeStamp        string      `json:"timeStamp"`
+	Marker           string      `json:"marker"`
+	GroundFt         float32     `json:"groundFt"`
+	GroundFtSet      bool        `json:"groundFtSet"`
 }
 
 type bg_geometry struct {
@@ -107,8 +110,8 @@ type TaskFields struct {
 
 func newHttpServer(config *Config) *httpServer {
 	return &httpServer{
-		config:   config,
-		sessions: make(map[string]*serverSession),
+		config:         config,
+		sessions:       make(map[string]*serverSession),
 		elevationCache: make(map[string]cachedElevation),
 	}
 }
@@ -197,6 +200,107 @@ func (h *httpServer) getElevation(w http.ResponseWriter, r *http.Request) {
 }
 
 var SessionsDiscord = map[string]sessionDiscord{}
+var sessionsDiscordMu sync.RWMutex
+
+const dbOperationTimeout = 3 * time.Second
+
+func newDBTimeoutContext() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), dbOperationTimeout)
+}
+
+const (
+	maxUploadRequestSize = 32 << 20 // 32 MiB
+	maxUploadFileSize    = 8 << 20  // 8 MiB per file
+	maxUploadFiles       = 8
+)
+
+var allowedUploadExtensions = map[string]bool{
+	".png":  true,
+	".jpg":  true,
+	".jpeg": true,
+	".webp": true,
+}
+
+var screenshotFetchClient = &http.Client{
+	Timeout: 10 * time.Second,
+	CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
+		// Block redirects to avoid host-switch SSRF tricks.
+		return http.ErrUseLastResponse
+	},
+}
+
+func isAllowedScreenshotURL(raw string) bool {
+	parsed, err := url.Parse(raw)
+	if err != nil {
+		return false
+	}
+	if !strings.EqualFold(parsed.Scheme, "https") {
+		return false
+	}
+	if parsed.User != nil {
+		return false
+	}
+
+	host := strings.ToLower(parsed.Hostname())
+	if host != "cdn.discordapp.com" && host != "media.discordapp.net" {
+		return false
+	}
+
+	return strings.Contains(parsed.Path, "/ephemeral-attachments/")
+}
+
+func sanitizeUploadExtension(filename string) (string, bool) {
+	ext := strings.ToLower(filepath.Ext(filename))
+	return ext, allowedUploadExtensions[ext]
+}
+
+func storeUploadedFile(fileHeader *multipart.FileHeader, assetsPath string) (string, error) {
+	ext, ok := sanitizeUploadExtension(fileHeader.Filename)
+	if !ok {
+		return "", errors.New("unsupported file extension")
+	}
+	if fileHeader.Size <= 0 {
+		return "", errors.New("empty file")
+	}
+	if fileHeader.Size > maxUploadFileSize {
+		return "", errors.New("file too large")
+	}
+
+	src, err := fileHeader.Open()
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
+
+	filename := uuid.NewString() + ext
+	dstPath := filepath.Join(assetsPath, filename)
+	dst, err := os.Create(dstPath)
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+
+	limited := io.LimitReader(src, maxUploadFileSize+1)
+	written, err := io.Copy(dst, limited)
+	if err != nil {
+		return "", err
+	}
+	if written > maxUploadFileSize {
+		return "", errors.New("file exceeds max size")
+	}
+
+	return filename, nil
+}
+
+func isSecureRequest(r *http.Request) bool {
+	if r == nil {
+		return false
+	}
+	if r.TLS != nil {
+		return true
+	}
+	return strings.EqualFold(r.Header.Get("X-Forwarded-Proto"), "https")
+}
 
 const discordSessionsFile = "discord_sessions.json"
 
@@ -220,6 +324,8 @@ func loadDiscordSessions() {
 	}
 
 	now := time.Now()
+	sessionsDiscordMu.Lock()
+	defer sessionsDiscordMu.Unlock()
 	for _, item := range data {
 		if strings.TrimSpace(item.SessionToken) == "" || item.ExpiresAt.Before(now) {
 			continue
@@ -239,6 +345,7 @@ func loadDiscordSessions() {
 func saveDiscordSessions() {
 	now := time.Now()
 	payload := []persistedDiscordSession{}
+	sessionsDiscordMu.Lock()
 	for sessionToken, session := range SessionsDiscord {
 		if session.expiresAt.Before(now) {
 			delete(SessionsDiscord, sessionToken)
@@ -252,6 +359,7 @@ func saveDiscordSessions() {
 			ExpiresAt:    session.expiresAt,
 		})
 	}
+	sessionsDiscordMu.Unlock()
 
 	raw, err := json.Marshal(payload)
 	if err != nil {
@@ -266,14 +374,20 @@ func saveDiscordSessions() {
 func (h *httpServer) logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session_token")
 	if err == nil {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, cookie.Value)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 	}
 	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-		Path:    "/",
+		Name:     "session_token",
+		Value:    "",
+		Expires:  time.Unix(0, 0),
+		MaxAge:   -1,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   isSecureRequest(r),
+		SameSite: http.SameSiteLaxMode,
 	})
 	gores.JSON(w, 200, map[string]bool{"ok": true})
 }
@@ -281,12 +395,14 @@ func (h *httpServer) logout(w http.ResponseWriter, r *http.Request) {
 func cleanDiscordSessions() {
 	changed := false
 	now := time.Now()
+	sessionsDiscordMu.Lock()
 	for token, session := range SessionsDiscord {
 		if !session.expiresAt.IsZero() && session.expiresAt.Before(now) {
 			delete(SessionsDiscord, token)
 			changed = true
 		}
 	}
+	sessionsDiscordMu.Unlock()
 	if changed {
 		saveDiscordSessions()
 	}
@@ -409,17 +525,23 @@ func getAvatar(session_token string) string {
 }
 
 func getDiscordSession(session_token string) (sessionDiscord, bool) {
+	sessionsDiscordMu.RLock()
 	discordSession, ok := SessionsDiscord[session_token]
+	sessionsDiscordMu.RUnlock()
 	if !ok {
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
 	if strings.TrimSpace(discordSession.id) == "" {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, session_token)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
 	if !discordSession.expiresAt.IsZero() && discordSession.expiresAt.Before(time.Now()) {
+		sessionsDiscordMu.Lock()
 		delete(SessionsDiscord, session_token)
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 		return sessionDiscord{username: "Guest", avatar: "nop"}, false
 	}
@@ -438,25 +560,25 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 	DiscordId := discordSession.id
 
 	if db != nil {
-		err := db.Ping()
-		if err == nil {
-			req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = $1 AND coalitions.player_ucid = players.ucid AND discord_id = $2"
-			rows, err := db.Query(req, server.DcsName, DiscordId)
-			if err != nil {
-				log.Printf("getCoalition query error for discord_id=%q: %v", DiscordId, err)
-				return server.DefaultCoalition
-			}
-
-			defer rows.Close()
-			for rows.Next() {
-				var Coal string
-
-				err = rows.Scan(&Coal)
-				CheckError(err)
-
-				Coals = append(Coals, Coal)
-			}
+		req := "SELECT coalitions.coalition FROM coalitions, players WHERE server_name = $1 AND coalitions.player_ucid = players.ucid AND discord_id = $2"
+		ctx, cancel := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctx, req, server.DcsName, DiscordId)
+		if err != nil {
+			cancel()
+			log.Printf("getCoalition query error for discord_id=%q: %v", DiscordId, err)
+			return server.DefaultCoalition
 		}
+
+		for rows.Next() {
+			var Coal string
+
+			err = rows.Scan(&Coal)
+			CheckError(err)
+
+			Coals = append(Coals, Coal)
+		}
+		_ = rows.Close()
+		cancel()
 	}
 	Coals = append(Coals, server.DefaultCoalition)
 
@@ -466,18 +588,23 @@ func getCoalition(server *TacViewServerConfig, session_token string) string {
 func getMap(server *TacViewServerConfig) string {
 
 	var MapName string
-	err := db.Ping()
-	if err == nil {
+	if db != nil {
 		req := "SELECT mission_theatre FROM public.missions WHERE server_name = $1 ORDER BY id desc limit 1"
-		rows, err := db.Query(req, server.DcsName)
-		CheckError(err)
+		ctx, cancel := newDBTimeoutContext()
+		rows, err := db.QueryContext(ctx, req, server.DcsName)
+		if err != nil {
+			cancel()
+			CheckError(err)
+			return MapName
+		}
 
-		defer rows.Close()
 		for rows.Next() {
 
 			err = rows.Scan(&MapName)
 			CheckError(err)
 		}
+		_ = rows.Close()
+		cancel()
 	}
 
 	return MapName
@@ -553,7 +680,15 @@ func (h *httpServer) getOrCreateSession(serverName string) (*serverSession, erro
 
 // Streams events for a given server
 func (h *httpServer) initServerEvents(w http.ResponseWriter, r *http.Request) {
-	session, _ := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	sharedGeometry := session.runSharedGeometry(-1, -1, "Init")
 	gores.JSON(w, 200, sharedGeometry)
 }
@@ -665,8 +800,17 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	serverName := chi.URLParam(r, "serverName")
-	coalition := getCoalition(h.sessions[serverName].server, session_token)
-	dcsName := h.sessions[serverName].server.DcsName
+	session, err := h.getOrCreateSession(serverName)
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
+	coalition := getCoalition(session.server, session_token)
+	dcsName := session.server.DcsName
 
 	var geo geometry
 	var Id int
@@ -851,7 +995,6 @@ func (h *httpServer) share(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
 	var RadarRefreshRate int64
 	RadarRefreshRate = 5
 	if session.server.RadarRefreshRate != 0 {
@@ -915,6 +1058,14 @@ func (h *httpServer) taskenrolment(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	session.runSharedGeometry(-1, -1, "Stream")
 	gores.JSON(w, 200, taskEnrolment)
 }
@@ -930,6 +1081,14 @@ func (h *httpServer) resend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	session, err := h.getOrCreateSession(chi.URLParam(r, "serverName"))
+	if err != nil {
+		if err == errNoServerFound {
+			gores.Error(w, 404, "server not found")
+			return
+		}
+		gores.Error(w, 500, "failed to find or create server session")
+		return
+	}
 	session.runSharedGeometry(0, geo.Id, "Stream")
 	gores.JSON(w, 200, SqlResponse{Id: geo.Id})
 }
@@ -945,39 +1104,59 @@ type UploadResponse struct {
 }
 
 func (h *httpServer) uploadHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "POST":
-		r.ParseMultipartForm(32 << 20) //10 MB
-		filesnames := []string{}
-
-		for _, headers := range r.MultipartForm.File["attachments"] {
-			log.Println("test")
-			file, err := headers.Open()
-			defer file.Close()
-
-			filename := uuid.NewString() + filepath.Ext(headers.Filename)
-			dst, err := os.Create(*h.config.AssetsPathExternal + filename)
-			if err != nil {
-				log.Println("error creating file", err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			defer dst.Close()
-			if _, err := io.Copy(dst, file); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			filesnames = append(filesnames, filename)
-		}
-		resp := UploadResponse{Files: filesnames}
-		gores.JSON(w, 200, resp)
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
 	}
+
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		gores.Error(w, 401, "missing discord session")
+		return
+	}
+	if _, ok := getDiscordSession(cookie.Value); !ok {
+		gores.Error(w, 401, "discord session expired")
+		return
+	}
+
+	if h.config.AssetsPathExternal == nil {
+		gores.Error(w, 500, "upload storage is not configured")
+		return
+	}
+
+	r.Body = http.MaxBytesReader(w, r.Body, maxUploadRequestSize)
+	if err := r.ParseMultipartForm(maxUploadRequestSize); err != nil {
+		gores.Error(w, 400, "invalid multipart form")
+		return
+	}
+
+	headers := r.MultipartForm.File["attachments"]
+	if len(headers) == 0 {
+		gores.Error(w, 400, "no attachments provided")
+		return
+	}
+	if len(headers) > maxUploadFiles {
+		gores.Error(w, 400, "too many attachments")
+		return
+	}
+
+	filesnames := make([]string, 0, len(headers))
+	for _, header := range headers {
+		filename, err := storeUploadedFile(header, *h.config.AssetsPathExternal)
+		if err != nil {
+			gores.Error(w, 400, err.Error())
+			return
+		}
+		filesnames = append(filesnames, filename)
+	}
+
+	resp := UploadResponse{Files: filesnames}
+	gores.JSON(w, 200, resp)
 }
 
 func CheckError(err error) {
 	if err != nil {
-		panic(err)
+		log.Printf("runtime error: %v", err)
 	}
 }
 
@@ -994,11 +1173,17 @@ func (h *httpServer) cleanLoop() {
 		var Nbr int
 		var Data []byte
 		if err == nil {
+			if h.config.AssetsPathExternal == nil {
+				log.Printf("cleanLoop: assets_path_external is not configured")
+				continue
+			}
 			rows, err := db.Query(`SELECT id, data
 									FROM bg_geometry2 
 									WHERE data->'fields'->>'screenshot' like '%"%ephemeral-attachments%"%'`)
-			CheckError(err)
-			defer rows.Close()
+			if err != nil {
+				CheckError(err)
+				continue
+			}
 			for rows.Next() {
 				err = rows.Scan(&Id, &Data)
 				CheckError(err)
@@ -1009,23 +1194,36 @@ func (h *httpServer) cleanLoop() {
 
 				for i, screen := range DataJson.Fields.Screenshot {
 					if strings.Contains(screen, "ephemeral-attachments") {
-						//fmt.Println(screen)
-						file, err1 := http.Get(screen)
+						if !isAllowedScreenshotURL(screen) {
+							log.Printf("cleanLoop: blocked non-allowlisted screenshot URL")
+							continue
+						}
+
+						file, err1 := screenshotFetchClient.Get(screen)
 						if err1 != nil {
-							log.Println("error creating file1", err1)
+							log.Println("cleanLoop screenshot fetch error:", err1)
+							continue
+						}
+						if file.StatusCode < 200 || file.StatusCode >= 300 {
+							_ = file.Body.Close()
+							log.Printf("cleanLoop screenshot fetch status=%d", file.StatusCode)
+							continue
 						}
 						//filename := uuid.NewString() + filepath.Ext(path.Base(resp.Request.URL.String()))
 						filename := uuid.NewString() + strings.Split(filepath.Ext(screen), "?")[0]
 
 						dst, err2 := os.Create(*h.config.AssetsPathExternal + filename)
 						if err2 != nil {
-							log.Println("error creating file2", err2)
+							_ = file.Body.Close()
+							log.Println("cleanLoop screenshot store error:", err2)
+							continue
 						}
-						defer dst.Close()
-						defer file.Body.Close()
 						_, err3 := io.Copy(dst, file.Body)
+						_ = file.Body.Close()
+						_ = dst.Close()
 						if err3 != nil {
-							log.Println("error creating file3", err3)
+							log.Println("cleanLoop screenshot copy error:", err3)
+							continue
 						}
 
 						DataJson.Fields.Screenshot[i] = "$CURRENT_SERV/files/" + filename
@@ -1041,6 +1239,7 @@ func (h *httpServer) cleanLoop() {
 				_, err = db.Exec(sqlStatement, string(data), Id)
 				CheckError(err)
 			}
+			_ = rows.Close()
 
 			//fmt.Println("Loop file")
 			items, _ := ioutil.ReadDir(*h.config.AssetsPathExternal)
@@ -1055,7 +1254,10 @@ func (h *httpServer) cleanLoop() {
 											SELECT count(*)
 											FROM bg_missions
 											WHERE data->'fields'->>'screenshot' like $1) t1`, pattern)
-				CheckError(err4)
+				if err4 != nil {
+					CheckError(err4)
+					continue
+				}
 				for rows2.Next() {
 					err = rows2.Scan(&Nbr)
 					CheckError(err)
@@ -1064,6 +1266,7 @@ func (h *httpServer) cleanLoop() {
 						CheckError(e)
 					}
 				}
+				_ = rows2.Close()
 			}
 		}
 	}
@@ -1085,6 +1288,7 @@ func Run(config *Config) error {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -1150,10 +1354,13 @@ func Run(config *Config) error {
 		// Finally, we set the client cookie for "session_token" as the session token we just generated
 		// we also set an expiry time of 120 seconds
 		http.SetCookie(w, &http.Cookie{
-			Name:    "session_token",
-			Value:   sessionToken,
-			Expires: expiresAt,
-			Path:    "/",
+			Name:     "session_token",
+			Value:    sessionToken,
+			Expires:  expiresAt,
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   isSecureRequest(r),
+			SameSite: http.SameSiteLaxMode,
 		})
 		//fmt.Fprint(w, userData)
 
@@ -1167,12 +1374,14 @@ func Run(config *Config) error {
 		if err4 == false {
 			avatar = "nop"
 		}
+		sessionsDiscordMu.Lock()
 		SessionsDiscord[sessionToken] = sessionDiscord{
 			id:        id,
 			username:  user,
 			avatar:    avatar,
 			expiresAt: expiresAt,
 		}
+		sessionsDiscordMu.Unlock()
 		saveDiscordSessions()
 
 		log.Printf("Redirect - Session created")
@@ -1204,5 +1413,16 @@ func Run(config *Config) error {
 		server.getOrCreateSession(serverConfig.Name)
 	}
 
-	return http.ListenAndServe(config.Bind, r)
+	httpServer := &http.Server{
+		Addr:              config.Bind,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		// Keep write timeout disabled to support long-lived SSE streams.
+		WriteTimeout:   0,
+		IdleTimeout:    120 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	return httpServer.ListenAndServe()
 }

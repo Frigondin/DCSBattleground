@@ -1,11 +1,24 @@
 import * as maptalks from "maptalks";
 import * as mgrs from "mgrs";
 import { useEffect } from "react";
+import { settingsStore } from "../stores/SettingsStore";
 
 const MGRS_BANDS = "CDEFGHJKLMNPQRSTUVWX";
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
+}
+
+function interpolateByZoom(
+  zoom: number,
+  zoomStart: number,
+  zoomEnd: number,
+  sizeStart: number,
+  sizeEnd: number
+) {
+  if (zoomEnd <= zoomStart) return sizeEnd;
+  const t = clamp((zoom - zoomStart) / (zoomEnd - zoomStart), 0, 1);
+  return Math.round(sizeStart + (sizeEnd - sizeStart) * t);
 }
 
 function getBandLetter(lat: number): string {
@@ -626,6 +639,7 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
     if (!map) return;
     const layer = map.getLayer("mgrs-grid") as maptalks.VectorLayer | undefined;
     if (!layer) return;
+    let zoomingRenderTimer: ReturnType<typeof setTimeout> | null = null;
 
     const renderGrid = () => {
       const extent = map.getExtent();
@@ -636,19 +650,25 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       const minLat = clamp(extent.ymin, -80, 84);
       const maxLat = clamp(extent.ymax, -80, 84);
       const zoom = map.getZoom();
+      const mgrsGridBrightness = settingsStore.getState().map?.mgrsGridBrightness ?? 1;
+      const mgrsGridOpacity = settingsStore.getState().map?.mgrsGridOpacity ?? 1;
+      const opacity = (base: number) =>
+        clamp(base * mgrsGridBrightness * mgrsGridOpacity, 0, 1);
 
       const geos: Array<maptalks.Geometry> = [];
 
       // 1) Base UTM-like zone grid: 6° x 8° with labels like 37S
       if (zoom >= 0) {
+        const zoneLabelSize = interpolateByZoom(zoom, 0, 14, 14, 26);
         const zoneLineSymbol = {
           lineColor: "#ef4444",
           lineWidth: 1.2,
-          lineOpacity: 0.5,
+          lineOpacity: opacity(0.5),
         };
         const zoneLabelSymbol = {
-          textSize: 12,
+          textSize: zoneLabelSize,
           textFill: "#ef4444",
+          textOpacity: opacity(0.92),
           textHaloFill: "#ffffff",
           textHaloRadius: 1.5,
           textWeight: "bold",
@@ -685,20 +705,22 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       }
 
       // 2) 100km grid + labels (e.g. 37SDU)
-      if (zoom >= 9 && zoom < 10.8) {
+      if (zoom >= 9 && zoom < 11.5) {
+        const labelSize100km = interpolateByZoom(zoom, 9, 11.5, 15, 24);
         const lineOutlineSymbol = {
           lineColor: "#000000",
           lineWidth: 2.2,
-          lineOpacity: 0.35,
+          lineOpacity: opacity(0.35),
         };
         const lineSymbol = {
           lineColor: "#d97706",
           lineWidth: 1.2,
-          lineOpacity: 0.58,
+          lineOpacity: opacity(0.58),
         };
         const labelSymbol = {
-          textSize: 10,
+          textSize: labelSize100km,
           textFill: "#d97706",
+          textOpacity: opacity(0.95),
           textHaloFill: "#000000",
           textHaloRadius: 1.3,
         };
@@ -804,15 +826,22 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       }
 
       // 3) 10km grid + labels without zone prefix (e.g. DU 48)
-      if (zoom >= 10.8 && zoom < 12.5) {
+      if (zoom >= 10.5 && zoom < 14.5) {
+        const labelSize10km = interpolateByZoom(zoom, 10.5, 14.5, 16, 25);
+        const lineOutlineSymbol = {
+          lineColor: "#000000",
+          lineWidth: 1.55,
+          lineOpacity: opacity(0.26),
+        };
         const lineSymbol = {
-          lineColor: "#fca5a5",
-          lineWidth: 1,
-          lineOpacity: 0.32,
+          lineColor: "#fee2e2",
+          lineWidth: 1.1,
+          lineOpacity: opacity(0.4),
         };
         const labelSymbol = {
-          textSize: 10,
+          textSize: labelSize10km,
           textFill: "#ef4444",
+          textOpacity: opacity(0.9),
           textHaloFill: "#000000",
           textHaloRadius: 0.7,
         };
@@ -865,21 +894,28 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
         }
         const filtered = suppressOverlappingEdges(candidates);
         for (const edge of filtered) {
+          geos.push(lineFromPoints(edge.points, lineOutlineSymbol));
           geos.push(lineFromPoints(edge.points, lineSymbol));
         }
       }
 
       // 4) 1km grid + labels without zone prefix (e.g. DU 4823)
-      if (zoom >= 12.5) {
+      if (zoom >= 14) {
+        const labelSize1km = interpolateByZoom(zoom, 14, 16, 17, 28);
+        const lineOutlineSymbol = {
+          lineColor: "#000000",
+          lineWidth: 1.24,
+          lineOpacity: opacity(0.2),
+        };
         const lineSymbol = {
           lineColor: "#fca5a5",
           lineWidth: 1,
-          lineOpacity: 0.24,
+          lineOpacity: opacity(0.22),
         };
         const labelSymbol = {
-          textSize: 11,
+          textSize: labelSize1km,
           textFill: "#f87171",
-          textOpacity: 0.62,
+          textOpacity: opacity(0.62),
           textHaloFill: "#000000",
           textHaloRadius: 0.45,
         };
@@ -917,6 +953,7 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
                 const fp = edgeFingerprint(segment);
                 if (drawnEdges.has(fp)) continue;
                 drawnEdges.add(fp);
+                geos.push(lineFromPoints(segment, lineOutlineSymbol));
                 geos.push(lineFromPoints(segment, lineSymbol));
               }
             }
@@ -940,13 +977,46 @@ export default function useRenderMgrsGrid(map: maptalks.Map | null) {
       }
     };
 
+    const scheduleZoomingRender = () => {
+      // Debounce heavy MGRS recompute while mouse wheel emits many zoom steps.
+      if (zoomingRenderTimer) {
+        clearTimeout(zoomingRenderTimer);
+      }
+      zoomingRenderTimer = setTimeout(() => {
+        zoomingRenderTimer = null;
+        renderGrid();
+      }, 140);
+    };
+
+    const handleZoomEnd = () => {
+      if (zoomingRenderTimer) {
+        clearTimeout(zoomingRenderTimer);
+        zoomingRenderTimer = null;
+      }
+      renderGrid();
+    };
+
     renderGrid();
     map.on("moveend", renderGrid);
-    map.on("zoomend", renderGrid);
+    map.on("zoomend", handleZoomEnd);
+    map.on("zooming", scheduleZoomingRender);
+    const unsubscribeSettings = settingsStore.subscribe(
+      () => {
+        renderGrid();
+      },
+      (state) =>
+        `${state.map?.mgrsGridBrightness ?? 1}|${state.map?.mgrsGridOpacity ?? 1}`
+    );
 
     return () => {
+      if (zoomingRenderTimer) {
+        clearTimeout(zoomingRenderTimer);
+        zoomingRenderTimer = null;
+      }
+      unsubscribeSettings();
       map.off("moveend", renderGrid);
-      map.off("zoomend", renderGrid);
+      map.off("zoomend", handleZoomEnd);
+      map.off("zooming", scheduleZoomingRender);
       layer.clear();
     };
   }, [map]);

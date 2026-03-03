@@ -5,6 +5,8 @@ import ms from "milsymbol";
 import { useEffect } from "react";
 import { iconCache } from "../components/MapEntity";
 import * as mgrs from "mgrs";
+import { getFlyDistance } from "../util";
+import { settingsStore, UnitSystem } from "../stores/SettingsStore";
 import {
   Geometry,
   geometryStore,
@@ -38,6 +40,34 @@ type MarkerCluster = {
 	items: ClusterableGeometry[];
 	type: ClusterableGeometry["type"];
 };
+
+const MAP_MAG_DEC: Record<string, number> = {
+	Caucasus: -6,
+	Sinai: 5,
+	SinaiMap: 5,
+	Syria: 5,
+	PersianGulf: 2,
+	Marianas: 0,
+	Falklands: 6,
+	Normandy: 1,
+	Nevada: 11,
+	Kola: 13,
+	Afghanistan: 3,
+	GermanyCW: 1,
+	TheChannel: 1,
+};
+
+function normalizeBearing(bearing: number): number {
+	let normalized = Math.round(bearing) % 360;
+	if (normalized < 0) normalized += 360;
+	return normalized;
+}
+
+function getWaypointMagneticBearing(trueBearing: number): number {
+	const mapName = serverStore.getState().server?.map ?? "";
+	const magDec = MAP_MAG_DEC[mapName] ?? 0;
+	return normalizeBearing(trueBearing - magDec);
+}
 
 function getWaypointPointName(waypoints: Waypoints, index: number): string {
 	return waypoints.pointNames?.[index] || `WPT#${index}`;
@@ -100,6 +130,192 @@ function waypointNamesEqual(a: string[], b: string[]): boolean {
 		if (a[i] !== b[i]) return false;
 	}
 	return true;
+}
+
+function getWaypointBearing(
+	[startLat, startLong]: [number, number],
+	[endLat, endLong]: [number, number]
+) {
+	const radians = (n: number) => n * (Math.PI / 180);
+	const degrees = (n: number) => n * (180 / Math.PI);
+
+	const startLatRad = radians(startLat);
+	const startLongRad = radians(startLong);
+	const endLatRad = radians(endLat);
+	const endLongRad = radians(endLong);
+
+	let dLong = endLongRad - startLongRad;
+	const dPhi = Math.log(
+		Math.tan(endLatRad / 2.0 + Math.PI / 4.0) /
+			Math.tan(startLatRad / 2.0 + Math.PI / 4.0)
+	);
+	if (Math.abs(dLong) > Math.PI) {
+		if (dLong > 0.0) {
+			dLong = -(2.0 * Math.PI - dLong);
+		} else {
+			dLong = 2.0 * Math.PI + dLong;
+		}
+	}
+
+	return Math.round((degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0);
+}
+
+function formatWaypointDistance(distanceNm: number, unitSystem: UnitSystem): string {
+	return unitSystem === UnitSystem.IMPERIAL
+		? `${distanceNm.toFixed(1)}nm`
+		: `${(distanceNm * 1.852).toFixed(1)}km`;
+}
+
+function getReadableSegmentTextRotation(
+	from: [number, number],
+	to: [number, number]
+): number {
+	// Use lon/lat vector as a stable approximation for on-map segment angle.
+	const dx = to[1] - from[1];
+	const dy = to[0] - from[0];
+	let angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+	// Keep text readable left-to-right: flip upside-down orientations.
+	if (angle > 90 || angle < -90) {
+		angle += 180;
+	}
+	// Normalize to [-180, 180]
+	if (angle > 180) angle -= 360;
+	if (angle < -180) angle += 360;
+	return angle;
+}
+
+function getPolygonCentroidLatLon(
+	points: Array<[number, number]>
+): [number, number] | null {
+	const ring =
+		points.length > 2 &&
+		points[0][0] === points[points.length - 1][0] &&
+		points[0][1] === points[points.length - 1][1]
+			? points.slice(0, -1)
+			: points;
+
+	if (ring.length < 3) {
+		if (ring.length === 0) return null;
+		const avgLat = ring.reduce((acc, p) => acc + p[0], 0) / ring.length;
+		const avgLon = ring.reduce((acc, p) => acc + p[1], 0) / ring.length;
+		return [avgLat, avgLon];
+	}
+
+	// Centroid on lon/lat planar approximation (sufficient for local zone labels).
+	let area2 = 0;
+	let cx = 0;
+	let cy = 0;
+	for (let i = 0; i < ring.length; i++) {
+		const [lat1, lon1] = ring[i];
+		const [lat2, lon2] = ring[(i + 1) % ring.length];
+		const x1 = lon1;
+		const y1 = lat1;
+		const x2 = lon2;
+		const y2 = lat2;
+		const cross = x1 * y2 - x2 * y1;
+		area2 += cross;
+		cx += (x1 + x2) * cross;
+		cy += (y1 + y2) * cross;
+	}
+
+	if (Math.abs(area2) < 1e-12) {
+		const avgLat = ring.reduce((acc, p) => acc + p[0], 0) / ring.length;
+		const avgLon = ring.reduce((acc, p) => acc + p[1], 0) / ring.length;
+		return [avgLat, avgLon];
+	}
+
+	const factor = 1 / (3 * area2);
+	return [cy * factor, cx * factor];
+}
+
+function getZoneLabelCoordinate(points: Array<[number, number]>): [number, number] {
+	const center = getPolygonCentroidLatLon(points);
+	if (!center) return [0, 0];
+	return [center[1], center[0]];
+}
+
+function getZoneLabelBoxStyle() {
+	return {
+		padding: [2, 2],
+		horizontalAlignment: "center",
+		verticalAlignment: "middle",
+		symbol: {
+			markerType: "square",
+			markerFill: "#4B5563",
+			markerFillOpacity: 0.5,
+			markerLineOpacity: 0,
+			textHorizontalAlignment: "center",
+			textVerticalAlignment: "middle",
+			textDx: 0,
+		},
+	};
+}
+
+function getZoneLabelTextSymbol() {
+	return {
+		textFaceName: '"microsoft yahei"',
+		textFill: "#FBBF24",
+		textSize: 12,
+	};
+}
+
+function getZonePolygonSymbol(color: string, hovered = false) {
+	return {
+		lineColor: color,
+		lineWidth: hovered ? 3.2 : 2,
+		polygonFill: color,
+		polygonOpacity: hovered ? 0.18 : 0.1,
+		shadowBlur: hovered ? 10 : 0,
+		shadowColor: color,
+	};
+}
+
+function appendWaypointSegmentLabels(
+	labelList: Array<maptalks.Geometry>,
+	waypoints: Waypoints,
+	unitSystem: UnitSystem
+) {
+	if (waypoints.points.length < 2) return;
+	for (let i = 1; i < waypoints.points.length; i++) {
+		const from = waypoints.points[i - 1];
+		const to = waypoints.points[i];
+		const midLat = (from[0] + to[0]) / 2;
+		const midLon = (from[1] + to[1]) / 2;
+		const trueBearing = getWaypointBearing(from, to);
+		const magneticBearing = getWaypointMagneticBearing(trueBearing);
+		const distanceNm = getFlyDistance(from, to);
+		const segmentText = `${magneticBearing.toString().padStart(3, "0")}°M / ${trueBearing
+			.toString()
+			.padStart(3, "0")}°T / ${formatWaypointDistance(
+			distanceNm,
+			unitSystem
+		)}`;
+		const textRotation = getReadableSegmentTextRotation(from, to);
+		const segmentLabel = new maptalks.Label(segmentText, [midLon, midLat], {
+			draggable: false,
+			visible: true,
+			editable: false,
+			boxStyle: {
+				padding: [2, 3],
+				horizontalAlignment: "center",
+				verticalAlignment: "middle",
+				symbol: {
+					markerType: "square",
+					markerFill: "#111827",
+					markerFillOpacity: 0.65,
+					markerLineOpacity: 0,
+					markerRotation: textRotation,
+				},
+			},
+			textSymbol: {
+				textFaceName: '"microsoft yahei"',
+				textFill: "#FBBF24",
+				textSize: 11,
+				textRotation,
+			},
+		});
+		labelList.push(segmentLabel);
+	}
 }
 
 function isClusterableGeometry(geo: Geometry): geo is ClusterableGeometry {
@@ -320,6 +536,8 @@ function endEditSelectedGeometry(layer: maptalks.VectorLayer, geo: Geometry) {
 
 
 function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
+	const unitSystem = settingsStore.getState().unitSystem || UnitSystem.IMPERIAL;
+	const isSelected = geometryStore.getState().selectedGeometry === waypoints.id;
 	const collection = layer.getGeometryById(
 		waypoints.id
 	) as maptalks.GeometryCollection;
@@ -354,40 +572,45 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 		});
 		let labelList1 = [labelListTmp[0], labelListTmp[1]];
 		var counter = -1;
-		waypoints.points.forEach((point) => {
-		  counter = counter + 1;
-			if (counter > 0) {
-				const textWpt = new maptalks.Label(
-					getWaypointPointName(waypoints, counter),
-					[point[1], point[0]],
-					{
-					  draggable: false,
-					  visible: true,
-					  editable: false,
-					  boxStyle: {
-						padding: [2, 2],
-						horizontalAlignment: "left",
-						verticalAlignment: "middle",
-						symbol: {
-						  markerType: "square",
-						  markerFill: "#4B5563",
-						  markerFillOpacity: 0.5,
-						  markerLineOpacity: 0,
-						  textHorizontalAlignment: "right",
-						  textVerticalAlignment: "middle",
-						  textDx: 10,
-						},
-					  },
-					  textSymbol: {
-						textFaceName: '"microsoft yahei"',
-						textFill: "#FBBF24",
-						textSize: 12,
-					  },
-					}
-				  );
-				labelList1.push(textWpt);
-			}
-		}); 
+		if (isSelected) {
+			waypoints.points.forEach((point) => {
+				counter = counter + 1;
+				if (counter > 0) {
+					const textWpt = new maptalks.Label(
+						getWaypointPointName(waypoints, counter),
+						[point[1], point[0]],
+						{
+							draggable: false,
+							visible: true,
+							editable: false,
+							boxStyle: {
+								padding: [2, 2],
+								horizontalAlignment: "left",
+								verticalAlignment: "middle",
+								symbol: {
+									markerType: "square",
+									markerFill: "#4B5563",
+									markerFillOpacity: 0.5,
+									markerLineOpacity: 0,
+									textHorizontalAlignment: "right",
+									textVerticalAlignment: "middle",
+									textDx: 10,
+								},
+							},
+							textSymbol: {
+								textFaceName: '"microsoft yahei"',
+								textFill: "#FBBF24",
+								textSize: 12,
+							},
+						}
+					);
+					labelList1.push(textWpt);
+				}
+			});
+		}
+		if (isSelected) {
+			appendWaypointSegmentLabels(labelList1, waypoints, unitSystem);
+		}
 		collection.setGeometries(labelList1);
     return;
   }
@@ -447,40 +670,45 @@ function renderWaypoints(layer: maptalks.VectorLayer, waypoints: Waypoints) {
 
   let labelList = [lineString, text];
   var counter = -1;
-  waypoints.points.forEach((point) => {
-	  counter = counter + 1;
-	  if (counter > 0) {
-		  const textWpt = new maptalks.Label(
-			getWaypointPointName(waypoints, counter),
-			[point[1], point[0]],
-			{
-			  draggable: false,
-			  visible: true,
-			  editable: false,
-			  boxStyle: {
-				padding: [2, 2],
-				horizontalAlignment: "left",
-				verticalAlignment: "middle",
-				symbol: {
-				  markerType: "square",
-				  markerFill: "#4B5563",
-				  markerFillOpacity: 0.5,
-				  markerLineOpacity: 0,
-				  textHorizontalAlignment: "right",
-				  textVerticalAlignment: "middle",
-				  textDx: 10,
-				},
-			  },
-			  textSymbol: {
-				textFaceName: '"microsoft yahei"',
-				textFill: "#FBBF24",
-				textSize: 12,
-			  },
-			}
-		  );
-		 labelList.push(textWpt);
-	}
-  });
+  if (isSelected) {
+	waypoints.points.forEach((point) => {
+		counter = counter + 1;
+		if (counter > 0) {
+			const textWpt = new maptalks.Label(
+				getWaypointPointName(waypoints, counter),
+				[point[1], point[0]],
+				{
+					draggable: false,
+					visible: true,
+					editable: false,
+					boxStyle: {
+						padding: [2, 2],
+						horizontalAlignment: "left",
+						verticalAlignment: "middle",
+						symbol: {
+							markerType: "square",
+							markerFill: "#4B5563",
+							markerFillOpacity: 0.5,
+							markerLineOpacity: 0,
+							textHorizontalAlignment: "right",
+							textVerticalAlignment: "middle",
+							textDx: 10,
+						},
+					},
+					textSymbol: {
+						textFaceName: '"microsoft yahei"',
+						textFill: "#FBBF24",
+						textSize: 12,
+					},
+				}
+			);
+			labelList.push(textWpt);
+		}
+	});
+  }
+  if (isSelected) {
+	appendWaypointSegmentLabels(labelList, waypoints, unitSystem);
+  }
   
   const col = new maptalks.GeometryCollection(labelList, {
     id: waypoints.id,
@@ -654,14 +882,9 @@ function renderLine(layer: maptalks.VectorLayer, line: Line | Border) {
 
 
 function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
-  const editor_mode_on1 = serverStore.getState().editor_mode_on;
-  const clickable1 = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
-  var interactive
-  if (clickable1 || editor_mode_on1) {
-	interactive = true
-  } else {
-	interactive = false
-  }
+  // Keep zones interactive for hover-highlight even when not clickable.
+  // Click behavior remains guarded below by clickable/editor checks.
+  const interactive = true;
   
   const collection = layer.getGeometryById(
     zone.id
@@ -673,13 +896,8 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
     ];
 	if (polygon.isEditing()) return;
     polygon.setCoordinates(zone.points.map((it) => [it[1], it[0]]));
-	(polygon.setSymbol as any)({
-		lineColor: zone.color,
-		lineWidth: 2,
-		polygonFill: zone.color,
-		polygonOpacity: 0.1
-	});
-    text.setCoordinates([zone.points[0][1], zone.points[0][0]]);
+	(polygon.setSymbol as any)(getZonePolygonSymbol(zone.color));
+    text.setCoordinates(getZoneLabelCoordinate(zone.points));
     (text.setContent as any)(zone.name || `Zone #${zone.id}`);
 	collection.setOptions({interactive});
     return;
@@ -697,41 +915,19 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
       draggable: false,
       visible: true,
       editable: true,
-      symbol: {
-        lineColor: zone.color, //color,
-        lineWidth: 2,
-        polygonFill: zone.color, //color,
-        polygonOpacity: 0.1,
-      },
+      symbol: getZonePolygonSymbol(zone.color),
     }
   );
 
   const text = new maptalks.Label(
     zone.name || `Zone #${zone.id}`,
-    [zone.points[0][1], zone.points[0][0]],
+    getZoneLabelCoordinate(zone.points),
     {
       draggable: false,
       visible: true,
       editable: false,
-      boxStyle: {
-        padding: [2, 2],
-        horizontalAlignment: "left",
-        verticalAlignment: "middle",
-        symbol: {
-          markerType: "square",
-          markerFill: "#4B5563",
-          markerFillOpacity: 0.5,
-          markerLineOpacity: 0,
-          textHorizontalAlignment: "right",
-          textVerticalAlignment: "middle",
-          textDx: 10,
-        },
-      },
-      textSymbol: {
-        textFaceName: '"microsoft yahei"',
-        textFill: "#FBBF24",
-        textSize: 12,
-      },
+      boxStyle: getZoneLabelBoxStyle(),
+      textSymbol: getZoneLabelTextSymbol(),
     }
   );
 
@@ -742,6 +938,45 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   });
   
   col.setOptions({interactive});
+  let isZoneHovered = false;
+  const setZoneHover = (hovered: boolean) => {
+    if (hovered === isZoneHovered) {
+      return;
+    }
+    isZoneHovered = hovered;
+    const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
+    const color = currentZone?.color || zone.color;
+    (polygon.setSymbol as any)(getZonePolygonSymbol(color, hovered));
+  };
+  const isPointerNearLabel = (evt: any): boolean => {
+    const mapRef = layer.getMap();
+    if (!mapRef || !evt?.containerPoint) return false;
+    const labelCoord = text.getCoordinates();
+    if (!labelCoord) return false;
+    const labelPoint = mapRef.coordinateToContainerPoint(labelCoord as any);
+    const rawContent = (text.getContent as any)?.();
+    const labelContent =
+      (typeof rawContent === "string" ? rawContent : `Zone #${zone.id}`).toString();
+    // Label is centered on the barycenter; use centered rectangular hit-box.
+    const estimatedWidth = Math.max(56, Math.min(260, labelContent.length * 7.4));
+    const halfHeight = 16;
+    const left = labelPoint.x - estimatedWidth / 2;
+    const right = labelPoint.x + estimatedWidth / 2;
+    const top = labelPoint.y - halfHeight;
+    const bottom = labelPoint.y + halfHeight;
+    const x = evt.containerPoint.x;
+    const y = evt.containerPoint.y;
+    return x >= left && x <= right && y >= top && y <= bottom;
+  };
+  text.on("mouseenter", () => setZoneHover(true));
+  text.on("mouseleave", () => setZoneHover(false));
+  col.on("mouseover", (evt) => {
+    if (isPointerNearLabel(evt)) {
+      setZoneHover(true);
+    }
+  });
+  col.on("mousemove", (evt) => setZoneHover(isPointerNearLabel(evt)));
+  col.on("mouseout", () => setZoneHover(false));
   col.on("click", (e) => {
     const { editor_mode_on } = serverStore.getState();
 	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
@@ -827,25 +1062,8 @@ function renderCircle(layer: maptalks.VectorLayer, circle: Circle) {
       draggable: false,
       visible: true,
       editable: false,
-      boxStyle: {
-        padding: [2, 2],
-        horizontalAlignment: "left",
-        verticalAlignment: "middle",
-        symbol: {
-          markerType: "square",
-          markerFill: "#4B5563",
-          markerFillOpacity: 0.5,
-          markerLineOpacity: 0,
-          textHorizontalAlignment: "right",
-          textVerticalAlignment: "middle",
-          textDx: 10,
-        },
-      },
-      textSymbol: {
-        textFaceName: '"microsoft yahei"',
-        textFill: "#FBBF24",
-        textSize: 12,
-      },
+      boxStyle: getZoneLabelBoxStyle(),
+      textSymbol: getZoneLabelTextSymbol(),
     }
   );
 
@@ -1222,6 +1440,9 @@ function renderGeometry(
 ) {
   const { editor_mode_on } = serverStore.getState();
   const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+  const layerZones =
+    (map.getLayer("custom-geometry-zones") as maptalks.VectorLayer | undefined) ||
+    layer;
   const layerQuest = map.getLayer("quest") as maptalks.VectorLayer;
   const layerQuestPin = map.getLayer("quest-pin") as maptalks.VectorLayer;
   const zoom = map.getZoom();
@@ -1243,6 +1464,21 @@ function renderGeometry(
     const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
     const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
     if (!storeGeo || storeGeo.status === "Deleted" || removeForCluster || removeForHidden || removeForLocalHidden) {
+      geo.remove();
+    }
+  }
+  for (const geo of layerZones.getGeometries()) {
+    const id = (geo as any)._id as number;
+    const storeGeo = geometry.get(id);
+    const removeForHidden = !!storeGeo && !editor_mode_on && storeGeo.hidden;
+    const removeForLocalHidden = !!storeGeo && localHiddenGeometryIds.has(storeGeo.id);
+    if (
+      !storeGeo ||
+      storeGeo.status === "Deleted" ||
+      storeGeo.type !== "zone" ||
+      removeForHidden ||
+      removeForLocalHidden
+    ) {
       geo.remove();
     }
   }
@@ -1284,7 +1520,7 @@ function renderGeometry(
 				renderMarkPoint(layer, geo);
 			}
 		} else if (geo.type === "zone") {
-			renderZone(layer, geo);
+			renderZone(layerZones, geo);
 		} else if (geo.type === "waypoints") {
 			renderWaypoints(layer, geo);
 		} else if (geo.type === "circle") {
@@ -1303,6 +1539,50 @@ function renderGeometry(
 			}
 		}
 	}
+  }
+
+  const selectedOnly =
+    settingsStore.getState().map?.showOnlySelectedGeometryLabels ?? false;
+  const selectedGeometryId = geometryStore.getState().selectedGeometry;
+  const labelLayers: Array<maptalks.VectorLayer | undefined> = [
+    map.getLayer("custom-geometry-zones") as maptalks.VectorLayer | undefined,
+    map.getLayer("custom-geometry") as maptalks.VectorLayer | undefined,
+    map.getLayer("quest-pin") as maptalks.VectorLayer | undefined,
+  ];
+  for (const labelLayer of labelLayers) {
+    if (!labelLayer) continue;
+    for (const mapGeo of labelLayer.getGeometries()) {
+      if (!(mapGeo instanceof maptalks.GeometryCollection)) continue;
+      const id = Number((mapGeo as any)._id);
+      if (!Number.isFinite(id)) continue;
+      const isSelected = selectedGeometryId !== null && id === selectedGeometryId;
+      const shouldShowLabels = !selectedOnly || isSelected;
+      for (const item of mapGeo.getGeometries()) {
+        const isLabelLike =
+          typeof (item as any).getContent === "function" &&
+          typeof (item as any).setContent === "function";
+        if (!isLabelLike) continue;
+        const labelAny = item as any;
+        const optionsAny = ((labelAny.options ??= {}) as any);
+        const currentContent = String((labelAny.getContent?.() ?? "") as string);
+        if (shouldShowLabels) {
+          if (optionsAny.__hiddenLabelContent !== undefined) {
+            labelAny.setContent(optionsAny.__hiddenLabelContent);
+            delete optionsAny.__hiddenLabelContent;
+          }
+          item.show();
+        } else {
+          if (
+            optionsAny.__hiddenLabelContent === undefined &&
+            currentContent.trim().length > 0
+          ) {
+            optionsAny.__hiddenLabelContent = currentContent;
+          }
+          labelAny.setContent("");
+          item.hide();
+        }
+      }
+    }
   }
 }
 
@@ -1328,15 +1608,21 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 	
 	useEffect(() => {
 		return geometryStore.subscribe(
-			([geometry, localHiddenGeometryIds, testUpdateStore]) => {
+			([geometry, localHiddenGeometryIds, testUpdateStore, selectedGeometry]) => {
 				if (map === null) return;
 				renderGeometry(map, geometry, localHiddenGeometryIds);
 			},
 			(state) =>
-				[state.geometry, state.localHiddenGeometryIds, state.testUpdateStore] as [
+				[
+					state.geometry,
+					state.localHiddenGeometryIds,
+					state.testUpdateStore,
+					state.selectedGeometry,
+				] as [
 					Immutable.Map<number, Geometry>,
 					Immutable.Set<number>,
-					number
+					number,
+					number | null
 				]
 		);
 	}, [map]);
@@ -1358,6 +1644,23 @@ export default function useRenderGeometry(map: maptalks.Map | null) {
 		return () => {
 			map.off("zoomend", handler);
 		};
+	}, [map]);
+
+	useEffect(() => {
+		if (map === null) {
+			return;
+		}
+		return settingsStore.subscribe(
+			() => {
+				renderGeometry(
+					map,
+					geometryStore.getState().geometry,
+					geometryStore.getState().localHiddenGeometryIds
+				);
+			},
+			(state) =>
+				`${state.unitSystem}|${state.map?.showOnlySelectedGeometryLabels ? "1" : "0"}`
+		);
 	}, [map]);
 }
 

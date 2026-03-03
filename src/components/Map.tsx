@@ -10,18 +10,31 @@ import React, {
   useState,
 } from "react";
 import { renderToString } from "react-dom/server";
+import shallow from "zustand/shallow";
 import { FONT_FAMILY } from "../Constants";
+import AfghanistanCities from "../data/cities/afghanistan_cities.json";
+import CaucasusCities from "../data/cities/caucasus_cities.json";
+import FalklandsCities from "../data/cities/falklands_cities.json";
+import GermanyCWCities from "../data/cities/germanycw_cities.json";
+import KolaCities from "../data/cities/kola_cities.json";
+import MarianasCities from "../data/cities/marianas_cities.json";
+import NevadaCities from "../data/cities/nevada_cities.json";
+import NormandyCities from "../data/cities/normandy_cities.json";
+import PersianGulfCities from "../data/cities/persian_gulf_cities.json";
+import SinaiCities from "../data/cities/sinai_cities.json";
+import SyriaCities from "../data/cities/syria_cities.json";
+import TheChannelCities from "../data/cities/thechannel_cities.json";
 import { planes } from "../dcs/aircraft";
 import { DCSMap } from "../dcs/maps/DCSMap";
 import { useKeyPress } from "../hooks/useKeyPress";
 import useRenderGeometry from "../hooks/useRenderGeometry";
+import useRenderMgrsGrid from "../hooks/useRenderMgrsGrid";
 import useRenderGroundUnit from "../hooks/useRenderGroundUnits";
 import useRenderCombatZones from "../hooks/useRenderCombatZones";
 import useRenderRadarTracks from "../hooks/useRenderRadarTracks";
-import useRenderMgrsGrid from "../hooks/useRenderMgrsGrid";
 import { alertStore } from "../stores/AlertStore";
 import { serverStore, setSelectedEntityId } from "../stores/ServerStore";
-import { settingsStore, UnitSystem, updateSettingsStore } from "../stores/SettingsStore";
+import { settingsStore } from "../stores/SettingsStore";
 import {
   estimatedAltitudeRate,
   estimatedSpeed,
@@ -30,10 +43,8 @@ import {
 } from "../stores/TrackStore";
 import {
   computeBRAA,
-  getBearingMap,
   getCardinal,
   getFlyDistance,
-  route,
 } from "../util";
 import { Console } from "./Console";
 import { EntityInfo, iconCache, MapSimpleEntity } from "./MapEntity";
@@ -48,21 +59,197 @@ function parseMgrs(coords:[number, number]){
 	return val.slice(0, 3) + " " + val.slice(3, 5) + " " + val.slice(5, 10) + " " + val.slice(10)
 }
 
-function getEstimatedGroundElevationFt(
-  coords: [number, number],
-  dcsMap: DCSMap
-): number | null {
-  if (!dcsMap.airports || dcsMap.airports.length === 0) return null;
-  let nearestDistanceNm = Number.POSITIVE_INFINITY;
-  let nearestElevationFt: number | null = null;
-  for (const airport of dcsMap.airports) {
-    const distanceNm = getFlyDistance(coords, [airport.position[0], airport.position[1]]);
-    if (distanceNm < nearestDistanceNm) {
-      nearestDistanceNm = distanceNm;
-      nearestElevationFt = airport.position[2];
+function getTrueBearing(
+  [startLat, startLong]: [number, number],
+  [endLat, endLong]: [number, number]
+) {
+  const radians = (n: number) => n * (Math.PI / 180);
+  const degrees = (n: number) => n * (180 / Math.PI);
+
+  const startLatRad = radians(startLat);
+  const startLongRad = radians(startLong);
+  const endLatRad = radians(endLat);
+  const endLongRad = radians(endLong);
+
+  let dLong = endLongRad - startLongRad;
+  const dPhi = Math.log(
+    Math.tan(endLatRad / 2.0 + Math.PI / 4.0) /
+      Math.tan(startLatRad / 2.0 + Math.PI / 4.0)
+  );
+  if (Math.abs(dLong) > Math.PI) {
+    if (dLong > 0.0) {
+      dLong = -(2.0 * Math.PI - dLong);
+    } else {
+      dLong = 2.0 * Math.PI + dLong;
     }
   }
-  return nearestElevationFt;
+
+  return Math.round((degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0);
+}
+
+function normalizeBearing(bearing: number): number {
+  let normalized = Math.round(bearing) % 360;
+  if (normalized < 0) normalized += 360;
+  return normalized;
+}
+
+function getMagneticBearing(trueBearing: number, dcsMap: DCSMap): number {
+  return normalizeBearing(trueBearing + dcsMap.magDec);
+}
+
+function getMapCitiesOpacity(zoom: number): number {
+  if (zoom < 7) return 0;
+  if (zoom < 10) return (zoom - 7) * 0.3;
+  if (zoom < 12) return 0.6 + (zoom - 10) * 0.2;
+  return 1;
+}
+
+type CityLabelEntry = {
+  name: string;
+  lat: number;
+  lon: number;
+  importance: number;
+};
+const ENABLE_LOCAL_JSON_CITIES = false;
+
+const NGA_REST_CITIES_LAYER_ID = "nga-rest-cities";
+const NGA_CITY_REST_URL =
+  "https://geonames.nga.mil/geon-ags/rest/services/RESEARCH/GIS_OUTPUT/MapServer/0/query";
+
+function buildNgaRestCitiesUrl(bounds: {
+  minLon: number;
+  minLat: number;
+  maxLon: number;
+  maxLat: number;
+}, zoom: number): string {
+  const desigCodes = getNgaDesignationCodesForZoom(zoom);
+  const encodedCodes = desigCodes.map((code) => `'${code}'`).join(",");
+  const params = new URLSearchParams({
+    where: `fc='P' AND name_rank=1 AND desig_cd IN (${encodedCodes})`,
+    geometry: `${bounds.minLon},${bounds.minLat},${bounds.maxLon},${bounds.maxLat}`,
+    geometryType: "esriGeometryEnvelope",
+    inSR: "4326",
+    spatialRel: "esriSpatialRelIntersects",
+    outFields: "full_name,desig_cd,display",
+    returnGeometry: "true",
+    resultRecordCount: `${getNgaCityRenderLimitForZoom(zoom)}`,
+    f: "geojson",
+  });
+  return `${NGA_CITY_REST_URL}?${params.toString()}`;
+}
+
+function getNgaDesignationCodesForZoom(zoom: number): string[] {
+  if (zoom < 6) return ["PPLC"];
+  if (zoom < 9.6) return ["PPLC", "PPLA"];
+  if (zoom < 11) return ["PPLC", "PPLA", "PPLA2"];
+  if (zoom < 12.6) return ["PPLC", "PPLA", "PPLA2", "PPLA3"];
+  if (zoom < 13.6) return ["PPLC", "PPLA", "PPLA2", "PPLA3", "PPLA4"];
+  return ["PPLC", "PPLA", "PPLA2", "PPLA3", "PPLA4", "PPL"];
+}
+
+function getNgaCityRenderLimitForZoom(zoom: number): number {
+  if (zoom < 6) return 90;
+  if (zoom < 9.6) return 150;
+  if (zoom < 11) return 260;
+  if (zoom < 12.6) return 420;
+  if (zoom < 13.6) return 560;
+  return 900;
+}
+
+function getNgaCityImportance(desigCode: string | undefined): number {
+  if (desigCode === "PPLC") return 6;
+  if (desigCode === "PPLA") return 5;
+  if (desigCode === "PPLA2") return 4;
+  if (desigCode === "PPLA3") return 3;
+  if (desigCode === "PPLA4") return 2;
+  return 1;
+}
+
+function buildExternalCityLabel(
+  name: string,
+  lon: number,
+  lat: number,
+  zoom: number,
+  importance: number
+): maptalks.Label {
+  const baseSize = Math.max(10, Math.min(15, Math.round(zoom + 0.5)));
+  const textSize = baseSize + Math.min(3, Math.max(0, importance - 3));
+  const zoomOpacity = getMapCitiesOpacity(zoom);
+  const textOpacity = Math.min(0.98, 0.62 + importance * 0.06);
+  return new maptalks.Label(name, [lon, lat], {
+    draggable: false,
+    editable: false,
+    interactive: false,
+    boxStyle: {
+      padding: [1, 2],
+      horizontalAlignment: "center",
+      verticalAlignment: "middle",
+      symbol: {
+        markerType: "square",
+        markerFill: "black",
+        markerFillOpacity: 0.22 * zoomOpacity,
+        markerLineOpacity: 0,
+      },
+    },
+    textSymbol: {
+      textFaceName: FONT_FAMILY,
+      textFill: "#fde68a",
+      textSize,
+      textHaloFill: "#000000",
+      textHaloRadius: 1.1,
+      textOpacity,
+    },
+  });
+}
+
+function getMapCityMinImportance(zoom: number): number {
+  if (zoom < 10.5) return 5;
+  if (zoom < 12) return 4;
+  if (zoom < 13.5) return 3;
+  if (zoom < 15) return 2;
+  return 1;
+}
+
+function getMapCityTextSize(zoom: number): number {
+  if (zoom < 8) return 10;
+  if (zoom < 10) return 11;
+  if (zoom < 12) return 12;
+  return 13;
+}
+
+function getMapCityDataset(mapName: string): CityLabelEntry[] {
+  if (mapName === "Afghanistan") return AfghanistanCities as CityLabelEntry[];
+  if (mapName === "Caucasus") return CaucasusCities as CityLabelEntry[];
+  if (mapName === "Falklands") return FalklandsCities as CityLabelEntry[];
+  if (mapName === "GermanyCW") return GermanyCWCities as CityLabelEntry[];
+  if (mapName === "Kola") return KolaCities as CityLabelEntry[];
+  if (mapName === "Marianas") return MarianasCities as CityLabelEntry[];
+  if (mapName === "Nevada") return NevadaCities as CityLabelEntry[];
+  if (mapName === "Normandy") return NormandyCities as CityLabelEntry[];
+  if (mapName === "Persian Gulf") return PersianGulfCities as CityLabelEntry[];
+  if (mapName === "Sinai") return SinaiCities as CityLabelEntry[];
+  if (mapName === "Syria") return SyriaCities as CityLabelEntry[];
+  if (mapName === "TheChannel") return TheChannelCities as CityLabelEntry[];
+  return [];
+}
+
+function getMapCityRenderLimit(mapName: string): number {
+  if (mapName === "GermanyCW") return 800;
+  return 400;
+}
+
+function getMapCityDisplayName(mapName: string, cityName: string): string {
+  if (mapName !== "Syria") return cityName;
+  const mixedNames: Record<string, string> = {
+    "Tadmur": "Palmyra (Tadmur)",
+    "Hamah": "Hama (Hamah)",
+    "Ar Raqqah": "Raqqa (Ar Raqqah)",
+    "Al Hasakah": "Hasakah (Al Hasakah)",
+    "Al Bab": "Al-Bab (Al Bab)",
+    "Al Qunaytirah": "Quneitra (Al Qunaytirah)",
+    "Jisr ash-Shughur": "Jisr al-Shughur (Jisr ash-Shughur)",
+  };
+  return mixedNames[cityName] ?? cityName;
 }
 
 export function Map({ dcsMap }: { dcsMap: DCSMap }) {
@@ -81,16 +268,24 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     number | [number, number] | null
   >(null);
   const [cursorPos, setCursorPos] = useState<[number, number] | null>(null);
-  const [cursorGroundFt, setCursorGroundFt] = useState<number | null>(null);
+  const [cursorElevationFt, setCursorElevationFt] = useState<number | null>(null);
+  const [mapInitTick, setMapInitTick] = useState(0);
+  const cursorRafRef = useRef<number | null>(null);
+  const pendingCursorPosRef = useRef<[number, number] | null>(null);
+  const cursorElevationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cursorElevationReqIdRef = useRef(0);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [scratchPadOpen, setScratchPadOpen] = useState(false);
 
-  const [entities, selectedEntity, server] = serverStore((state) => [
-    state.entities,
-    state.selectedEntityId && state.entities.get(state.selectedEntityId),
-	state.server
-  ]);
+  const [entities, selectedEntity, server] = serverStore(
+    (state) => [
+      state.entities,
+      state.selectedEntityId && state.entities.get(state.selectedEntityId),
+      state.server,
+    ],
+    shallow
+  );
 
 
   const bullsEntity = entities.find(
@@ -116,7 +311,20 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   const isSnapPressed = useKeyPress("s");
 
   const settings = settingsStore();
-  const unitSystem = settingsStore((state) => state.unitSystem || UnitSystem.IMPERIAL);
+  const unitSystem = settingsStore((state: any) =>
+    state?.unitSystem === "metric" ? "metric" : "imperial"
+  );
+  const getBrightnessFilter = (value: number | undefined, fallback: number) => {
+    const brightness = value ?? fallback;
+    return Math.abs(brightness - 1) < 0.001
+      ? null
+      : `brightness(${brightness})`;
+  };
+
+  const formatDistanceByUnitSystem = (distanceNm: number) =>
+    unitSystem === "metric"
+      ? `${(distanceNm * 1.852).toFixed(1)}km`
+      : `${distanceNm.toFixed(1)}nm`;
 
   useEffect(() => {
     if (!mapContainer.current || map.current !== null) {
@@ -196,16 +404,19 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       panAnimation: false,
       dragRotate: false,
       dragPitch: false,
+      scrollWheelZoom: true,
       touchZoom: true,
 	  touchRotate: false,
 	  touchPitch: false,
 	  touchZoomRotate: false,
+    zoomAnimation : true,
 	  //zoomAnimationDuration:2000,
       doubleClickZoom: false,
       center: [dcsMap.center[1], dcsMap.center[0]],
       zoom: 8,
 	  //maxZoom : 12,
       seamlessZoom: false,
+      zoomAnimationDuration: 1000,
       fpsOnInteracting: 60,
 	  zoomControl: false,
       attribution: null,
@@ -227,7 +438,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
-		opacity: 0.8,
+		opacity: settings.map?.prettyMapOpacity ?? 0.8,
+		cssFilter: getBrightnessFilter(settings.map?.prettyMapBrightness, 1),
 		maxAvailableZoom  : 12,
         maxCacheSize: 2048,
         hitDetect: false,
@@ -240,7 +452,9 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		//urlTemplate:"https://server.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}",
 		//urlTemplate:"https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/NatGeoStyleBase/MapServer/tile/{z}/{y}/{x}",
 		//attribution: '&copy; <a href="http://osm.org">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CARTO</a>',
-		opacity: 0.8,
+		opacity: settings.map?.dcsMapOpacity ?? 1,
+		// Brightness is user-configurable from the Layers tab.
+		cssFilter: getBrightnessFilter(settings.map?.dcsMapBrightness, 1.2),
 		maxAvailableZoom  : 15,
         maxCacheSize: 2048,
         hitDetect: false,
@@ -267,23 +481,29 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
 		opacity: 0.8,
 		maxAvailableZoom  : 12,
+		maxCacheSize: 2048,
+		hitDetect: false,
+		forceRenderOnZooming: true,
+		forceRenderOnMoving: true,
 		visible : false
       }),
-	new maptalks.WMSTileLayer("CaucasusBorder", {
-		tileSystem: [1, 1, -20037508.34, -20037508.34], 
-		renderer: "canvas",
-        urlTemplate:"http://dcsmaps.com/cgi-bin/mapserv?map=CAUCASUS_MAPFILE",
-		layers:"MGRS-grid,MGRS-37T,MGRS-38T,Cities,Towns",
-		format:"image/png",
-		transparent:!0,
-		attribution: '&copy; <a href="http://dcsmaps.com/">DCS map by Flappie</a>',
-		service:"WMS",
-		version:"1.1.1",
-		styles:"",
-		crs:"EPSG:3857",
-		visible : false
-      }),  
+	new maptalks.VectorLayer("map-cities", [], {
+		hitDetect: false,
+		forceRenderOnZooming: true,
+		forceRenderOnMoving: true,
+		visible : true
+      }),
+      new maptalks.VectorLayer(NGA_REST_CITIES_LAYER_ID, [], {
+        hitDetect: false,
+        forceRenderOnZooming: true,
+        forceRenderOnMoving: true,
+        visible: true,
+      }),
  
+        new maptalks.VectorLayer("mgrs-grid", [], {
+          hitDetect: false,
+          visible: true,
+        }),
         new maptalks.VectorLayer("airports", [], {
           hitDetect: false,
         }),
@@ -303,15 +523,17 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         new maptalks.VectorLayer("combat-zones-red", [], {
           opacity: 0.3,
         }),
-        new maptalks.VectorLayer("mgrs-grid", [], {
-          hitDetect: false,
-          visible: true,
+        new maptalks.VectorLayer("custom-geometry-zones", [], {
+          hitDetect: true,
         }),
         new maptalks.VectorLayer("custom-geometry", [], {
-          hitDetect: false,
+          hitDetect: true,
         }),
         new maptalks.VectorLayer("recon-cluster", [], {
-          hitDetect: true,
+          hitDetect: false,
+          forceRenderOnZooming: true,
+          forceRenderOnMoving: true,
+          forceRenderOnRotating: true,
         }),
 		new animatemarker.AnimateMarkerLayer("quest", [], {
           forceRenderOnZooming: true,
@@ -379,29 +601,121 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
 	map.current.addControl(noZoomLevel.current);
 	//map.current.addControl(compass);
 
-    map.current.on("contextmenu", (e) => {});
+    const updateCursorPos = (nextPos: [number, number]) => {
+      pendingCursorPosRef.current = nextPos;
+      if (cursorRafRef.current !== null) {
+        return;
+      }
+      cursorRafRef.current = requestAnimationFrame(() => {
+        cursorRafRef.current = null;
+        if (!pendingCursorPosRef.current) {
+          return;
+        }
+        setCursorPos((prev) => {
+          if (
+            prev &&
+            prev[0] === pendingCursorPosRef.current![0] &&
+            prev[1] === pendingCursorPosRef.current![1]
+          ) {
+            return prev;
+          }
+          return pendingCursorPosRef.current;
+        });
+      });
+    };
 
-    map.current.on("zooming", (e) => {
+    const onContextMenu = (_e: any) => {};
+    const onZooming = (_e: any) => {
       setZoom(map.current!.getZoom());
-    });
-
-    map.current.on("mousemove", (e) => {
-      setCursorPos([e.coordinate.y, e.coordinate.x]);
-    });
-
-    map.current.on("touchmove", (e) => {
-      setCursorPos([e.coordinate.y, e.coordinate.x]);
-    });
-	
-    map.current.on("mouseup", (e) => {
+    };
+    const onMouseMove = (e: any) => {
+      updateCursorPos([e.coordinate.y, e.coordinate.x]);
+    };
+    const onTouchMove = (e: any) => {
+      updateCursorPos([e.coordinate.y, e.coordinate.x]);
+    };
+    const onMouseUp = (e: any) => {
       if (e.domEvent.button === 2) {
         setDrawBraaStart(null);
       }
-    });
+    };
+    map.current.on("contextmenu", onContextMenu);
+    map.current.on("zooming", onZooming);
+    map.current.on("mousemove", onMouseMove);
+    map.current.on("touchmove", onTouchMove);
+    map.current.on("mouseup", onMouseUp);
+    setMapInitTick((tick) => tick + 1);
+
+    return () => {
+      if (cursorRafRef.current !== null) {
+        cancelAnimationFrame(cursorRafRef.current);
+        cursorRafRef.current = null;
+      }
+      map.current?.off("contextmenu", onContextMenu);
+      map.current?.off("zooming", onZooming);
+      map.current?.off("mousemove", onMouseMove);
+      map.current?.off("touchmove", onTouchMove);
+      map.current?.off("mouseup", onMouseUp);
+      map.current?.remove();
+      map.current = null;
+    };
   }, [mapContainer, map]);
 
   useEffect(() => {
     if (!map.current) return;
+    const layerVisibility = settings.map?.layerVisibility ?? {};
+    const setVisible = (layerId: string, visible: boolean) => {
+      const layer = map.current!.getLayer(layerId);
+      if (!layer) return;
+      if (visible) layer.show();
+      else layer.hide();
+    };
+    const setGroupVisible = (layerIds: string[], key: keyof NonNullable<typeof layerVisibility>, fallback: boolean) => {
+      const visible = layerVisibility[key] ?? fallback;
+      for (const layerId of layerIds) {
+        setVisible(layerId, visible);
+      }
+    };
+
+    const prettyVisible = layerVisibility.prettyMap ?? true;
+    const dcsVisible = layerVisibility.dcsMap ?? true;
+    setVisible("pretty", prettyVisible);
+    setVisible("DCSMap", dcsVisible);
+    setVisible("base", !prettyVisible && !dcsVisible);
+
+    setGroupVisible(["mgrs-grid"], "mgrsGrid", true);
+    setGroupVisible([NGA_REST_CITIES_LAYER_ID], "citiesLabel", true);
+    setGroupVisible(["airports", "farp-name", "farp-icon"], "statics", true);
+    setGroupVisible(
+      ["combat-zones", "combat-zones-blue", "combat-zones-red"],
+      "combatZones",
+      true
+    );
+    setGroupVisible(
+      ["ground-units", "ground-units-blue", "ground-units-red"],
+      "groundUnits",
+      true
+    );
+    setGroupVisible(
+      ["custom-geometry", "custom-geometry-zones"],
+      "customGeometry",
+      true
+    );
+    setGroupVisible(["quest", "quest-pin"], "missionPoints", true);
+    setGroupVisible(
+      [
+        "track-icons",
+        "track-trails",
+        "track-vv",
+        "track-name",
+        "track-altitude",
+        "track-speed",
+        "track-verticalvelo",
+      ],
+      "aircrafts",
+      true
+    );
+
     if (settings.map.trackTrailLength === 0) {
       map.current!.getLayer("track-trails").hide();
     } else {
@@ -417,7 +731,215 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     } else {
       map.current!.getLayer("track-name").show();
     }
+    const dcsMapLayer = map.current!.getLayer("DCSMap") as any;
+    if (dcsMapLayer && dcsMapLayer.config) {
+      dcsMapLayer.config(
+        "opacity",
+        Math.max(0, Math.min(1, settings.map?.dcsMapOpacity ?? 1))
+      );
+      dcsMapLayer.config(
+        "cssFilter",
+        getBrightnessFilter(settings.map?.dcsMapBrightness, 1.2)
+      );
+    }
+    const prettyLayer = map.current!.getLayer("pretty") as any;
+    if (prettyLayer && prettyLayer.config) {
+      prettyLayer.config(
+        "opacity",
+        Math.max(0, Math.min(1, settings.map?.prettyMapOpacity ?? 0.8))
+      );
+      prettyLayer.config(
+        "cssFilter",
+        getBrightnessFilter(settings.map?.prettyMapBrightness, 1)
+      );
+    }
   }, [map, settings]);
+
+  useEffect(() => {
+    if (!ENABLE_LOCAL_JSON_CITIES) return;
+    if (!map.current) return;
+    const mapRef = map.current;
+    const citiesLayer = mapRef.getLayer("map-cities") as
+      | maptalks.VectorLayer
+      | undefined;
+    if (!citiesLayer) return;
+
+    const cityDataset = getMapCityDataset(dcsMap.name);
+    const renderCaucasusCities = () => {
+      const dcsMapLayer = mapRef.getLayer("DCSMap");
+      if (!dcsMapLayer?.isVisible()) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      if (cityDataset.length === 0) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      const currentZoom = mapRef.getZoom();
+      const opacity = getMapCitiesOpacity(currentZoom);
+      if (opacity <= 0) {
+        citiesLayer.hide();
+        citiesLayer.clear();
+        return;
+      }
+
+      const minImportance = getMapCityMinImportance(currentZoom);
+      const textSize = getMapCityTextSize(currentZoom);
+      const renderLimit = getMapCityRenderLimit(dcsMap.name);
+      const labels = cityDataset
+        .filter(
+          (city) =>
+            city.importance >= minImportance
+        )
+        .sort((a, b) => b.importance - a.importance)
+        .slice(0, renderLimit)
+        .map(
+          (city) =>
+            new maptalks.Label(getMapCityDisplayName(dcsMap.name, city.name), [city.lon, city.lat], {
+              draggable: false,
+              editable: false,
+              interactive: false,
+              boxStyle: {
+                padding: [1, 2],
+                horizontalAlignment: "center",
+                verticalAlignment: "middle",
+                symbol: {
+                  markerType: "square",
+                  markerFill: "black",
+                  markerFillOpacity: 0.22 * opacity,
+                  markerLineOpacity: 0,
+                },
+              },
+              textSymbol: {
+                textFaceName: FONT_FAMILY,
+                textFill: "#fde68a",
+                textSize: textSize + 6,
+                textOpacity: 0.58 * opacity,
+                textHaloFill: "#000000",
+                textHaloRadius: 1.2,
+              },
+            })
+        );
+
+      citiesLayer.clear();
+      if (labels.length > 0) {
+        citiesLayer.addGeometry(labels);
+      }
+      citiesLayer.show();
+    };
+
+    renderCaucasusCities();
+    mapRef.on("moveend", renderCaucasusCities);
+    mapRef.on("zoomend", renderCaucasusCities);
+    return () => {
+      mapRef.off("moveend", renderCaucasusCities);
+      mapRef.off("zoomend", renderCaucasusCities);
+    };
+  }, [mapInitTick, dcsMap.name]);
+
+  useEffect(() => {
+    if (!map.current) return;
+    const mapRef = map.current;
+    const layer = mapRef.getLayer(NGA_REST_CITIES_LAYER_ID) as
+      | maptalks.VectorLayer
+      | undefined;
+    if (!layer) return;
+
+    let abortController: AbortController | null = null;
+
+    const renderNgaRestCities = async () => {
+      if (!layer.isVisible()) {
+        layer.clear();
+        return;
+      }
+      const extent = mapRef.getExtent();
+      if (!extent) return;
+      const zoom = mapRef.getZoom();
+      if (zoom < 6) {
+        layer.clear();
+        return;
+      }
+
+      const bounds = {
+        minLon: extent.xmin,
+        minLat: extent.ymin,
+        maxLon: extent.xmax,
+        maxLat: extent.ymax,
+      };
+      const queryUrl = buildNgaRestCitiesUrl(bounds, zoom);
+
+      if (abortController) abortController.abort();
+      abortController = new AbortController();
+      try {
+        const response = await fetch(queryUrl, { signal: abortController.signal });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!Array.isArray(data?.features)) return;
+        const labelEntries: Array<{
+          label: maptalks.Label;
+          importance: number;
+          displayRank: number;
+        }> = [];
+        for (const feature of data.features) {
+          const cityName = feature?.properties?.full_name;
+          const desigCode = feature?.properties?.desig_cd as string | undefined;
+          const displayRaw = feature?.properties?.display;
+          const coords = feature?.geometry?.coordinates;
+          if (
+            typeof cityName !== "string" ||
+            !Array.isArray(coords) ||
+            coords.length < 2
+          ) {
+            continue;
+          }
+          const lon = Number(coords[0]);
+          const lat = Number(coords[1]);
+          if (Number.isNaN(lon) || Number.isNaN(lat)) continue;
+          const importance = getNgaCityImportance(desigCode);
+          const displayRank = Number.parseInt(String(displayRaw ?? "99"), 10);
+          labelEntries.push({
+            label: buildExternalCityLabel(cityName, lon, lat, zoom, importance),
+            importance,
+            displayRank: Number.isNaN(displayRank) ? 99 : displayRank,
+          });
+        }
+        labelEntries.sort((a, b) => {
+          if (b.importance !== a.importance) return b.importance - a.importance;
+          return a.displayRank - b.displayRank;
+        });
+        const labels = labelEntries
+          .slice(0, getNgaCityRenderLimitForZoom(zoom))
+          .map((entry) => entry.label);
+        layer.clear();
+        if (labels.length > 0) {
+          layer.addGeometry(labels);
+        }
+      } catch (error: any) {
+        if (error?.name !== "AbortError") {
+          // Ignore transient network failures for optional external layers.
+          layer.clear();
+        }
+      }
+    };
+
+    renderNgaRestCities();
+    mapRef.on("moveend", renderNgaRestCities);
+    mapRef.on("zoomend", renderNgaRestCities);
+    const onLayerShow = () => {
+      void renderNgaRestCities();
+    };
+    layer.on("show", onLayerShow);
+    return () => {
+      if (abortController) abortController.abort();
+      mapRef.off("moveend", renderNgaRestCities);
+      mapRef.off("zoomend", renderNgaRestCities);
+      layer.off("show", onLayerShow);
+    };
+  }, [mapInitTick]);
 
   // Configure airports
   useEffect(() => {
@@ -556,43 +1078,6 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   ]);
 
   useEffect(() => {
-    if (!cursorPos) {
-      setCursorGroundFt(null);
-      return;
-    }
-
-    const controller = new AbortController();
-    const timer = window.setTimeout(async () => {
-      try {
-        const [lat, lon] = cursorPos;
-        const response = await fetch(
-          route(`/elevation?lat=${lat}&lon=${lon}`),
-          { signal: controller.signal }
-        );
-        if (!response.ok) {
-          setCursorGroundFt(null);
-          return;
-        }
-        const payload = await response.json();
-        if (typeof payload.elevation_m === "number") {
-          setCursorGroundFt(Math.round(payload.elevation_m * 3.28084));
-        } else {
-          setCursorGroundFt(null);
-        }
-      } catch (err: any) {
-        if (err?.name !== "AbortError") {
-          setCursorGroundFt(null);
-        }
-      }
-    }, 250);
-
-    return () => {
-      window.clearTimeout(timer);
-      controller.abort();
-    };
-  }, [cursorPos]);
-
-  useEffect(() => {
     if (!map.current) return;
     const braaLayer = map.current.getLayer("braa") as maptalks.VectorLayer;
     const line = braaLayer.getGeometryById("braa-line") as maptalks.LineString;
@@ -616,12 +1101,8 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       }
 
       if (typeof start !== "number" && typeof end !== "number") {
-        const bearing = getBearingMap(start, end, dcsMap);
-        const braaDistanceNm = getFlyDistance(start, end);
-        const braaDistance =
-          unitSystem === UnitSystem.IMPERIAL
-            ? `${Math.round(braaDistanceNm)}nm`
-            : `${Math.round(braaDistanceNm * 1.852)}km`;
+        const trueBearing = getTrueBearing(start, end);
+        const magneticBearing = getMagneticBearing(trueBearing, dcsMap);
         line.setCoordinates([
           [start[1], start[0]],
           [end[1], end[0]],
@@ -631,9 +1112,11 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         text.setCoordinates([end[1], end[0]]).translate(scale / 27000, 0);
 
         (text.setContent as any)(
-          `${bearing.toString().padStart(3, "0")}${getCardinal(
-            bearing
-          )} / ${braaDistance}`
+          `${magneticBearing.toString().padStart(3, "0")}°M / ${trueBearing
+            .toString()
+            .padStart(3, "0")}°T ${getCardinal(
+            magneticBearing
+          )} / ${formatDistanceByUnitSystem(getFlyDistance(start, end))}`
         );
 
         text.show();
@@ -647,40 +1130,68 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     drawBraaStart,
     cursorPos,
     typeof drawBraaStart === "number" && entities.get(drawBraaStart),
-    unitSystem,
   ]);
 
   const currentCursorBulls = useMemo(() => {
+    const cursorElevationText =
+      cursorElevationFt === null
+        ? "ALT --"
+        : unitSystem === "metric"
+        ? `ALT ${Math.round(cursorElevationFt * 0.3048)}m`
+        : `ALT ${cursorElevationFt}ft`;
     if (!bullsEntity && !cursorPos) return;
-    const estimatedGroundFt = cursorPos
-      ? getEstimatedGroundElevationFt(cursorPos, dcsMap)
-      : null;
-    const groundFt = cursorGroundFt ?? (estimatedGroundFt !== null ? Math.round(estimatedGroundFt) : null);
-    const groundPart =
-      groundFt !== null
-        ? unitSystem === UnitSystem.IMPERIAL
-          ? ` / GND~${groundFt}ft`
-          : ` / GND~${Math.round(groundFt * 0.3048)}m`
-        : "";
-    const formatDistance = (distanceNm: number) =>
-      unitSystem === UnitSystem.IMPERIAL
-        ? `${Math.round(distanceNm)}nm`
-        : `${Math.round(distanceNm * 1.852)}km`;
 	if (!bullsEntity && cursorPos) {
-		return `${parseMgrs(cursorPos)}${groundPart}`;
+		return `${parseMgrs(cursorPos)} / ${cursorElevationText}`;
 	};
 	if (!bullsEntity || !cursorPos) return;
-    const bearing = getBearingMap(
+    const trueBearing = getTrueBearing(
       [bullsEntity.latitude, bullsEntity.longitude],
-      cursorPos,
-      dcsMap
+      cursorPos
     );
-    return `${bearing.toString().padStart(3, "0")}${getCardinal(
-      bearing
-    )} / ${formatDistance(
+    const magneticBearing = getMagneticBearing(trueBearing, dcsMap);
+    return `${magneticBearing.toString().padStart(3, "0")}°M / ${trueBearing
+      .toString()
+      .padStart(3, "0")}°T ${getCardinal(magneticBearing)} / ${formatDistanceByUnitSystem(
       getFlyDistance(cursorPos, [bullsEntity.latitude, bullsEntity.longitude])
-    )} / ${parseMgrs(cursorPos)}${groundPart}`;
-  }, [cursorPos, bullsEntity, dcsMap, cursorGroundFt, unitSystem]);
+    )} / ${parseMgrs(cursorPos)} / ${cursorElevationText}`;
+  }, [cursorPos, bullsEntity, dcsMap, unitSystem, cursorElevationFt]);
+
+  useEffect(() => {
+    if (cursorElevationTimerRef.current) {
+      clearTimeout(cursorElevationTimerRef.current);
+      cursorElevationTimerRef.current = null;
+    }
+    if (!cursorPos) {
+      setCursorElevationFt(null);
+      return;
+    }
+
+    cursorElevationTimerRef.current = setTimeout(() => {
+      const [lat, lon] = cursorPos;
+      const reqId = ++cursorElevationReqIdRef.current;
+      fetch(`/api/elevation?lat=${lat}&lon=${lon}`)
+        .then((response) => (response.ok ? response.json() : null))
+        .then((payload) => {
+          if (reqId !== cursorElevationReqIdRef.current) return;
+          if (typeof payload?.elevation_m === "number") {
+            setCursorElevationFt(Math.round(payload.elevation_m * 3.28084));
+          } else {
+            setCursorElevationFt(null);
+          }
+        })
+        .catch(() => {
+          if (reqId !== cursorElevationReqIdRef.current) return;
+          setCursorElevationFt(null);
+        });
+    }, 180);
+
+    return () => {
+      if (cursorElevationTimerRef.current) {
+        clearTimeout(cursorElevationTimerRef.current);
+        cursorElevationTimerRef.current = null;
+      }
+    };
+  }, [cursorPos]);
 
   const farps = useMemo(
     () => {
@@ -805,9 +1316,9 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   }, [farps]);
 
   useRenderGeometry(map.current);
+  useRenderMgrsGrid(map.current);
   useRenderGroundUnit(map.current);
   useRenderCombatZones(map.current);
-  useRenderMgrsGrid(map.current);
   var selectedEntityId = selectedEntity ? selectedEntity.id : null
   useRenderRadarTracks(map.current, selectedEntityId);
 
@@ -834,27 +1345,26 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
         }}
         ref={mapContainer}
       ></div>
-      {currentCursorBulls && (
-        <div className="absolute right-0 bottom-0 flex flex-row items-center gap-1">
-          <div className="text-yellow-600 text-2xl bg-gray-700 px-3 py-1 min-w-[38rem] max-w-[90vw] whitespace-nowrap overflow-x-auto">
+      <div className="absolute right-0 bottom-0 flex items-end gap-1 p-1">
+        {currentCursorBulls && (
+          <div className="max-h-32 whitespace-nowrap text-yellow-600 text-2xl bg-gray-700 px-1">
             {currentCursorBulls}
           </div>
-          <button
-            title="Units"
-            onClick={() =>
-              updateSettingsStore({
-                unitSystem:
-                  unitSystem === UnitSystem.IMPERIAL
-                    ? UnitSystem.METRIC
-                    : UnitSystem.IMPERIAL,
-              })
-            }
-            className="h-full border border-gray-500 bg-gray-700 text-yellow-600 px-2 py-1 text-sm font-semibold"
-          >
-            {unitSystem === UnitSystem.IMPERIAL ? "IMP" : "MET"}
-          </button>
-        </div>
-      )}
+        )}
+        <button
+          type="button"
+          className="h-9 min-w-[3.25rem] border border-gray-500 bg-gray-200 px-2 text-sm font-semibold text-gray-800 rounded-sm shadow"
+          onClick={() => {
+            settingsStore.setState((state: any) => ({
+              ...state,
+              unitSystem: state?.unitSystem === "metric" ? "imperial" : "metric",
+            }));
+          }}
+          title="Toggle Imperial/Metric units"
+        >
+          {unitSystem === "metric" ? "MET" : "IMP"}
+        </button>
+      </div>
       <MissionTimer />
       <div className="m-2 absolute left-0 top-0 flex flex-col gap-2">
         {selectedEntity && map.current && (

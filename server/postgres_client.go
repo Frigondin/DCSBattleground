@@ -18,11 +18,16 @@ func initDB(config *Config) {
 		db, err = sql.Open("postgres", connStr)
 
 		if err != nil {
-			panic(err)
+			log.Printf("database open failed: %v", err)
+			db = nil
+			return
 		}
 
 		if err = db.Ping(); err != nil {
-			panic(err)
+			log.Printf("database ping failed: %v", err)
+			_ = db.Close()
+			db = nil
+			return
 		}
 		// this will be printed in the terminal, confirming the connection to the database
 		log.Printf("The database is connected")
