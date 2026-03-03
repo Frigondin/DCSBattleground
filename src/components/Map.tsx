@@ -268,9 +268,12 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
     number | [number, number] | null
   >(null);
   const [cursorPos, setCursorPos] = useState<[number, number] | null>(null);
+  const [cursorElevationFt, setCursorElevationFt] = useState<number | null>(null);
   const [mapInitTick, setMapInitTick] = useState(0);
   const cursorRafRef = useRef<number | null>(null);
   const pendingCursorPosRef = useRef<[number, number] | null>(null);
+  const cursorElevationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cursorElevationReqIdRef = useRef(0);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [scratchPadOpen, setScratchPadOpen] = useState(false);
@@ -1130,9 +1133,15 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
   ]);
 
   const currentCursorBulls = useMemo(() => {
+    const cursorElevationText =
+      cursorElevationFt === null
+        ? "ALT --"
+        : unitSystem === "metric"
+        ? `ALT ${Math.round(cursorElevationFt * 0.3048)}m`
+        : `ALT ${cursorElevationFt}ft`;
     if (!bullsEntity && !cursorPos) return;
 	if (!bullsEntity && cursorPos) {
-		return `${parseMgrs(cursorPos)}`;
+		return `${parseMgrs(cursorPos)} / ${cursorElevationText}`;
 	};
 	if (!bullsEntity || !cursorPos) return;
     const trueBearing = getTrueBearing(
@@ -1144,8 +1153,45 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       .toString()
       .padStart(3, "0")}°T ${getCardinal(magneticBearing)} / ${formatDistanceByUnitSystem(
       getFlyDistance(cursorPos, [bullsEntity.latitude, bullsEntity.longitude])
-    )} / ${parseMgrs(cursorPos)}`;
-  }, [cursorPos, bullsEntity, dcsMap, unitSystem]);
+    )} / ${parseMgrs(cursorPos)} / ${cursorElevationText}`;
+  }, [cursorPos, bullsEntity, dcsMap, unitSystem, cursorElevationFt]);
+
+  useEffect(() => {
+    if (cursorElevationTimerRef.current) {
+      clearTimeout(cursorElevationTimerRef.current);
+      cursorElevationTimerRef.current = null;
+    }
+    if (!cursorPos) {
+      setCursorElevationFt(null);
+      return;
+    }
+
+    cursorElevationTimerRef.current = setTimeout(() => {
+      const [lat, lon] = cursorPos;
+      const reqId = ++cursorElevationReqIdRef.current;
+      fetch(`/api/elevation?lat=${lat}&lon=${lon}`)
+        .then((response) => (response.ok ? response.json() : null))
+        .then((payload) => {
+          if (reqId !== cursorElevationReqIdRef.current) return;
+          if (typeof payload?.elevation_m === "number") {
+            setCursorElevationFt(Math.round(payload.elevation_m * 3.28084));
+          } else {
+            setCursorElevationFt(null);
+          }
+        })
+        .catch(() => {
+          if (reqId !== cursorElevationReqIdRef.current) return;
+          setCursorElevationFt(null);
+        });
+    }, 180);
+
+    return () => {
+      if (cursorElevationTimerRef.current) {
+        clearTimeout(cursorElevationTimerRef.current);
+        cursorElevationTimerRef.current = null;
+      }
+    };
+  }, [cursorPos]);
 
   const farps = useMemo(
     () => {
