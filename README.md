@@ -46,10 +46,12 @@ DCS Battleground features a built-in Discord authentication
 	"enable_enemy_flight_units": true,						//Show enemy aircraft
 	"view_aircraft_when_in_flight": true						//Hide enemy aircraft when the user is connected to DCS (need to link the discord account with DCS account with .link command's)
 	"zones_size":[["Vehicle",10000], ["Human",3000], ["default", 10000]],		//Zones size of units, the object type is defined in Tacview documentation : https://www.tacview.net/documentation/acmi/en/
-	"editor_id":["289817258535157761"]						//Discord user ID, used for advanced feature enabled for the user
+	"editor_id":["289817258535157761"],						//Discord user ID, used for advanced feature enabled for the user
+    "show_on_shutdown": true
     }
   ],
   "assets_path_external": "D:\\your\\folder\\DCSBattlegroundV2\\files\\",		//Uploaded pictures folder (must be writable, not inside the git repo)
+  "dcsmaps_path_external": "D:\\your\\folder\\DCSBattlegroundV2\\DCSMaps\\",    //DCS Map folder, you can download all files here : http://06mhr.diciess.fr/temp/DCSMaps.zip
   "serverbot": true,									//Use Special K's server bot
   "database": "postgres://user:password@hostname:5432/postgres?sslmode=disable",	//Special K's server bot Database (contains credentials, keep it secret)
   "discord_client_id": "1564564564421",							//Client ID of the discord application (public)
