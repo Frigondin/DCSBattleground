@@ -4,7 +4,7 @@ Originally created for the french community Liaison-16, DCS Battleground is an o
 It was designed from [sneaker](https://github.com/Special-K-s-Flightsim-Bots/sneaker) and uses the Tacview protocol to communicate with DCS.
 It has Discord's authentication and is interfaced with the [Special K's Server bot](https://github.com/Special-K-s-Flightsim-Bots/DCSServerBot).
 
-A live example of DCS Battlegound can be viewed [here](http://wawacs.ddns.net/).
+A live example of DCS Battlegound can be viewed [here](http://battleground.06mhr.diciess.fr/).
 
 
 
