@@ -16,6 +16,7 @@ A live example of DCS Battlegound can be viewed [here](http://battleground.06mhr
 2. **Do not edit the example file directly.** Create your own configuration file (for example `config.prod.json`) based off the [example](/example.config.json), replacing the required information (and optionally adding multiple servers to the array).
 3. If you want to modify Battleground, make sure your real configuration file (with passwords, tokens, etc.) is **not committed** into git (keep it outside the repo or add it to your `.gitignore`).
 4. Run the executable with the configuration path: `DCSBattleground.exe --config path\to\config.prod.json --bind 0.0.0.0:yourport`
+5. (Optional) You can download DCS's maps [here](http://06mhr.diciess.fr/temp/DCSMaps.zip), see the configuration to use it
 
 ## Configuration
 
