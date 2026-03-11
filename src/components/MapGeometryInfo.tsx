@@ -1146,14 +1146,22 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
   useEffect(() => {
     if (!renderGeometry) return () => {};
     const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+    const layerZones = map.getLayer("custom-geometry-zones") as
+      | maptalks.VectorLayer
+      | undefined;
 	const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
-    var item = layer.getGeometryById(
+    let item = layer.getGeometryById(
 		renderGeometry.id
-    ) as maptalks.GeometryCollection;
+    ) as maptalks.GeometryCollection | null;
+	if (item === null && layerZones) {
+		item = layerZones.getGeometryById(
+			renderGeometry.id
+		) as maptalks.GeometryCollection | null;
+	}
 	if (item === null) {
 		item = layerQuest.getGeometryById(
 			renderGeometry.id
-		) as maptalks.GeometryCollection;
+		) as maptalks.GeometryCollection | null;
 	}
 	
 
@@ -1212,8 +1220,14 @@ export default function MapGeometryInfo({ map }: { map: maptalks.Map }) {
     event?.stopPropagation();
     setEditing(false);
     const layer = map.getLayer("custom-geometry") as maptalks.VectorLayer;
+    const layerZones = map.getLayer("custom-geometry-zones") as
+      | maptalks.VectorLayer
+      | undefined;
     const layerQuest = map.getLayer("quest-pin") as maptalks.VectorLayer;
     let item = layer.getGeometryById(renderGeometry.id) as maptalks.GeometryCollection | null;
+    if (!item && layerZones) {
+      item = layerZones.getGeometryById(renderGeometry.id) as maptalks.GeometryCollection | null;
+    }
     if (!item) {
       item = layerQuest.getGeometryById(renderGeometry.id) as maptalks.GeometryCollection | null;
     }

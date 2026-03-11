@@ -939,7 +939,17 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   
   col.setOptions({interactive});
   let isZoneHovered = false;
+  const isZoneEditing = () => polygon.isEditing() || col.isEditing();
   const setZoneHover = (hovered: boolean) => {
+    if (isZoneEditing()) {
+      if (isZoneHovered) {
+        isZoneHovered = false;
+        const currentZone = geometryStore.getState().geometry.get(zone.id) as Zone | undefined;
+        const color = currentZone?.color || zone.color;
+        (polygon.setSymbol as any)(getZonePolygonSymbol(color, false));
+      }
+      return;
+    }
     if (hovered === isZoneHovered) {
       return;
     }
@@ -971,12 +981,19 @@ function renderZone(layer: maptalks.VectorLayer, zone: Zone) {
   text.on("mouseenter", () => setZoneHover(true));
   text.on("mouseleave", () => setZoneHover(false));
   col.on("mouseover", (evt) => {
+    if (isZoneEditing()) return;
     if (isPointerNearLabel(evt)) {
       setZoneHover(true);
     }
   });
-  col.on("mousemove", (evt) => setZoneHover(isPointerNearLabel(evt)));
-  col.on("mouseout", () => setZoneHover(false));
+  col.on("mousemove", (evt) => {
+    if (isZoneEditing()) return;
+    setZoneHover(isPointerNearLabel(evt));
+  });
+  col.on("mouseout", () => {
+    if (isZoneEditing()) return;
+    setZoneHover(false);
+  });
   col.on("click", (e) => {
     const { editor_mode_on } = serverStore.getState();
 	const clickable = geometryStore!.getState()!.geometry!.get(zone.id)!.clickable
